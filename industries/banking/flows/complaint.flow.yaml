@@ -4,7 +4,7 @@ version: 1.0.0
 event_type: complaint.received
 department: cs
 inputs:
-  schema_ref: events/complaint.received.v1.json
+  schema_ref: event-examples/complaint.received.v1.json
   fields: [customer_id, channel, external_ticket_id, category, severity, text]
 steps:
   - id: s1-triage

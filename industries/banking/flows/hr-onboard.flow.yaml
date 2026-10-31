@@ -4,7 +4,7 @@ version: 1.0.0
 event_type: hr.offer.accepted
 department: hr
 inputs:
-  schema_ref: events/hr.onboard.v1.json
+  schema_ref: event-examples/hr.onboard.v1.json
   fields: [employee_id, start_date, unit_id, role_id]
 steps:
   - id: s1-provision

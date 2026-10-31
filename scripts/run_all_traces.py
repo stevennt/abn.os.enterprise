@@ -36,11 +36,11 @@ def synth_value(field):
 
 def main():
     examples = {}
-    for f in glob.glob(str(ROOT / "examples" / "events" / "*.json")):
+    for f in glob.glob(str(ROOT / "industries" / "*" / "event-examples" / "*.json")):
         ev = json.load(open(f))
         examples[ev["event_type"]] = ev
     gaps, n = [], 0
-    for f in sorted(glob.glob(str(ROOT / "examples" / "bank" / "*.flow.yaml"))):
+    for f in sorted(glob.glob(str(ROOT / "industries" / "*" / "flows" / "*.flow.yaml"))):
         flow = yaml.safe_load(open(f))
         ev = examples.get(flow["event_type"])
         if ev is None:

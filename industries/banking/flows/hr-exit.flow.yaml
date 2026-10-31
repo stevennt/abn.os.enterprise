@@ -4,7 +4,7 @@ version: 1.0.0
 event_type: hr.exit.initiated
 department: hr
 inputs:
-  schema_ref: events/hr.exit.v1.json
+  schema_ref: event-examples/hr.exit.v1.json
   fields: [employee_id, exit_id, last_date, exit_type]
 steps:
   - id: s1-clearance

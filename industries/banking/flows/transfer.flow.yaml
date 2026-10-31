@@ -4,7 +4,7 @@ version: 1.0.0
 event_type: transfer.domestic.requested
 department: payments
 inputs:
-  schema_ref: events/transfer.domestic.v2.json
+  schema_ref: event-examples/transfer.domestic.v2.json
   fields: [sender_account, payee_account, amount, rail, narration, client_key]
 steps:
   - id: s1-dedupe

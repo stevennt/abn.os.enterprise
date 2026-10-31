@@ -11,12 +11,13 @@ ROOT = Path(__file__).resolve().parent.parent
 
 def main():
     strict = "--strict" in sys.argv
-    contracts = sorted((ROOT / "ai").glob("*.contract.yaml"))
+    contracts = sorted((ROOT / "industries").glob("*/ai/*.contract.yaml"))
     assert contracts, "no AI contracts found"
     failed = 0
     for c in contracts:
         ct = yaml.safe_load(open(c))
-        suite = ROOT / ct["eval_suite"].rstrip("/")
+        indir = c.parent.parent          # industries/<id>/
+        suite = indir / ct["eval_suite"].rstrip("/")   # eval_suite is industry-relative
         name = ct["step_id"]
         problems = []
         if not suite.is_dir():

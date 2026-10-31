@@ -4,7 +4,7 @@ version: 1.0.0
 event_type: aml.screening.hit
 department: compliance
 inputs:
-  schema_ref: events/aml.screening.hit.v1.json
+  schema_ref: event-examples/aml.screening.hit.v1.json
   fields: [customer_id, entity_name, list, match_score, recommendation]
 steps:
   - id: s1-triage

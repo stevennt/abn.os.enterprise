@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Golden-set generator (issue #103): synthetic goldens for doc-extract (300),
 complaint-triage (200), policy-copilot (150 QA + 30 OOC + 20 PII probes).
-Seeded only (--seed), no clock/uuid/network. Writes evals/<suite>/golden.jsonl
-+ evals/MANIFEST.sha256. Every row carries _synthetic_pii=true + TEST markers.
+Seeded only (--seed), no clock/uuid/network. Writes industries/<id>/evals/<suite>/golden.jsonl + MANIFEST.sha256. Every row carries _synthetic_pii=true + TEST markers.
 """
 import argparse, hashlib, json, random
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+OUT = ROOT / "industries" / "banking" / "evals"
 
 def rows(rng, n, make):
     return [make(rng, i) for i in range(n)]
@@ -37,12 +37,12 @@ def main():
     manifest = []
     for suite, data in suites.items():
         blob = "\n".join(json.dumps(r, sort_keys=True, ensure_ascii=False) for r in data) + "\n"
-        (ROOT / "evals" / suite / "golden.jsonl").write_text(blob)
+        (OUT / suite / "golden.jsonl").write_text(blob)
         h = hashlib.sha256(blob.encode()).hexdigest()
         manifest.append(f"{h}  {suite}/golden.jsonl ({len(data)} rows)")
         print(f"{suite}: {len(data)} rows sha={h[:12]}")
-    (ROOT / "evals" / "MANIFEST.sha256").write_text("\n".join(manifest) + "\n")
-    print("manifest:", ROOT / "evals" / "MANIFEST.sha256")
+    (OUT / "MANIFEST.sha256").write_text("\n".join(manifest) + "\n")
+    print("manifest:", OUT / "MANIFEST.sha256")
     return 0
 
 if __name__ == "__main__":

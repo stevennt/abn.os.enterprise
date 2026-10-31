@@ -4,7 +4,7 @@ version: 1.0.0
 event_type: loan.corporate.term.requested
 department: corporate
 inputs:
-  schema_ref: events/loan.corporate.term.v1.json
+  schema_ref: event-examples/loan.corporate.term.v1.json
   fields: [tax_id, facility_amount, tenor_m, purpose, board_resolution_ref, financials_ref]
 steps:
   - id: s1-ubo

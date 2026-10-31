@@ -18,7 +18,7 @@ def main():
     a = ap.parse_args()
     flows = sorted(glob.glob(str(ROOT / "examples" / "bank" / "*.flow.yaml")))
     rules = sum(len(yaml.safe_load(open(f))) for f in glob.glob(str(ROOT / "rules" / "*.yaml")))
-    evals = sorted((ROOT / "evals").glob("*/README.md"))
+    evals = sorted((ROOT / "industries" / "banking" / "evals").glob("*/README.md"))
     try:
         drill = json.load(open("/tmp/drill.json"))
         money = f"{drill['transfers']} transfers, {drill['double_posts']} double-posts"

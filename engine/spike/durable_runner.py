@@ -20,7 +20,7 @@ def load_journal(p):
     return [json.loads(l) for l in p.read_text().splitlines() if l.strip()]
 
 def run(args):
-    flow = yaml.safe_load(open(ROOT / "examples" / "bank" / "loan-approval.flow.yaml"))
+    flow = yaml.safe_load(open(ROOT / "industries" / "banking" / "flows" / "loan-approval.flow.yaml"))
     done = {e["step"] for e in load_journal(args.journal) if e["outcome"] != "CRASHED"}
     attempts = {}
     for e in load_journal(args.journal):

@@ -25,8 +25,8 @@ Event(Data) → Router → Process(Step[workflow|ai|human] + Rule + Role) → To
 README.md                  — this file
 ARCHITECTURE.md            — runtime options + recommended hybrid stack
 ROADMAP.md                 — 6 phases + build-vs-buy decisions
-metamodel/                 — YAML schemas (the "language" of the OS)
-examples/bank/             — reference bank: org-chart, 40-process catalog, 1 fully-worked flow
+metamodel/                 — YAML schemas (the "language" of the OS) incl. industry manifest
+industries/banking/        — reference industry: org, rules, flows, events, ai contracts, evals, pack
 engine/                    — automation levels, workflow-vs-AI decision matrix
 docs/                      — vision, glossary, touchpoint taxonomy, simulation plan
 scripts/seed-issues.py     — the 100 GitHub issues (source of truth, re-runnable)

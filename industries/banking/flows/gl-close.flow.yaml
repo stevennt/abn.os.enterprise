@@ -4,7 +4,7 @@ version: 1.0.0
 event_type: gl.close.month.started
 department: finance
 inputs:
-  schema_ref: events/gl.close.v1.json
+  schema_ref: event-examples/gl.close.v1.json
   fields: [period, entity]
 steps:
   - id: s1-freeze

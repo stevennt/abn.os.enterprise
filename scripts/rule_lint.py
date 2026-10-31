@@ -2,7 +2,7 @@
 """Rule lint (issue #110, ADR E41): every pack row needs when+then, no duplicate
 `when` within a rule (overlap proxy), tables non-empty, wildcard coverage row present.
 Usage: python scripts/rule_lint.py [--self-test]
-  default: lint rules/*.yaml (skip fixtures), exit 1 on problems.
+  default: lint industries/*/rules/*.yaml, exit 1 on problems.
   --self-test: lint tests/fixtures/rule-overlap.yaml, expect RED (exit 0 if red).
 """
 import glob
@@ -34,7 +34,7 @@ def main():
         print(f"self-test: fixture flagged ({bad}) — OK" if bad else "self-test FAILED: clean")
         return 0 if bad else 1
     problems = []
-    for f in sorted(glob.glob("rules/*.yaml")):
+    for f in sorted(glob.glob("industries/*/rules/*.yaml")):
         problems += [f"{f}: {p}" for p in lint_file(f)]
     if problems:
         print("RULE LINT RED:")

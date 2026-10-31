@@ -15,21 +15,21 @@ rules:
   - rules/fee-pack.yaml
   - rules/kyc-pack.yaml
 flows:
-  - examples/bank/aml-str.flow.yaml
-  - examples/bank/ap-invoice.flow.yaml
-  - examples/bank/card-dispute.flow.yaml
-  - examples/bank/complaint.flow.yaml
-  - examples/bank/corp-term-loan.flow.yaml
-  - examples/bank/ekyc-onboarding.flow.yaml
-  - examples/bank/gl-close.flow.yaml
-  - examples/bank/hr-exit.flow.yaml
-  - examples/bank/hr-leave.flow.yaml
-  - examples/bank/hr-onboard.flow.yaml
-  - examples/bank/hr-perf.flow.yaml
-  - examples/bank/hr-recruit.flow.yaml
-  - examples/bank/loan-approval.flow.yaml
-  - examples/bank/mortgage.flow.yaml
-  - examples/bank/transfer.flow.yaml
+  - flows/aml-str.flow.yaml
+  - flows/ap-invoice.flow.yaml
+  - flows/card-dispute.flow.yaml
+  - flows/complaint.flow.yaml
+  - flows/corp-term-loan.flow.yaml
+  - flows/ekyc-onboarding.flow.yaml
+  - flows/gl-close.flow.yaml
+  - flows/hr-exit.flow.yaml
+  - flows/hr-leave.flow.yaml
+  - flows/hr-onboard.flow.yaml
+  - flows/hr-perf.flow.yaml
+  - flows/hr-recruit.flow.yaml
+  - flows/loan-approval.flow.yaml
+  - flows/mortgage.flow.yaml
+  - flows/transfer.flow.yaml
 evals:
   - evals/doc-extract
   - evals/income-verify

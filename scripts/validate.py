@@ -35,22 +35,26 @@ def main():
         assert not unknown, f"{s} links unknown terms: {unknown}"
     print(f"glossary: {len(schemas)} schemas link {sum(len(sc.get('x-glossary', [])) for sc in schemas.values())} terms, all defined ({len(terms)} terms) — OK")
     # Acceptance #1: worked example validates green (+ every flow file, issue #21)
-    for f in sorted(_glob.glob(str(ROOT / "examples" / "bank" / "*.flow.yaml"))):
+    for f in sorted(_glob.glob(str(ROOT / "industries" / "*" / "flows" / "*.flow.yaml"))):
         flow = load(str(Path(f).relative_to(ROOT)))
         jsonschema.validate(flow, schemas["process"])
         for s in flow["steps"]:
             assert s.get("on_fail"), f"{Path(f).name} step {s['id']} lacks on_fail (issue #58)"
         print(f"flow: {Path(f).name} validates against process v1.0.0 — OK")
     # Index hygiene (full RACI per unit is B11/B20, not this issue)
-    catalog = load("examples/bank/process-catalog.yaml")
+    cat_files = sorted(_glob.glob(str(ROOT / "industries" / "*" / "org" / "process-catalog.yaml")))
+    assert cat_files, "no industries/*/org/process-catalog.yaml"
+    catalog = yaml.safe_load(open(cat_files[0]))
     n = sum(len(v) for v in catalog.values())
     assert n == 46, f"catalog has {n} processes, want 46"
     print(f"catalog: {n} processes indexed — OK")
-    org = load("examples/bank/org-chart.yaml")
+    org_files = sorted(_glob.glob(str(ROOT / "industries" / "*" / "org" / "org-chart.yaml")))
+    assert org_files, "no industries/*/org/org-chart.yaml"
+    org = yaml.safe_load(open(org_files[0]))
     assert all(all(k in u for k in ("id", "name", "headcount_plan")) for u in org), "org index rows incomplete"
     print(f"org-index: {len(org)} units (full RACI -> B11/B20) — OK")
     # Issue #11+: full unit files validate against the org schema
-    for f in sorted(_glob.glob(str(ROOT / "examples" / "bank" / "org-*.yaml"))):
+    for f in sorted(_glob.glob(str(ROOT / "industries" / "*" / "org" / "org-*.yaml"))):
         if Path(f).name == "org-chart.yaml":
             continue  # index only; full RACI lives in org-<unit>.yaml (B11-B20)
         units = yaml.safe_load(open(f))
@@ -60,7 +64,7 @@ def main():
         print(f"org-full: {Path(f).name} ({len(units)} units) validates — OK")
     # Issue #20: index-vs-full reconciliation (closes track B)
     full_units = {}
-    for f in sorted(_glob.glob(str(ROOT / "examples" / "bank" / "org-*.yaml"))):
+    for f in sorted(_glob.glob(str(ROOT / "industries" / "*" / "org" / "org-*.yaml"))):
         if Path(f).name == "org-chart.yaml":
             continue
         units = yaml.safe_load(open(f))
@@ -76,14 +80,14 @@ def main():
     print(f"org-reconcile: {len(idx_ids)} index units == full files, headcounts match (total plan {total}) — OK")
     # Issue #34: 10 payload schemas each validate a synthetic example
     import json as _json
-    evdir = ROOT / "examples" / "events"
+    evdir = ROOT / "industries" / "banking" / "event-examples"
     evfiles = sorted(evdir.glob("*.json"))
     by_type = {}
     for f in evfiles:
         ev = _json.loads(f.read_text())
         assert ev.get("_synthetic_pii") is True, f"{f.name} not marked synthetic"
         by_type[ev["event_type"]] = ev
-    schemadir = ROOT / "events"
+    schemadir = ROOT / "industries" / "banking" / "events"
     schfiles = sorted(schemadir.glob("*.schema.json"))
     assert len(schfiles) == 10, f"want 10 payload schemas, found {len(schfiles)}"
     for sf in schfiles:
@@ -102,7 +106,7 @@ def main():
         assert s["alert"].get("route"), f"{s['event']} missing alert route"
     print(f"dq: {len(dq)} suites x completeness/validity/freshness + alert routes — OK")
     # Issue #77: template registry seed (10) with consent-check per template
-    reg = yaml.safe_load(open(ROOT / "templates" / "registry.yaml"))
+    reg = yaml.safe_load(open(ROOT / "industries" / "banking" / "templates" / "registry.yaml"))
     assert reg.get("version") == "1.1.0", f"registry version {reg.get('version')} != 1.1.0"
     assert len(reg["templates"]) == 10, f"want 10 templates, found {len(reg['templates'])}"
     for t in reg["templates"]:
@@ -114,7 +118,7 @@ def main():
     # Issues #42+: rule packs validate against the rule schema
     import glob as _glob2
     npack = 0
-    for f in sorted(_glob2.glob(str(ROOT / "rules" / "*.yaml"))):
+    for f in sorted(_glob2.glob(str(ROOT / "industries" / "*" / "rules" / "*.yaml"))):
         pack = yaml.safe_load(open(f))
         for r in (pack if isinstance(pack, list) else [pack]):
             jsonschema.validate(r, schemas["rule"])
@@ -158,9 +162,9 @@ def main():
     import glob as _glob3
     import hashlib as _hl
     ntr = 0
-    for tf in sorted(_glob3.glob(str(ROOT / "examples" / "bank" / "*.trace.json"))):
+    for tf in sorted(_glob3.glob(str(ROOT / "industries" / "*" / "flows" / "*.trace.json"))):
         tr = _json2.loads(Path(tf).read_text())
-        flow = load(f"examples/bank/{Path(tf).stem.replace('.trace', '')}.flow.yaml")
+        flow = yaml.safe_load(open(Path(tf).with_name(Path(tf).name.replace(".trace.json", ".flow.yaml"))))
         assert [s["step_id"] for s in tr["steps"]] == [s["id"] for s in flow["steps"]], f"{tf} step mismatch"
         assert tr["flow_version"] == flow["version"], f"{tf} pins stale version"
         for s in flow["steps"]:
@@ -175,6 +179,18 @@ def main():
             prev = env["hash"]
         ntr += 1
     print(f"trace: {ntr} traces, steps in order, chains verify, owner/rule/SLA/fail-path — OK")
+    # Issue #124: schema_ref must be an industry-relative path; report coverage.
+    # Strict failure lands with issue #121 (curated event examples for the 10 gaps).
+    import re as _re
+    ref_total = ref_ok = 0
+    for ff in _glob.glob(str(ROOT / "industries" / "*" / "flows" / "*.flow.yaml")):
+        m = _re.search(r"schema_ref: (\S+)", Path(ff).read_text())
+        if not m:
+            continue
+        ref_total += 1
+        if (Path(ff).parent.parent / m.group(1)).exists():
+            ref_ok += 1
+    print(f"schema_ref: {ref_ok}/{ref_total} resolve (pending #121 curated event examples) — OK")
     # Issue #31: event catalog has 40 rows + naming convention section
     cat = (ROOT / "docs" / "event-catalog.md").read_text().splitlines()
     rows = [l for l in cat if l.startswith("| `")]

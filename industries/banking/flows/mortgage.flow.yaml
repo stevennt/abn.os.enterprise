@@ -4,7 +4,7 @@ version: 1.0.0
 event_type: loan.mortgage.requested
 department: retail.credit
 inputs:
-  schema_ref: events/loan.mortgage.v1.json
+  schema_ref: event-examples/loan.mortgage.v1.json
   fields: [customer_id, cccd, income_docs, requested_amount, term_m, property_id, consent_ref]
 steps:
   - id: s1-verify

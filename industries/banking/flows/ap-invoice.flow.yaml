@@ -4,7 +4,7 @@ version: 1.0.0
 event_type: ap.invoice.received
 department: finance
 inputs:
-  schema_ref: events/ap.invoice.v1.json
+  schema_ref: event-examples/ap.invoice.v1.json
   fields: [vendor_tax, invoice_no, amount, po_ref, receipt_ref]
 steps:
   - id: s1-match

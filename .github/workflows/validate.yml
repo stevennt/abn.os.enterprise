@@ -11,20 +11,20 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - run: pip install pyyaml jsonschema yamllint
-      - run: yamllint metamodel/ examples/
+      - run: yamllint metamodel/ industries/
       - run: python scripts/validate.py
       - run: python scripts/validate.py --self-test
       - run: python scripts/audit_chain.py --demo
-      - run: python scripts/migrate_check.py examples/bank/loan-approval.flow.yaml tests/fixtures/loan-approval.v1.4.0-minor.flow.yaml
-      - run: python scripts/migrate_check.py examples/bank/loan-approval.flow.yaml tests/fixtures/loan-approval.v2.0.0-major.flow.yaml
+      - run: python scripts/migrate_check.py industries/banking/flows/loan-approval.flow.yaml tests/fixtures/loan-approval.v1.4.0-minor.flow.yaml
+      - run: python scripts/migrate_check.py industries/banking/flows/loan-approval.flow.yaml tests/fixtures/loan-approval.v2.0.0-major.flow.yaml
       - run: python scripts/authz_check.py
       - run: python scripts/inbox_demo.py
       - run: cd /Users/thanhson/Workspace/abn.os.enterprise && python frappe/test_os_task.py
       - run: python scripts/eval_harness.py
-      - run: python scripts/gen_goldens.py --seed 42 && git diff --exit-code -- evals/ && python scripts/eval_harness.py --strict
+      - run: python scripts/gen_goldens.py --seed 42 && git diff --exit-code -- industries/ && python scripts/eval_harness.py --strict
       - run: curl -sL https://github.com/grafana/k6/releases/download/v0.53.0/k6-v0.53.0-linux-amd64.tar.gz | tar xz && (python engine/load/stub.py 8099 &>/tmp/stub.log & echo $! > /tmp/stub.pid) && sleep 2 && ./k6-v0.53.0-linux-amd64/k6 run -e SMOKE=1 -e BASE_URL=http://127.0.0.1:8099 engine/load/loan-spike.js; code=$?; kill $(cat /tmp/stub.pid); exit $code
       - run: rm -rf /tmp/sbx-a /tmp/sbx-b && python scripts/gen_sandbox.py --seed 42 --scale small --out /tmp/sbx-a && python scripts/gen_sandbox.py --seed 42 --scale small --out /tmp/sbx-b && diff -r /tmp/sbx-a /tmp/sbx-b && sha256sum /tmp/sbx-a/*
-      - run: python sim/sim.py --trace examples/bank/loan-approval.trace.json --instances 200 --seed 42 --out /tmp/sim-a.json && python sim/sim.py --trace examples/bank/loan-approval.trace.json --instances 200 --seed 42 --out /tmp/sim-b.json && diff /tmp/sim-a.json /tmp/sim-b.json
+      - run: python sim/sim.py --trace industries/banking/flows/loan-approval.trace.json --instances 200 --seed 42 --out /tmp/sim-a.json && python sim/sim.py --trace industries/banking/flows/loan-approval.trace.json --instances 200 --seed 42 --out /tmp/sim-b.json && diff /tmp/sim-a.json /tmp/sim-b.json
       - run: python scripts/export_bpmn.py && python scripts/export_bpmn.py --check
       - run: python scripts/pii_scan.py && python scripts/pii_scan.py --self-test
       - run: python scripts/rule_lint.py && python scripts/rule_lint.py --self-test
@@ -36,6 +36,6 @@ jobs:
       - run: python scripts/pilot0_rehearsal.py
       - run: python scripts/promo_pack.py --out build/promo-pack.md; test $? -eq 1 && grep -q "approvals" build/promo-pack.md && echo "promo blocks on missing sign-off — OK"
       - run: python scripts/risk_pack.py --out build/risk-pack.md && grep -c "^## " build/risk-pack.md
-      - run: python scripts/run_trace.py examples/bank/loan-approval.flow.yaml examples/events/loan.application.v1.json examples/bank/loan-approval.trace.json
+      - run: python scripts/run_trace.py industries/banking/flows/loan-approval.flow.yaml industries/banking/event-examples/loan.application.v1.json industries/banking/flows/loan-approval.trace.json
       - run: python scripts/run_all_traces.py
       - run: rm -f /tmp/spike.journal && (python engine/spike/durable_runner.py --journal /tmp/spike.journal --crash-after 2; test $? -eq 2) && python engine/spike/durable_runner.py --journal /tmp/spike.journal --trace engine/spike/demo-trace.json

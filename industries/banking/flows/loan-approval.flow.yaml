@@ -4,7 +4,7 @@ version: 1.3.0
 event_type: loan.application.submitted
 department: retail.credit
 inputs:
-  schema_ref: events/loan.application.v1.json
+  schema_ref: event-examples/loan.application.v1.json
   fields: [customer_id, cccd, income_docs, requested_amount, term_m, consent_ref]
   example_payload: {customer_id: C-88123, requested_amount: 300000000, term_m: 24}
 steps:

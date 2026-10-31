@@ -4,7 +4,7 @@ version: 1.0.0
 event_type: hr.perf.cycle.open
 department: hr
 inputs:
-  schema_ref: events/hr.perf.v1.json
+  schema_ref: event-examples/hr.perf.v1.json
   fields: [employee_id, cycle, self_review_ref]
 steps:
   - id: s1-calibrate

@@ -4,7 +4,7 @@ version: 1.0.0
 event_type: card.dispute.opened
 department: cards
 inputs:
-  schema_ref: events/card.dispute.v1.json
+  schema_ref: event-examples/card.dispute.v1.json
   fields: [card_id, txn_id, reason_code, amount, channel, customer_statement]
 steps:
   - id: s1-triage

@@ -21,8 +21,8 @@ def grounded(num, payload_values):
     return any(n in str(v).replace(".", "").replace(",", "") for v in payload_values)
 
 def main():
-    trace = json.load(open(ROOT / "examples" / "bank" / "loan-approval.trace.json"))
-    ev = json.load(open(ROOT / "examples" / "events" / "loan.application.v1.json"))
+    trace = json.load(open(ROOT / "industries" / "banking" / "flows" / "loan-approval.trace.json"))
+    ev = json.load(open(ROOT / "industries" / "banking" / "event-examples" / "loan.application.v1.json"))
     payload = ev["payload"]
     vals = list(payload.values())
     ref = f"APP-{payload['customer_id'].split('-')[1]}"

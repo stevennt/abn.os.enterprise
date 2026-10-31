@@ -30,10 +30,10 @@ def drill_engine_loss(tmp):
 def drill_lag_storm(tmp):
     base = tmp / "base.json"
     lag = tmp / "lag.json"
-    r = sh(PY, "sim/sim.py", "--trace", "examples/bank/loan-approval.trace.json",
+    r = sh(PY, "sim/sim.py", "--trace", "industries/banking/flows/loan-approval.trace.json",
            "--instances", "300", "--seed", "7", "--out", str(base))
     assert r.returncode == 0, r.stderr[-500:]
-    r = sh(PY, "sim/sim.py", "--trace", "examples/bank/loan-approval.trace.json",
+    r = sh(PY, "sim/sim.py", "--trace", "industries/banking/flows/loan-approval.trace.json",
            "--instances", "300", "--seed", "7", "--sla", "5.0", "--out", str(lag))
     assert r.returncode == 0, r.stderr[-500:]
     b, l = json.load(open(base)), json.load(open(lag))

@@ -15,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PAT = re.compile(r"\b\d{12}\b")
 CTX_OK = re.compile(r"(?i)(vnd|amount|limit|budget|portfolio|txn|sha|hash|seed|port|version|phone-mask)")
-FILE_OK = ("examples/events/", "golden.jsonl", "tests/fixtures/", "MANIFEST",
+FILE_OK = ("industries/banking/event-examples/", "golden.jsonl", "tests/fixtures/", "MANIFEST",
            "pii-violation", ".git/", "queue", "queue-loop2")
 
 def scan(paths, force=False):

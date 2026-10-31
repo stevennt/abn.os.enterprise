@@ -4,7 +4,7 @@ version: 1.0.0
 event_type: ekyc.onboarding.requested
 department: retail
 inputs:
-  schema_ref: events/ekyc.request.v1.json
+  schema_ref: event-examples/ekyc.request.v1.json
   fields: [cccd_front_img, cccd_back_img, selfie_video, channel, consent_ref]
 steps:
   - id: s1-capture

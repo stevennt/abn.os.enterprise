@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""BPMN exporter (issue #107): every examples/bank/*.flow.yaml -> build/bpmn/*.bpmn.
+"""BPMN exporter (issue #107): every industries/*/flows/*.flow.yaml -> build/bpmn/<flow>.bpmn.
 Linear chain: start -> serviceTask per step (type bank-<step-id>) -> end.
 Human steps keep kind in the task name (engine truth stays in YAML).
 Round-trip: re-parse exported XML, assert step-id sequence == flow steps.
@@ -40,7 +40,7 @@ def roundtrip(xml, flow):
 
 def main():
     check = "--check" in sys.argv
-    files = sorted(glob.glob(str(ROOT / "examples" / "bank" / "*.flow.yaml")))
+    files = sorted(glob.glob(str(ROOT / "industries" / "*" / "flows" / "*.flow.yaml")))
     assert len(files) == 15, f"want 15 flows, found {len(files)}"
     if not check:
         OUT.mkdir(parents=True, exist_ok=True)

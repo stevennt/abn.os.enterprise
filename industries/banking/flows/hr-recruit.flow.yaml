@@ -4,7 +4,7 @@ version: 1.0.0
 event_type: hr.recruit.decided
 department: hr
 inputs:
-  schema_ref: events/hr.recruit.v1.json
+  schema_ref: event-examples/hr.recruit.v1.json
   fields: [candidate_id, req_id, level, offer_amount, hiring_manager]
 steps:
   - id: s1-draft

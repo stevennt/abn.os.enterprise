@@ -1,0 +1,115 @@
+#!/usr/bin/env python3
+"""bin/tag-list — the release-tag inventory (issue #233).
+
+Every release in this repo is a tag in one of three streams
+(docs/core/release.md, docs/core/tag-sync.md):
+
+  contract-YYYY.MM.N            the contract (metamodel + docs/core)
+  <industry>-policy-YYYY.MM.N   an industry's business truth
+  <industry>-pack-YYYY.MM.N     an industry's agent pack
+
+Tenants pin these tags; this command is the authoritative list a consumer
+snapshots (`onboarding/enterprise-tags.json` in OpenGate) and compares its pins
+against. Tags that predate the scheme are reported as `legacy` with a warning —
+they are history, not a new release.
+
+Usage:
+  bin/tag-list [--json] [--check]
+
+`--check` exits 1 when a tag that *looks* like a release tag has a malformed
+suffix (e.g. `banking-pack-2026.13.1`), so a typo cannot become a release.
+"""
+import argparse
+import json
+import re
+import subprocess
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+VERSION = r"\d{4}\.(0[1-9]|1[0-2])\.\d+"
+CONTRACT = re.compile(rf"^contract-({VERSION})$")
+POLICY = re.compile(rf"^([a-z][a-z0-9-]*)-policy-({VERSION})$")
+PACK = re.compile(rf"^([a-z][a-z0-9-]*)-pack-({VERSION})$")
+LOOKS_LIKE_CONTRACT = re.compile(r"^contract-")
+LOOKS_LIKE_STREAM = re.compile(r"^[a-z][a-z0-9-]*-(policy|pack)-")
+
+
+def sh(*args):
+    return subprocess.run(args, cwd=ROOT, capture_output=True, text=True)
+
+
+def repo_name():
+    r = sh("git", "remote", "get-url", "origin")
+    if r.returncode != 0:
+        return ""
+    url = r.stdout.strip()
+    url = re.sub(r"^(https?://[^/]+/|git@[^:]+:)", "", url)
+    return url[:-4] if url.endswith(".git") else url
+
+
+def tag_rows():
+    rows, errors, warnings = [], [], []
+    listing = sh("git", "tag", "--list").stdout.split()
+    for tag in sorted(listing):
+        commit = sh("git", "rev-parse", f"{tag}^{{commit}}").stdout.strip()
+        date = sh("git", "log", "-1", "--format=%cs", f"{tag}^{{commit}}").stdout.strip()
+        row = {"name": tag, "sha": commit, "date": date,
+               "stream": "legacy", "version": None, "industry": None}
+        match = CONTRACT.match(tag)
+        if match:
+            row.update(stream="contract", version=match.group(1))
+        elif (match := POLICY.match(tag)):
+            row.update(stream="policy", version=match.group(2),
+                       industry=match.group(1))
+        elif (match := PACK.match(tag)):
+            row.update(stream="pack", version=match.group(2),
+                       industry=match.group(1))
+        elif LOOKS_LIKE_CONTRACT.match(tag) or LOOKS_LIKE_STREAM.match(tag):
+            errors.append(f"{tag}: release tag has a malformed version "
+                          f"(want YYYY.MM.N)")
+        else:
+            warnings.append(f"{tag}: not a release tag (legacy) — not a pin source")
+        if row["stream"] in ("policy", "pack") and not (
+                ROOT / "industries" / str(row["industry"]) / "industry.yaml").is_file():
+            warnings.append(f"{tag}: industry {row['industry']!r} is not in this repo")
+        rows.append(row)
+    return rows, errors, warnings
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(prog="tag-list")
+    ap.add_argument("--json", action="store_true")
+    ap.add_argument("--check", action="store_true")
+    args = ap.parse_args(argv)
+    rows, errors, warnings = tag_rows()
+    if args.check:
+        for warning in warnings:
+            print(f"WARN {warning}", file=sys.stderr)
+        for error in errors:
+            print(f"FAIL {error}", file=sys.stderr)
+        if errors:
+            return 1
+        print(f"tags: {len(rows)} tag(s), {sum(1 for r in rows if r['stream'] != 'legacy')} "
+              f"release tag(s), no malformed release tags — OK")
+        return 0
+    doc = {
+        "version": 1,
+        "repo": repo_name(),
+        "generatedAt": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        "tags": rows,
+        "warnings": warnings,
+    }
+    if args.json:
+        print(json.dumps(doc, indent=2))
+    else:
+        for row in rows:
+            industry = f"/{row['industry']}" if row["industry"] else ""
+            print(f"{row['stream']:<9}{industry:<16}{row['name']:<30}"
+                  f"{row['version'] or '-':<12}{row['date']}  {row['sha'][:12]}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

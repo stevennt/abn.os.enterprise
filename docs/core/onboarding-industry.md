@@ -26,6 +26,7 @@ Run in this order. Each maps to a check that runs in `.github/workflows/validate
 | 10 | `python bin/verify-industry-tags.py` | both declared streams resolve (pack stream only once `pack.status != absent`) |
 | 11 | `bin/build-pack <id>` then `--verify` | the pack travels as a verifiable artifact (only with a pack) |
 | 12 | `python scripts/validate_company.py` | every `companies/*/company.yaml` validates and its contract pin resolves (`docs/core/onboarding-company.md`) |
+| 13 | `python bin/tag-list --check` | every release tag follows its stream's `YYYY.MM.N` shape; legacy tags are listed, not silently pinned (`docs/core/tag-sync.md`) |
 
 ## Documented dry-run (2026-10-31)
 

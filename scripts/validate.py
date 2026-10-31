@@ -101,6 +101,12 @@ def main():
         assert {"completeness", "validity", "freshness"} <= classes, f"{s['event']} missing class"
         assert s["alert"].get("route"), f"{s['event']} missing alert route"
     print(f"dq: {len(dq)} suites x completeness/validity/freshness + alert routes — OK")
+    # Issue #77: template registry seed (10) with consent-check per template
+    reg = yaml.safe_load(open(ROOT / "templates" / "registry.yaml"))
+    assert len(reg["templates"]) == 10, f"want 10 templates, found {len(reg['templates'])}"
+    for t in reg["templates"]:
+        assert all(k in t for k in ("id", "version", "vi", "channels", "consent", "consent_check")), f"template {t} incomplete"
+    print(f"templates: {len(reg['templates'])} versioned VI templates, all consent-gated — OK")
     # Issues #42+: rule packs validate against the rule schema
     import glob as _glob2
     npack = 0

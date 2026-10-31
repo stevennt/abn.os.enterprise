@@ -1,0 +1,85 @@
+version: 1.0.0
+templates:
+  - id: app-received
+    version: 1.0.0
+    vi: 'YCB ''{ref}'' da tiep nhan ho so {product} cua Quy khach. Ma theo doi: {ref}.'
+    channels:
+      - push
+      - zalo
+      - sms
+    consent: service-notice
+    consent_check: 'pre-send receipt lookup (E47); suppress + log when absent'
+  - id: app-approved
+    version: 1.0.0
+    vi: 'Chuc mung! Ho so {ref} duoc duyet han muc {limit} VND. Bam de ky dien tu: {link}.'
+    channels:
+      - push
+      - zalo
+    consent: service-notice
+    consent_check: 'pre-send receipt lookup (E47); suppress + log when absent'
+  - id: app-declined
+    version: 1.0.0
+    vi: 'Ho so {ref} chua du dieu kien duyet lan nay. Ly do: {reason}. Quy khach co the khieu nai trong app.'
+    channels:
+      - push
+      - zalo
+    consent: service-notice
+    consent_check: 'pre-send receipt lookup (E47); suppress + log when absent'
+  - id: app-need-info
+    version: 1.0.0
+    vi: 'Ho so {ref} can bo sung: {items}. Han bo sung {deadline}.'
+    channels:
+      - push
+      - zalo
+      - sms
+    consent: service-notice
+    consent_check: 'pre-send receipt lookup (E47); suppress + log when absent'
+  - id: otp-sign
+    version: 1.0.0
+    vi: 'Ma OTP ky tai lieu {ref} la {otp}, hieu luc 5 phut. Khong chia se ma nay.'
+    channels:
+      - sms
+    consent: service-notice
+    consent_check: 'pre-send receipt lookup (E47); suppress + log when absent'
+  - id: disbursed
+    version: 1.0.0
+    vi: 'Khoan vay {ref} da giai ngan {amount} VND. Lich tra no xem trong app.'
+    channels:
+      - push
+      - zalo
+      - sms
+    consent: service-notice
+    consent_check: 'pre-send receipt lookup (E47); suppress + log when absent'
+  - id: transfer-done
+    version: 1.0.0
+    vi: 'Giao dich {amount} VND toi {payee_masked} thanh cong. Ma GD: {txn}.'
+    channels:
+      - push
+      - zalo
+    consent: service-notice
+    consent_check: 'pre-send receipt lookup (E47); suppress + log when absent'
+  - id: complaint-ack
+    version: 1.0.0
+    vi: 'Khieu nai {ticket} da duoc tiep nhan. Chung toi phan hoi trong {sla}.'
+    channels:
+      - push
+      - zalo
+      - sms
+    consent: service-notice
+    consent_check: 'pre-send receipt lookup (E47); suppress + log when absent'
+  - id: complaint-resolved
+    version: 1.0.0
+    vi: 'Khieu nai {ticket} da duoc giai quyet: {outcome}. Cam on Quy khach.'
+    channels:
+      - push
+      - zalo
+    consent: service-notice
+    consent_check: 'pre-send receipt lookup (E47); suppress + log when absent'
+  - id: promo-optin
+    version: 1.0.0
+    vi: 'Uu dai {campaign} danh rieng cho Quy khach. Soan TC de tu choi.'
+    channels:
+      - push
+      - zalo
+    consent: marketing-sms
+    consent_check: 'pre-send receipt lookup (E47); suppress + log when absent'

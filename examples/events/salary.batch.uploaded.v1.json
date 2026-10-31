@@ -1,0 +1,1 @@
+{"event_type": "salary.batch.uploaded", "event_version": "1.0.0", "producer": "channel:corp-portal", "idempotency_key": "BATCH-TEST-031+L1", "payload": {"batch_id": "BATCH-TEST-031", "lines": [{"payee": "999000TEST01", "amount": 12000000}], "total_amount": 12000000}, "ts": 1793422870, "_synthetic_pii": true}

@@ -1,0 +1,62 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://github.com/stevennt/abn.os.enterprise/events/ekyc.onboarding.result.v1.0.0.schema.json",
+ "title": "ekyc.onboarding.result v1.0.0 payload contract",
+ "type": "object",
+ "required": [
+  "event_type",
+  "event_version",
+  "producer",
+  "idempotency_key",
+  "payload",
+  "_synthetic_pii"
+ ],
+ "properties": {
+  "event_type": {
+   "const": "ekyc.onboarding.result"
+  },
+  "event_version": {
+   "const": "1.0.0"
+  },
+  "producer": {
+   "type": "string"
+  },
+  "idempotency_key": {
+   "type": "string"
+  },
+  "_synthetic_pii": {
+   "const": true
+  },
+  "payload": {
+   "type": "object",
+   "required": [
+    "blacklist_hit",
+    "cccd",
+    "extracted_name",
+    "face_match_score",
+    "liveness",
+    "ocr_confidence"
+   ],
+   "properties": {
+    "cccd": {
+     "type": "string"
+    },
+    "extracted_name": {
+     "type": "string"
+    },
+    "ocr_confidence": {
+     "type": "number"
+    },
+    "face_match_score": {
+     "type": "number"
+    },
+    "liveness": {
+     "type": "string"
+    },
+    "blacklist_hit": {
+     "type": "boolean"
+    }
+   }
+  }
+ }
+}

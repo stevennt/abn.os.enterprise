@@ -1,0 +1,62 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://github.com/stevennt/abn.os.enterprise/events/loan.application.submitted.v1.0.0.schema.json",
+ "title": "loan.application.submitted v1.0.0 payload contract",
+ "type": "object",
+ "required": [
+  "event_type",
+  "event_version",
+  "producer",
+  "idempotency_key",
+  "payload",
+  "_synthetic_pii"
+ ],
+ "properties": {
+  "event_type": {
+   "const": "loan.application.submitted"
+  },
+  "event_version": {
+   "const": "1.0.0"
+  },
+  "producer": {
+   "type": "string"
+  },
+  "idempotency_key": {
+   "type": "string"
+  },
+  "_synthetic_pii": {
+   "const": true
+  },
+  "payload": {
+   "type": "object",
+   "required": [
+    "cccd",
+    "consent_ref",
+    "customer_id",
+    "income_docs",
+    "requested_amount",
+    "term_m"
+   ],
+   "properties": {
+    "customer_id": {
+     "type": "string"
+    },
+    "cccd": {
+     "type": "string"
+    },
+    "income_docs": {
+     "type": "array"
+    },
+    "requested_amount": {
+     "type": "number"
+    },
+    "term_m": {
+     "type": "integer"
+    },
+    "consent_ref": {
+     "type": "string"
+    }
+   }
+  }
+ }
+}

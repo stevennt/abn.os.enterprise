@@ -1,0 +1,58 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://github.com/stevennt/abn.os.enterprise/events/card.dispute.opened.v1.0.0.schema.json",
+ "title": "card.dispute.opened v1.0.0 payload contract",
+ "type": "object",
+ "required": [
+  "event_type",
+  "event_version",
+  "producer",
+  "idempotency_key",
+  "payload",
+  "_synthetic_pii"
+ ],
+ "properties": {
+  "event_type": {
+   "const": "card.dispute.opened"
+  },
+  "event_version": {
+   "const": "1.0.0"
+  },
+  "producer": {
+   "type": "string"
+  },
+  "idempotency_key": {
+   "type": "string"
+  },
+  "_synthetic_pii": {
+   "const": true
+  },
+  "payload": {
+   "type": "object",
+   "required": [
+    "amount",
+    "card_id",
+    "customer_statement",
+    "reason_code",
+    "txn_id"
+   ],
+   "properties": {
+    "card_id": {
+     "type": "string"
+    },
+    "txn_id": {
+     "type": "string"
+    },
+    "reason_code": {
+     "type": "string"
+    },
+    "amount": {
+     "type": "number"
+    },
+    "customer_statement": {
+     "type": "string"
+    }
+   }
+  }
+ }
+}

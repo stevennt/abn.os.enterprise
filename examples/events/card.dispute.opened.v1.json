@@ -1,0 +1,1 @@
+{"event_type": "card.dispute.opened", "event_version": "1.0.0", "producer": "channel:mobile-app", "idempotency_key": "411111+TXN-TEST-9+13.1", "payload": {"card_id": "411111TEST0009", "txn_id": "TXN-TEST-9", "reason_code": "13.1", "amount": 2500000, "customer_statement": "TEST: did not receive goods"}, "ts": 1793422860, "_synthetic_pii": true}

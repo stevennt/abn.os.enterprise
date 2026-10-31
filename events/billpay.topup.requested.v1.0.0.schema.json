@@ -1,0 +1,50 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://github.com/stevennt/abn.os.enterprise/events/billpay.topup.requested.v1.0.0.schema.json",
+ "title": "billpay.topup.requested v1.0.0 payload contract",
+ "type": "object",
+ "required": [
+  "event_type",
+  "event_version",
+  "producer",
+  "idempotency_key",
+  "payload",
+  "_synthetic_pii"
+ ],
+ "properties": {
+  "event_type": {
+   "const": "billpay.topup.requested"
+  },
+  "event_version": {
+   "const": "1.0.0"
+  },
+  "producer": {
+   "type": "string"
+  },
+  "idempotency_key": {
+   "type": "string"
+  },
+  "_synthetic_pii": {
+   "const": true
+  },
+  "payload": {
+   "type": "object",
+   "required": [
+    "amount",
+    "biller",
+    "payer"
+   ],
+   "properties": {
+    "payer": {
+     "type": "string"
+    },
+    "biller": {
+     "type": "string"
+    },
+    "amount": {
+     "type": "number"
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,1 @@
+{"event_type": "call.verify.requested", "event_version": "1.0.0", "producer": "system:callcenter", "idempotency_key": "C-99004+CALL-TEST-7", "payload": {"customer_id": "C-99004", "call_id": "CALL-TEST-7", "purpose": "high-risk-transfer"}, "ts": 1793422890, "_synthetic_pii": true}

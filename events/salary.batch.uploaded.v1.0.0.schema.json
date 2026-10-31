@@ -1,0 +1,51 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://github.com/stevennt/abn.os.enterprise/events/salary.batch.uploaded.v1.0.0.schema.json",
+ "title": "salary.batch.uploaded v1.0.0 payload contract",
+ "type": "object",
+ "required": [
+  "event_type",
+  "event_version",
+  "producer",
+  "idempotency_key",
+  "payload",
+  "_synthetic_pii"
+ ],
+ "properties": {
+  "event_type": {
+   "const": "salary.batch.uploaded"
+  },
+  "event_version": {
+   "const": "1.0.0"
+  },
+  "producer": {
+   "type": "string"
+  },
+  "idempotency_key": {
+   "type": "string"
+  },
+  "_synthetic_pii": {
+   "const": true
+  },
+  "payload": {
+   "type": "object",
+   "required": [
+    "batch_id",
+    "lines",
+    "total_amount"
+   ],
+   "properties": {
+    "batch_id": {
+     "type": "string"
+    },
+    "lines": {
+     "type": "array",
+     "minItems": 1
+    },
+    "total_amount": {
+     "type": "number"
+    }
+   }
+  }
+ }
+}

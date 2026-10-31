@@ -72,20 +72,25 @@ def main():
     assert not bad_hc, f"headcount mismatch: {bad_hc}"
     total = sum(u["headcount_plan"] for u in org)
     print(f"org-reconcile: {len(idx_ids)} index units == full files, headcounts match (total plan {total}) — OK")
-    # Issue #8: 5 reference payloads validate + are marked synthetic
+    # Issue #34: 10 payload schemas each validate a synthetic example
     import json as _json
     evdir = ROOT / "examples" / "events"
     evfiles = sorted(evdir.glob("*.json"))
-    assert len(evfiles) == 5, f"want 5 event examples, found {len(evfiles)}"
-    semver = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
+    by_type = {}
     for f in evfiles:
         ev = _json.loads(f.read_text())
-        for k in ("event_type", "event_version", "producer", "idempotency_key", "payload"):
-            assert k in ev, f"{f.name} missing {k}"
-        assert semver.match(ev["event_version"]), f"{f.name} bad event_version"
-        assert isinstance(ev["payload"], dict) and ev["payload"], f"{f.name} empty payload"
         assert ev.get("_synthetic_pii") is True, f"{f.name} not marked synthetic"
-    print(f"events: {len(evfiles)} examples validate, all marked synthetic — OK")
+        by_type[ev["event_type"]] = ev
+    schemadir = ROOT / "events"
+    schfiles = sorted(schemadir.glob("*.schema.json"))
+    assert len(schfiles) == 10, f"want 10 payload schemas, found {len(schfiles)}"
+    for sf in schfiles:
+        sc = _json.loads(sf.read_text())
+        et = next(k for k, v in sc["properties"].items() if k == "event_type")
+        ev_type = sc["properties"][et]["const"]
+        assert ev_type in by_type, f"no example for {ev_type}"
+        jsonschema.validate(by_type[ev_type], sc)
+    print(f"payloads: {len(schfiles)} schemas validate synthetic examples — OK")
     # Issue #18: capacity CSV per role parses with sane numbers
     import csv as _csv
     cap = list(_csv.DictReader(open(ROOT / "engine" / "capacity.csv")))

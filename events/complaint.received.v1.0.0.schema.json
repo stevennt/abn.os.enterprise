@@ -1,0 +1,62 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://github.com/stevennt/abn.os.enterprise/events/complaint.received.v1.0.0.schema.json",
+ "title": "complaint.received v1.0.0 payload contract",
+ "type": "object",
+ "required": [
+  "event_type",
+  "event_version",
+  "producer",
+  "idempotency_key",
+  "payload",
+  "_synthetic_pii"
+ ],
+ "properties": {
+  "event_type": {
+   "const": "complaint.received"
+  },
+  "event_version": {
+   "const": "1.0.0"
+  },
+  "producer": {
+   "type": "string"
+  },
+  "idempotency_key": {
+   "type": "string"
+  },
+  "_synthetic_pii": {
+   "const": true
+  },
+  "payload": {
+   "type": "object",
+   "required": [
+    "category",
+    "channel",
+    "customer_id",
+    "external_ticket_id",
+    "severity",
+    "text"
+   ],
+   "properties": {
+    "customer_id": {
+     "type": "string"
+    },
+    "channel": {
+     "type": "string"
+    },
+    "external_ticket_id": {
+     "type": "string"
+    },
+    "category": {
+     "type": "string"
+    },
+    "severity": {
+     "type": "string"
+    },
+    "text": {
+     "type": "string"
+    }
+   }
+  }
+ }
+}

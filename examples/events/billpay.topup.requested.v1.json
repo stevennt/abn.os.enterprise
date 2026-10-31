@@ -1,0 +1,1 @@
+{"event_type": "billpay.topup.requested", "event_version": "1.0.0", "producer": "channel:mobile-app", "idempotency_key": "C-99003+EVN+500k", "payload": {"payer": "C-99003", "biller": "EVN-TEST", "amount": 500000}, "ts": 1793422880, "_synthetic_pii": true}

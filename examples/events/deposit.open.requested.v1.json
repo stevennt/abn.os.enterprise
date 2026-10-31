@@ -1,0 +1,1 @@
+{"event_type": "deposit.open.requested", "event_version": "1.0.0", "producer": "channel:branch-tablet", "idempotency_key": "C-99002+savings+REQ-1", "payload": {"customer_id": "C-99002", "product": "savings-flex", "initial_amount": 50000000, "consent_ref": "CONS-TEST-2"}, "ts": 1793422850, "_synthetic_pii": true}

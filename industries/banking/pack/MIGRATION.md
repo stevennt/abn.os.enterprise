@@ -22,3 +22,7 @@ caps are unchanged from 1.0.0.
 ## [1.0.0]
 
 Initial versioned release.
+
+### Migration
+
+No migration needed — first release.

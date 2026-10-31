@@ -69,6 +69,14 @@ def main():
         assert isinstance(ev["payload"], dict) and ev["payload"], f"{f.name} empty payload"
         assert ev.get("_synthetic_pii") is True, f"{f.name} not marked synthetic"
     print(f"events: {len(evfiles)} examples validate, all marked synthetic — OK")
+    # Issue #18: capacity CSV per role parses with sane numbers
+    import csv as _csv
+    cap = list(_csv.DictReader(open(ROOT / "engine" / "capacity.csv")))
+    assert len(cap) >= 15, f"want >=15 capacity rows, found {len(cap)}"
+    for r in cap:
+        assert int(r["headcount"]) > 0 and float(r["mins_per_task"]) > 0, f"bad row {r['role']}"
+        assert 0 < float(r["utilization"]) <= 0.9, f"utilization out of range {r['role']}"
+    print(f"capacity: {len(cap)} roles with throughput + assumptions — OK")
     readme = (ROOT / "README.md").read_text().splitlines()
     start = next(i for i, l in enumerate(readme) if l.startswith("## Repo map"))
     o = readme.index("```", start) + 1

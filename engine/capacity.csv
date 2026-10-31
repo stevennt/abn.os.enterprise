@@ -1,0 +1,20 @@
+role,unit,headcount,mins_per_task,tasks_per_day,utilization,notes
+branch_manager,retail,120,20,18,0.75,deposit/card/ekyc decisions + overrides
+rm_officer,retail,400,30,12,0.75,needs analysis + customer meetings
+credit_officer,retail.credit,24,45,8,0.75,retail loan review steps 2-4
+credit_manager,retail.credit,8,30,12,0.70,approvals + overrides
+senior_rm,corporate,120,60,6,0.70,bespoke deals + site visits
+corp_credit_analyst,corporate,60,90,4,0.75,covenant + financial spreading
+corp_director,corporate,8,45,8,0.60,approvals + client coverage
+risk_analyst,risk,80,40,9,0.75,scoring + triage
+risk_manager,risk,32,30,12,0.70,limit reviews + veto decisions
+aml_analyst,compliance,60,50,7,0.75,alert triage + investigations
+compliance_manager,compliance,26,40,9,0.70,holds + STR pack review
+fx_dealer,treasury,24,15,24,0.80,quotes during desk hours
+payments_operator,payments,110,10,36,0.80,releases + batch monitoring
+fraud_analyst,cards,90,12,30,0.80,alert review 24/7
+trade_specialist,trade,80,60,6,0.75,UCP doc examination
+cs_agent,cs,420,10,36,0.80,contacts across channels
+hr_specialist,hr,50,30,12,0.70,lifecycle transactions
+accountant,finance,70,45,8,0.75,match/post/reconcile
+ops_engineer,itops,280,30,12,0.70,incidents/changes/batches blended

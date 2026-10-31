@@ -1,0 +1,9 @@
+# Overlap fixture (issue #110) — must go RED: duplicate when + no wildcard row.
+- id: TEST-OVERLAP-01
+  version: 1.0.0-2026-10-31
+  authority: "fixture only"
+  inputs: [x]
+  table:
+    - {when: "x>1", then: A}
+    - {when: "x>1", then: B}
+  effect: "fixture"

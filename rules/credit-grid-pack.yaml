@@ -8,6 +8,7 @@
     - {when: "dsti 0.40-0.60 AND income_verified=true", then: APPROVE-WITH-REVIEW}
     - {when: "dsti>0.60", then: REVIEW}
     - {when: "income_verified=false", then: REVIEW}
+    - {when: "*", then: REVIEW}
   effect: "caps decision at REVIEW above 0.60 or unverified income; overrides score"
 - id: SBV-LTV-02
   version: 1.0.0-2026-10-01
@@ -17,6 +18,7 @@
     - {when: "ltv<=0.70", then: APPROVE}
     - {when: "ltv 0.70-0.85 AND first_home=true", then: APPROVE-WITH-REVIEW}
     - {when: "ltv>0.85 OR (ltv>0.70 AND first_home=false)", then: REVIEW}
+    - {when: "*", then: REVIEW}
   effect: "caps decision at REVIEW above thresholds; valuation disputes freeze at REVIEW"
 - id: CREDIT-GRID-11
   version: 1.0.0-2026-10-01
@@ -26,7 +28,9 @@
     - {when: "score_band=A AND dsti_band<=2 AND amount_band<=manager-limit", then: APPROVE}
     - {when: "score_band=B OR dsti_band=3", then: MANAGER-REVIEW}
     - {when: "score_band=C OR amount_band>manager-limit", then: COMMITTEE}
+    - {when: "*", then: REVIEW}
   effect: "routes the decision to the right authority; nobody approves above their band"
+
 # Override conditions: DSTI/LTV REVIEW caps lift only with (a) verified additional
 # income docs + (b) manager-or-above sign-off + (c) audit note citing this pack
 # version. LTV>0.85 never overrides on valuation dispute — re-appraise first.

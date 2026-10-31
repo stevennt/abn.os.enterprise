@@ -7,6 +7,7 @@
     - {when: "doc_authentic=true AND face_match>=0.90", then: PASS}
     - {when: "doc_authentic=true AND face_match 0.75-0.90", then: REVIEW}
     - {when: "doc_authentic=false OR face_match<0.75", then: FAIL}
+    - {when: "*", then: REVIEW}
   effect: "FAIL blocks onboarding outright; REVIEW routes to branch_manager with 4-eyes"
 - id: KYC-02
   version: 1.0.0-2026-10-01
@@ -16,6 +17,7 @@
     - {when: "liveness=pass", then: PASS}
     - {when: "liveness=uncertain AND channel=branch", then: REVIEW}
     - {when: "liveness=fail OR (uncertain AND channel=remote)", then: FAIL}
+    - {when: "*", then: REVIEW}
   effect: "remote uncertain treated as FAIL; branch may REVIEW with officer present"
 - id: KYC-03
   version: 1.0.0-2026-10-01
@@ -24,4 +26,5 @@
   table:
     - {when: "blacklist_hit=false AND sanction_hit=false", then: PASS}
     - {when: "blacklist_hit=true OR sanction_hit=true", then: HOLD}
+    - {when: "*", then: REVIEW}
   effect: "HOLD freezes onboarding and opens aml.str.filing triage; never auto-clear"

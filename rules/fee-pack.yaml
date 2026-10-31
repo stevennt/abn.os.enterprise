@@ -4,10 +4,11 @@
   authority: "Retail pricing schedule 2026-09 (published tariff)"
   inputs: [product, fee_type, customer_segment]
   table:
-    - {when: "product=savings AND fee_type=maintenance", then: "0 VND (all segments)"}
-    - {when: "product=current AND segment=priority", then: "waived"}
-    - {when: "product=current AND segment=standard", then: "22000 VND/month"}
-    - {when: "fee_type=early-redemption AND product=term-deposit", then: "2% of withdrawn amount"}
+    - {when: "product=savings AND fee_type=maintenance", then: 0 VND (all segments)}
+    - {when: "product=current AND segment=priority", then: waived}
+    - {when: "product=current AND segment=standard", then: 22000 VND/month}
+    - {when: "fee_type=early-redemption AND product=term-deposit", then: 2% of withdrawn amount}
+    - {when: "*", then: REVIEW}
   effect: "published tariff is the default; deviations need a waiver row below"
 - id: FEE-WAIVER-02
   version: 1.0.0-2026-10-01
@@ -17,16 +18,19 @@
     - {when: "waiver<=100000 AND reason in [goodwill, bank-error]", then: officer-may-waive}
     - {when: "waiver<=1000000", then: manager-must-approve}
     - {when: "waiver>1000000", then: director-must-approve-with-note}
+    - {when: "*", then: REVIEW}
   effect: "waivers above band need the next band up; bank-error waivers are unlimited but audited"
 - id: INT-RATE-03
   version: 1.0.0-2026-10-01
   authority: "ALCO rate sheet 2026-10 (weekly)"
   inputs: [product, tenor_band, segment]
   table:
-    - {when: "product=savings-flex", then: "sheet-rate"}
-    - {when: "product=term AND tenor>=12m AND segment=priority", then: "sheet-rate+0.3pp"}
-    - {when: "rate>sheet (preferential)", then: "needs-treasury-desk-approval"}
+    - {when: "product=savings-flex", then: sheet-rate}
+    - {when: "product=term AND tenor>=12m AND segment=priority", then: sheet-rate+0.3pp}
+    - {when: "rate>sheet (preferential)", then: needs-treasury-desk-approval}
+    - {when: "*", then: REVIEW}
   effect: "preferential rates above sheet need treasury desk sign-off, logged per deal"
+
 # Waiver ladder (VND): officer <=100k (goodwill/bank-error) -> manager <=1M ->
 # director above 1M with note. Bank-error refunds unlimited but every case audited.
 # Leakage control: monthly waiver report per unit + exception review above band median.

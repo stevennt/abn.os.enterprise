@@ -7,6 +7,7 @@
     - {when: "match_score>=0.95", then: HOLD}
     - {when: "match_score 0.80-0.95", then: REVIEW}
     - {when: "match_score<0.80", then: PASS}
+    - {when: "*", then: REVIEW}
   effect: "HOLD opens triage (C25); REVIEW queues analyst; misses cost more than FPs at >=0.80"
 - id: AML-TRIAGE-01
   version: 1.0.0-2026-10-01
@@ -16,6 +17,7 @@
     - {when: "exact id-number match", then: HOLD-CONFIRM}
     - {when: "name-only match AND prior_clears>=2", then: FAST-CLEAR-with-note}
     - {when: "name-only match", then: INVESTIGATE}
+    - {when: "*", then: REVIEW}
   effect: "repeat name-only hits with history clear fast; everything else investigates"
 - id: AML-HOLD-02
   version: 1.0.0-2026-10-01
@@ -24,7 +26,9 @@
   table:
     - {when: "hold_code in [SANCTION, STR-SUSPECT, COURT-ORDER]", then: HOLD-no-release}
     - {when: "hold_code in [DOC-PENDING, REVIEW-OVERDUE]", then: HOLD-releasable-by-manager}
+    - {when: "*", then: REVIEW}
   effect: "sanction/STR/court holds release only via MLRO + case closure"
+
 # Threshold rationale: a sanctions MISS is a criminal/licensing risk (unbounded
 # downside), a false positive costs ~50 analyst-minutes. So the bar sits LOW
 # (0.80 review, 0.95 hold) — we would rather review 100 innocents than miss one

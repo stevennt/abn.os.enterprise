@@ -1,0 +1,185 @@
+#!/usr/bin/env python3
+"""bin/new-company — scaffold a validated per-company operating model (#231).
+
+Creates the minimum a company model needs to pass every check in this repo:
+
+    companies/<id>/
+      company.yaml          the model (companies/company.schema.yaml)
+      org/org-chart.yaml    units + parent + headcount plan
+      docs/status.md        what is real, what is still a scaffold
+
+The model pins the contract release it was built from: the newest local
+`contract-*` tag and its commit sha. That pin is what makes a later split into a
+standalone company repo reproducible (docs/core/onboarding-company.md).
+
+Usage:
+  bin/new-company <id> --tenant <tenant> --label "..." [--entity <id>]
+                        [--industry banking] [--units retail,risk]
+                        [--contract-tag contract-YYYY.MM.N]
+                        [--dry-run] [--force]
+
+A company is the legal entity inside an OpenGate tenant (tenant + entity); the
+industry supplies the flows/rules/packs the model adopts.
+"""
+import argparse
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+ID_RE = re.compile(r"^[a-z][a-z0-9-]{1,30}$")
+
+COMPANY = """# companies/{id}/company.yaml — scaffolded by bin/new-company (issue #231).
+# Built from {tag}; replace the scaffold content before the pilot.
+version: 1
+id: {id}
+label: "{label}"
+tenant: {tenant}
+entity: {entity}
+industry:
+  id: {industry}
+contract:
+  repo: abn.os.enterprise
+  tag: {tag}
+  sha: {sha}
+departments:
+{units}
+org:
+  chart: org/org-chart.yaml
+flows: []
+rules: []
+packs: []
+docs:
+  status: docs/status.md
+"""
+
+ORG_CHART = """# companies/{id}/org/org-chart.yaml — scaffolded (issue #231)
+# Same shape as industries/<id>/org/org-chart.yaml: one line per unit.
+{rows}
+"""
+
+STATUS = """# {id} — status
+
+- **Shape:** scaffold. Departments and units exist so the model validates; the
+  content (mandates, headcount, RACI, systems) is not real.
+- **Contract pin:** `{tag}` at `{sha}`.
+- **Industry:** `{industry}`.
+- **Next:** replace the departments with the customer's, adopt the flows the
+  company actually runs, and record the real headcount plan per unit.
+"""
+
+
+def sh(*args, check=False):
+    return subprocess.run(args, cwd=ROOT, capture_output=True, text=True, check=check)
+
+
+def latest_contract_tag():
+    r = sh("git", "describe", "--tags", "--abbrev=0", "--match", "contract-*")
+    return r.stdout.strip() if r.returncode == 0 else None
+
+
+def tag_sha(tag):
+    r = sh("git", "rev-parse", f"{tag}^{{commit}}")
+    return r.stdout.strip() if r.returncode == 0 else None
+
+
+def industry_exists(industry):
+    return (ROOT / "industries" / industry / "industry.yaml").is_file()
+
+
+def unit_rows(units):
+    rows = []
+    for unit in units:
+        name = unit.replace("-", " ").title()
+        rows.append(f'- {{id: {unit}, name: "{name}", parent_id: null, headcount_plan: 0}}')
+    return rows
+
+
+def department_rows(units):
+    rows = []
+    for unit in units:
+        name = unit.replace("-", " ").title()
+        rows.append(f'  - {{id: {unit}, name_vi: "{name}", org_unit: {unit}}}')
+    return rows
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(prog="new-company")
+    ap.add_argument("id")
+    ap.add_argument("--tenant", required=True,
+                    help="OpenGate tenant id the company belongs to")
+    ap.add_argument("--entity", default=None,
+                    help="legal entity id inside the tenant (default: the tenant)")
+    ap.add_argument("--label", required=True)
+    ap.add_argument("--industry", default="banking")
+    ap.add_argument("--units", default="operations",
+                    help="comma-separated department/unit ids")
+    ap.add_argument("--contract-tag", default=None,
+                    help="contract release tag (default: newest local contract-*)")
+    ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--force", action="store_true")
+    args = ap.parse_args(argv)
+
+    if not ID_RE.match(args.id):
+        sys.exit(f"company id must match [a-z][a-z0-9-]{{1,30}}, got {args.id!r}")
+    if not ID_RE.match(args.tenant):
+        sys.exit(f"tenant must match [a-z][a-z0-9-]{{1,30}}, got {args.tenant!r}")
+    entity = args.entity or args.tenant
+    if not ID_RE.match(entity):
+        sys.exit(f"entity must match [a-z][a-z0-9-]{{1,30}}, got {entity!r}")
+    if not industry_exists(args.industry):
+        sys.exit(f"unknown industry {args.industry!r} (expected industries/{args.industry}/industry.yaml)")
+    units = [unit.strip() for unit in args.units.split(",") if unit.strip()]
+    if not units:
+        sys.exit("--units needs at least one id")
+    for unit in units:
+        if not ID_RE.match(unit):
+            sys.exit(f"unit id must match [a-z][a-z0-9-]{{1,30}}, got {unit!r}")
+    if len(set(units)) != len(units):
+        sys.exit("--units must not repeat an id")
+
+    tag = args.contract_tag or latest_contract_tag()
+    if not tag:
+        sys.exit("no contract-* tag found — create one first: "
+                 "git tag -a contract-YYYY.MM.N -m 'contract release'")
+    sha = tag_sha(tag)
+    if not sha:
+        sys.exit(f"contract tag {tag!r} does not resolve locally")
+
+    base = ROOT / "companies" / args.id
+    if base.exists() and not args.force:
+        sys.exit(f"companies/{args.id} already exists — pass --force to replace it")
+
+    files = {
+        base / "company.yaml": COMPANY.format(
+            id=args.id, label=args.label, tenant=args.tenant, entity=entity,
+            industry=args.industry, tag=tag, sha=sha,
+            units="\n".join(department_rows(units))),
+        base / "org" / "org-chart.yaml": ORG_CHART.format(
+            id=args.id, rows="\n".join(unit_rows(units))),
+        base / "docs" / "status.md": STATUS.format(
+            id=args.id, tag=tag, sha=sha, industry=args.industry),
+    }
+
+    if args.dry_run:
+        for path in files:
+            print(f"would write {path.relative_to(ROOT)}")
+        print(f"dry-run: {len(files)} files planned, nothing written")
+        return 0
+
+    if base.exists() and args.force:
+        import shutil
+        shutil.rmtree(base)
+    for path, text in files.items():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text)
+    print(f"companies/{args.id}: {len(files)} files written, pinned to {tag} ({sha[:12]})")
+    print("next:")
+    print(f"  python scripts/validate_company.py        # validates the model")
+    print(f"  yamllint companies/{args.id}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

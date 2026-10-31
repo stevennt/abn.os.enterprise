@@ -25,6 +25,7 @@ Run in this order. Each maps to a check that runs in `.github/workflows/validate
 | 9 | `bin/tag-industry <id> --kind policy --push` | the release exists and resolves |
 | 10 | `python bin/verify-industry-tags.py` | both declared streams resolve (pack stream only once `pack.status != absent`) |
 | 11 | `bin/build-pack <id>` then `--verify` | the pack travels as a verifiable artifact (only with a pack) |
+| 12 | `python scripts/validate_company.py` | every `companies/*/company.yaml` validates and its contract pin resolves (`docs/core/onboarding-company.md`) |
 
 ## Documented dry-run (2026-10-31)
 

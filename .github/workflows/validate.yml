@@ -11,9 +11,10 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - run: pip install pyyaml jsonschema yamllint
-      - run: yamllint metamodel/ industries/
+      - run: yamllint metamodel/ industries/ companies/
       - run: python scripts/validate.py
       - run: python scripts/validate.py --self-test
+      - run: python scripts/validate_company.py && python scripts/validate_company.py --self-test
       - run: python scripts/audit_chain.py --demo
       - run: eval "$(python scripts/industrylib.py --demo-paths --shell)" && python scripts/migrate_check.py "$DEMO_FLOW" tests/fixtures/loan-approval.v1.4.0-minor.flow.yaml
       - run: eval "$(python scripts/industrylib.py --demo-paths --shell)" && python scripts/migrate_check.py "$DEMO_FLOW" tests/fixtures/loan-approval.v2.0.0-major.flow.yaml

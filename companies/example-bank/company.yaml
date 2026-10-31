@@ -1,0 +1,29 @@
+# companies/example-bank/company.yaml — reference company model (issue #231).
+# Built from contract-2026.11.1; scaffolded shape, replace the content.
+version: 1
+id: example-bank
+label: "Example Bank — operations model (scaffold)"
+tenant: abnasia
+entity: abnasia
+industry:
+  id: banking
+  pack: banking-pack-2026.10.1
+contract:
+  repo: abn.os.enterprise
+  tag: contract-2026.11.1
+  sha: a7baab409dce013bd296b57aafc500565b878dfa
+departments:
+  - {id: retail, name_vi: "Bán lẻ", name_en: "Retail", org_unit: retail}
+  - {id: risk, name_vi: "Rủi ro", name_en: "Risk", org_unit: risk}
+  - {id: compliance, name_vi: "Tuân thủ", name_en: "Compliance", org_unit: compliance}
+org:
+  chart: org/org-chart.yaml
+flows:
+  - aml.str.filing
+  - card.dispute
+rules:
+  - kyc-pack
+packs:
+  - banking-pack-2026.10.1
+docs:
+  status: docs/status.md

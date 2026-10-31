@@ -15,6 +15,7 @@ This repo is a **contract plus a set of industries**, not one company's project:
 ```
 metamodel/            the contract (6 primitives + industry manifest + pack schema)
 industries/<id>/      one industry each: org, rules, flows, events, ai, evals, pack, docs
+companies/<id>/       one legal entity's operating model, pinned to a contract release
 docs/core/            knowledge that applies to every industry
 ```
 
@@ -58,6 +59,7 @@ README.md                  — this file
 ARCHITECTURE.md            — runtime options + recommended hybrid stack
 ROADMAP.md                 — phases, gates, and what is deliberately deferred
 metamodel/                 — the contract: 8 JSON Schemas (6 primitives + industry + pack)
+companies/                 — per-company operating models (tenant + entity, pinned to a contract tag)
 industries/                — one folder per industry: org, rules, flows, events, ai, evals, pack, docs
 docs/core/                 — shared knowledge: gates, security, PII, release, bundles, onboarding
 engine/                    — automation levels, workflow-vs-AI matrix, capacity model, stage env

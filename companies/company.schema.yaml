@@ -1,0 +1,103 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+title: "companies/<id>/company.yaml — a company's enterprise OS model (issue #231)"
+description: >
+  One company's operating model, built from this repo's contract. A company is
+  the legal entity inside an OpenGate tenant (tenant + entity), runs on one
+  industry's packs/flows, and pins the contract release it was built from.
+type: object
+required: [version, id, label, tenant, entity, industry, contract, departments, org]
+properties:
+  version:
+    type: integer
+    const: 1
+  id:
+    type: string
+    pattern: "^[a-z][a-z0-9-]{1,30}$"
+  label:
+    type: string
+    minLength: 1
+  tenant:
+    type: string
+    description: "OpenGate tenant id this company belongs to."
+    pattern: "^[a-z][a-z0-9-]{1,30}$"
+  entity:
+    type: string
+    description: "Legal entity id inside the tenant (the company pack lists it)."
+    pattern: "^[a-z][a-z0-9-]{1,30}$"
+  industry:
+    type: object
+    required: [id]
+    properties:
+      id:
+        type: string
+        pattern: "^[a-z][a-z0-9-]{1,30}$"
+      pack:
+        type: string
+        description: "Industry pack release the company runs on (optional)."
+        pattern: "^[a-z][a-z0-9-]*-pack-[0-9]{4}\\.[0-9]{2}\\.[0-9]+$"
+    additionalProperties: false
+  contract:
+    type: object
+    description: "The contract release this model is pinned to."
+    required: [repo, tag, sha]
+    properties:
+      repo:
+        type: string
+        minLength: 1
+      tag:
+        type: string
+        pattern: "^[a-z][a-z0-9-]*-[0-9]{4}\\.[0-9]{2}\\.[0-9]+$"
+      sha:
+        type: string
+        pattern: "^[0-9a-f]{40}$"
+    additionalProperties: false
+  departments:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      required: [id, name_vi, org_unit]
+      properties:
+        id:
+          type: string
+          pattern: "^[a-z][a-z0-9-]{1,30}$"
+        name_vi:
+          type: string
+          minLength: 1
+        name_en:
+          type: string
+        org_unit:
+          type: string
+          minLength: 1
+      additionalProperties: false
+  org:
+    type: object
+    required: [chart]
+    properties:
+      chart:
+        type: string
+        description: "Relative path to the org chart (same shape as industries/<id>/org/org-chart.yaml)."
+        minLength: 1
+    additionalProperties: false
+  flows:
+    type: array
+    description: "Industry flow ids this company runs (empty = all the industry ships)."
+    items:
+      type: string
+  rules:
+    type: array
+    description: "Industry rule pack names this company adopts (empty = all the industry ships)."
+    items:
+      type: string
+  packs:
+    type: array
+    description: "Industry pack release tags this company consumes."
+    items:
+      type: string
+  docs:
+    type: object
+    properties:
+      status:
+        type: string
+    additionalProperties: false
+additionalProperties: false

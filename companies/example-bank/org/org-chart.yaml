@@ -1,0 +1,5 @@
+# example-bank org chart — scaffold (issue #231)
+# Same shape as industries/<id>/org/org-chart.yaml: one line per unit.
+- {id: retail, name: "Retail", parent_id: null, headcount_plan: 0}
+- {id: risk, name: "Risk", parent_id: null, headcount_plan: 0}
+- {id: compliance, name: "Compliance", parent_id: null, headcount_plan: 0}

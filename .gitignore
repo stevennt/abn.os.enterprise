@@ -15,3 +15,5 @@ node_modules/
 engine/stage/bin/
 engine/stage/*.out
 engine/stage/*.log
+
+build/

@@ -69,9 +69,11 @@ bin/                       — operator tools: tag-industry, build-pack, new-ind
 
 To bring a customer on: `docs/core/onboarding-tenant.md` (the contract view,
 with owners and evidence), then the operator's commands in the platform repo
-(abn.platform.opengate, its docs/onboarding-tenant.md page). To model a legal
-entity inside that tenant: `docs/core/onboarding-company.md`; to add an
-industry: `docs/core/onboarding-industry.md`.
+(abn.platform.opengate, its docs/onboarding-tenant.md page). The gate before
+go-live is `docs/core/readiness-scorecard.md` — ten gates, each with evidence,
+and a recorded decision. To model a legal entity inside that tenant:
+`docs/core/onboarding-company.md`; to add an industry:
+`docs/core/onboarding-industry.md`.
 
 ## How to model any department (repeatable recipe)
 

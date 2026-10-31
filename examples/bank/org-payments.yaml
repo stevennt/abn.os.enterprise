@@ -1,0 +1,36 @@
+# Payments org (full v1.0, issue #15) — validates against metamodel/org.schema.yaml
+- id: payments
+  version: 1.0.0
+  name: "Payments & Clearing"
+  parent_id: null
+  mandate: "Own domestic/SWIFT rails, salary batches, billpay; cut-off owner for value dating"
+  headcount_plan: 150
+  systems_used: [napas, swift, core, batch-host]
+  roles:
+    - id: payments_operator
+      title: "Payments Operator"
+      raci_scope:
+        - "R:transfer.domestic"
+        - "R:transfer.swift"
+        - "R:salary.batch"
+        - "R:billpay.topup"
+      approvals:
+        - "release<=1B-vnd"
+      headcount: 110
+    - id: payments_manager
+      title: "Payments Manager"
+      raci_scope:
+        - "A:transfer.domestic"
+        - "A:transfer.swift"
+        - "A:salary.batch"
+        - "A:billpay.topup"
+      approvals:
+        - "release-any"
+        - "cutoff-extension"
+      headcount: 16
+  cut_offs:
+    napas_same_day: "16:00 ICT"
+    swift_gmt_cutoff: "20:00 ICT"
+    salary_batch: "14:00 ICT payday-1"
+    billpay: "22:00 ICT daily"
+  shifts: ["24/7 in 3 shifts (06-14, 14-22, 22-06 ICT)", "manager on-call for cutoff extensions"]

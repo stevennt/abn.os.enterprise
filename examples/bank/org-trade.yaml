@@ -1,0 +1,33 @@
+# Trade finance org (full v1.0, issue #15) — validates against metamodel/org.schema.yaml
+- id: trade
+  version: 1.0.0
+  name: "Trade Finance"
+  parent_id: null
+  mandate: "Own LCs, guarantees ops, collections; document-examination owner (UCP 600)"
+  headcount_plan: 110
+  systems_used: [trade-core, swift, doc-mgmt]
+  roles:
+    - id: trade_specialist
+      title: "Trade Specialist"
+      raci_scope:
+        - "R:lc.issue.examination"
+        - "R:doc.collection"
+        - "R:lg.claim.review"
+      approvals:
+        - "docs-accept<=10M-usd"
+      headcount: 80
+    - id: trade_manager
+      title: "Trade Manager"
+      raci_scope:
+        - "A:lc.issue"
+        - "A:lg.claim"
+        - "A:doc.collection"
+      approvals:
+        - "docs-accept-any"
+        - "discrepancy-waiver"
+      headcount: 14
+  cut_offs:
+    doc_examination: "5 banking days (UCP 600 art.14)"
+    lc_advice: "same day if received before 14:00 ICT"
+    lg_claim_response: "3 banking days"
+  shifts: ["08:00-17:00 ICT", "on-call for vessel/time-critical docs"]

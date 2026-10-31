@@ -1,0 +1,32 @@
+# Cards ops org (full v1.0, issue #15) — validates against metamodel/org.schema.yaml
+- id: cards
+  version: 1.0.0
+  name: "Cards & Digital"
+  parent_id: null
+  mandate: "Own card ops: auth/fraud holds, reissue, installments; scheme-deadline owner"
+  headcount_plan: 200
+  systems_used: [cardms, fraud-engine, visa-mc]
+  roles:
+    - id: fraud_analyst
+      title: "Fraud Analyst"
+      raci_scope:
+        - "R:auth.fraud.hold"
+        - "C:card.dispute"
+      approvals:
+        - "hold<=100M-vnd"
+      headcount: 90
+    - id: cards_manager
+      title: "Cards Manager"
+      raci_scope:
+        - "A:auth.fraud.hold"
+        - "A:card.reissue"
+        - "A:installment.convert"
+      approvals:
+        - "hold-any"
+        - "writeoff<=50M-vnd"
+      headcount: 20
+  cut_offs:
+    fraud_hold_review: "2h from alert, 24/7"
+    reissue_dispatch: "15:00 ICT daily"
+    scheme_representment: "per reason code (see C27)"
+  shifts: ["24/7 fraud desk in 3 shifts", "back-office 08:00-17:00 ICT"]

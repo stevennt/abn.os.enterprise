@@ -1,0 +1,32 @@
+# Treasury org (full v1.0, issue #15) — validates against metamodel/org.schema.yaml
+- id: treasury
+  version: 1.0.0
+  name: "Treasury & Markets"
+  parent_id: null
+  mandate: "Own FX/MM pricing, funding, liquidity reporting; cut-off owner for end-of-day rates"
+  headcount_plan: 80
+  systems_used: [treasury-core, swift, reuters]
+  roles:
+    - id: fx_dealer
+      title: "FX Dealer"
+      raci_scope:
+        - "R:fx.quote"
+        - "C:transfer.swift"
+      approvals:
+        - "quote<=5M-usd"
+      headcount: 24
+    - id: treasury_manager
+      title: "Treasury Manager"
+      raci_scope:
+        - "A:fx.quote"
+        - "A:mm.borrowing"
+        - "A:liquidity.report"
+      approvals:
+        - "quote-any"
+        - "borrowing<=200M-usd"
+      headcount: 10
+  cut_offs:
+    fx_same_day: "15:30 ICT"
+    mm_funding: "16:30 ICT"
+    liquidity_report: "18:00 ICT daily"
+  shifts: ["06:30-15:30 ICT (Asia)", "13:30-22:30 ICT (London overlap)"]

@@ -1,0 +1,62 @@
+# DQ expectation suites v1.0 (issue #38) — enforced by validator; bad data auto-pauses L4.
+suites:
+  - event: aml.screening.hit
+    expectations:
+      - {class: completeness, check: required-fields-present}
+      - {class: validity, check: payload-validates-against-contract}
+      - {class: freshness, check: event-ts-within-last-5m}
+    alert: {route: compliance, severity: critical, auto_demote_L4: true}
+  - event: billpay.topup.requested
+    expectations:
+      - {class: completeness, check: required-fields-present}
+      - {class: validity, check: payload-validates-against-contract}
+      - {class: freshness, check: event-ts-within-last-5m}
+    alert: {route: payments, severity: critical, auto_demote_L4: true}
+  - event: call.verify.requested
+    expectations:
+      - {class: completeness, check: required-fields-present}
+      - {class: validity, check: payload-validates-against-contract}
+      - {class: freshness, check: event-ts-within-last-15m}
+    alert: {route: cs, severity: warning, auto_demote_L4: false}
+  - event: card.dispute.opened
+    expectations:
+      - {class: completeness, check: required-fields-present}
+      - {class: validity, check: payload-validates-against-contract}
+      - {class: freshness, check: event-ts-within-last-15m}
+    alert: {route: cards, severity: warning, auto_demote_L4: false}
+  - event: complaint.received
+    expectations:
+      - {class: completeness, check: required-fields-present}
+      - {class: validity, check: payload-validates-against-contract}
+      - {class: freshness, check: event-ts-within-last-15m}
+    alert: {route: cs, severity: warning, auto_demote_L4: false}
+  - event: deposit.open.requested
+    expectations:
+      - {class: completeness, check: required-fields-present}
+      - {class: validity, check: payload-validates-against-contract}
+      - {class: freshness, check: event-ts-within-last-15m}
+    alert: {route: retail, severity: critical, auto_demote_L4: true}
+  - event: ekyc.onboarding.result
+    expectations:
+      - {class: completeness, check: required-fields-present}
+      - {class: validity, check: payload-validates-against-contract}
+      - {class: freshness, check: event-ts-within-last-5m}
+    alert: {route: retail, severity: warning, auto_demote_L4: false}
+  - event: loan.application.submitted
+    expectations:
+      - {class: completeness, check: required-fields-present}
+      - {class: validity, check: payload-validates-against-contract}
+      - {class: freshness, check: event-ts-within-last-5m}
+    alert: {route: retail-credit, severity: critical, auto_demote_L4: true}
+  - event: salary.batch.uploaded
+    expectations:
+      - {class: completeness, check: required-fields-present}
+      - {class: validity, check: payload-validates-against-contract}
+      - {class: freshness, check: event-ts-within-last-60m}
+    alert: {route: payments, severity: critical, auto_demote_L4: true}
+  - event: transfer.domestic.requested
+    expectations:
+      - {class: completeness, check: required-fields-present}
+      - {class: validity, check: payload-validates-against-contract}
+      - {class: freshness, check: event-ts-within-last-1m}
+    alert: {route: payments, severity: critical, auto_demote_L4: true}

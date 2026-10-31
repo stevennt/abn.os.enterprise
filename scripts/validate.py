@@ -91,6 +91,14 @@ def main():
         assert ev_type in by_type, f"no example for {ev_type}"
         jsonschema.validate(by_type[ev_type], sc)
     print(f"payloads: {len(schfiles)} schemas validate synthetic examples — OK")
+    # Issue #38: DQ suites cover top-10 with all 3 classes + alert routing
+    dq = yaml.safe_load(open(ROOT / "engine" / "dq-expectations.yaml"))["suites"]
+    assert len(dq) == 10, f"want 10 DQ suites, found {len(dq)}"
+    for s in dq:
+        classes = {e["class"] for e in s["expectations"]}
+        assert {"completeness", "validity", "freshness"} <= classes, f"{s['event']} missing class"
+        assert s["alert"].get("route"), f"{s['event']} missing alert route"
+    print(f"dq: {len(dq)} suites x completeness/validity/freshness + alert routes — OK")
     # Issue #18: capacity CSV per role parses with sane numbers
     import csv as _csv
     cap = list(_csv.DictReader(open(ROOT / "engine" / "capacity.csv")))

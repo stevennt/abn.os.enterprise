@@ -112,6 +112,12 @@ def main():
                                          ensure_ascii=False).encode()).hexdigest(), f"audit hash bad at {i}"
         prev = env["hash"]
     print(f"trace: {len(tr['steps'])} steps, audit chain verifies, all steps have owner/rule/SLA/fail-path — OK")
+    # Issue #31: event catalog has 40 rows + naming convention section
+    cat = (ROOT / "docs" / "event-catalog.md").read_text().splitlines()
+    rows = [l for l in cat if l.startswith("| `")]
+    assert len(rows) == 40, f"want 40 catalog rows, found {len(rows)}"
+    assert any("Naming convention" in l for l in cat), "naming convention doc missing"
+    print(f"catalog-events: {len(rows)} trigger events named/versioned/owned — OK")
     readme = (ROOT / "README.md").read_text().splitlines()
     start = next(i for i, l in enumerate(readme) if l.startswith("## Repo map"))
     o = readme.index("```", start) + 1

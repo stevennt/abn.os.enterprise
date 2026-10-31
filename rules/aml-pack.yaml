@@ -1,0 +1,33 @@
+# AML/sanctions rule pack v1.0 (issue #43) — validates against metamodel/rule.schema.yaml
+- id: AML-SCREEN-02
+  version: 1.0.0-2026-10-01
+  authority: "AML policy 2026-06 + sanctions screening standard (lists: UN, OFAC, EU, SBV)"
+  inputs: [entity_name, match_score, list]
+  table:
+    - {when: "match_score>=0.95", then: HOLD}
+    - {when: "match_score 0.80-0.95", then: REVIEW}
+    - {when: "match_score<0.80", then: PASS}
+  effect: "HOLD opens triage (C25); REVIEW queues analyst; misses cost more than FPs at >=0.80"
+- id: AML-TRIAGE-01
+  version: 1.0.0-2026-10-01
+  authority: "AML policy 2026-06 (triage discipline)"
+  inputs: [hit_context, prior_clears]
+  table:
+    - {when: "exact id-number match", then: HOLD-CONFIRM}
+    - {when: "name-only match AND prior_clears>=2", then: FAST-CLEAR-with-note}
+    - {when: "name-only match", then: INVESTIGATE}
+  effect: "repeat name-only hits with history clear fast; everything else investigates"
+- id: AML-HOLD-02
+  version: 1.0.0-2026-10-01
+  authority: "AML policy 2026-06 (hold authority)"
+  inputs: [hold_code, amount]
+  table:
+    - {when: "hold_code in [SANCTION, STR-SUSPECT, COURT-ORDER]", then: HOLD-no-release}
+    - {when: "hold_code in [DOC-PENDING, REVIEW-OVERDUE]", then: HOLD-releasable-by-manager}
+  effect: "sanction/STR/court holds release only via MLRO + case closure"
+# Threshold rationale: a sanctions MISS is a criminal/licensing risk (unbounded
+# downside), a false positive costs ~50 analyst-minutes. So the bar sits LOW
+# (0.80 review, 0.95 hold) — we would rather review 100 innocents than miss one
+# listed entity. Reviewed quarterly against hit-quality stats (I84 drills).
+# Hold-code list: SANCTION | STR-SUSPECT | COURT-ORDER | DOC-PENDING |
+# REVIEW-OVERDUE | FRAUD-RING-LINK. First three release via MLRO only.

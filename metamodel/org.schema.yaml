@@ -1,22 +1,27 @@
-# OrgUnit + Role schema (v0.1) — the "who" primitive
-# Every department org-chart MUST validate against this.
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://github.com/stevennt/abn.os.enterprise/metamodel/org.schema.yaml/v1.0.0"
+title: "OrgUnit v1.0.0 — the 'who' primitive"
 type: object
-required: [id, name, parent_id, roles, headcount_plan]
+required: [id, version, name, roles, headcount_plan]
 properties:
-  id:          {type: string,  example: "retail.credit"}
-  name:        {type: string,  example: "Retail Credit"}
-  parent_id:   {type: string,  example: "retail", nullable: true}
-  mandate:     {type: string,  example: "Own retail lending decisions <2B VND"}
+  id:             {type: string, minLength: 1, examples: ["retail.credit"]}
+  version:        {type: string, pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$", examples: ["1.0.0"]}
+  name:           {type: string, minLength: 1}
+  parent_id:      {type: [string, "null"]}
+  mandate:        {type: string}
   roles:
     type: array
+    minItems: 1
     items:
       type: object
       required: [id, title, raci_scope, approvals]
       properties:
-        id:          {type: string, example: "credit_officer"}
-        title:       {type: string, example: "Credit Officer"}
-        raci_scope:  {type: array, items: {type: string}, example: ["A:loan.T1", "R:loan.steps.2-5"]}
-        approvals:   {type: array, items: {type: string}, example: ["loan<=500M"]}
-        headcount:   {type: integer, example: 12}
-  headcount_plan: {type: integer, example: 35}
-  systems_used:   {type: array, items: {type: string}, example: ["los", "core", "ekyc"]}
+        id:         {type: string}
+        title:      {type: string}
+        raci_scope: {type: array, items: {type: string}}
+        approvals:  {type: array, items: {type: string}}
+        headcount:  {type: integer, minimum: 0}
+      additionalProperties: true
+  headcount_plan: {type: integer, minimum: 0}
+  systems_used:   {type: array, items: {type: string}}
+additionalProperties: true

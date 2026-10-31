@@ -11,4 +11,4 @@ cs:          [complaint.handle, call.verify, branch.appointment]
 hr:          [recruit.offer, onboard.employee, leave.approve, perf.review, offboard.exit]
 finance:     [ap.invoice, gl.close.month, tax.vat.file, budget.request]
 itops:       [incident.p1, change.deploy, access.grant, batch.eod]
-# Count: 40. Each needs inputs schema + steps + rules + touchpoints. See loan example next.
+# Count: 46. Each needs inputs schema + steps + rules + touchpoints. See loan example next.

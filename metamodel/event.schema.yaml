@@ -1,11 +1,14 @@
-# Event + Data schema (v0.1)
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://github.com/stevennt/abn.os.enterprise/metamodel/event.schema.yaml/v1.0.0"
+title: "Event+Data v1.0.0 — the trigger primitive"
 type: object
-required: [event_type, event_version, payload_schema, producer, idempotency_key]
+required: [event_type, version, payload_schema, producer, idempotency_key]
 properties:
-  event_type:    {type: string, example: "loan.application.submitted"}
-  event_version: {type: string, example: "1.0"}
-  payload_schema: {type: string, example: "events/loan.application.v1.json"}
-  producer:      {type: string, example: "channel:mobile-app"}
-  idempotency_key: {type: string, example: "customer_id + application_id"}
-  retention_days:  {type: integer, example: 2555}
-  pii_class:       {type: string, example: "PII-strict"}
+  event_type:    {type: string, minLength: 1}
+  version:       {type: string, pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"}
+  payload_schema: {type: string, minLength: 1}
+  producer:      {type: string, minLength: 1}
+  idempotency_key: {type: string, minLength: 1}
+  retention_days:  {type: integer, minimum: 1}
+  pii_class:       {type: string, enum: [PII-strict, confidential, internal, public]}
+additionalProperties: true

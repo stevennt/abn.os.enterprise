@@ -1,12 +1,16 @@
-# Rule schema (v0.1) — DMN-style, no code in process files
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://github.com/stevennt/abn.os.enterprise/metamodel/rule.schema.yaml/v1.0.0"
+title: "Rule v1.0.0 — DMN-style, never embedded in code"
 type: object
-required: [id, authority, version, inputs, table, effect]
+required: [id, version, authority, inputs, table, effect]
 properties:
-  id:        {type: string, example: "SBV-DSTI-04"}
-  authority: {type: string, example: "SBV Circular 16 / internal credit policy 2026-03"}
-  version:   {type: string, example: "2026-10-01"}
-  inputs:    {type: array, items: {type: string}, example: ["dsti", "income_verified", "product"]}
+  id:        {type: string, minLength: 1, examples: ["SBV-DSTI-04"]}
+  version:   {type: string, pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9]{4}-[0-9]{2}-[0-9]{2})?$"}
+  authority: {type: string, minLength: 1}
+  inputs:    {type: array, items: {type: string}}
   table:
     type: array
-    items: {type: object, example: {when: "dsti>0.6 AND product=unsecured", then: "REVIEW"}}
-  effect:    {type: string, example: "cap decision at REVIEW; overrides score"}
+    minItems: 1
+    items: {type: object}
+  effect:    {type: string, minLength: 1}
+additionalProperties: true

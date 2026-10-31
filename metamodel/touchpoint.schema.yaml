@@ -1,11 +1,15 @@
-# Touchpoint schema (v0.1) — C/E/S/X
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://github.com/stevennt/abn.os.enterprise/metamodel/touchpoint.schema.yaml/v1.0.0"
+title: "Touchpoint v1.0.0 — C/E/S/X meeting points"
 type: object
-required: [id, party, channel, sla_minutes, template_ref]
+required: [id, version, party, channel, sla_minutes, template_ref]
 properties:
-  id:           {type: string, example: "TP-C-app-status"}
-  party:        {type: string, enum: [C, E, S, X], example: "C"}
-  party_detail: {type: string, example: "customer: applicant"}
-  channel:      {type: string, example: "mobile-push + sms fallback"}
-  sla_minutes:  {type: integer, example: 5}
-  template_ref: {type: string, example: "templates/app-status.vi.md"}
-  two_way:      {type: boolean, example: true}
+  id:           {type: string, minLength: 1}
+  version:      {type: string, pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"}
+  party:        {type: string, enum: [C, E, S, X]}
+  party_detail: {type: string}
+  channel:      {type: string, minLength: 1}
+  sla_minutes:  {type: integer, minimum: 1}
+  template_ref: {type: string, minLength: 1}
+  two_way:      {type: boolean}
+additionalProperties: true

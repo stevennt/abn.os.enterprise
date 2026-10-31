@@ -1,0 +1,68 @@
+# Corporate term loan flow v1.0 (issue #24) — bespoke, covenant-heavy
+id: loan.corporate.term
+version: 1.0.0
+event_type: loan.corporate.term.requested
+department: corporate
+inputs:
+  schema_ref: events/loan.corporate.term.v1.json
+  fields: [tax_id, facility_amount, tenor_m, purpose, board_resolution_ref, financials_ref]
+steps:
+  - id: s1-ubo
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [KYC-CORP-01]
+    sla_minutes: 60
+    on_fail: "REVIEW"
+  - id: s2-boardres
+    kind: human
+    owner_role: senior_rm
+    level: L3
+    uses_rule: [CORP-GOV-01]
+    sla_minutes: 1440
+    on_fail: "escalate:corp_director"
+  - id: s3-analysis
+    kind: ai
+    owner_role: corp_credit_analyst
+    level: L3
+    uses_rule: [CORP-SCORE-01]
+    sla_minutes: 2880
+    on_fail: "escalate:corp_director"
+  - id: s4-committee
+    kind: human
+    owner_role: credit_committee
+    level: L2
+    uses_rule: [CREDIT-GRID-CORP-01]
+    uses_touchpoint: TP-E-inbox
+    sla_minutes: 4320
+    on_fail: "DECLINE-with-reasons"
+  - id: s5-tranche1
+    kind: workflow
+    owner_role: system
+    level: L3
+    uses_rule: [COV-DSCR-01, TRANCHE-01]
+    uses_touchpoint: TP-S-core
+    sla_minutes: 1440
+    on_fail: "hold:corp_director"
+  - id: s6-trancheN
+    kind: workflow
+    owner_role: system
+    level: L3
+    uses_rule: [COV-DSCR-01, COV-LEVERAGE-02, TRANCHE-01]
+    uses_touchpoint: TP-S-core
+    sla_minutes: 1440
+    on_fail: "hold:covenant-breach-lane"
+  - id: s7-monitor
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [COV-DSCR-01, COV-LEVERAGE-02, COV-REPORT-03]
+    sla_minutes: 43200
+    on_fail: "escalate:risk_manager"
+outputs: {decision: "APPROVE|DECLINE|REVIEW", facility_vnd: 0, tranches: 0, covenants: []}
+kpis: [approval_rate, covenant_breach_rate, tta_p50, tranche_default_rate]
+automation_target: L3
+# Tranche logic: s5 disburses tranche 1 on signing + conditions-precedent;
+# s6 gates every later tranche on covenant tests (DSCR, leverage) at drawdown —
+# breach diverts to the covenant-breach lane (waiver via credit committee, B12).
+# s7 runs quarterly covenant monitoring for the life of the facility.

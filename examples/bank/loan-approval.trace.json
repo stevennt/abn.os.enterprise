@@ -1,0 +1,161 @@
+{
+ "instance_id": "trace-demo-1",
+ "flow": "loan.retail.unsecured",
+ "flow_version": "1.3.0",
+ "event_type": "loan.application.submitted",
+ "event_idem": "C-88123+APP-2026-104231",
+ "steps": [
+  {
+   "step_id": "s1-verify",
+   "kind": "workflow",
+   "owner": "system",
+   "level": "L4",
+   "sla_minutes": 5,
+   "on_fail": "REVIEW",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s2-extract",
+   "kind": "ai",
+   "owner": "credit_officer",
+   "level": "L3",
+   "sla_minutes": 15,
+   "on_fail": "escalate:credit_officer",
+   "outcome": "FIELDS"
+  },
+  {
+   "step_id": "s3-score",
+   "kind": "workflow",
+   "owner": "system",
+   "level": "L4",
+   "sla_minutes": 5,
+   "on_fail": "REVIEW",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s4-aml",
+   "kind": "workflow",
+   "owner": "compliance_bot",
+   "level": "L4",
+   "sla_minutes": 10,
+   "on_fail": "hold:compliance",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s5-decide",
+   "kind": "human",
+   "owner": "credit_manager",
+   "level": "L3",
+   "sla_minutes": 240,
+   "on_fail": "escalate:risk",
+   "outcome": "APPROVE"
+  },
+  {
+   "step_id": "s6-notify",
+   "kind": "workflow",
+   "owner": "system",
+   "level": "L4",
+   "sla_minutes": 5,
+   "on_fail": "retry+page",
+   "outcome": "PASS"
+  }
+ ],
+ "audit": [
+  {
+   "id": "ae-0000",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 0,
+   "step_id": "s1-verify",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "KYC-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1793422801,
+   "hash_prev": "GENESIS",
+   "hash": "2ea0bf7a581f42312fabe70c6ddd377ff6d1ad8f43a78717338727681acab595"
+  },
+  {
+   "id": "ae-0001",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 1,
+   "step_id": "s2-extract",
+   "actor": "credit_officer",
+   "decision": "FIELDS",
+   "rule_version": "DOC-EXTRACT-01",
+   "model_version": "model-for-s2-extract@2026-10-20",
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1793422802,
+   "hash_prev": "2ea0bf7a581f42312fabe70c6ddd377ff6d1ad8f43a78717338727681acab595",
+   "hash": "b956ac1ab2b6aeab2d64161b789e39cb1914d3887eb0f573993d727e0b657b51"
+  },
+  {
+   "id": "ae-0002",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 2,
+   "step_id": "s3-score",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "SBV-DSTI-04",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1793422803,
+   "hash_prev": "b956ac1ab2b6aeab2d64161b789e39cb1914d3887eb0f573993d727e0b657b51",
+   "hash": "60fe1193db4445960d55b3ef54e8ec951edae962ec7169a8c6ab151b5a863aa0"
+  },
+  {
+   "id": "ae-0003",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 3,
+   "step_id": "s4-aml",
+   "actor": "compliance_bot",
+   "decision": "PASS",
+   "rule_version": "AML-SCREEN-02",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1793422804,
+   "hash_prev": "60fe1193db4445960d55b3ef54e8ec951edae962ec7169a8c6ab151b5a863aa0",
+   "hash": "48aa16000307cd9d9a3959ce055858bfe8e62971fa815a947e5a3724af752475"
+  },
+  {
+   "id": "ae-0004",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 4,
+   "step_id": "s5-decide",
+   "actor": "credit_manager",
+   "decision": "APPROVE",
+   "rule_version": "CREDIT-GRID-11",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1793422805,
+   "hash_prev": "48aa16000307cd9d9a3959ce055858bfe8e62971fa815a947e5a3724af752475",
+   "hash": "8fec4028afe5c8906888aee9a75b4a42bca838fdd982a7543c66ae52bb229c40"
+  },
+  {
+   "id": "ae-0005",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 5,
+   "step_id": "s6-notify",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "NOTIFY-TPL-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1793422806,
+   "hash_prev": "8fec4028afe5c8906888aee9a75b4a42bca838fdd982a7543c66ae52bb229c40",
+   "hash": "b725c789ec30c9a169055d34567297695b5ae2d6070c00f46afca0f3af35873e"
+  }
+ ]
+}

@@ -19,7 +19,7 @@ steps:
     kind: ai
     owner_role: credit_officer
     level: L3
-    uses_rule: []
+    uses_rule: [DOC-EXTRACT-01]
     sla_minutes: 15
     on_fail: "escalate:credit_officer"
   - id: s3-score
@@ -48,6 +48,7 @@ steps:
     kind: workflow
     owner_role: system
     level: L4
+    uses_rule: [NOTIFY-TPL-01]
     uses_touchpoint: TP-C-app-status
     sla_minutes: 5
     on_fail: "retry+page"

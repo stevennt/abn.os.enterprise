@@ -1,0 +1,13 @@
+# memo-draft contract v1.0 (issue #64) — under docs/ai-contract.md
+step_id: s5-memo-draft
+version: 1.0.0
+input_schema: events/memo.in.v1.json
+output_schema: events/memo.out.v1.json
+output_fields: [summary, findings, recommendation, citations]
+model: {name: memo-draft, version: 2026-10-20, temperature: 0}
+pii_class: confidential
+eval_suite: evals/memo-draft/
+abstain_below: 0.60
+fallback: REVIEW
+notes: "Drafts ONLY from cited inputs/rules; every number traceable (see citation
+  format in evals/memo-draft/README.md). Manager reads this before approving."

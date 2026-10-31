@@ -1,0 +1,9 @@
+id: beta
+version: 0.1.0
+label: "Fixture beta"
+tier: commercial
+jurisdiction: VN
+owner: fixture
+tag_stream: {policy_prefix: beta-policy, pack_prefix: beta-pack}
+rules: [rules/dup.yaml]
+flows: [flows/b.flow.yaml]

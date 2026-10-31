@@ -1,0 +1,10 @@
+id: b.flow
+version: 0.1.0
+event_type: b.requested
+department: beta
+inputs: {fields: [x], note: "see industries/alpha/rules/shared.yaml"}
+steps:
+  - {id: s1, kind: workflow, owner_role: system, level: L4, uses_rule: [DUP-RULE-01], sla_minutes: 5, on_fail: REVIEW}
+outputs: {decision: REVIEW}
+kpis: [b_rate]
+automation_target: L4

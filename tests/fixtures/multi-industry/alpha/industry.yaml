@@ -1,0 +1,9 @@
+id: alpha
+version: 0.1.0
+label: "Fixture alpha"
+tier: commercial
+jurisdiction: VN
+owner: fixture
+tag_stream: {policy_prefix: alpha-policy, pack_prefix: alpha-pack}
+rules: [rules/shared.yaml]
+flows: [flows/a.flow.yaml]

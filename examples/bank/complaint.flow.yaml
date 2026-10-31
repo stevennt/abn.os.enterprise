@@ -1,0 +1,55 @@
+# Complaint handling flow v1.0 (issue #28) — moves CSAT + regulatory risk
+id: complaint.handle
+version: 1.0.0
+event_type: complaint.received
+department: cs
+inputs:
+  schema_ref: events/complaint.received.v1.json
+  fields: [customer_id, channel, external_ticket_id, category, severity, text]
+steps:
+  - id: s1-triage
+    kind: ai
+    owner_role: cs_agent
+    level: L3
+    uses_rule: [COMPLAINT-SEV-01]
+    sla_minutes: 60
+    on_fail: "escalate:cs_manager"
+  - id: s2-investigate
+    kind: human
+    owner_role: cs_agent
+    level: L2
+    uses_rule: [COMPLAINT-INV-02]
+    sla_minutes: 1440
+    on_fail: "escalate:cs_manager"
+  - id: s3-remedy
+    kind: human
+    owner_role: cs_manager
+    level: L3
+    uses_rule: [COMPLAINT-REM-03]
+    sla_minutes: 1440
+    on_fail: "escalate:retail_director"
+  - id: s4-respond
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [NOTIFY-TPL-01]
+    uses_touchpoint: TP-C-app-status
+    sla_minutes: 240
+    on_fail: "retry+page"
+  - id: s5-report
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [SBV-REPORT-04]
+    uses_touchpoint: TP-X-regulator
+    sla_minutes: 1440
+    on_fail: "page:cs_manager"
+outputs: {decision: "RESOLVED|ESCALATED|REPORTED", remedy_vnd: 0, sbv_ref: "nullable"}
+kpis: [resolve_p50, csat_after, sbv_report_rate, reopen_rate]
+automation_target: L3
+# Severity ladder: S4 (general query, 5d) / S3 (service failure, 3d) /
+# S2 (financial loss, 24h + hourly updates) / S1 (regulatory/media/safety, 24h,
+# cs_manager owns, hourly updates, duty officer paged).
+# SBV-report branch: s5 fires when severity S1/S2 with financial loss, or remedy
+# exceeds manager authority, or the same root cause repeats 3x in 30 days —
+# pack includes full trace + remedy + root-cause note (see org-cs SLA sbv-report-decide).

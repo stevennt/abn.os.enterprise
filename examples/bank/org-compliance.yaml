@@ -1,0 +1,59 @@
+# Compliance/AML org (full v1.0, issue #14) — validates against metamodel/org.schema.yaml
+- id: compliance
+  version: 1.0.0
+  name: "Compliance & AML"
+  parent_id: null
+  mandate: "Own financial-crime defence: screening, holds, STR filing, KYC refresh, sanctions"
+  headcount_plan: 90
+  systems_used: [screening, case-mgmt, core, ekyc]
+  roles:
+    - id: aml_analyst
+      title: "AML Analyst"
+      raci_scope:
+        - "R:aml.screening"
+        - "R:sanction.check"
+        - "R:kyc.refresh.review"
+        - "R:aml.str.filing.investigate"
+      approvals:
+        - "clear-false-positive"
+        - "hold-recommend"
+      headcount: 60
+    - id: compliance_manager
+      title: "Compliance Manager"
+      raci_scope:
+        - "A:aml.screening"
+        - "A:sanction.check"
+        - "A:kyc.refresh"
+        - "A:aml.str.filing.prepare"
+      approvals:
+        - "hold-confirm"
+        - "str-submit-to-mlro"
+      headcount: 26
+    - id: mlro
+      title: "Money Laundering Reporting Officer"
+      raci_scope:
+        - "A:aml.str.filing"
+        - "I:regulator"
+        - "I:board-risk-committee"
+      approvals:
+        - "str-file"
+        - "relationship-exit"
+      headcount: 4
+  approval_thresholds:
+    clear-false-positive: {approver: aml_analyst, note: "documented rationale required"}
+    hold-confirm: {approver: compliance_manager, sla_hours: 24}
+    str-file: {approver: mlro, sla: "file within regulatory deadline (see below)"}
+# STR authority matrix (who may do what):
+# alert triage -> aml_analyst (clear FP with rationale, or escalate).
+# hold funds -> analyst recommends, manager confirms within 24h.
+# investigate -> analyst builds case; a DIFFERENT analyst or manager peer-reviews (4-eyes).
+# file STR -> mlro only, on manager-prepared pack. Investigator never files own case.
+# relationship exit -> mlro with board-risk-committee information.
+# SoD notes: investigator != filing approver; hold confirmer != case investigator;
+# list-tuning (threshold changes) needs manager + independent QA sample (see B19).
+# Filing SLA: triage <=1 business day; investigation <=5 business days;
+# manager review <=2 business days; mlro files within the statutory deadline
+# once suspicion is formed (no tipping-off at any stage — strict need-to-know).
+# Evidence list per STR pack: alert + screening snapshots (list versions),
+# KYC pack + UBO chart, 12-month txn records, prior holds/clears, investigation
+# notes with timestamps, peer-review sign-off, manager review, mlro decision.

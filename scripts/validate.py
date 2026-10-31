@@ -55,6 +55,22 @@ def main():
         for u in units:
             jsonschema.validate(u, schemas["org"])
         print(f"org-full: {Path(f).name} ({len(units)} units) validates — OK")
+    # Issue #20: index-vs-full reconciliation (closes track B)
+    full_units = {}
+    for f in sorted(_glob.glob(str(ROOT / "examples" / "bank" / "org-*.yaml"))):
+        if Path(f).name == "org-chart.yaml":
+            continue
+        units = yaml.safe_load(open(f))
+        for u in (units if isinstance(units, list) else [units]):
+            assert u["id"] not in full_units, f"duplicate unit {u['id']}"
+            full_units[u["id"]] = u
+    idx_ids = {u["id"] for u in org}
+    assert idx_ids == set(full_units), f"index/full mismatch: {idx_ids ^ set(full_units)}"
+    bad_hc = [i for i in idx_ids
+              if next(u for u in org if u["id"] == i)["headcount_plan"] != full_units[i]["headcount_plan"]]
+    assert not bad_hc, f"headcount mismatch: {bad_hc}"
+    total = sum(u["headcount_plan"] for u in org)
+    print(f"org-reconcile: {len(idx_ids)} index units == full files, headcounts match (total plan {total}) — OK")
     # Issue #8: 5 reference payloads validate + are marked synthetic
     import json as _json
     evdir = ROOT / "examples" / "events"

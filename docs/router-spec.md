@@ -54,3 +54,25 @@ The Router is a **deterministic classifier**. LLM must never be the router
 - Triage SLO: 1 business day to route-or-rule (add routing row) or reject-with-reason.
 - Replay: D39 backfill tool re-emits DLQ items after a routing fix (idempotent —
   idempotency keys survive the round trip).
+
+## Classifier tiers v1.0 (issue #35) — deterministic first, ML only for ambiguity
+
+Tier 1 (exact, ~99% traffic): `(event_type, event_version)` lookup — pure table, no model.
+Tier 2 (flag rules, e.g. product/rail/amount tier): ordered first-match rules (see truth table).
+Tier 3 (small ML, ambiguous intents only): complaint-text → (category, severity).
+Nothing else may call the model; LLM is never in this path.
+
+### Feature list (tier 3 model)
+
+- char/word 3-5-grams (Vietnamese word-segmented) + channel + hour-of-day + customer
+  tenure bucket + prior-complaint count. No raw PII features (hashed ids only, D33).
+- Model: linear-logistic baseline, ≤5MB, CPU inference p99 <50ms. Versioned like data
+  (model card + training hash pinned in the routing table release).
+
+### Fallback threshold + version-pin policy
+
+- Fallback: max-class probability <0.70 → route to human triage (`REVIEW`), never guess;
+  threshold itself is versioned and tuned only on the golden set (G67).
+- Version-pin: routing table release pins `(model version, threshold, flag-rule set)`
+  together; rollback flips all three atomically. Model bump = MINOR release with
+  dual-run shadow scoring for 7 days before it decides anything (A06).

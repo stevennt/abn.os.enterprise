@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- loan.retail.unsecured v1.3.0 as BPMN (issue #101) — mirrors examples/bank/loan-approval.flow.yaml -->
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    xmlns:zeebe="http://camunda.org/schema/zeebe/1.0"
+    id="loan-defs" targetNamespace="http://abnasia.org/loan">
+  <bpmn:process id="loan.retail.unsecured" name="Retail unsecured loan" isExecutable="true">
+    <bpmn:startEvent id="start" name="application submitted" />
+    <bpmn:sequenceFlow id="f0" sourceRef="start" targetRef="s1-verify" />
+    <bpmn:serviceTask id="s1-verify" name="s1 verify (KYC-01)">
+      <bpmn:extensionElements><zeebe:taskDefinition type="bank-s1" /></bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="f1" sourceRef="s1-verify" targetRef="s2-extract" />
+    <bpmn:serviceTask id="s2-extract" name="s2 extract (DOC-EXTRACT-01)">
+      <bpmn:extensionElements><zeebe:taskDefinition type="bank-s2" /></bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="f2" sourceRef="s2-extract" targetRef="s3-score" />
+    <bpmn:serviceTask id="s3-score" name="s3 score (SBV-DSTI-04)">
+      <bpmn:extensionElements><zeebe:taskDefinition type="bank-s3" /></bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="f3" sourceRef="s3-score" targetRef="s4-aml" />
+    <bpmn:serviceTask id="s4-aml" name="s4 aml (AML-SCREEN-02)">
+      <bpmn:extensionElements><zeebe:taskDefinition type="bank-s4" /></bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="f4" sourceRef="s4-aml" targetRef="s5-decide" />
+    <bpmn:serviceTask id="s5-decide" name="s5 decide (CREDIT-GRID-11)">
+      <bpmn:extensionElements><zeebe:taskDefinition type="bank-s5" /></bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:boundaryEvent id="s5-timer" name="s5 SLA 1m" attachedToRef="s5-decide">
+      <bpmn:outgoing>f5t</bpmn:outgoing>
+      <bpmn:timerEventDefinition><bpmn:timeDuration>PT1M</bpmn:timeDuration></bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="f5" sourceRef="s5-decide" targetRef="s6-notify" />
+    <bpmn:sequenceFlow id="f5t" sourceRef="s5-timer" targetRef="escalated-end" />
+    <bpmn:serviceTask id="s6-notify" name="s6 notify (NOTIFY-TPL-01)">
+      <bpmn:extensionElements><zeebe:taskDefinition type="bank-s6" /></bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="f6" sourceRef="s6-notify" targetRef="done-end" />
+    <bpmn:endEvent id="done-end" name="disbursed/notified" />
+    <bpmn:endEvent id="escalated-end" name="escalated on s5 timeout" />
+  </bpmn:process>
+</bpmn:definitions>

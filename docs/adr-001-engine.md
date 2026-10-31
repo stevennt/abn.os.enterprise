@@ -1,6 +1,7 @@
-# ADR-001: workflow engine choice (issue #51) — PROVISIONAL, confirmed or reversed by F52
+# ADR-001: workflow engine choice (issue #51, CONFIRMED by #101) — ACCEPTED
 
-Status: proposed (platform) — needs F52 hello-bank spike evidence to become accepted.
+Status: accepted (platform) — #101 ran the loan flow on Camunda 8.5.7 stage:
+deploy + happy-path trace + timer-boundary escalation + kill-worker recovery, all green.
 Context: flows are YAML-authored with analysts, rules are DMN packs, every decision
 auditable; team runs Python/Axum/Frappe/Supabase; bank scale ~50M events/day.
 

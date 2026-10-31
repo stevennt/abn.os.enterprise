@@ -1,0 +1,13 @@
+# s2-extract contract v1.0 (issue #62) — first contract under docs/ai-contract.md
+step_id: s2-extract
+version: 1.0.0
+input_schema: events/doc-extract.in.v1.json
+output_schema: events/doc-extract.out.v1.json
+output_fields: [full_name, cccd, dob, address, employer, monthly_income, doc_type]
+model: {name: doc-extract, version: 2026-10-20, temperature: 0}
+pii_class: confidential
+eval_suite: evals/doc-extract/
+abstain_below: 0.70
+fallback: REVIEW
+notes: "OCR+LLM two-pass: OCR reads, LLM normalizes to schema with per-field
+  confidence; any field below 0.70 abstains the whole doc to REVIEW (G68)."

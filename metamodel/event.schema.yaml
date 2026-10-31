@@ -1,0 +1,11 @@
+# Event + Data schema (v0.1)
+type: object
+required: [event_type, event_version, payload_schema, producer, idempotency_key]
+properties:
+  event_type:    {type: string, example: "loan.application.submitted"}
+  event_version: {type: string, example: "1.0"}
+  payload_schema: {type: string, example: "events/loan.application.v1.json"}
+  producer:      {type: string, example: "channel:mobile-app"}
+  idempotency_key: {type: string, example: "customer_id + application_id"}
+  retention_days:  {type: integer, example: 2555}
+  pii_class:       {type: string, example: "PII-strict"}

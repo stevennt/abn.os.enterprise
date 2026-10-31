@@ -1,0 +1,14 @@
+# 40-process catalog (index v0.1) — detail per process in issues 21-30
+retail:      [ekyc.onboarding, loan.retail.unsecured, loan.retail.mortgage, deposit.open, card.issue, card.dispute]
+corporate:   [loan.corporate.term, loan.corporate.working_capital, account.corporate.open, guarantee.issue]
+risk:        [risk.scoring.retail, risk.limit.review, risk.early_warning]
+compliance:  [aml.screening, aml.str.filing, kyc.refresh, sanction.check]
+treasury:    [fx.quote, mm.borrowing, liquidity.report]
+payments:    [transfer.domestic, transfer.swift, salary.batch, billpay.topup]
+cards:       [auth.fraud.hold, card.reissue, installment.convert]
+trade:       [lc.issue, lg.claim, doc.collection]
+cs:          [complaint.handle, call.verify, branch.appointment]
+hr:          [recruit.offer, onboard.employee, leave.approve, perf.review, offboard.exit]
+finance:     [ap.invoice, gl.close.month, tax.vat.file, budget.request]
+itops:       [incident.p1, change.deploy, access.grant, batch.eod]
+# Count: 40. Each needs inputs schema + steps + rules + touchpoints. See loan example next.

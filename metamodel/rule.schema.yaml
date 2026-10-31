@@ -1,0 +1,12 @@
+# Rule schema (v0.1) — DMN-style, no code in process files
+type: object
+required: [id, authority, version, inputs, table, effect]
+properties:
+  id:        {type: string, example: "SBV-DSTI-04"}
+  authority: {type: string, example: "SBV Circular 16 / internal credit policy 2026-03"}
+  version:   {type: string, example: "2026-10-01"}
+  inputs:    {type: array, items: {type: string}, example: ["dsti", "income_verified", "product"]}
+  table:
+    type: array
+    items: {type: object, example: {when: "dsti>0.6 AND product=unsecured", then: "REVIEW"}}
+  effect:    {type: string, example: "cap decision at REVIEW; overrides score"}

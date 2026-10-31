@@ -1,0 +1,11 @@
+# Touchpoint schema (v0.1) — C/E/S/X
+type: object
+required: [id, party, channel, sla_minutes, template_ref]
+properties:
+  id:           {type: string, example: "TP-C-app-status"}
+  party:        {type: string, enum: [C, E, S, X], example: "C"}
+  party_detail: {type: string, example: "customer: applicant"}
+  channel:      {type: string, example: "mobile-push + sms fallback"}
+  sla_minutes:  {type: integer, example: 5}
+  template_ref: {type: string, example: "templates/app-status.vi.md"}
+  two_way:      {type: boolean, example: true}

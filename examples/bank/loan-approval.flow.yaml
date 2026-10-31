@@ -1,0 +1,20 @@
+# WORKED EXAMPLE v0.1 — retail unsecured loan (the pattern every other flow copies)
+id: loan.retail.unsecured
+version: 1.3.0
+event_type: loan.application.submitted
+department: retail.credit
+inputs:
+  schema_ref: events/loan.application.v1.json
+  fields: [customer_id, cccd, income_docs, requested_amount, term_m, consent_ref]
+  example_payload: {customer_id: C-88123, requested_amount: 300000000, term_m: 24}
+steps:
+  - {id: s1-verify,  kind: workflow, owner_role: system,         level: L4, uses_rule: [KYC-01],        sla_minutes: 5,   on_fail: "REVIEW"}
+  - {id: s2-extract, kind: ai,       owner_role: credit_officer, level: L3, uses_rule: [],              sla_minutes: 15,  on_fail: "escalate:credit_officer"}
+  - {id: s3-score,   kind: workflow, owner_role: system,         level: L4, uses_rule: [SBV-DSTI-04],   sla_minutes: 5,   on_fail: "REVIEW"}
+  - {id: s4-aml,     kind: workflow, owner_role: compliance_bot, level: L4, uses_rule: [AML-SCREEN-02], sla_minutes: 10,  on_fail: "hold:compliance"}
+  - {id: s5-decide,  kind: human,    owner_role: credit_manager, level: L3, uses_rule: [CREDIT-GRID-11], sla_minutes: 240, uses_touchpoint: TP-E-inbox, on_fail: "escalate:risk"}
+  - {id: s6-notify,  kind: workflow, owner_role: system,         level: L4, uses_touchpoint: TP-C-app-status, sla_minutes: 5, on_fail: "retry+page"}
+outputs: {decision: "APPROVE|DECLINE|REVIEW", limit_vnd: 300000000, reasons: [dsti_ok, aml_clear]}
+kpis: [approval_rate, default_30d, tta_p50, override_rate]
+automation_target: L4
+audit: every step emits {step, actor, rule_version, model_version, ts, hash_prev}

@@ -1,0 +1,22 @@
+# OrgUnit + Role schema (v0.1) — the "who" primitive
+# Every department org-chart MUST validate against this.
+type: object
+required: [id, name, parent_id, roles, headcount_plan]
+properties:
+  id:          {type: string,  example: "retail.credit"}
+  name:        {type: string,  example: "Retail Credit"}
+  parent_id:   {type: string,  example: "retail", nullable: true}
+  mandate:     {type: string,  example: "Own retail lending decisions <2B VND"}
+  roles:
+    type: array
+    items:
+      type: object
+      required: [id, title, raci_scope, approvals]
+      properties:
+        id:          {type: string, example: "credit_officer"}
+        title:       {type: string, example: "Credit Officer"}
+        raci_scope:  {type: array, items: {type: string}, example: ["A:loan.T1", "R:loan.steps.2-5"]}
+        approvals:   {type: array, items: {type: string}, example: ["loan<=500M"]}
+        headcount:   {type: integer, example: 12}
+  headcount_plan: {type: integer, example: 35}
+  systems_used:   {type: array, items: {type: string}, example: ["los", "core", "ekyc"]}

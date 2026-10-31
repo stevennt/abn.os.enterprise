@@ -1,0 +1,35 @@
+# AP invoice flow v1.0 (issue #30, 1/2)
+id: finance.ap.invoice
+version: 1.0.0
+event_type: ap.invoice.received
+department: finance
+inputs:
+  schema_ref: events/ap.invoice.v1.json
+  fields: [vendor_tax, invoice_no, amount, po_ref, receipt_ref]
+steps:
+  - id: s1-match
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [AP-3WAY-01]
+    sla_minutes: 240
+    on_fail: "REVIEW"
+  - id: s2-approve
+    kind: human
+    owner_role: cfo_delegate
+    level: L3
+    uses_rule: [AP-LADDER-02]
+    uses_touchpoint: TP-E-inbox
+    sla_minutes: 2880
+    on_fail: "escalate:cfo"
+  - id: s3-post
+    kind: workflow
+    owner_role: accountant
+    level: L4
+    uses_rule: [AP-POST-03]
+    uses_touchpoint: TP-S-erp
+    sla_minutes: 240
+    on_fail: "retry+page"
+outputs: {decision: "POSTED|HELD", voucher_id: "nullable"}
+kpis: [match_rate, pay_on_time_rate]
+automation_target: L4

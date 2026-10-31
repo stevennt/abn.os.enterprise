@@ -1,0 +1,46 @@
+# Month-end close flow v1.0 (issue #30, 2/2)
+id: finance.gl.close.month
+version: 1.0.0
+event_type: gl.close.month.started
+department: finance
+inputs:
+  schema_ref: events/gl.close.v1.json
+  fields: [period, entity]
+steps:
+  - id: s1-freeze
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [CLOSE-FREEZE-01]
+    sla_minutes: 240
+    on_fail: "page:accountant"
+  - id: s2-accrue
+    kind: workflow
+    owner_role: accountant
+    level: L3
+    uses_rule: [ACCRUAL-02]
+    sla_minutes: 2880
+    on_fail: "escalate:cfo_delegate"
+  - id: s3-reconcile
+    kind: ai
+    owner_role: accountant
+    level: L3
+    uses_rule: [RECON-03]
+    sla_minutes: 2880
+    on_fail: "escalate:accountant"
+  - id: s4-signoff
+    kind: human
+    owner_role: cfo_delegate
+    level: L3
+    uses_rule: [CLOSE-SIGN-04]
+    uses_touchpoint: TP-E-inbox
+    sla_minutes: 1440
+    on_fail: "escalate:cfo"
+outputs: {decision: "CLOSED|ADJUSTING", period: "", adjustments: 0}
+kpis: [close_day, adjustment_count, reopen_rate]
+automation_target: L3
+# Close calendar (business days of month M+1): WD1 freeze subledgers; WD2 accruals
+# (s2 — the accrual branch: recurring journals auto-post, estimates need
+# accountant sign-off); WD3 reconcile (AI flags breaks, human clears); WD4 tax
+# pack; WD5 CFO-delegate sign-off. Checklist enforced as s1-s4 gates: a step
+# cannot start while the previous gate is red. Reopens after WD5 need CFO approval.

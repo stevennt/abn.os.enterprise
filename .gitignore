@@ -11,3 +11,7 @@ venv/
 dist/
 build/
 node_modules/
+# stage runtime artifacts (issue #101)
+engine/stage/bin/
+engine/stage/*.out
+engine/stage/*.log

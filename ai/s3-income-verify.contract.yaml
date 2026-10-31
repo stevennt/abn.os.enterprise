@@ -1,0 +1,11 @@
+# income-verify contract v1.0 (issue #63) — under docs/ai-contract.md
+step_id: s3-income-verify
+version: 1.0.0
+input_schema: events/income-verify.in.v1.json
+output_schema: events/income-verify.out.v1.json
+output_fields: [declared_income, verified_income, consistency_score, fraud_signals]
+model: {name: income-verify, version: 2026-10-20, temperature: 0}
+pii_class: confidential
+eval_suite: evals/income-verify/
+abstain_below: 0.65
+fallback: REVIEW

@@ -1,7 +1,7 @@
 """OS Task controller (issue #106): SoD-at-claim + escalation timers.
 Pure logic (no frappe import) so CI can test it; wire into a Frappe app's
 os_task.py hooks at pilot time (bench: frappe-bench-new, app os_inbox).
-SoD pairs mirror docs/sod.md forbidden list by (maker_role, checker_role).
+SoD pairs mirror docs/core/sod.md forbidden list by (maker_role, checker_role).
 """
 from datetime import datetime, timedelta
 

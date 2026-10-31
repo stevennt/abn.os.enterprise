@@ -38,8 +38,8 @@ def main():
     old, new = load(sys.argv[1]), load(sys.argv[2])
     bump, reason = classify(old, new)
     action = {"PATCH": "auto-roll, no action",
-              "MINOR": "open dual-run window per docs/versioning.md",
-              "MAJOR": "migration + sunset date per docs/versioning.md"}[bump]
+              "MINOR": "open dual-run window per docs/core/versioning.md",
+              "MAJOR": "migration + sunset date per docs/core/versioning.md"}[bump]
     print(f"{bump}: {reason} -> {action}")
     return 0
 

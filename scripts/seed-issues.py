@@ -20,7 +20,7 @@ ISSUES = [
 ("A03 — Glossary + ubiquitous language freeze", "track:A", "type:metamodel",
  body("One shared vocabulary (situation/event/router/instance/level/promotion).",
       "Prevents bank/business/engineering talking past each other.",
-      ["docs/glossary.md reviewed by 2 roles", "terms linked from all schemas"])),
+      ["docs/core/glossary.md reviewed by 2 roles", "terms linked from all schemas"])),
 ("A04 — Router spec: event to process-version resolution", "track:A", "type:engine",
  body("Deterministic classifier: (event_type, version, payload flags) -> (process id, version).",
       "Router is the heart; LLM must never be the router.",

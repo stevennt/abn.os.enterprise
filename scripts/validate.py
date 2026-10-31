@@ -38,6 +38,8 @@ def main():
     for f in sorted(_glob.glob(str(ROOT / "examples" / "bank" / "*.flow.yaml"))):
         flow = load(str(Path(f).relative_to(ROOT)))
         jsonschema.validate(flow, schemas["process"])
+        for s in flow["steps"]:
+            assert s.get("on_fail"), f"{Path(f).name} step {s['id']} lacks on_fail (issue #58)"
         print(f"flow: {Path(f).name} validates against process v1.0.0 — OK")
     # Index hygiene (full RACI per unit is B11/B20, not this issue)
     catalog = load("examples/bank/process-catalog.yaml")

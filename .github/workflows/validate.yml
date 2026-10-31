@@ -28,6 +28,7 @@ jobs:
       - run: python scripts/export_bpmn.py && python scripts/export_bpmn.py --check
       - run: python scripts/pii_scan.py && python scripts/pii_scan.py --self-test
       - run: python scripts/rule_lint.py && python scripts/rule_lint.py --self-test
+      - run: python bin/verify-industry-tags.py
       - run: python scripts/dlq_drill.py
       - run: python scripts/money_drill.py --report /tmp/drill.json && python -c "import json;d=json.load(open('/tmp/drill.json'));assert d['double_posts']==0 and d['ledger_balanced']"
       - run: python scripts/chaos_exec.py

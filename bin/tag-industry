@@ -1,0 +1,108 @@
+#!/usr/bin/env python3
+"""bin/tag-industry — per-industry release tags (issue #126).
+
+Scheme (docs/core/release.md):
+  <industry>-policy-YYYY.MM.N   rules, flows, org, events, docs  (business truth)
+  <industry>-pack-YYYY.MM.N     industries/<id>/pack             (agent content)
+
+Usage:
+  bin/tag-industry <id> --kind policy|pack [--dry-run] [--push]
+  bin/tag-industry <id> --verify          # check every declared ref resolves
+
+Two tag streams exist because they move at different rates: policy on the
+business review cadence, pack on the AI-team cadence (see docs/core/release.md).
+"""
+import argparse
+import json
+import subprocess
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+EVALS = Path(__file__).resolve().parent / "verify-industry-tags.py"
+
+
+def sh(*args, check=True):
+    return subprocess.run(args, cwd=ROOT, capture_output=True, text=True, check=check)
+
+
+def load_manifest(industry):
+    path = ROOT / "industries" / industry / "industry.yaml"
+    if not path.exists():
+        sys.exit(f"no manifest at {path}")
+    try:
+        import yaml
+    except ImportError:
+        sys.exit("PyYAML required (use the project venv)")
+    return yaml.safe_load(path.read_text())
+
+
+def next_serial(prefix):
+    """Highest N already used this month, +1. Offline-safe (tags local + remote)."""
+    month = datetime.now(timezone.utc).strftime("%Y.%m")
+    local = sh("git", "tag", "--list", f"{prefix}-{month}.*").stdout.split()
+    remote = sh("git", "ls-remote", "--tags", "origin", f"{prefix}-{month}.*",
+                check=False).stdout.split()
+    serials = []
+    for t in local + remote:
+        tail = t.split("refs/tags/")[-1]
+        try:
+            serials.append(int(tail.rsplit(".", 1)[1]))
+        except (IndexError, ValueError):
+            continue
+    return month, (max(serials) + 1 if serials else 1)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("industry")
+    ap.add_argument("--kind", choices=["policy", "pack"])
+    ap.add_argument("--verify", action="store_true")
+    ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--push", action="store_true")
+    a = ap.parse_args()
+
+    if a.verify:
+        return subprocess.call([sys.executable, str(EVALS)])
+
+    if not a.kind:
+        sys.exit("--kind policy|pack is required (or use --verify)")
+
+    man = load_manifest(a.industry)
+    prefix = man["tag_stream"][f"{a.kind}_prefix"]
+    month, serial = next_serial(prefix)
+    tag = f"{prefix}-{month}.{serial}"
+
+    head = sh("git", "rev-parse", "--short", "HEAD").stdout.strip()
+    dirty = bool(sh("git", "status", "--porcelain").stdout.strip())
+    msg = (f"{a.industry} {a.kind} release {tag}\n\n"
+           f"industry: {a.industry}\ntier: {man['tier']}\ncommit: {head}\n"
+           f"stream: {prefix}\n")
+    if a.kind == "policy":
+        msg += f"rules: {len(man['rules'])}  flows: {len(man['flows'])}\n"
+    else:
+        pack = man.get("pack") or {}
+        msg += f"pack path: {pack.get('path', 'pack')}  status: {pack.get('status', 'absent')}\n"
+
+    print(f"tag:      {tag}")
+    print(f"commit:   {head}{'  (WORKING TREE DIRTY)' if dirty else ''}")
+    print(f"stream:   {prefix}")
+    if a.dry_run:
+        print("dry-run: nothing created")
+        return 0
+    if dirty:
+        sys.exit("refusing to tag a dirty tree — commit or stash first")
+
+    sh("git", "tag", "-a", tag, "-m", msg)
+    print(f"created annotated tag {tag}")
+    if a.push:
+        sh("git", "push", "origin", tag)
+        print("pushed")
+    else:
+        print("not pushed (pass --push)")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

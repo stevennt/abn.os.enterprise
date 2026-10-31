@@ -1,0 +1,602 @@
+[
+ {
+  "order": 1,
+  "issue": 1,
+  "title": "A01 — Freeze 6-primitive metamodel v1.0 + validators",
+  "prompt": "[1/100 · issue #1] Freeze 6-primitive metamodel v1.0 + validators (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 1 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: README.md, ARCHITECTURE.md, ROADMAP.md, metamodel/*.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #1: ...'), rồi đóng issue: gh issue close 1 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 2,
+  "issue": 2,
+  "title": "A02 — Repo CI: yamllint + schema check + link check",
+  "prompt": "[2/100 · issue #2] Repo CI: yamllint + schema check + link check (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 2 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: README.md, ARCHITECTURE.md, ROADMAP.md, metamodel/*.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #2: ...'), rồi đóng issue: gh issue close 2 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 3,
+  "issue": 3,
+  "title": "A03 — Glossary + ubiquitous language freeze",
+  "prompt": "[3/100 · issue #3] Glossary + ubiquitous language freeze (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 3 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: README.md, ARCHITECTURE.md, ROADMAP.md, metamodel/*.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #3: ...'), rồi đóng issue: gh issue close 3 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 4,
+  "issue": 4,
+  "title": "A04 — Router spec: event to process-version resolution",
+  "prompt": "[4/100 · issue #4] Router spec: event to process-version resolution (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 4 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: README.md, ARCHITECTURE.md, ROADMAP.md, metamodel/*.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #4: ...'), rồi đóng issue: gh issue close 4 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 5,
+  "issue": 5,
+  "title": "A05 — Audit event envelope + hash chain",
+  "prompt": "[5/100 · issue #5] Audit event envelope + hash chain (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 5 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: README.md, ARCHITECTURE.md, ROADMAP.md, metamodel/*.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #5: ...'), rồi đóng issue: gh issue close 5 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 6,
+  "issue": 6,
+  "title": "A06 — Versioning & migration policy (semver for model)",
+  "prompt": "[6/100 · issue #6] Versioning & migration policy (semver for model) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 6 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: README.md, ARCHITECTURE.md, ROADMAP.md, metamodel/*.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #6: ...'), rồi đóng issue: gh issue close 6 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 7,
+  "issue": 7,
+  "title": "A07 — Idempotency + exactly-once guidance",
+  "prompt": "[7/100 · issue #7] Idempotency + exactly-once guidance (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 7 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: README.md, ARCHITECTURE.md, ROADMAP.md, metamodel/*.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #7: ...'), rồi đóng issue: gh issue close 7 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 8,
+  "issue": 8,
+  "title": "A08 — Reference payload examples (5 bank events)",
+  "prompt": "[8/100 · issue #8] Reference payload examples (5 bank events) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 8 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: README.md, ARCHITECTURE.md, ROADMAP.md, metamodel/*.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #8: ...'), rồi đóng issue: gh issue close 8 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 9,
+  "issue": 9,
+  "title": "A09 — Threat model for the OS itself",
+  "prompt": "[9/100 · issue #9] Threat model for the OS itself (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 9 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: README.md, ARCHITECTURE.md, ROADMAP.md, metamodel/*.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #9: ...'), rồi đóng issue: gh issue close 9 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 10,
+  "issue": 10,
+  "title": "A10 — L3 to L4 promotion gate definition",
+  "prompt": "[10/100 · issue #10] L3 to L4 promotion gate definition (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 10 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: README.md, ARCHITECTURE.md, ROADMAP.md, metamodel/*.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #10: ...'), rồi đóng issue: gh issue close 10 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 11,
+  "issue": 11,
+  "title": "B11 — Retail org-chart + RACI (full)",
+  "prompt": "[11/100 · issue #11] Retail org-chart + RACI (full) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 11 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/org-chart.yaml, metamodel/org.schema.yaml, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #11: ...'), rồi đóng issue: gh issue close 11 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 12,
+  "issue": 12,
+  "title": "B12 — Corporate org-chart + RACI",
+  "prompt": "[12/100 · issue #12] Corporate org-chart + RACI (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 12 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/org-chart.yaml, metamodel/org.schema.yaml, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #12: ...'), rồi đóng issue: gh issue close 12 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 13,
+  "issue": 13,
+  "title": "B13 — Risk org-chart + approval grid",
+  "prompt": "[13/100 · issue #13] Risk org-chart + approval grid (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 13 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/org-chart.yaml, metamodel/org.schema.yaml, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #13: ...'), rồi đóng issue: gh issue close 13 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 14,
+  "issue": 14,
+  "title": "B14 — Compliance/AML org + STR authority matrix",
+  "prompt": "[14/100 · issue #14] Compliance/AML org + STR authority matrix (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 14 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/org-chart.yaml, metamodel/org.schema.yaml, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #14: ...'), rồi đóng issue: gh issue close 14 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 15,
+  "issue": 15,
+  "title": "B15 — Treasury/Payments/Cards/Trade orgs",
+  "prompt": "[15/100 · issue #15] Treasury/Payments/Cards/Trade orgs (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 15 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/org-chart.yaml, metamodel/org.schema.yaml, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #15: ...'), rồi đóng issue: gh issue close 15 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 16,
+  "issue": 16,
+  "title": "B16 — CS/HR/Finance/ITOps orgs",
+  "prompt": "[16/100 · issue #16] CS/HR/Finance/ITOps orgs (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 16 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/org-chart.yaml, metamodel/org.schema.yaml, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #16: ...'), rồi đóng issue: gh issue close 16 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 17,
+  "issue": 17,
+  "title": "B17 — Role to permission mapping (OpenFGA model)",
+  "prompt": "[17/100 · issue #17] Role to permission mapping (OpenFGA model) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 17 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/org-chart.yaml, metamodel/org.schema.yaml, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #17: ...'), rồi đóng issue: gh issue close 17 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 18,
+  "issue": 18,
+  "title": "B18 — Headcount & capacity model for simulation",
+  "prompt": "[18/100 · issue #18] Headcount & capacity model for simulation (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 18 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/org-chart.yaml, metamodel/org.schema.yaml, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #18: ...'), rồi đóng issue: gh issue close 18 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 19,
+  "issue": 19,
+  "title": "B19 — Delegation & SoD conflict rules",
+  "prompt": "[19/100 · issue #19] Delegation & SoD conflict rules (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 19 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/org-chart.yaml, metamodel/org.schema.yaml, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #19: ...'), rồi đóng issue: gh issue close 19 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 20,
+  "issue": 20,
+  "title": "B20 — All-12-unit org-chart validation pass",
+  "prompt": "[20/100 · issue #20] All-12-unit org-chart validation pass (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 20 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/org-chart.yaml, metamodel/org.schema.yaml, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #20: ...'), rồi đóng issue: gh issue close 20 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 21,
+  "issue": 21,
+  "title": "C21 — eKYC onboarding flow (BPMN + schemas)",
+  "prompt": "[21/100 · issue #21] eKYC onboarding flow (BPMN + schemas) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 21 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/process-catalog.yaml, examples/bank/loan-approval.flow.yaml, metamodel/process.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #21: ...'), rồi đóng issue: gh issue close 21 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 22,
+  "issue": 22,
+  "title": "C22 — Retail unsecured loan: freeze runnable v1",
+  "prompt": "[22/100 · issue #22] Retail unsecured loan: freeze runnable v1 (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 22 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/process-catalog.yaml, examples/bank/loan-approval.flow.yaml, metamodel/process.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #22: ...'), rồi đóng issue: gh issue close 22 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 23,
+  "issue": 23,
+  "title": "C23 — Mortgage flow (collateral + valuation branch)",
+  "prompt": "[23/100 · issue #23] Mortgage flow (collateral + valuation branch) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 23 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/process-catalog.yaml, examples/bank/loan-approval.flow.yaml, metamodel/process.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #23: ...'), rồi đóng issue: gh issue close 23 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 24,
+  "issue": 24,
+  "title": "C24 — Corporate term loan flow",
+  "prompt": "[24/100 · issue #24] Corporate term loan flow (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 24 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/process-catalog.yaml, examples/bank/loan-approval.flow.yaml, metamodel/process.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #24: ...'), rồi đóng issue: gh issue close 24 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 25,
+  "issue": 25,
+  "title": "C25 — AML screening + STR filing flow",
+  "prompt": "[25/100 · issue #25] AML screening + STR filing flow (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 25 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/process-catalog.yaml, examples/bank/loan-approval.flow.yaml, metamodel/process.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #25: ...'), rồi đóng issue: gh issue close 25 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 26,
+  "issue": 26,
+  "title": "C26 — Domestic + SWIFT transfer flow",
+  "prompt": "[26/100 · issue #26] Domestic + SWIFT transfer flow (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 26 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/process-catalog.yaml, examples/bank/loan-approval.flow.yaml, metamodel/process.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #26: ...'), rồi đóng issue: gh issue close 26 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 27,
+  "issue": 27,
+  "title": "C27 — Card dispute/chargeback flow",
+  "prompt": "[27/100 · issue #27] Card dispute/chargeback flow (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 27 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/process-catalog.yaml, examples/bank/loan-approval.flow.yaml, metamodel/process.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #27: ...'), rồi đóng issue: gh issue close 27 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 28,
+  "issue": 28,
+  "title": "C28 — Complaint handling flow (end-to-end)",
+  "prompt": "[28/100 · issue #28] Complaint handling flow (end-to-end) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 28 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/process-catalog.yaml, examples/bank/loan-approval.flow.yaml, metamodel/process.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #28: ...'), rồi đóng issue: gh issue close 28 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 29,
+  "issue": 29,
+  "title": "C29 — HR chain: recruit to offboard (5 flows)",
+  "prompt": "[29/100 · issue #29] HR chain: recruit to offboard (5 flows) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 29 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/process-catalog.yaml, examples/bank/loan-approval.flow.yaml, metamodel/process.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #29: ...'), rồi đóng issue: gh issue close 29 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 30,
+  "issue": 30,
+  "title": "C30 — AP invoice + month-end close flows",
+  "prompt": "[30/100 · issue #30] AP invoice + month-end close flows (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 30 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: examples/bank/process-catalog.yaml, examples/bank/loan-approval.flow.yaml, metamodel/process.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #30: ...'), rồi đóng issue: gh issue close 30 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 31,
+  "issue": 31,
+  "title": "D31 — Event catalog v1 (40 events) + naming",
+  "prompt": "[31/100 · issue #31] Event catalog v1 (40 events) + naming (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 31 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/event.schema.yaml, các flow YAML đã có (payload mẫu).\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #31: ...'), rồi đóng issue: gh issue close 31 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 32,
+  "issue": 32,
+  "title": "D32 — Master-data model (customer/account/loan/employee)",
+  "prompt": "[32/100 · issue #32] Master-data model (customer/account/loan/employee) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 32 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/event.schema.yaml, các flow YAML đã có (payload mẫu).\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #32: ...'), rồi đóng issue: gh issue close 32 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 33,
+  "issue": 33,
+  "title": "D33 — PII classification + masking policy",
+  "prompt": "[33/100 · issue #33] PII classification + masking policy (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 33 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/event.schema.yaml, các flow YAML đã có (payload mẫu).\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #33: ...'), rồi đóng issue: gh issue close 33 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 34,
+  "issue": 34,
+  "title": "D34 — Payload JSON schemas for top-10 events",
+  "prompt": "[34/100 · issue #34] Payload JSON schemas for top-10 events (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 34 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/event.schema.yaml, các flow YAML đã có (payload mẫu).\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #34: ...'), rồi đóng issue: gh issue close 34 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 35,
+  "issue": 35,
+  "title": "D35 — Router classifier spec (rules + small model)",
+  "prompt": "[35/100 · issue #35] Router classifier spec (rules + small model) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 35 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/event.schema.yaml, các flow YAML đã có (payload mẫu).\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #35: ...'), rồi đóng issue: gh issue close 35 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 36,
+  "issue": 36,
+  "title": "D36 — Redpanda/Kafka topics + retention design",
+  "prompt": "[36/100 · issue #36] Redpanda/Kafka topics + retention design (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 36 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/event.schema.yaml, các flow YAML đã có (payload mẫu).\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #36: ...'), rồi đóng issue: gh issue close 36 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 37,
+  "issue": 37,
+  "title": "D37 — CDC from core banking (Debezium) design",
+  "prompt": "[37/100 · issue #37] CDC from core banking (Debezium) design (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 37 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/event.schema.yaml, các flow YAML đã có (payload mẫu).\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #37: ...'), rồi đóng issue: gh issue close 37 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 38,
+  "issue": 38,
+  "title": "D38 — Data-quality checks per event (GX)",
+  "prompt": "[38/100 · issue #38] Data-quality checks per event (GX) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 38 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/event.schema.yaml, các flow YAML đã có (payload mẫu).\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #38: ...'), rồi đóng issue: gh issue close 38 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 39,
+  "issue": 39,
+  "title": "D39 — Replay/backfill tool spec",
+  "prompt": "[39/100 · issue #39] Replay/backfill tool spec (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 39 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/event.schema.yaml, các flow YAML đã có (payload mẫu).\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #39: ...'), rồi đóng issue: gh issue close 39 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 40,
+  "issue": 40,
+  "title": "D40 — Synthetic sandbox dataset (10k customers) plan",
+  "prompt": "[40/100 · issue #40] Synthetic sandbox dataset (10k customers) plan (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 40 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/event.schema.yaml, các flow YAML đã có (payload mẫu).\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #40: ...'), rồi đóng issue: gh issue close 40 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 41,
+  "issue": 41,
+  "title": "E41 — DMN format + engine choice (DMN vs OPA)",
+  "prompt": "[41/100 · issue #41] DMN format + engine choice (DMN vs OPA) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 41 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/rule.schema.yaml, ROADMAP P4, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #41: ...'), rồi đóng issue: gh issue close 41 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 42,
+  "issue": 42,
+  "title": "E42 — KYC rule pack (identity, liveness, blacklist)",
+  "prompt": "[42/100 · issue #42] KYC rule pack (identity, liveness, blacklist) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 42 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/rule.schema.yaml, ROADMAP P4, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #42: ...'), rồi đóng issue: gh issue close 42 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 43,
+  "issue": 43,
+  "title": "E43 — AML/sanctions rule pack",
+  "prompt": "[43/100 · issue #43] AML/sanctions rule pack (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 43 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/rule.schema.yaml, ROADMAP P4, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #43: ...'), rồi đóng issue: gh issue close 43 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 44,
+  "issue": 44,
+  "title": "E44 — SBV DSTI/LTV credit grid pack",
+  "prompt": "[44/100 · issue #44] SBV DSTI/LTV credit grid pack (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 44 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/rule.schema.yaml, ROADMAP P4, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #44: ...'), rồi đóng issue: gh issue close 44 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 45,
+  "issue": 45,
+  "title": "E45 — Fee & interest rule pack",
+  "prompt": "[45/100 · issue #45] Fee & interest rule pack (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 45 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/rule.schema.yaml, ROADMAP P4, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #45: ...'), rồi đóng issue: gh issue close 45 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 46,
+  "issue": 46,
+  "title": "E46 — Policy-as-code pipeline (git to deploy)",
+  "prompt": "[46/100 · issue #46] Policy-as-code pipeline (git to deploy) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 46 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/rule.schema.yaml, ROADMAP P4, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #46: ...'), rồi đóng issue: gh issue close 46 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 47,
+  "issue": 47,
+  "title": "E47 — Consent management (PDPD) model",
+  "prompt": "[47/100 · issue #47] Consent management (PDPD) model (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 47 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/rule.schema.yaml, ROADMAP P4, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #47: ...'), rồi đóng issue: gh issue close 47 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 48,
+  "issue": 48,
+  "title": "E48 — Retention & e-archiving policy",
+  "prompt": "[48/100 · issue #48] Retention & e-archiving policy (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 48 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/rule.schema.yaml, ROADMAP P4, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #48: ...'), rồi đóng issue: gh issue close 48 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 49,
+  "issue": 49,
+  "title": "E49 — Audit-trail query API spec",
+  "prompt": "[49/100 · issue #49] Audit-trail query API spec (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 49 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/rule.schema.yaml, ROADMAP P4, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #49: ...'), rồi đóng issue: gh issue close 49 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 50,
+  "issue": 50,
+  "title": "E50 — Regulatory-change intake process",
+  "prompt": "[50/100 · issue #50] Regulatory-change intake process (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 50 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: metamodel/rule.schema.yaml, ROADMAP P4, docs/glossary.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #50: ...'), rồi đóng issue: gh issue close 50 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 51,
+  "issue": 51,
+  "title": "F51 — Engine spike: Temporal vs Camunda 8 + decision",
+  "prompt": "[51/100 · issue #51] Engine spike: Temporal vs Camunda 8 + decision (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 51 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: ARCHITECTURE.md (phần engine ADR), engine/.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #51: ...'), rồi đóng issue: gh issue close 51 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 52,
+  "issue": 52,
+  "title": "F52 — Durable loan flow hello-bank on chosen engine",
+  "prompt": "[52/100 · issue #52] Durable loan flow hello-bank on chosen engine (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 52 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: ARCHITECTURE.md (phần engine ADR), engine/.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #52: ...'), rồi đóng issue: gh issue close 52 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 53,
+  "issue": 53,
+  "title": "F53 — Human-task inbox (Frappe) integration",
+  "prompt": "[53/100 · issue #53] Human-task inbox (Frappe) integration (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 53 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: ARCHITECTURE.md (phần engine ADR), engine/.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #53: ...'), rồi đóng issue: gh issue close 53 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 54,
+  "issue": 54,
+  "title": "F54 — Axum gateway pattern for the OS",
+  "prompt": "[54/100 · issue #54] Axum gateway pattern for the OS (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 54 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: ARCHITECTURE.md (phần engine ADR), engine/.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #54: ...'), rồi đóng issue: gh issue close 54 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 55,
+  "issue": 55,
+  "title": "F55 — Supabase Postgres schema for OS",
+  "prompt": "[55/100 · issue #55] Supabase Postgres schema for OS (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 55 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: ARCHITECTURE.md (phần engine ADR), engine/.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #55: ...'), rồi đóng issue: gh issue close 55 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 56,
+  "issue": 56,
+  "title": "F56 — Notification fan-out (push/SMS/Zalo)",
+  "prompt": "[56/100 · issue #56] Notification fan-out (push/SMS/Zalo) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 56 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: ARCHITECTURE.md (phần engine ADR), engine/.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #56: ...'), rồi đóng issue: gh issue close 56 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 57,
+  "issue": 57,
+  "title": "F57 — File/docs service (CCCD, income, e-sign)",
+  "prompt": "[57/100 · issue #57] File/docs service (CCCD, income, e-sign) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 57 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: ARCHITECTURE.md (phần engine ADR), engine/.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #57: ...'), rồi đóng issue: gh issue close 57 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 58,
+  "issue": 58,
+  "title": "F58 — Error taxonomy + retry/escalation framework",
+  "prompt": "[58/100 · issue #58] Error taxonomy + retry/escalation framework (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 58 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: ARCHITECTURE.md (phần engine ADR), engine/.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #58: ...'), rồi đóng issue: gh issue close 58 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 59,
+  "issue": 59,
+  "title": "F59 — Multi-env + secrets (SOPS vault) wiring",
+  "prompt": "[59/100 · issue #59] Multi-env + secrets (SOPS vault) wiring (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 59 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: ARCHITECTURE.md (phần engine ADR), engine/.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #59: ...'), rồi đóng issue: gh issue close 59 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 60,
+  "issue": 60,
+  "title": "F60 — Load test: 1000 loan apps/hour SLO",
+  "prompt": "[60/100 · issue #60] Load test: 1000 loan apps/hour SLO (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 60 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: ARCHITECTURE.md (phần engine ADR), engine/.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #60: ...'), rồi đóng issue: gh issue close 60 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 61,
+  "issue": 61,
+  "title": "G61 — AI-step contract (schema I/O, pin, eval gate)",
+  "prompt": "[61/100 · issue #61] AI-step contract (schema I/O, pin, eval gate) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 61 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: engine/workflow-vs-ai-matrix.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #61: ...'), rồi đóng issue: gh issue close 61 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 62,
+  "issue": 62,
+  "title": "G62 — Doc-extract agent (CCCD/payslip) + eval set",
+  "prompt": "[62/100 · issue #62] Doc-extract agent (CCCD/payslip) + eval set (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 62 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: engine/workflow-vs-ai-matrix.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #62: ...'), rồi đóng issue: gh issue close 62 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 63,
+  "issue": 63,
+  "title": "G63 — Income verify + fraud-signal scorer",
+  "prompt": "[63/100 · issue #63] Income verify + fraud-signal scorer (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 63 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: engine/workflow-vs-ai-matrix.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #63: ...'), rồi đóng issue: gh issue close 63 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 64,
+  "issue": 64,
+  "title": "G64 — Credit-memo drafter (cited, no hallucinations)",
+  "prompt": "[64/100 · issue #64] Credit-memo drafter (cited, no hallucinations) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 64 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: engine/workflow-vs-ai-matrix.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #64: ...'), rồi đóng issue: gh issue close 64 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 65,
+  "issue": 65,
+  "title": "G65 — Complaint triage + draft-reply agent",
+  "prompt": "[65/100 · issue #65] Complaint triage + draft-reply agent (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 65 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: engine/workflow-vs-ai-matrix.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #65: ...'), rồi đóng issue: gh issue close 65 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 66,
+  "issue": 66,
+  "title": "G66 — Staff policy copilot (VI RAG)",
+  "prompt": "[66/100 · issue #66] Staff policy copilot (VI RAG) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 66 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: engine/workflow-vs-ai-matrix.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #66: ...'), rồi đóng issue: gh issue close 66 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 67,
+  "issue": 67,
+  "title": "G67 — Eval harness + golden sets per AI step",
+  "prompt": "[67/100 · issue #67] Eval harness + golden sets per AI step (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 67 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: engine/workflow-vs-ai-matrix.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #67: ...'), rồi đóng issue: gh issue close 67 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 68,
+  "issue": 68,
+  "title": "G68 — Fallback & abstain discipline",
+  "prompt": "[68/100 · issue #68] Fallback & abstain discipline (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 68 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: engine/workflow-vs-ai-matrix.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #68: ...'), rồi đóng issue: gh issue close 68 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 69,
+  "issue": 69,
+  "title": "G69 — Cost/latency budget per AI step",
+  "prompt": "[69/100 · issue #69] Cost/latency budget per AI step (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 69 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: engine/workflow-vs-ai-matrix.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #69: ...'), rồi đóng issue: gh issue close 69 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 70,
+  "issue": 70,
+  "title": "G70 — Red-team + PII-leak guards",
+  "prompt": "[70/100 · issue #70] Red-team + PII-leak guards (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 70 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: engine/workflow-vs-ai-matrix.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #70: ...'), rồi đóng issue: gh issue close 70 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 71,
+  "issue": 71,
+  "title": "H71 — Touchpoint SLA table (all C/E/S/X)",
+  "prompt": "[71/100 · issue #71] Touchpoint SLA table (all C/E/S/X) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 71 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/touchpoint-taxonomy.md, metamodel/touchpoint.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #71: ...'), rồi đóng issue: gh issue close 71 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 72,
+  "issue": 72,
+  "title": "H72 — Customer mobile status + e-sign journey",
+  "prompt": "[72/100 · issue #72] Customer mobile status + e-sign journey (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 72 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/touchpoint-taxonomy.md, metamodel/touchpoint.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #72: ...'), rồi đóng issue: gh issue close 72 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 73,
+  "issue": 73,
+  "title": "H73 — Branch/RM tablet journey",
+  "prompt": "[73/100 · issue #73] Branch/RM tablet journey (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 73 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/touchpoint-taxonomy.md, metamodel/touchpoint.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #73: ...'), rồi đóng issue: gh issue close 73 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 74,
+  "issue": 74,
+  "title": "H74 — Employee inbox + delegation + escalation",
+  "prompt": "[74/100 · issue #74] Employee inbox + delegation + escalation (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 74 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/touchpoint-taxonomy.md, metamodel/touchpoint.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #74: ...'), rồi đóng issue: gh issue close 74 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 75,
+  "issue": 75,
+  "title": "H75 — System adapters (core/CIC/NAPAS/SWIFT)",
+  "prompt": "[75/100 · issue #75] System adapters (core/CIC/NAPAS/SWIFT) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 75 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/touchpoint-taxonomy.md, metamodel/touchpoint.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #75: ...'), rồi đóng issue: gh issue close 75 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 76,
+  "issue": 76,
+  "title": "H76 — External touchpoints (SBV/CIC/insurer/auditor)",
+  "prompt": "[76/100 · issue #76] External touchpoints (SBV/CIC/insurer/auditor) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 76 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/touchpoint-taxonomy.md, metamodel/touchpoint.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #76: ...'), rồi đóng issue: gh issue close 76 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 77,
+  "issue": 77,
+  "title": "H77 — Notification templates (VI) + consent checks",
+  "prompt": "[77/100 · issue #77] Notification templates (VI) + consent checks (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 77 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/touchpoint-taxonomy.md, metamodel/touchpoint.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #77: ...'), rồi đóng issue: gh issue close 77 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 78,
+  "issue": 78,
+  "title": "H78 — Accessibility + VI language QA",
+  "prompt": "[78/100 · issue #78] Accessibility + VI language QA (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 78 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/touchpoint-taxonomy.md, metamodel/touchpoint.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #78: ...'), rồi đóng issue: gh issue close 78 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 79,
+  "issue": 79,
+  "title": "H79 — Touchpoint analytics (drop-off/TTA/CSAT)",
+  "prompt": "[79/100 · issue #79] Touchpoint analytics (drop-off/TTA/CSAT) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 79 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/touchpoint-taxonomy.md, metamodel/touchpoint.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #79: ...'), rồi đóng issue: gh issue close 79 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 80,
+  "issue": 80,
+  "title": "H80 — Offline/degraded-mode journeys",
+  "prompt": "[80/100 · issue #80] Offline/degraded-mode journeys (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 80 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/touchpoint-taxonomy.md, metamodel/touchpoint.schema.yaml.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #80: ...'), rồi đóng issue: gh issue close 80 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 81,
+  "issue": 81,
+  "title": "I81 — Simulator design (replay + what-if)",
+  "prompt": "[81/100 · issue #81] Simulator design (replay + what-if) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 81 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/simulation-plan.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #81: ...'), rồi đóng issue: gh issue close 81 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 82,
+  "issue": 82,
+  "title": "I82 — KPI dashboard (TTA/approval/default/override)",
+  "prompt": "[82/100 · issue #82] KPI dashboard (TTA/approval/default/override) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 82 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/simulation-plan.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #82: ...'), rồi đóng issue: gh issue close 82 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 83,
+  "issue": 83,
+  "title": "I83 — L3-L4 promotion pipeline + auto-demote",
+  "prompt": "[83/100 · issue #83] L3-L4 promotion pipeline + auto-demote (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 83 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/simulation-plan.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #83: ...'), rồi đóng issue: gh issue close 83 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 84,
+  "issue": 84,
+  "title": "I84 — Fraud/AML drill scenarios",
+  "prompt": "[84/100 · issue #84] Fraud/AML drill scenarios (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 84 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/simulation-plan.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #84: ...'), rồi đóng issue: gh issue close 84 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 85,
+  "issue": 85,
+  "title": "I85 — Chaos drills (engine/Kafka/CIC down)",
+  "prompt": "[85/100 · issue #85] Chaos drills (engine/Kafka/CIC down) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 85 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/simulation-plan.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #85: ...'), rồi đóng issue: gh issue close 85 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 86,
+  "issue": 86,
+  "title": "I86 — Decision explainer (rule-version to human words)",
+  "prompt": "[86/100 · issue #86] Decision explainer (rule-version to human words) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 86 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/simulation-plan.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #86: ...'), rồi đóng issue: gh issue close 86 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 87,
+  "issue": 87,
+  "title": "I87 — Monthly risk-committee pack generator",
+  "prompt": "[87/100 · issue #87] Monthly risk-committee pack generator (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 87 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/simulation-plan.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #87: ...'), rồi đóng issue: gh issue close 87 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 88,
+  "issue": 88,
+  "title": "I88 — Pen-test + SoD-conflict audit",
+  "prompt": "[88/100 · issue #88] Pen-test + SoD-conflict audit (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 88 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/simulation-plan.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #88: ...'), rồi đóng issue: gh issue close 88 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 89,
+  "issue": 89,
+  "title": "I89 — DR plan (RPO/RTO) for the OS",
+  "prompt": "[89/100 · issue #89] DR plan (RPO/RTO) for the OS (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 89 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/simulation-plan.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #89: ...'), rồi đóng issue: gh issue close 89 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 90,
+  "issue": 90,
+  "title": "I90 — Cost-of-operation model (per 1k instances)",
+  "prompt": "[90/100 · issue #90] Cost-of-operation model (per 1k instances) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 90 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: docs/simulation-plan.md, engine/automation-levels.md.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #90: ...'), rồi đóng issue: gh issue close 90 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 91,
+  "issue": 91,
+  "title": "J91 — Pilot 0: eKYC sandbox cutover checklist",
+  "prompt": "[91/100 · issue #91] Pilot 0: eKYC sandbox cutover checklist (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 91 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: toàn repo + các flow/pilot đã xong ở prompt trước.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #91: ...'), rồi đóng issue: gh issue close 91 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 92,
+  "issue": 92,
+  "title": "J92 — Pilot 1: retail loan live with L3 guardrails",
+  "prompt": "[92/100 · issue #92] Pilot 1: retail loan live with L3 guardrails (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 92 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: toàn repo + các flow/pilot đã xong ở prompt trước.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #92: ...'), rồi đóng issue: gh issue close 92 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 93,
+  "issue": 93,
+  "title": "J93 — Pilot 2: domestic transfers auto-routing",
+  "prompt": "[93/100 · issue #93] Pilot 2: domestic transfers auto-routing (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 93 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: toàn repo + các flow/pilot đã xong ở prompt trước.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #93: ...'), rồi đóng issue: gh issue close 93 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 94,
+  "issue": 94,
+  "title": "J94 — Pilot 3: complaint auto-triage",
+  "prompt": "[94/100 · issue #94] Pilot 3: complaint auto-triage (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 94 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: toàn repo + các flow/pilot đã xong ở prompt trước.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #94: ...'), rồi đóng issue: gh issue close 94 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 95,
+  "issue": 95,
+  "title": "J95 — Branch pilot ops (3 branches, training, rollback)",
+  "prompt": "[95/100 · issue #95] Branch pilot ops (3 branches, training, rollback) (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 95 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: toàn repo + các flow/pilot đã xong ở prompt trước.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #95: ...'), rồi đóng issue: gh issue close 95 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 96,
+  "issue": 96,
+  "title": "J96 — Rollout wave 2: mortgage + cards",
+  "prompt": "[96/100 · issue #96] Rollout wave 2: mortgage + cards (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 96 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: toàn repo + các flow/pilot đã xong ở prompt trước.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #96: ...'), rồi đóng issue: gh issue close 96 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 97,
+  "issue": 97,
+  "title": "J97 — Rollout wave 3: corporate + trade",
+  "prompt": "[97/100 · issue #97] Rollout wave 3: corporate + trade (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 97 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: toàn repo + các flow/pilot đã xong ở prompt trước.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #97: ...'), rồi đóng issue: gh issue close 97 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 98,
+  "issue": 98,
+  "title": "J98 — Ops handover: runbooks + on-call + SRE",
+  "prompt": "[98/100 · issue #98] Ops handover: runbooks + on-call + SRE (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 98 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: toàn repo + các flow/pilot đã xong ở prompt trước.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #98: ...'), rồi đóng issue: gh issue close 98 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 99,
+  "issue": 99,
+  "title": "J99 — Build-vs-buy final review + license sign-off",
+  "prompt": "[99/100 · issue #99] Build-vs-buy final review + license sign-off (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 99 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: toàn repo + các flow/pilot đã xong ở prompt trước.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #99: ...'), rồi đóng issue: gh issue close 99 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ },
+ {
+  "order": 100,
+  "issue": 100,
+  "title": "J100 — 100%-automation scorecard + next-year roadmap",
+  "prompt": "[100/100 · issue #100] 100%-automation scorecard + next-year roadmap (repo abn.os.enterprise).\nLàm việc tại /Users/thanhson/Workspace/abn.os.enterprise, nhánh DEV (git pull trước).\n1) Đọc đề: gh issue view 100 --repo stevennt/abn.os.enterprise --json title,body. Làm đúng Acceptance criteria trong body; file nền: toàn repo + các flow/pilot đã xong ở prompt trước.\n2) Đọc nhanh file liên quan (prompt trước có thể đã đổi) rồi mới sửa; giữ schema/YAML hợp lệ.\n3) Kiểm tra: yamllint file YAML đổi, không vỡ file khác.\n4) Commit + push nhánh DEV (message: 'Issue #100: ...'), rồi đóng issue: gh issue close 100 --repo stevennt/abn.os.enterprise --comment 'Done: <file đổi + cách kiểm chứng>'.\nChỉ làm đúng 1 issue này. Vướng thì comment vướng vào issue rồi dừng, không đoán bừa."
+ }
+]

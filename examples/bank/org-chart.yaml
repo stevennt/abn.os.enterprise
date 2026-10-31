@@ -1,15 +1,15 @@
 # Reference bank org-chart (abridged v0.1) — 12 departments, expand in issues 11-20
-- {id: retail,            name: "Retail Banking",       parent_id: null, headcount_plan: 1200}
-- {id: retail.credit,     name: "Retail Credit",        parent_id: retail, headcount_plan: 35}
-- {id: corporate,         name: "Corporate Banking",    parent_id: null, headcount_plan: 400}
-- {id: risk,              name: "Risk Management",      parent_id: null, headcount_plan: 120}
-- {id: compliance,        name: "Compliance & AML",    parent_id: null, headcount_plan: 90}
-- {id: treasury,          name: "Treasury & Markets",   parent_id: null, headcount_plan: 80}
-- {id: payments,          name: "Payments & Clearing",  parent_id: null, headcount_plan: 150}
-- {id: cards,             name: "Cards & Digital",      parent_id: null, headcount_plan: 200}
-- {id: trade,             name: "Trade Finance",        parent_id: null, headcount_plan: 110}
-- {id: cs,                name: "Customer Service",     parent_id: null, headcount_plan: 500}
-- {id: hr,                name: "Human Resources",      parent_id: null, headcount_plan: 70}
-- {id: finance,           name: "Finance & Accounting", parent_id: null, headcount_plan: 100}
-- {id: itops,             name: "IT & Operations",      parent_id: null, headcount_plan: 350}
+- {id: retail, name: "Retail Banking", parent_id: null, headcount_plan: 1200}
+- {id: retail.credit, name: "Retail Credit", parent_id: retail, headcount_plan: 35}
+- {id: corporate, name: "Corporate Banking", parent_id: null, headcount_plan: 400}
+- {id: risk, name: "Risk Management", parent_id: null, headcount_plan: 120}
+- {id: compliance, name: "Compliance & AML", parent_id: null, headcount_plan: 90}
+- {id: treasury, name: "Treasury & Markets", parent_id: null, headcount_plan: 80}
+- {id: payments, name: "Payments & Clearing", parent_id: null, headcount_plan: 150}
+- {id: cards, name: "Cards & Digital", parent_id: null, headcount_plan: 200}
+- {id: trade, name: "Trade Finance", parent_id: null, headcount_plan: 110}
+- {id: cs, name: "Customer Service", parent_id: null, headcount_plan: 500}
+- {id: hr, name: "Human Resources", parent_id: null, headcount_plan: 70}
+- {id: finance, name: "Finance & Accounting", parent_id: null, headcount_plan: 100}
+- {id: itops, name: "IT & Operations", parent_id: null, headcount_plan: 350}
 # Full RACI + roles per unit -> issues #11-20. Keep this file as index only.

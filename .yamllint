@@ -1,0 +1,6 @@
+# yamllint config — issue #2. Aligned colons + long $ids are house style.
+extends: default
+rules:
+  document-start: disable
+  line-length: {max: 120}
+  colons: {max-spaces-after: 20}

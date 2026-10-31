@@ -34,6 +34,14 @@ def main():
     org = load("examples/bank/org-chart.yaml")
     assert all(all(k in u for k in ("id", "name", "headcount_plan")) for u in org), "org index rows incomplete"
     print(f"org-index: {len(org)} units (full RACI -> B11/B20) — OK")
+    # README map check: every path in the Repo-map fence must exist
+    readme = (ROOT / "README.md").read_text().splitlines()
+    start = next(i for i, l in enumerate(readme) if l.startswith("## Repo map"))
+    o = readme.index("```", start) + 1
+    fence = readme[o:readme.index("```", o)]
+    missing = [l.split()[0] for l in fence if l.strip() and not (ROOT / l.split()[0]).exists()]
+    assert not missing, f"README map points at missing paths: {missing}"
+    print(f"readme-map: {len(fence)} entries all exist — OK")
     if self_test:
         # Acceptance #2 logic: an invalid flow MUST fail validation
         bad = dict(flow)

@@ -67,6 +67,12 @@ scripts/                   — validators and drills (every one runs in CI)
 bin/                       — operator tools: tag-industry, build-pack, new-industry
 ```
 
+To bring a customer on: `docs/core/onboarding-tenant.md` (the contract view,
+with owners and evidence), then the operator's commands in the platform repo
+(abn.platform.opengate, its docs/onboarding-tenant.md page). To model a legal
+entity inside that tenant: `docs/core/onboarding-company.md`; to add an
+industry: `docs/core/onboarding-industry.md`.
+
 ## How to model any department (repeatable recipe)
 
 1. **Org:** list units → roles → headcount → RACI per flow (`industries/<id>/org/`).

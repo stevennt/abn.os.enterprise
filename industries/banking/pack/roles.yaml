@@ -1,0 +1,26 @@
+# Banking staff registry (product source)
+# Triad: maker drafts, checker verifies, approver decides. Checkers cannot
+# edit evidence and cannot clear hits — only a clean re-screen clears.
+roles:
+  kyc-analyst:
+    position: maker
+    template: agents/kyc-analyst.md
+    skills_required: [base-opinion-structure, base-evidence-hygiene, banking-kyc-screening]
+    tools_allow: []
+    may_invoke: []
+  sanctions-reviewer:
+    position: checker
+    template: agents/sanctions-reviewer.md
+    rubric: banking-kyc-screening
+    tools_allow: []
+    may_invoke: []
+  approver:
+    position: checker
+    template: agents/approver.md
+    rubric: banking-kyc-screening
+    tools_allow: []
+    may_invoke: []
+    note: Decides ship/revise/escalate from checker verdicts. Cannot clear a
+      sanctions hit on its own — a clean re-screen is required first
+      (`rules/aml-pack.yaml` AML-HOLD-02 in this repo); approval bands per
+      `org/org-retail.yaml` (B11) and `org/org-corporate.yaml` (B12).

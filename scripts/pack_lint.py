@@ -71,6 +71,19 @@ def lint(pack_dir, schema):
     # cross-file checks the schema cannot express
     roles = doc["roles"]["roles"]
     known_skills = {s.get("name") for s in doc["skills"]}
+    # Issue #128: content must cite same-repo paths, never an absolute self-ref.
+    # MIGRATION.md is a historical record and is excluded on purpose.
+    content = [pack_dir / "roles.yaml", pack_dir / "rules.md"]
+    content += sorted((pack_dir / "skills").glob("*/SKILL.md"))
+    content += sorted((pack_dir / "agents").glob("*.md"))
+    for f in content:
+        if not f.is_file():
+            continue
+        for i, line in enumerate(f.read_text().splitlines(), 1):
+            if "abn.os.enterprise@" in line:
+                errors.append(f"{f.relative_to(pack_dir)}:{i}: absolute self-ref "
+                              "(cite a same-repo path such as rules/aml-pack.yaml)")
+
     for rid, r in roles.items():
         for s in (r.get("skills_required") or []) + ([r["rubric"]] if r.get("rubric") else []):
             if s not in known_skills and not s.startswith("base-"):

@@ -39,5 +39,5 @@ evals:
 pack:
   path: pack
   schema: metamodel/pack.schema.yaml
-  status: absent
-notes: "Pack content (agents/skills/roles) is imported in L4-06; until then pack.status stays absent."
+  status: active
+notes: "Pack imported in L4-06 (issue #128); consumed by OpenGate as a pinned bundle (docs/core/release.md)."

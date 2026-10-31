@@ -1,0 +1,71 @@
+# Retail org (full v1.0, issue #11) — validates against metamodel/org.schema.yaml
+- id: retail
+  version: 1.0.0
+  name: "Retail Banking"
+  parent_id: null
+  mandate: "Own all individual-customer business: onboarding, deposits, cards, retail lending"
+  headcount_plan: 1200
+  systems_used: [ekyc, core, cardms, los]
+  roles:
+    - id: retail_director
+      title: "Retail Director"
+      raci_scope:
+        - "A:ekyc.onboarding"
+        - "A:deposit.open"
+        - "A:card.issue"
+      approvals: ["policy-exception", "campaign-waiver<=100M-total"]
+      headcount: 1
+    - id: branch_manager
+      title: "Branch Manager"
+      raci_scope: ["A:ekyc.onboarding.branch", "A:deposit.open", "R:card.issue", "R:card.dispute"]
+      approvals: ["deposit.open", "card.issue-standard", "ekyc-override", "dispute-provisional<=20M"]
+      headcount: 120
+    - id: rm_officer
+      title: "Relationship Manager"
+      raci_scope:
+        - "R:loan.retail.unsecured.steps.1-2"
+        - "R:loan.retail.mortgage.steps.1-2"
+        - "R:deposit.open"
+        - "C:card.dispute"
+      approvals: ["recommend-only"]
+      headcount: 400
+  approval_thresholds:
+    deposit.open: {approver: branch_manager, limit: "none (KYC-gated)"}
+    card.issue-standard: {approver: branch_manager, limit: "standard products"}
+    ekyc-override: {approver: branch_manager, limit: "with 4-eyes"}
+    dispute-provisional: {approver: branch_manager, limit_vnd: 20000000}
+- id: retail.credit
+  version: 1.0.0
+  name: "Retail Credit"
+  parent_id: retail
+  mandate: "Own retail lending decisions <5B VND per facility"
+  headcount_plan: 35
+  systems_used: [los, core, ekyc, cic]
+  roles:
+    - id: credit_officer
+      title: "Credit Officer"
+      raci_scope:
+        - "R:loan.retail.unsecured.steps.2-4"
+        - "R:loan.retail.mortgage.steps.2-4"
+        - "R:card.dispute.evidence"
+      approvals: ["loan-unsecured<=300M", "dispute-provisional<=50M"]
+      headcount: 24
+    - id: credit_manager
+      title: "Credit Manager"
+      raci_scope: ["A:loan.retail.unsecured", "A:loan.retail.mortgage", "A:card.dispute", "R:risk.scoring.retail"]
+      approvals: ["loan-unsecured<=1000000000", "loan-mortgage<=5000000000", "dispute<=200M", "override-officer"]
+      headcount: 8
+    - id: credit_head
+      title: "Head of Retail Credit"
+      raci_scope: ["A:loan.retail.unsecured.exceptions", "A:loan.retail.mortgage.exceptions", "I:all-retail-credit"]
+      approvals: ["above-manager-limits", "policy-exception-credit"]
+      headcount: 3
+  approval_thresholds:
+    loan-unsecured: {officer_vnd: 300000000, manager_vnd: 1000000000, above: credit_head}
+    loan-mortgage: {manager_vnd: 5000000000, above: credit_head}
+    dispute-provisional: {officer_vnd: 50000000, manager_vnd: 200000000}
+# RACI coverage of the 6 retail processes:
+# ekyc.onboarding -> A retail_director/branch_manager; deposit.open -> A branch_manager;
+# card.issue -> A retail_director, R branch_manager;
+# loan.retail.unsecured + mortgage -> A credit_manager, R credit_officer/rm_officer;
+# card.dispute -> A credit_manager, R branch_manager/credit_officer, C rm_officer.

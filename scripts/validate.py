@@ -45,6 +45,16 @@ def main():
     org = load("examples/bank/org-chart.yaml")
     assert all(all(k in u for k in ("id", "name", "headcount_plan")) for u in org), "org index rows incomplete"
     print(f"org-index: {len(org)} units (full RACI -> B11/B20) — OK")
+    # Issue #11+: full unit files validate against the org schema
+    import glob as _glob
+    for f in sorted(_glob.glob(str(ROOT / "examples" / "bank" / "org-*.yaml"))):
+        if Path(f).name == "org-chart.yaml":
+            continue  # index only; full RACI lives in org-<unit>.yaml (B11-B20)
+        units = yaml.safe_load(open(f))
+        units = units if isinstance(units, list) else [units]
+        for u in units:
+            jsonschema.validate(u, schemas["org"])
+        print(f"org-full: {Path(f).name} ({len(units)} units) validates — OK")
     # Issue #8: 5 reference payloads validate + are marked synthetic
     import json as _json
     evdir = ROOT / "examples" / "events"

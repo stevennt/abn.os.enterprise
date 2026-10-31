@@ -1,4 +1,0 @@
-13:51:36 worker up mode=slow-s3
-13:51:40 s1-verify done
-13:51:40 s2-extract done
-13:51:40 s3-score START slow (90s) — kill me now for recovery demo

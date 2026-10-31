@@ -1,0 +1,110 @@
+[
+ {
+  "order": 1,
+  "issue": 123,
+  "title": "L4-01 — Industry manifest schema + registry",
+  "prompt": "[L4-1/18 · issue #123] Industry manifest schema + registry (repo abn.os.enterprise).\nWork in /Users/thanhson/Workspace/abn.os.enterprise, branch DEV (git pull first).\n1) Read: gh issue view 123 --repo stevennt/abn.os.enterprise --json title,body. Meet EVERY acceptance criterion.\n2) Background (read before editing): metamodel/org.schema.yaml (shape to copy), scripts/validate.py, docs/core-less repo layout in README.md.\n3) Keep all schemas/YAML valid; this repo is becoming multi-industry - shared vs per-industry split must hold.\n4) Verify with && (stop on red): yamllint on dirs touched, python scripts/validate.py, and every CI script in .github/workflows/validate.yml.\n5) Stage ONLY this issue's files (never git add -A - other work may be uncommitted); commit + push DEV ('Issue #123: ...'), then close: gh issue close 123 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof>'.\nExactly this 1 issue. Blocked? comment why on the issue and stop, no guessing."
+ },
+ {
+  "order": 2,
+  "issue": 124,
+  "title": "L4-02 — Restructure: move banking content into industries/banking/",
+  "prompt": "[L4-2/18 · issue #124] Restructure: move banking content into industries/banking/ (repo abn.os.enterprise).\nWork in /Users/thanhson/Workspace/abn.os.enterprise, branch DEV (git pull first).\n1) Read: gh issue view 124 --repo stevennt/abn.os.enterprise --json title,body. Meet EVERY acceptance criterion.\n2) Background (read before editing): current tree: rules/ events/ examples/bank/ ai/ evals/ templates/ + every script that references them.\n3) Keep all schemas/YAML valid; this repo is becoming multi-industry - shared vs per-industry split must hold.\n4) Verify with && (stop on red): yamllint on dirs touched, python scripts/validate.py, and every CI script in .github/workflows/validate.yml.\n5) Stage ONLY this issue's files (never git add -A - other work may be uncommitted); commit + push DEV ('Issue #124: ...'), then close: gh issue close 124 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof>'.\nExactly this 1 issue. Blocked? comment why on the issue and stop, no guessing."
+ },
+ {
+  "order": 3,
+  "issue": 125,
+  "title": "L4-03 — Split docs: docs/core vs industries/<id>/docs",
+  "prompt": "[L4-3/18 · issue #125] Split docs: docs/core vs industries/<id>/docs (repo abn.os.enterprise).\nWork in /Users/thanhson/Workspace/abn.os.enterprise, branch DEV (git pull first).\n1) Read: gh issue view 125 --repo stevennt/abn.os.enterprise --json title,body. Meet EVERY acceptance criterion.\n2) Background (read before editing): docs/ (65 files), README.md repo map section, scripts/validate.py readme-map check.\n3) Keep all schemas/YAML valid; this repo is becoming multi-industry - shared vs per-industry split must hold.\n4) Verify with && (stop on red): yamllint on dirs touched, python scripts/validate.py, and every CI script in .github/workflows/validate.yml.\n5) Stage ONLY this issue's files (never git add -A - other work may be uncommitted); commit + push DEV ('Issue #125: ...'), then close: gh issue close 125 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof>'.\nExactly this 1 issue. Blocked? comment why on the issue and stop, no guessing."
+ },
+ {
+  "order": 4,
+  "issue": 126,
+  "title": "L4-04 — Per-industry release tags + bin/tag-industry",
+  "prompt": "[L4-4/18 · issue #126] Per-industry release tags + bin/tag-industry (repo abn.os.enterprise).\nWork in /Users/thanhson/Workspace/abn.os.enterprise, branch DEV (git pull first).\n1) Read: gh issue view 126 --repo stevennt/abn.os.enterprise --json title,body. Meet EVERY acceptance criterion.\n2) Background (read before editing): docs/versioning.md (A06), existing tag banking-2026-10-31.1.\n3) Keep all schemas/YAML valid; this repo is becoming multi-industry - shared vs per-industry split must hold.\n4) Verify with && (stop on red): yamllint on dirs touched, python scripts/validate.py, and every CI script in .github/workflows/validate.yml.\n5) Stage ONLY this issue's files (never git add -A - other work may be uncommitted); commit + push DEV ('Issue #126: ...'), then close: gh issue close 126 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof>'.\nExactly this 1 issue. Blocked? comment why on the issue and stop, no guessing."
+ },
+ {
+  "order": 5,
+  "issue": 127,
+  "title": "L4-05 — Pack schema: adopt OpenGate's agent contract here",
+  "prompt": "[L4-5/18 · issue #127] Pack schema: adopt OpenGate's agent contract here (repo abn.os.enterprise).\nWork in /Users/thanhson/Workspace/abn.os.enterprise, branch DEV (git pull first).\n1) Read: gh issue view 127 --repo stevennt/abn.os.enterprise --json title,body. Meet EVERY acceptance criterion.\n2) Background (read before editing): /Users/thanhson/Workspace/abn.platform.opengate/gateway/resolve.py (functions load_roles, skill_version, validate_pack) and domains/banking/{roles.yaml,skills/*/SKILL.md}.\n3) Keep all schemas/YAML valid; this repo is becoming multi-industry - shared vs per-industry split must hold.\n4) Verify with && (stop on red): yamllint on dirs touched, python scripts/validate.py, and every CI script in .github/workflows/validate.yml.\n5) Stage ONLY this issue's files (never git add -A - other work may be uncommitted); commit + push DEV ('Issue #127: ...'), then close: gh issue close 127 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof>'.\nExactly this 1 issue. Blocked? comment why on the issue and stop, no guessing."
+ },
+ {
+  "order": 6,
+  "issue": 128,
+  "title": "L4-06 — Import banking pack content (L2-content)",
+  "prompt": "[L4-6/18 · issue #128] Import banking pack content (L2-content) (repo abn.os.enterprise).\nWork in /Users/thanhson/Workspace/abn.os.enterprise, branch DEV (git pull first).\n1) Read: gh issue view 128 --repo stevennt/abn.os.enterprise --json title,body. Meet EVERY acceptance criterion.\n2) Background (read before editing): /Users/thanhson/Workspace/abn.platform.opengate/domains/banking/ (read-only source), rules/aml-pack.yaml, rules/kyc-pack.yaml.\n3) Keep all schemas/YAML valid; this repo is becoming multi-industry - shared vs per-industry split must hold.\n4) Verify with && (stop on red): yamllint on dirs touched, python scripts/validate.py, and every CI script in .github/workflows/validate.yml.\n5) Stage ONLY this issue's files (never git add -A - other work may be uncommitted); commit + push DEV ('Issue #128: ...'), then close: gh issue close 128 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof>'.\nExactly this 1 issue. Blocked? comment why on the issue and stop, no guessing."
+ },
+ {
+  "order": 7,
+  "issue": 129,
+  "title": "L4-07 — Retire cite-only machinery, add same-repo consistency check",
+  "prompt": "[L4-7/18 · issue #129] Retire cite-only machinery, add same-repo consistency check (repo abn.os.enterprise).\nWork in /Users/thanhson/Workspace/abn.os.enterprise, branch DEV (git pull first).\n1) Read: gh issue view 129 --repo stevennt/abn.os.enterprise --json title,body. Meet EVERY acceptance criterion.\n2) Background (read before editing): docs/enterprise-pins.yaml + qc/tools/check_enterprise_cites.py in abn.platform.opengate (read-only).\n3) Keep all schemas/YAML valid; this repo is becoming multi-industry - shared vs per-industry split must hold.\n4) Verify with && (stop on red): yamllint on dirs touched, python scripts/validate.py, and every CI script in .github/workflows/validate.yml.\n5) Stage ONLY this issue's files (never git add -A - other work may be uncommitted); commit + push DEV ('Issue #129: ...'), then close: gh issue close 129 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof>'.\nExactly this 1 issue. Blocked? comment why on the issue and stop, no guessing."
+ },
+ {
+  "order": 8,
+  "issue": 130,
+  "title": "L4-08 — Bundle build: bin/build-pack produces a signed pinned bundle",
+  "prompt": "[L4-8/18 · issue #130] Bundle build: bin/build-pack produces a signed pinned bundle (repo abn.os.enterprise).\nWork in /Users/thanhson/Workspace/abn.os.enterprise, branch DEV (git pull first).\n1) Read: gh issue view 130 --repo stevennt/abn.os.enterprise --json title,body. Meet EVERY acceptance criterion.\n2) Background (read before editing): Makefile-less repo; keep stdlib-only Python like other scripts.\n3) Keep all schemas/YAML valid; this repo is becoming multi-industry - shared vs per-industry split must hold.\n4) Verify with && (stop on red): yamllint on dirs touched, python scripts/validate.py, and every CI script in .github/workflows/validate.yml.\n5) Stage ONLY this issue's files (never git add -A - other work may be uncommitted); commit + push DEV ('Issue #130: ...'), then close: gh issue close 130 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof>'.\nExactly this 1 issue. Blocked? comment why on the issue and stop, no guessing."
+ },
+ {
+  "order": 9,
+  "issue": 131,
+  "title": "L4-09 — Scaffold industries/legal/ (second industry, proves the shape)",
+  "prompt": "[L4-9/18 · issue #131] Scaffold industries/legal/ (second industry, proves the shape) (repo abn.os.enterprise).\nWork in /Users/thanhson/Workspace/abn.os.enterprise, branch DEV (git pull first).\n1) Read: gh issue view 131 --repo stevennt/abn.os.enterprise --json title,body. Meet EVERY acceptance criterion.\n2) Background (read before editing): industries/banking/ (after L4-02), /Users/thanhson/Workspace/abn.platform.opengate/domains/legal/ structure.\n3) Keep all schemas/YAML valid; this repo is becoming multi-industry - shared vs per-industry split must hold.\n4) Verify with && (stop on red): yamllint on dirs touched, python scripts/validate.py, and every CI script in .github/workflows/validate.yml.\n5) Stage ONLY this issue's files (never git add -A - other work may be uncommitted); commit + push DEV ('Issue #131: ...'), then close: gh issue close 131 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof>'.\nExactly this 1 issue. Blocked? comment why on the issue and stop, no guessing."
+ },
+ {
+  "order": 10,
+  "issue": 132,
+  "title": "L4-10 — Legal pack content moved in (draft status)",
+  "prompt": "[L4-10/18 · issue #132] Legal pack content moved in (draft status) (repo abn.os.enterprise).\nWork in /Users/thanhson/Workspace/abn.os.enterprise, branch DEV (git pull first).\n1) Read: gh issue view 132 --repo stevennt/abn.os.enterprise --json title,body. Meet EVERY acceptance criterion.\n2) Background (read before editing): /Users/thanhson/Workspace/abn.platform.opengate/domains/legal/ (read-only), metamodel/pack.schema.yaml.\n3) Keep all schemas/YAML valid; this repo is becoming multi-industry - shared vs per-industry split must hold.\n4) Verify with && (stop on red): yamllint on dirs touched, python scripts/validate.py, and every CI script in .github/workflows/validate.yml.\n5) Stage ONLY this issue's files (never git add -A - other work may be uncommitted); commit + push DEV ('Issue #132: ...'), then close: gh issue close 132 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof>'.\nExactly this 1 issue. Blocked? comment why on the issue and stop, no guessing."
+ },
+ {
+  "order": 11,
+  "issue": 133,
+  "title": "L4-11 — Cross-industry consistency CI",
+  "prompt": "[L4-11/18 · issue #133] Cross-industry consistency CI (repo abn.os.enterprise).\nWork in /Users/thanhson/Workspace/abn.os.enterprise, branch DEV (git pull first).\n1) Read: gh issue view 133 --repo stevennt/abn.os.enterprise --json title,body. Meet EVERY acceptance criterion.\n2) Background (read before editing): scripts/validate.py, all industries/*/industry.yaml.\n3) Keep all schemas/YAML valid; this repo is becoming multi-industry - shared vs per-industry split must hold.\n4) Verify with && (stop on red): yamllint on dirs touched, python scripts/validate.py, and every CI script in .github/workflows/validate.yml.\n5) Stage ONLY this issue's files (never git add -A - other work may be uncommitted); commit + push DEV ('Issue #133: ...'), then close: gh issue close 133 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof>'.\nExactly this 1 issue. Blocked? comment why on the issue and stop, no guessing."
+ },
+ {
+  "order": 12,
+  "issue": 134,
+  "title": "L4-12 — Confidentiality tiers + repo-split rule",
+  "prompt": "[L4-12/18 · issue #134] Confidentiality tiers + repo-split rule (repo abn.os.enterprise).\nWork in /Users/thanhson/Workspace/abn.os.enterprise, branch DEV (git pull first).\n1) Read: gh issue view 134 --repo stevennt/abn.os.enterprise --json title,body. Meet EVERY acceptance criterion.\n2) Background (read before editing): docs/pii-policy.md (tier vocabulary to align), metamodel/org.schema.yaml.\n3) Keep all schemas/YAML valid; this repo is becoming multi-industry - shared vs per-industry split must hold.\n4) Verify with && (stop on red): yamllint on dirs touched, python scripts/validate.py, and every CI script in .github/workflows/validate.yml.\n5) Stage ONLY this issue's files (never git add -A - other work may be uncommitted); commit + push DEV ('Issue #134: ...'), then close: gh issue close 134 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof>'.\nExactly this 1 issue. Blocked? comment why on the issue and stop, no guessing."
+ },
+ {
+  "order": 13,
+  "issue": 135,
+  "title": "L4-13 — Tooling path independence (no more hardcoded examples/bank)",
+  "prompt": "[L4-13/18 · issue #135] Tooling path independence (no more hardcoded examples/bank) (repo abn.os.enterprise).\nWork in /Users/thanhson/Workspace/abn.os.enterprise, branch DEV (git pull first).\n1) Read: gh issue view 135 --repo stevennt/abn.os.enterprise --json title,body. Meet EVERY acceptance criterion.\n2) Background (read before editing): scripts/validate.py, scripts/run_all_traces.py, scripts/export_bpmn.py, scripts/eval_harness.py, scripts/risk_pack.py, scripts/promo_pack.py, scripts/pii_scan.py.\n3) Keep all schemas/YAML valid; this repo is becoming multi-industry - shared vs per-industry split must hold.\n4) Verify with && (stop on red): yamllint on dirs touched, python scripts/validate.py, and every CI script in .github/workflows/validate.yml.\n5) Stage ONLY this issue's files (never git add -A - other work may be uncommitted); commit + push DEV ('Issue #135: ...'), then close: gh issue close 135 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof>'.\nExactly this 1 issue. Blocked? comment why on the issue and stop, no guessing."
+ },
+ {
+  "order": 14,
+  "issue": 136,
+  "title": "L4-14 — OpenGate: resolver --pack-root + bundle fetch/verify",
+  "prompt": "[L4-14/18 · issue #136] OpenGate: resolver --pack-root + bundle fetch/verify (repo abn.os.enterprise).\nWork in /Users/thanhson/Workspace/abn.os.enterprise, branch DEV (git pull first).\n1) Read: gh issue view 136 --repo stevennt/abn.os.enterprise --json title,body. Meet EVERY acceptance criterion.\n2) Background (read before editing): /Users/thanhson/Workspace/abn.platform.opengate (target repo), docs/enterprise-pins.yaml here.\n3) Keep all schemas/YAML valid; this repo is becoming multi-industry - shared vs per-industry split must hold.\n4) Verify with && (stop on red): yamllint on dirs touched, python scripts/validate.py, and every CI script in .github/workflows/validate.yml.\n5) Stage ONLY this issue's files (never git add -A - other work may be uncommitted); commit + push DEV ('Issue #136: ...'), then close: gh issue close 136 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof>'.\nExactly this 1 issue. Blocked? comment why on the issue and stop, no guessing."
+ },
+ {
+  "order": 15,
+  "issue": 137,
+  "title": "L4-15 — OpenGate: retire domains/banking, customers become bundle pointers",
+  "prompt": "[L4-15/18 · issue #137] OpenGate: retire domains/banking, customers become bundle pointers (repo abn.os.enterprise).\nWork in /Users/thanhson/Workspace/abn.os.enterprise, branch DEV (git pull first).\n1) Read: gh issue view 137 --repo stevennt/abn.os.enterprise --json title,body. Meet EVERY acceptance criterion.\n2) Background (read before editing): /Users/thanhson/Workspace/abn.platform.opengate (target repo), industries/banking/pack/ here.\n3) Keep all schemas/YAML valid; this repo is becoming multi-industry - shared vs per-industry split must hold.\n4) Verify with && (stop on red): yamllint on dirs touched, python scripts/validate.py, and every CI script in .github/workflows/validate.yml.\n5) Stage ONLY this issue's files (never git add -A - other work may be uncommitted); commit + push DEV ('Issue #137: ...'), then close: gh issue close 137 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof>'.\nExactly this 1 issue. Blocked? comment why on the issue and stop, no guessing."
+ },
+ {
+  "order": 16,
+  "issue": 138,
+  "title": "L4-16 — Industry onboarding playbook",
+  "prompt": "[L4-16/18 · issue #138] Industry onboarding playbook (repo abn.os.enterprise).\nWork in /Users/thanhson/Workspace/abn.os.enterprise, branch DEV (git pull first).\n1) Read: gh issue view 138 --repo stevennt/abn.os.enterprise --json title,body. Meet EVERY acceptance criterion.\n2) Background (read before editing): docs/core/onboarding-industry.md, scripts/seed-loop4.py (issue bodies as checklist).\n3) Keep all schemas/YAML valid; this repo is becoming multi-industry - shared vs per-industry split must hold.\n4) Verify with && (stop on red): yamllint on dirs touched, python scripts/validate.py, and every CI script in .github/workflows/validate.yml.\n5) Stage ONLY this issue's files (never git add -A - other work may be uncommitted); commit + push DEV ('Issue #138: ...'), then close: gh issue close 138 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof>'.\nExactly this 1 issue. Blocked? comment why on the issue and stop, no guessing."
+ },
+ {
+  "order": 17,
+  "issue": 139,
+  "title": "L4-17 — Multi-industry narrative + scorecard/cost generalization",
+  "prompt": "[L4-17/18 · issue #139] Multi-industry narrative + scorecard/cost generalization (repo abn.os.enterprise).\nWork in /Users/thanhson/Workspace/abn.os.enterprise, branch DEV (git pull first).\n1) Read: gh issue view 139 --repo stevennt/abn.os.enterprise --json title,body. Meet EVERY acceptance criterion.\n2) Background (read before editing): README.md, ARCHITECTURE.md, ROADMAP.md, docs/scorecard.md, docs/cost-model.md, docs/cost-loan.md.\n3) Keep all schemas/YAML valid; this repo is becoming multi-industry - shared vs per-industry split must hold.\n4) Verify with && (stop on red): yamllint on dirs touched, python scripts/validate.py, and every CI script in .github/workflows/validate.yml.\n5) Stage ONLY this issue's files (never git add -A - other work may be uncommitted); commit + push DEV ('Issue #139: ...'), then close: gh issue close 139 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof>'.\nExactly this 1 issue. Blocked? comment why on the issue and stop, no guessing."
+ },
+ {
+  "order": 18,
+  "issue": 140,
+  "title": "L4-18 — Pack-to-rule drift test (semantic, not string)",
+  "prompt": "[L4-18/18 · issue #140] Pack-to-rule drift test (semantic, not string) (repo abn.os.enterprise).\nWork in /Users/thanhson/Workspace/abn.os.enterprise, branch DEV (git pull first).\n1) Read: gh issue view 140 --repo stevennt/abn.os.enterprise --json title,body. Meet EVERY acceptance criterion.\n2) Background (read before editing): industries/banking/pack/skills/*/SKILL.md, industries/banking/rules/*.yaml.\n3) Keep all schemas/YAML valid; this repo is becoming multi-industry - shared vs per-industry split must hold.\n4) Verify with && (stop on red): yamllint on dirs touched, python scripts/validate.py, and every CI script in .github/workflows/validate.yml.\n5) Stage ONLY this issue's files (never git add -A - other work may be uncommitted); commit + push DEV ('Issue #140: ...'), then close: gh issue close 140 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof>'.\nExactly this 1 issue. Blocked? comment why on the issue and stop, no guessing."
+ }
+]

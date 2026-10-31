@@ -103,10 +103,14 @@ def main():
     print(f"dq: {len(dq)} suites x completeness/validity/freshness + alert routes — OK")
     # Issue #77: template registry seed (10) with consent-check per template
     reg = yaml.safe_load(open(ROOT / "templates" / "registry.yaml"))
+    assert reg.get("version") == "1.1.0", f"registry version {reg.get('version')} != 1.1.0"
     assert len(reg["templates"]) == 10, f"want 10 templates, found {len(reg['templates'])}"
     for t in reg["templates"]:
-        assert all(k in t for k in ("id", "version", "vi", "channels", "consent", "consent_check")), f"template {t} incomplete"
-    print(f"templates: {len(reg['templates'])} versioned VI templates, all consent-gated — OK")
+        assert all(k in t for k in ("id", "version", "vi_diac", "sms_ascii", "channels", "consent", "consent_check")), f"template {t.get('id')} incomplete"
+        assert t["version"] == "1.1.0", f"template {t['id']} not bumped"
+        assert any(ord(c) > 127 for c in t["vi_diac"]), f"template {t['id']} vi_diac lacks diacritics"
+        assert all(ord(c) < 128 for c in t["sms_ascii"]), f"template {t['id']} sms_ascii not ASCII"
+    print(f"templates: {len(reg['templates'])} v1.1.0 with vi_diac+sms_ascii, all consent-gated — OK")
     # Issues #42+: rule packs validate against the rule schema
     import glob as _glob2
     npack = 0

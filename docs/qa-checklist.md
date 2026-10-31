@@ -19,3 +19,10 @@
 - `transfer-done`: PASS — masked payee, txn ref present, no balance disclosed.
 - Finding carried to H77: registry `vi` fields stay SMS-safe ASCII until per-channel
   diacritics variants land; track in templates/registry.yaml v1.1.0.
+
+## Re-pass v1.1.0 (issue #108)
+
+All 10 templates now carry `vi_diac` (push/Zalo/app) + `sms_ascii` (SMS):
+tone/pronouns/numbers verified identical in meaning across variants; diacritics
+spot-checked per template; validator enforces both fields + version 1.1.0 in CI.
+`app-declined` diacritics variant uses the I86 explainer sentence (no codes).

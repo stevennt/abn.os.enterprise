@@ -55,6 +55,14 @@ permission:
 The schema accepts both forms (`$defs/permissionValue`). This was not guessed — the
 `legal` pack failed a narrower schema, which is why the schema was widened.
 
+## Company mapping
+
+The pack contract says how *content* travels; `docs/core/company-mapping.md`
+says which repo owns which **company's model** (tenant `domains.json` →
+`enterprise` pin + `companies` map). The two are different streams: bundles pin
+industry packs (`<industry>-pack-*`), the company mapping pins the contract
+release (`contract-*`) and names the `companies/<id>/` model.
+
 ## What deliberately stays in OpenGate
 
 - `qc/tools/*.py` gate scripts (platform tooling; `tools_allow` points at them).

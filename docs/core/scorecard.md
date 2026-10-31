@@ -3,12 +3,24 @@
 Filled quarterly from I82 metrics. v1 ships the template + the method; numbers arrive
 with pilots (no invented figures — see G64 grounding discipline).
 
-## Scorecard template (per process, per quarter)
+## Scorecard template (per industry, per process, per quarter)
 
-| Process | Touchless % | L4 steps % | Residual human-min/1k | TTA p50 | Override % | Quarter |
-|---|---|---|---|---|---|---|
-| (row per flow) | _ | _ | _ | _ | _ | _ |
-| **program total** | _ | _ | _ | — | _ | _ |
+Industries are scored separately first, then aggregated — a bank at 70% touchless and
+a legal practice at 20% are not one number, and averaging them hides where the humans
+actually are.
+
+| Industry | Process | Touchless % | L4 steps % | Residual human-min/1k | TTA p50 | Override % | Quarter |
+|---|---|---|---|---|---|---|---|
+| `banking` | loan.retail.unsecured | _ | _ | _ | _ | _ | _ |
+| `banking` | transfer.domestic | _ | _ | _ | _ | _ | _ |
+| `legal` | legal.charge-review | _ | _ | _ | _ | _ | _ |
+| **industry total** | `banking` | _ | _ | _ | — | _ | _ |
+| **industry total** | `legal` | _ | _ | _ | — | _ | _ |
+| **program total** | all industries | _ | _ | _ | — | _ | _ |
+
+Per-industry rules: a `legal` process cannot be scored touchless while every rule row
+still says `authority: pending-review` — an unreviewed pack is L2 at best, whatever the
+step metadata claims.
 
 Honesty rules: touchless counts instances with ZERO human touches (review lanes break
 it); L4% counts steps, not flows; residual minutes measured, not estimated, from Q2.

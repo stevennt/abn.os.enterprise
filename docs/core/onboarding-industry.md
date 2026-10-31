@@ -78,7 +78,7 @@ actual test of multi-industry support.
 
 **Gives:** manifest with `tag_stream`, org index + one unit per `--units`, a
 process catalog, a structural rule pack (`authority: pending-review`), an end-to-end
-flow (intake → AI draft → human check → release), one event example, `docs/status.md`,
+flow (intake → AI draft → human check → release), one event example, a `status.md`
 and with `--with-pack`: roles, two agent templates, one skill, `MIGRATION.md` with the
 `### Migration` line consumers require.
 
@@ -132,6 +132,7 @@ assurance, so a new industry inherits them rather than exercising them:
 | `bin/verify-industry-tags.py` | both tag streams resolve | **your industry must pass this** |
 | `scripts/pack_cite_check.py` | pack cites resolve to same-repo rules/flows | only with `--with-pack` |
 | `scripts/run_trace.py` | single-flow trace regeneration | the demo flow; `run_all_traces.py` covers yours |
+| `scripts/docs_link_check.py` | front-page docs point at real paths | applies to shared docs, not to your industry folder |
 
 Kept in sync by `scripts/playbook_sync.py`: CI fails if the workflow runs a script
 the playbook never mentions, so this appendix cannot silently rot.

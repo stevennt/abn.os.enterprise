@@ -1,5 +1,24 @@
 # ARCHITECTURE — runtime options + recommendation
 
+## Scope of this document
+
+This is the **platform architecture that serves every industry** in `industries/`.
+Industry-specific structure (org, flows, rules) is not here — it lives in each
+industry folder and is validated by `scripts/validate.py`.
+
+Two boundaries are worth stating up front:
+
+- **Business truth vs agent content.** Both live in this repository, per industry
+  (`industries/<id>/{rules,flows,pack}`), so prose and the rules it describes share a
+  commit and a release tag. The execution platform consumes a *verified bundle*
+  (`docs/core/bundles.md`), never a git checkout.
+- **Hosted vs split.** `public`/`commercial` industries live here; `restricted`/
+  `classified` live in their own repository with a vendored metamodel
+  (`docs/core/confidentiality.md`). A tier label does not make content safe to host.
+
+The model itself is described in `README.md` (6 primitives) and
+`docs/core/onboarding-industry.md` (how a new industry is added and proven).
+
 ## The routing core (one sentence)
 
 Every business situation is an **Event with a typed Data payload**; a **Router** classifies it and starts the matching **Process version**; each step executes as **workflow / AI / human** under **Rules** and **Roles**; every step emits an **Audit event**.

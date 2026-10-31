@@ -1,15 +1,26 @@
 # Cost-of-operation model v1.0 (issue #90) — per 1k instances, L3 vs L4
 
-## Cost sheet template (fill per flow, quarterly refresh with vendor pricing)
+## Where numbers live
 
-| Line | L3 (per 1k) | L4 (per 1k) | Source |
+This file is the **template and the method**. Filled sheets are per industry, next to
+the content they describe:
+
+- `industries/banking/docs/cost-loan.md` — first real numbers for the retail loan flow
+- a new industry copies that file's shape; nothing shared needs to change
+
+Industries differ in ways one sheet cannot capture: a bank's cost is dominated by
+human approval minutes, a legal practice's by reviewer time and licensed sources.
+
+## Cost sheet template (fill per flow per industry, quarterly, vendor pricing refreshed)
+
+| Industry | Line | L3 (per 1k) | L4 (per 1k) | Source |
 |---|---|---|---|
-| infra (engine+bus+DB amortized) | _ | _ | F55/D36 sizing |
-| AI inference (sum of step budgets) | _ | _ | G69 table |
-| human minutes × blended rate | _ (high) | _ (override only) | B18 capacity |
-| notifications/docs | _ | _ | F56/F57 meters |
-| incidents/audit overhead share | _ | _ | I87 pack |
-| **total** | _ | _ |  |
+| `<id>` | infra (engine+bus+DB amortized) | _ | _ | F55/D36 sizing |
+| `<id>` | AI inference (sum of step budgets) | _ | _ | G69 table |
+| `<id>` | human minutes × blended rate | _ (high) | _ (override only) | B18 capacity |
+| `<id>` | notifications/docs | _ | _ | F56/F57 meters |
+| `<id>` | incidents/audit overhead share | _ | _ | I87 pack |
+| `<id>` | **total** | _ | _ |  |
 | human-minutes saved vs L0 | _ | _ | baseline time-study |
 
 ## Reading rules

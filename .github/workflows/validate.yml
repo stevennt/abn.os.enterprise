@@ -20,6 +20,7 @@ jobs:
       - run: python scripts/authz_check.py
       - run: python scripts/inbox_demo.py
       - run: python scripts/eval_harness.py
+      - run: python scripts/gen_goldens.py --seed 42 && git diff --exit-code -- evals/ && python scripts/eval_harness.py --strict
       - run: rm -rf /tmp/sbx-a /tmp/sbx-b && python scripts/gen_sandbox.py --seed 42 --scale small --out /tmp/sbx-a && python scripts/gen_sandbox.py --seed 42 --scale small --out /tmp/sbx-b && diff -r /tmp/sbx-a /tmp/sbx-b && sha256sum /tmp/sbx-a/*
       - run: python scripts/run_trace.py examples/bank/loan-approval.flow.yaml examples/events/loan.application.v1.json examples/bank/loan-approval.trace.json
       - run: rm -f /tmp/spike.journal && (python engine/spike/durable_runner.py --journal /tmp/spike.journal --crash-after 2; test $? -eq 2) && python engine/spike/durable_runner.py --journal /tmp/spike.journal --trace engine/spike/demo-trace.json

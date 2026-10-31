@@ -1,0 +1,200 @@
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 0: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S4", "text": "TEST complaint 1: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S4", "text": "TEST complaint 2: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 3: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S4", "text": "TEST complaint 4: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S2", "text": "TEST complaint 5: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S1", "text": "TEST complaint 6: mat tien"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 7: mat tien"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 8: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 9: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S2", "text": "TEST complaint 10: mat tien"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S4", "text": "TEST complaint 11: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S2", "text": "TEST complaint 12: mat tien"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 13: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 14: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S4", "text": "TEST complaint 15: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 16: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S2", "text": "TEST complaint 17: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 18: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S4", "text": "TEST complaint 19: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 20: mat tien"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S4", "text": "TEST complaint 21: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 22: mat tien"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 23: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S2", "text": "TEST complaint 24: mat tien"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S4", "text": "TEST complaint 25: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S1", "text": "TEST complaint 26: mat tien"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 27: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S1", "text": "TEST complaint 28: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 29: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 30: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 31: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 32: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S2", "text": "TEST complaint 33: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 34: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 35: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S4", "text": "TEST complaint 36: mat tien"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 37: mat tien"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 38: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S4", "text": "TEST complaint 39: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S4", "text": "TEST complaint 40: mat tien"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S1", "text": "TEST complaint 41: mat tien"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 42: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 43: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 44: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S4", "text": "TEST complaint 45: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S1", "text": "TEST complaint 46: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S2", "text": "TEST complaint 47: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S4", "text": "TEST complaint 48: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S2", "text": "TEST complaint 49: mat tien"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S2", "text": "TEST complaint 50: mat tien"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S4", "text": "TEST complaint 51: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 52: mat tien"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S2", "text": "TEST complaint 53: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 54: mat tien"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 55: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S4", "text": "TEST complaint 56: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 57: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S4", "text": "TEST complaint 58: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S4", "text": "TEST complaint 59: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 60: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S1", "text": "TEST complaint 61: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S4", "text": "TEST complaint 62: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S1", "text": "TEST complaint 63: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S4", "text": "TEST complaint 64: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 65: mat tien"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 66: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 67: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S4", "text": "TEST complaint 68: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 69: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S4", "text": "TEST complaint 70: mat tien"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 71: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S4", "text": "TEST complaint 72: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 73: mat tien"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S4", "text": "TEST complaint 74: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 75: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 76: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S2", "text": "TEST complaint 77: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 78: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S4", "text": "TEST complaint 79: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S4", "text": "TEST complaint 80: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 81: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S4", "text": "TEST complaint 82: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S4", "text": "TEST complaint 83: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 84: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S4", "text": "TEST complaint 85: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S4", "text": "TEST complaint 86: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 87: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S1", "text": "TEST complaint 88: mat tien"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S1", "text": "TEST complaint 89: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S2", "text": "TEST complaint 90: mat tien"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S4", "text": "TEST complaint 91: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S4", "text": "TEST complaint 92: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S2", "text": "TEST complaint 93: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 94: mat tien"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 95: mat tien"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 96: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S4", "text": "TEST complaint 97: mat tien"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S4", "text": "TEST complaint 98: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 99: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 100: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 101: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S4", "text": "TEST complaint 102: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 103: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S2", "text": "TEST complaint 104: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S1", "text": "TEST complaint 105: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 106: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S4", "text": "TEST complaint 107: mat tien"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 108: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 109: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S4", "text": "TEST complaint 110: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 111: mat tien"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S2", "text": "TEST complaint 112: mat tien"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S2", "text": "TEST complaint 113: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 114: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S1", "text": "TEST complaint 115: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S4", "text": "TEST complaint 116: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S1", "text": "TEST complaint 117: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S4", "text": "TEST complaint 118: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S1", "text": "TEST complaint 119: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 120: mat tien"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S1", "text": "TEST complaint 121: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 122: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S1", "text": "TEST complaint 123: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S4", "text": "TEST complaint 124: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 125: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S1", "text": "TEST complaint 126: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S4", "text": "TEST complaint 127: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S1", "text": "TEST complaint 128: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S4", "text": "TEST complaint 129: mat tien"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 130: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 131: mat tien"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S2", "text": "TEST complaint 132: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S1", "text": "TEST complaint 133: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 134: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S4", "text": "TEST complaint 135: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 136: mat tien"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 137: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 138: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 139: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S4", "text": "TEST complaint 140: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S4", "text": "TEST complaint 141: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S1", "text": "TEST complaint 142: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 143: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S4", "text": "TEST complaint 144: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 145: mat tien"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 146: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S1", "text": "TEST complaint 147: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 148: mat tien"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S1", "text": "TEST complaint 149: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 150: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 151: mat tien"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 152: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S2", "text": "TEST complaint 153: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 154: mat tien"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S4", "text": "TEST complaint 155: mat tien"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S4", "text": "TEST complaint 156: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S4", "text": "TEST complaint 157: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 158: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S4", "text": "TEST complaint 159: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 160: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 161: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 162: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 163: mat tien"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S4", "text": "TEST complaint 164: mat tien"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 165: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 166: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S1", "text": "TEST complaint 167: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S4", "text": "TEST complaint 168: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S1", "text": "TEST complaint 169: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S4", "text": "TEST complaint 170: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S4", "text": "TEST complaint 171: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 172: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 173: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S4", "text": "TEST complaint 174: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 175: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 176: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S4", "text": "TEST complaint 177: mat tien"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S4", "text": "TEST complaint 178: mat tien"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S1", "text": "TEST complaint 179: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S2", "text": "TEST complaint 180: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S1", "text": "TEST complaint 181: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 182: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 183: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 184: mat tien"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S2", "text": "TEST complaint 185: mat tien"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 186: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 187: mat tien"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 188: mat tien"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S3", "text": "TEST complaint 189: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "transfer", "severity": "S3", "text": "TEST complaint 190: KHA CAP khan cap"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 191: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S4", "text": "TEST complaint 192: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 193: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S3", "text": "TEST complaint 194: mat tien"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S2", "text": "TEST complaint 195: phi dich vu khong ro"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S3", "text": "TEST complaint 196: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fraud", "severity": "S1", "text": "TEST complaint 197: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "fees", "severity": "S1", "text": "TEST complaint 198: hoi thong tin"}
+{"_synthetic_pii": true, "intent": "info", "severity": "S4", "text": "TEST complaint 199: KHA CAP khan cap"}

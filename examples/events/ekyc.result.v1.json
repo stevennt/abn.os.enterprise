@@ -1,0 +1,1 @@
+{"_synthetic_pii":true,"event_type":"ekyc.onboarding.result","event_version":"1.0.0","idempotency_key":"a1b2c3d4e5+ekyc","payload":{"blacklist_hit":false,"cccd":"001099000002","extracted_name":"Nguyen Van TEST","face_match_score":0.97,"liveness":"pass","ocr_confidence":0.98},"producer":"system:ekyc-provider","ts":1793422810}

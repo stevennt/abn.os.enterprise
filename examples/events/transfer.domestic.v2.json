@@ -1,0 +1,1 @@
+{"_synthetic_pii":true,"event_type":"transfer.domestic.requested","event_version":"2.0.0","idempotency_key":"IDEM-7f3a9c1e","payload":{"amount":15000000,"narration":"TEST salary","payee_account":"999888777001","rail":"napas","sender_account":"999111222003"},"producer":"channel:mobile-app","ts":1793422820}

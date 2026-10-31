@@ -1,0 +1,1 @@
+{"_synthetic_pii":true,"event_type":"aml.screening.hit","event_version":"1.0.0","idempotency_key":"C-77002+sanctions-v2026-10-30","payload":{"customer_id":"C-77002","entity_name":"TEST Entity Only","list":"sanctions-v2026-10-30","match_score":0.91,"recommendation":"HOLD_FOR_REVIEW"},"producer":"system:compliance-bot","ts":1793422840}

@@ -45,7 +45,20 @@ def main():
     org = load("examples/bank/org-chart.yaml")
     assert all(all(k in u for k in ("id", "name", "headcount_plan")) for u in org), "org index rows incomplete"
     print(f"org-index: {len(org)} units (full RACI -> B11/B20) — OK")
-    # README map check: every path in the Repo-map fence must exist
+    # Issue #8: 5 reference payloads validate + are marked synthetic
+    import json as _json
+    evdir = ROOT / "examples" / "events"
+    evfiles = sorted(evdir.glob("*.json"))
+    assert len(evfiles) == 5, f"want 5 event examples, found {len(evfiles)}"
+    semver = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
+    for f in evfiles:
+        ev = _json.loads(f.read_text())
+        for k in ("event_type", "event_version", "producer", "idempotency_key", "payload"):
+            assert k in ev, f"{f.name} missing {k}"
+        assert semver.match(ev["event_version"]), f"{f.name} bad event_version"
+        assert isinstance(ev["payload"], dict) and ev["payload"], f"{f.name} empty payload"
+        assert ev.get("_synthetic_pii") is True, f"{f.name} not marked synthetic"
+    print(f"events: {len(evfiles)} examples validate, all marked synthetic — OK")
     readme = (ROOT / "README.md").read_text().splitlines()
     start = next(i for i, l in enumerate(readme) if l.startswith("## Repo map"))
     o = readme.index("```", start) + 1

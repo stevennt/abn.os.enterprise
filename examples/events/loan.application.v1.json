@@ -1,0 +1,1 @@
+{"_synthetic_pii":true,"event_type":"loan.application.submitted","event_version":"1.0.0","idempotency_key":"C-88123+APP-2026-104231","payload":{"cccd":"001099000001","consent_ref":"CONS-2026-77120","customer_id":"C-88123","income_docs":["payslip_09.pdf","bank_stmt_q3.pdf"],"requested_amount":300000000,"term_m":24},"producer":"channel:mobile-app","ts":1793422800}

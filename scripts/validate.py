@@ -99,6 +99,16 @@ def main():
         assert {"completeness", "validity", "freshness"} <= classes, f"{s['event']} missing class"
         assert s["alert"].get("route"), f"{s['event']} missing alert route"
     print(f"dq: {len(dq)} suites x completeness/validity/freshness + alert routes — OK")
+    # Issues #42+: rule packs validate against the rule schema
+    import glob as _glob2
+    npack = 0
+    for f in sorted(_glob2.glob(str(ROOT / "rules" / "*.yaml"))):
+        pack = yaml.safe_load(open(f))
+        for r in (pack if isinstance(pack, list) else [pack]):
+            jsonschema.validate(r, schemas["rule"])
+            npack += 1
+    if npack:
+        print(f"rules: {npack} pack rows validate — OK")
     # Issue #18: capacity CSV per role parses with sane numbers
     import csv as _csv
     cap = list(_csv.DictReader(open(ROOT / "engine" / "capacity.csv")))

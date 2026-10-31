@@ -1,0 +1,27 @@
+# KYC rule pack v1.0 (issue #42) — validates against metamodel/rule.schema.yaml
+- id: KYC-01
+  version: 1.0.0-2026-10-01
+  authority: "Internal eKYC policy 2026-04 + SBV Circular 16 identity requirements"
+  inputs: [doc_authentic, face_match_score, channel]
+  table:
+    - {when: "doc_authentic=true AND face_match>=0.90", then: PASS}
+    - {when: "doc_authentic=true AND face_match 0.75-0.90", then: REVIEW}
+    - {when: "doc_authentic=false OR face_match<0.75", then: FAIL}
+  effect: "FAIL blocks onboarding outright; REVIEW routes to branch_manager with 4-eyes"
+- id: KYC-02
+  version: 1.0.0-2026-10-01
+  authority: "Internal eKYC policy 2026-04 (liveness anti-spoofing)"
+  inputs: [liveness, channel]
+  table:
+    - {when: "liveness=pass", then: PASS}
+    - {when: "liveness=uncertain AND channel=branch", then: REVIEW}
+    - {when: "liveness=fail OR (uncertain AND channel=remote)", then: FAIL}
+  effect: "remote uncertain treated as FAIL; branch may REVIEW with officer present"
+- id: KYC-03
+  version: 1.0.0-2026-10-01
+  authority: "AML policy 2026-06 + sanctions screening standard"
+  inputs: [blacklist_hit, sanction_hit]
+  table:
+    - {when: "blacklist_hit=false AND sanction_hit=false", then: PASS}
+    - {when: "blacklist_hit=true OR sanction_hit=true", then: HOLD}
+  effect: "HOLD freezes onboarding and opens aml.str.filing triage; never auto-clear"

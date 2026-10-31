@@ -1,0 +1,12 @@
+# Poison fixture (issue #123): manifest missing required `tier`.
+# THE VALIDATOR MUST REJECT THIS. Used by scripts/validate.py --self-test.
+id: poison
+version: 1.0.0
+label: "Fixture — must never validate"
+jurisdiction: VN
+owner: nobody
+tag_stream:
+  policy_prefix: poison-policy
+  pack_prefix: poison-pack
+rules: []
+flows: []

@@ -11,7 +11,7 @@ import yaml
 import jsonschema
 
 ROOT = Path(__file__).resolve().parent.parent
-SCHEMAS = ["org", "process", "rule", "event", "touchpoint", "audit"]
+SCHEMAS = ["org", "process", "rule", "event", "touchpoint", "audit", "industry"]
 
 def load(p):
     return yaml.safe_load((ROOT / p).read_text())
@@ -129,6 +129,30 @@ def main():
         assert int(r["headcount"]) > 0 and float(r["mins_per_task"]) > 0, f"bad row {r['role']}"
         assert 0 < float(r["utilization"]) <= 0.9, f"utilization out of range {r['role']}"
     print(f"capacity: {len(cap)} roles with throughput + assumptions — OK")
+    # Issue #123: industry manifests — required fields, tier enum, path existence, id==dirname
+    import glob as _glob4
+    man_files = sorted(_glob4.glob(str(ROOT / "industries" / "*" / "industry.yaml")))
+    assert man_files, "no industries/*/industry.yaml found"
+    seen_ids = set()
+    for mf in man_files:
+        man = yaml.safe_load(open(mf))
+        jsonschema.validate(man, schemas["industry"])
+        dirname = Path(mf).parent.name
+        assert man["id"] == dirname, f"{mf}: id '{man['id']}' != dir '{dirname}'"
+        assert man["id"] not in seen_ids, f"duplicate industry id {man['id']}"
+        seen_ids.add(man["id"])
+        assert man["tier"] in ("public", "commercial"), (
+            f"{man['id']}: tier '{man['tier']}' must not live in this repo "
+            "(see docs/core/confidentiality.md)")
+        indir = Path(mf).parent
+        for rel in man["rules"] + man["flows"] + man.get("evals", []):
+            assert (ROOT / rel).exists() or (indir / rel).exists(), f"{man['id']}: missing path {rel}"
+        pack = man.get("pack") or {}
+        if pack.get("status") in ("draft", "active"):
+            assert (indir / pack.get("path", "pack")).is_dir(), f"{man['id']}: pack path missing"
+    inv = ", ".join(f"{m['id']}({m['tier']},{len(m['flows'])} flows)" for m in
+                    (yaml.safe_load(open(f)) for f in man_files))
+    print(f"industries: {len(man_files)} manifests valid — {inv}")
     # Issue #22/#111: runnable-spec traces — steps in order, chains verify
     import json as _json2
     import glob as _glob3
@@ -172,7 +196,15 @@ def main():
             jsonschema.validate(bad, schemas["process"])
         except jsonschema.ValidationError as e:
             print(f"self-test: invalid flow correctly REJECTED ({e.message[:80]}) — OK")
+        # Issue #123: a manifest without `tier` MUST be rejected
+        poison = yaml.safe_load(open(ROOT / "tests" / "fixtures" / "industry-poison.yaml"))
+        try:
+            jsonschema.validate(poison, schemas["industry"])
+        except jsonschema.ValidationError as e:
+            print(f"self-test: poison industry manifest correctly REJECTED ({e.message[:60]}) — OK")
             return 0
+        print("self-test FAILED: poison industry manifest was accepted")
+        return 1
         print("self-test FAILED: invalid flow was accepted")
         return 1
     return 0

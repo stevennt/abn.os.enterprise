@@ -1,0 +1,57 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://github.com/stevennt/abn.os.enterprise/metamodel/industry.schema.yaml/v1.0.0"
+title: "Industry manifest v1.0.0 — the contract that makes this repo multi-industry"
+type: object
+required: [id, version, label, tier, jurisdiction, owner, tag_stream, rules, flows]
+properties:
+  id:
+    type: string
+    pattern: "^[a-z][a-z0-9-]{1,30}$"
+    description: "matches the directory name under industries/"
+  version:
+    type: string
+    pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+  label:
+    type: string
+    minLength: 1
+  tier:
+    type: string
+    enum: [public, commercial, restricted, classified]
+    description: "confidentiality tier; restricted/classified must not live here (docs/core/confidentiality.md)"
+  jurisdiction:
+    type: string
+    minLength: 1
+    examples: ["VN"]
+  owner:
+    type: string
+    minLength: 1
+    description: "accountable unit or role"
+  tag_stream:
+    type: object
+    required: [policy_prefix, pack_prefix]
+    properties:
+      policy_prefix: {type: string, minLength: 1, examples: ["banking-policy"]}
+      pack_prefix:   {type: string, minLength: 1, examples: ["banking-pack"]}
+    additionalProperties: false
+  rules:
+    type: array
+    minItems: 1
+    items: {type: string, description: "path relative to the industry dir"}
+  flows:
+    type: array
+    minItems: 1
+    items: {type: string}
+  evals:
+    type: array
+    items: {type: string}
+  pack:
+    type: object
+    properties:
+      path: {type: string, examples: ["pack"]}
+      schema: {type: string, examples: ["metamodel/pack.schema.yaml"]}
+      status: {type: string, enum: [absent, draft, active, deprecated]}
+    additionalProperties: false
+  notes:
+    type: string
+additionalProperties: false
+x-glossary: [OrgUnit, Rule, Process]

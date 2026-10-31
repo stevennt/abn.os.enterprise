@@ -1,0 +1,43 @@
+# industries/banking/industry.yaml — first industry manifest (issue #123).
+# Banking content still lives at top level; L4-02 moves it under this directory.
+id: banking
+version: 1.0.0
+label: "Banking (retail, corporate, payments, trade)"
+tier: commercial
+jurisdiction: VN
+owner: "retail + risk (see org bank)"
+tag_stream:
+  policy_prefix: banking-policy
+  pack_prefix: banking-pack
+rules:
+  - rules/aml-pack.yaml
+  - rules/credit-grid-pack.yaml
+  - rules/fee-pack.yaml
+  - rules/kyc-pack.yaml
+flows:
+  - examples/bank/aml-str.flow.yaml
+  - examples/bank/ap-invoice.flow.yaml
+  - examples/bank/card-dispute.flow.yaml
+  - examples/bank/complaint.flow.yaml
+  - examples/bank/corp-term-loan.flow.yaml
+  - examples/bank/ekyc-onboarding.flow.yaml
+  - examples/bank/gl-close.flow.yaml
+  - examples/bank/hr-exit.flow.yaml
+  - examples/bank/hr-leave.flow.yaml
+  - examples/bank/hr-onboard.flow.yaml
+  - examples/bank/hr-perf.flow.yaml
+  - examples/bank/hr-recruit.flow.yaml
+  - examples/bank/loan-approval.flow.yaml
+  - examples/bank/mortgage.flow.yaml
+  - examples/bank/transfer.flow.yaml
+evals:
+  - evals/doc-extract
+  - evals/income-verify
+  - evals/memo-draft
+  - evals/complaint-triage
+  - evals/policy-copilot
+pack:
+  path: pack
+  schema: metamodel/pack.schema.yaml
+  status: absent
+notes: "Pack content (agents/skills/roles) is imported in L4-06; until then pack.status stays absent."

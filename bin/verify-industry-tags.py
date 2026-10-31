@@ -25,7 +25,15 @@ def sh(*args, check=False):
 
 def have_remote():
     r = sh("git", "ls-remote", "--tags", "origin")
-    return r.returncode == 0, [l.split("refs/tags/")[-1] for l in r.stdout.splitlines() if "refs/tags/" in l]
+    tags = []
+    for line in r.stdout.splitlines():
+        if "refs/tags/" not in line:
+            continue
+        tag = line.split("refs/tags/")[-1]
+        if tag.endswith("^{}"):      # peeled annotated-tag ref, not a tag itself
+            continue
+        tags.append(tag)
+    return r.returncode == 0, tags
 
 
 def main():
@@ -55,9 +63,16 @@ def main():
             all_tags = sorted(set(local) | set(remote))
             entry["streams"][kind] = {"prefix": prefix, "tags": all_tags,
                                       "remote_checked": remote_ok}
+            pack_status = (man.get("pack") or {}).get("status", "absent")
+            expected = kind == "policy" or pack_status in ("draft", "active")
             if not all_tags:
-                problems.append(f"{iid}: no {kind} tag yet (expected {prefix}-YYYY.MM.N)")
-                entry["status"] = "RED"
+                note = f"{iid}: no {kind} tag yet (expected {prefix}-YYYY.MM.N)"
+                if expected:
+                    problems.append(note)
+                    entry["status"] = "RED"
+                else:
+                    entry.setdefault("warnings", []).append(
+                        note + f" — not required while pack.status={pack_status}")
         for field in ("policy", "pack"):
             ref = (man.get(field) or {}).get("release_ref")
             if ref:
@@ -76,6 +91,8 @@ def main():
             print(f"{e['status']:4} {e['industry']}: {streams}")
         if not remote_ok:
             print("note: origin unreachable — local tags only (tag existence UNCERTAIN)")
+        for w in (e.get("warnings") or []):
+            print(f"  ~ {w}")
         for p in problems:
             print(f"  - {p}")
     return 1 if problems else 0

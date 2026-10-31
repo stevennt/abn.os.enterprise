@@ -10,7 +10,7 @@ import yaml
 import jsonschema
 
 ROOT = Path(__file__).resolve().parent.parent
-SCHEMAS = ["org", "process", "rule", "event", "touchpoint"]
+SCHEMAS = ["org", "process", "rule", "event", "touchpoint", "audit"]
 
 def load(p):
     return yaml.safe_load((ROOT / p).read_text())
@@ -21,7 +21,7 @@ def main():
     # Acceptance #3: `version` mandatory in all 5 schemas
     for s, sc in schemas.items():
         assert "version" in sc.get("required", []), f"{s} schema lacks required version"
-    print("meta: all 5 schemas require `version` — OK")
+    print(f"meta: all {len(schemas)} schemas require `version` — OK")
     # Issue #3: every schema links glossary terms, and all linked terms exist
     import re
     gtext = (ROOT / "docs" / "glossary.md").read_text()
@@ -32,7 +32,7 @@ def main():
         assert linked, f"{s} schema has no x-glossary links"
         unknown = [t for t in linked if t not in terms]
         assert not unknown, f"{s} links unknown terms: {unknown}"
-    print(f"glossary: 5 schemas link {sum(len(sc.get('x-glossary', [])) for sc in schemas.values())} terms, all defined ({len(terms)} terms) — OK")
+    print(f"glossary: {len(schemas)} schemas link {sum(len(sc.get('x-glossary', [])) for sc in schemas.values())} terms, all defined ({len(terms)} terms) — OK")
     # Acceptance #1: worked example validates green
     flow = load("examples/bank/loan-approval.flow.yaml")
     jsonschema.validate(flow, schemas["process"])

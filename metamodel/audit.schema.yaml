@@ -1,0 +1,22 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://github.com/stevennt/abn.os.enterprise/metamodel/audit.schema.yaml/v1.0.0"
+title: "AuditEvent v1.0.0 — hash-chained step record"
+type: object
+required: [id, version, instance_id, seq, step_id, actor, ts, hash_prev, hash]
+properties:
+  id:          {type: string, minLength: 1}
+  version:     {type: string, pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"}
+  instance_id: {type: string, minLength: 1}
+  seq:         {type: integer, minimum: 0}
+  step_id:     {type: string, minLength: 1}
+  actor:       {type: string, minLength: 1, examples: ["system", "credit_manager", "ai:doc-extract@qa-12"]}
+  decision:    {type: string}
+  rule_version:  {type: [string, "null"], examples: ["SBV-DSTI-04@2026-10-01"]}
+  model_version: {type: [string, "null"], examples: ["doc-extract@2026-10-20"]}
+  inputs_hash: {type: [string, "null"], description: "sha256 of canonical inputs; raw PII never stored here"}
+  payload_ref: {type: [string, "null"], description: "pointer to sealed payload store, not the payload"}
+  ts:          {type: integer, minimum: 1}
+  hash_prev:   {type: string, minLength: 1, examples: ["GENESIS"]}
+  hash:        {type: string, pattern: "^[0-9a-f]{64}$"}
+additionalProperties: true
+x-glossary: [Audit, Instance, Rule]

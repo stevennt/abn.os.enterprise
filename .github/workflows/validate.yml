@@ -14,3 +14,4 @@ jobs:
       - run: yamllint metamodel/ examples/
       - run: python scripts/validate.py
       - run: python scripts/validate.py --self-test
+      - run: python scripts/audit_chain.py --demo

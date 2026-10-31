@@ -1,0 +1,58 @@
+# Card dispute/chargeback flow v1.0 (issue #27) — scheme deadlines are hard constraints
+id: card.dispute
+version: 1.0.0
+event_type: card.dispute.opened
+department: cards
+inputs:
+  schema_ref: events/card.dispute.v1.json
+  fields: [card_id, txn_id, reason_code, amount, channel, customer_statement]
+steps:
+  - id: s1-triage
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [DISPUTE-TRIAGE-01]
+    sla_minutes: 60
+    on_fail: "REVIEW"
+  - id: s2-provisional
+    kind: workflow
+    owner_role: credit_officer
+    level: L3
+    uses_rule: [DISPUTE-PROV-02]
+    uses_touchpoint: TP-S-core
+    sla_minutes: 1440
+    on_fail: "escalate:credit_manager"
+  - id: s3-evidence
+    kind: ai
+    owner_role: credit_officer
+    level: L3
+    uses_rule: [DISPUTE-EV-03]
+    sla_minutes: 2880
+    on_fail: "escalate:credit_officer"
+  - id: s4-represent
+    kind: human
+    owner_role: credit_manager
+    level: L3
+    uses_rule: [DISPUTE-SCHEME-04]
+    uses_touchpoint: TP-S-scheme
+    sla_minutes: 4320
+    on_fail: "escalate:cards_manager"
+  - id: s5-close
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [NOTIFY-TPL-01]
+    uses_touchpoint: TP-C-app-status
+    sla_minutes: 60
+    on_fail: "retry+page"
+outputs: {decision: "WON|LOST|WRITEOFF", credited_vnd: 0, scheme_ref: "nullable"}
+kpis: [win_rate, provisionals_outstanding, deadline_breach_rate, tta_p50]
+automation_target: L3
+# Deadline table per reason code (calendar days from txn; illustrative — scheme
+# bulletins override; C27 owner refreshes quarterly):
+# fraud-10.4 (other fraud): represent 120d | processing-error-13.1: 120d |
+# cancelled-13.2/13.3: 120d | not-as-described-13.3: 120d | counterfeit-10.2: 120d.
+# Internal guardrail: file representment at T-10d before scheme deadline, no exceptions.
+# Customer comms SLA: acknowledge in 4h; provisional credit decision in 1 business
+# day; status push at every step; final letter within 1 day of scheme outcome.
+# Provisional credit reverses automatically if representment is lost (s5).

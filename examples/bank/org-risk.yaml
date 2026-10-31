@@ -1,0 +1,55 @@
+# Risk org (full v1.0, issue #13) — validates against metamodel/org.schema.yaml
+- id: risk
+  version: 1.0.0
+  name: "Risk Management"
+  parent_id: null
+  mandate: "Own risk appetite, limits, scoring sign-off, early warning; veto player in every credit flow"
+  headcount_plan: 120
+  systems_used: [risk-engine, core, los, los-corp, bureau]
+  roles:
+    - id: risk_analyst
+      title: "Risk Analyst"
+      raci_scope:
+        - "R:risk.scoring.retail"
+        - "R:risk.limit.review.prep"
+        - "R:risk.early_warning.triage"
+      approvals:
+        - "score-signoff-retail"
+      headcount: 80
+    - id: risk_manager
+      title: "Risk Manager"
+      raci_scope:
+        - "A:risk.scoring.retail"
+        - "A:risk.limit.review"
+        - "A:risk.early_warning"
+        - "C:loan.retail.unsecured"
+        - "C:loan.retail.mortgage"
+        - "C:loan.corporate.term"
+      approvals:
+        - "limit<=100B-portfolio"
+        - "veto-credit"
+        - "override-review"
+      headcount: 32
+    - id: cro
+      title: "Chief Risk Officer"
+      raci_scope:
+        - "A:risk.limit.review>100B"
+        - "A:override-escalations"
+        - "I:board-risk-committee"
+      approvals:
+        - "limit-any"
+        - "veto-final"
+        - "override-grant"
+      headcount: 8
+  approval_thresholds:
+    scoring-retail: {approver: risk_manager, basis: "analyst sign-off"}
+    limit-review: {manager_portfolio_vnd: 100000000000, above: cro}
+    early-warning: {owner: risk_manager, triage_sla_hours: 24}
+# Approval grid (who decides what):
+# score model output -> analyst prepares, manager approves release.
+# portfolio limits <=100B -> risk_manager; above -> cro.
+# early-warning signal -> analyst triages in 24h, manager owns action (watchlist/freeze).
+# business override of a risk veto -> must be granted by cro or committee with
+# written rationale + expiry + audit entry; never silent, never by the same person
+# who requested it (see B19 SoD). A risk veto on fraud/AML grounds cannot be
+# overridden below board-risk-committee level.

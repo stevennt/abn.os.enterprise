@@ -6,6 +6,7 @@ Exit 0 = green, 1 = red. Used by .github/workflows/validate.yml.
 """
 import sys
 from pathlib import Path
+import glob as _glob
 import yaml
 import jsonschema
 
@@ -47,7 +48,6 @@ def main():
     assert all(all(k in u for k in ("id", "name", "headcount_plan")) for u in org), "org index rows incomplete"
     print(f"org-index: {len(org)} units (full RACI -> B11/B20) — OK")
     # Issue #11+: full unit files validate against the org schema
-    import glob as _glob
     for f in sorted(_glob.glob(str(ROOT / "examples" / "bank" / "org-*.yaml"))):
         if Path(f).name == "org-chart.yaml":
             continue  # index only; full RACI lives in org-<unit>.yaml (B11-B20)

@@ -23,7 +23,7 @@ in review. Upgrades (public→confidential etc.) apply immediately; downgrades n
 | cccd `001099000001` | sealed only | absent (hash via inputs_hash) | `*********001`, gated | token `tok_cccd_9f2…` |
 | name `Nguyen Van An` | sealed only | absent | `Ng*** An`, gated | token `tok_name_41a…` |
 | phone `0901234567` | sealed only | absent | `090***4567`, gated | token `tok_tel_77c…` |
-| account `999111222003` | sealed only | last-4 `****2003` allowed | `****2003`, gated | token `tok_acct_…` |
+| account `9991•••003` (illustrative) | sealed only | last-4 `****2003` allowed | `****2003`, gated | token `tok_acct_…` |
 | amount/balance | — | plain (needed for ops) | plain | plain |
 | decision + rule versions | — | plain | plain | plain |
 

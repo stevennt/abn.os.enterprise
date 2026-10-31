@@ -1,0 +1,4 @@
+SINH VIEN DAO TAO BAO MAT - fixture chi de kiem thu scanner (issue #109).
+Dong nay chua CCCD that dang van ban thuong, khong marker, khong ngu canh so tien:
+khach hang Nguyen Van X, cccd 001099123456, can xac minh gap.
+Scanner phai bao do (red) khi gap file nay.

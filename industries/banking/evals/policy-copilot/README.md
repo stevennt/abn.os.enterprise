@@ -2,7 +2,7 @@
 
 ## Corpus list (versioned, re-indexed per release)
 
-- `rules/*.yaml` (all packs, with versions) + `docs/rules-adr.md`
+- `rules/*.yaml` (all packs, with versions) + `docs/core/rules-adr.md`
 - `docs/` policy docs: sod, consent, retention, pii-policy, errors, versioning
 - `examples/bank/org-*.yaml` (mandates, RACI, thresholds, SLAs)
 - `engine/automation-levels.md`, `engine/workflow-vs-ai-matrix.md`

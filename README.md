@@ -26,9 +26,9 @@ README.md                  — this file
 ARCHITECTURE.md            — runtime options + recommended hybrid stack
 ROADMAP.md                 — 6 phases + build-vs-buy decisions
 metamodel/                 — YAML schemas (the "language" of the OS) incl. industry manifest
-industries/banking/        — reference industry: org, rules, flows, events, ai contracts, evals, pack
+industries/                — one folder per industry (industries/banking/ first): org, rules, flows, events, ai, evals, pack, docs
+docs/core/                 — shared knowledge: metamodel, gates, engine, security, glossary
 engine/                    — automation levels, workflow-vs-AI decision matrix
-docs/                      — vision, glossary, touchpoint taxonomy, simulation plan
 scripts/seed-issues.py     — the 100 GitHub issues (source of truth, re-runnable)
 ```
 

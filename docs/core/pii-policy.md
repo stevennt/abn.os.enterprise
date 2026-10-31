@@ -1,6 +1,6 @@
 # PII classification + masking policy v1.0 (issue #33)
 
-Canonical policy. `docs/audit.md` holds the chain-specific view and defers to this
+Canonical policy. `docs/core/audit.md` holds the chain-specific view and defers to this
 file on any conflict. Event schema `pii_class` (metamodel/event.schema.yaml) uses
 these exact tier names.
 

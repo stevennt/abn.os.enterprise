@@ -1,4 +1,4 @@
-# complaint-triage contract v1.0 (issue #65) — under docs/ai-contract.md
+# complaint-triage contract v1.0 (issue #65) — under docs/core/ai-contract.md
 step_id: s1-triage
 version: 1.0.0
 input_schema: events/complaint.received.v1.json

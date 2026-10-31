@@ -16,14 +16,14 @@ DRAFTS = Path("/Users/thanhson/.local/share/opencode/drafts.json")
 
 TRACK_CTX = {
  "A": "nền: README.md, ARCHITECTURE.md, ROADMAP.md, metamodel/*.schema.yaml",
- "B": "nền: examples/bank/org-chart.yaml, metamodel/org.schema.yaml, docs/glossary.md",
+ "B": "nền: examples/bank/org-chart.yaml, metamodel/org.schema.yaml, docs/core/glossary.md",
  "C": "nền: examples/bank/process-catalog.yaml, examples/bank/loan-approval.flow.yaml, metamodel/process.schema.yaml",
  "D": "nền: metamodel/event.schema.yaml, các flow YAML đã có (payload mẫu)",
- "E": "nền: metamodel/rule.schema.yaml, ROADMAP P4, docs/glossary.md",
+ "E": "nền: metamodel/rule.schema.yaml, ROADMAP P4, docs/core/glossary.md",
  "F": "nền: ARCHITECTURE.md (phần engine ADR), engine/",
  "G": "nền: engine/workflow-vs-ai-matrix.md, engine/automation-levels.md",
- "H": "nền: docs/touchpoint-taxonomy.md, metamodel/touchpoint.schema.yaml",
- "I": "nền: docs/simulation-plan.md, engine/automation-levels.md",
+ "H": "nền: docs/core/touchpoint-taxonomy.md, metamodel/touchpoint.schema.yaml",
+ "I": "nền: docs/core/simulation-plan.md, engine/automation-levels.md",
  "J": "nền: toàn repo + các flow/pilot đã xong ở prompt trước",
 }
 
@@ -48,7 +48,7 @@ def main():
     issues = sorted(json.loads(out), key=lambda x: x["number"])
     total = len(issues)
     prompts = [prompt_for(k, it["number"], total, it["title"]) for k, it in enumerate(issues, 1)]
-    qpath = Path(REPO_DIR) / "docs" / "prompts" / "queue.json"
+    qpath = Path(REPO_DIR) / "docs" / "core" / "prompts" / "queue.json"
     qpath.parent.mkdir(parents=True, exist_ok=True)
     qpath.write_text(json.dumps(
         [{"order": k, "issue": it["number"], "title": it["title"], "prompt": p}

@@ -22,11 +22,11 @@ def check(name, fn):
 
 def main():
     results = []
-    if (ROOT / "docs" / "env-secrets.md").exists() and (ROOT / "scripts" / "gen_sandbox.py").exists():
+    if (ROOT / "docs" / "core" / "env-secrets.md").exists() and (ROOT / "scripts" / "gen_sandbox.py").exists():
         results.append(("stage parity + synthetic seed", True, "F59 matrix + D40 seed"))
     else:
         results.append(("stage parity + synthetic seed", False, "missing env matrix or generator"))
-    if (ROOT / "docs" / "degraded-mode.md").exists():
+    if (ROOT / "docs" / "core" / "degraded-mode.md").exists():
         results.append(("provider failover 3-lane", True, "H73/H80 lanes documented"))
     else:
         results.append(("provider failover 3-lane", False, "no degraded-mode doc"))
@@ -35,7 +35,7 @@ def main():
         results.append(("PII sign-off", True, "D33 tiers + scanner green"))
     else:
         results.append(("PII sign-off", False, "pii scan red"))
-    if (ROOT / "docs" / "router-spec.md").exists():
+    if (ROOT / "docs" / "core" / "router-spec.md").exists():
         results.append(("versions pinned + DLQ armed", True, "A04/A06 enforced in CI"))
     else:
         results.append(("versions pinned + DLQ armed", False, "no router spec"))

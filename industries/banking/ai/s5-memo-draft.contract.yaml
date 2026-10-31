@@ -1,4 +1,4 @@
-# memo-draft contract v1.0 (issue #64) — under docs/ai-contract.md
+# memo-draft contract v1.0 (issue #64) — under docs/core/ai-contract.md
 step_id: s5-memo-draft
 version: 1.0.0
 input_schema: events/memo.in.v1.json

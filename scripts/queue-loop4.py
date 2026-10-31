@@ -16,7 +16,7 @@ BG = {
  123: "metamodel/org.schema.yaml (shape to copy), scripts/validate.py, docs/core-less repo layout in README.md",
  124: "current tree: rules/ events/ examples/bank/ ai/ evals/ templates/ + every script that references them",
  125: "docs/ (65 files), README.md repo map section, scripts/validate.py readme-map check",
- 126: "docs/versioning.md (A06), existing tag banking-2026-10-31.1",
+ 126: "docs/core/versioning.md (A06), existing tag banking-2026-10-31.1",
  127: "/Users/thanhson/Workspace/abn.platform.opengate/gateway/resolve.py (functions load_roles, skill_version, validate_pack) and domains/banking/{roles.yaml,skills/*/SKILL.md}",
  128: "/Users/thanhson/Workspace/abn.platform.opengate/domains/banking/ (read-only source), rules/aml-pack.yaml, rules/kyc-pack.yaml",
  129: "docs/enterprise-pins.yaml + qc/tools/check_enterprise_cites.py in abn.platform.opengate (read-only)",
@@ -24,12 +24,12 @@ BG = {
  131: "industries/banking/ (after L4-02), /Users/thanhson/Workspace/abn.platform.opengate/domains/legal/ structure",
  132: "/Users/thanhson/Workspace/abn.platform.opengate/domains/legal/ (read-only), metamodel/pack.schema.yaml",
  133: "scripts/validate.py, all industries/*/industry.yaml",
- 134: "docs/pii-policy.md (tier vocabulary to align), metamodel/org.schema.yaml",
+ 134: "docs/core/pii-policy.md (tier vocabulary to align), metamodel/org.schema.yaml",
  135: "scripts/validate.py, scripts/run_all_traces.py, scripts/export_bpmn.py, scripts/eval_harness.py, scripts/risk_pack.py, scripts/promo_pack.py, scripts/pii_scan.py",
  136: "/Users/thanhson/Workspace/abn.platform.opengate (target repo), docs/enterprise-pins.yaml here",
  137: "/Users/thanhson/Workspace/abn.platform.opengate (target repo), industries/banking/pack/ here",
  138: "docs/core/onboarding-industry.md, scripts/seed-loop4.py (issue bodies as checklist)",
- 139: "README.md, ARCHITECTURE.md, ROADMAP.md, docs/scorecard.md, docs/cost-model.md, docs/cost-loan.md",
+ 139: "README.md, ARCHITECTURE.md, ROADMAP.md, docs/core/scorecard.md, docs/core/cost-model.md, industries/banking/docs/cost-loan.md",
  140: "industries/banking/pack/skills/*/SKILL.md, industries/banking/rules/*.yaml",
 }
 
@@ -55,7 +55,7 @@ def main():
     for k, it in enumerate(issues, 1):
         short = it["title"].split("—", 1)[1].strip() if "—" in it["title"] else it["title"]
         prompts.append(prompt(k, total, it["number"], it["title"], short))
-    (Path(REPO_DIR) / "docs" / "prompts" / "queue-loop4.json").write_text(json.dumps(
+    (Path(REPO_DIR) / "docs" / "core" / "prompts" / "queue-loop4.json").write_text(json.dumps(
         [{"order": k, "issue": it["number"], "title": it["title"], "prompt": p}
          for k, (it, p) in enumerate(zip(issues, prompts), 1)], ensure_ascii=False, indent=1))
     store = json.loads(DRAFTS.read_text())

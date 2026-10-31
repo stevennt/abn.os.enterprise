@@ -1,4 +1,4 @@
-# policy-copilot contract v1.0 (issue #66) — under docs/ai-contract.md
+# policy-copilot contract v1.0 (issue #66) — under docs/core/ai-contract.md
 step_id: copilot-qa
 version: 1.0.0
 input_schema: events/copilot.in.v1.json

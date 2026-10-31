@@ -12,7 +12,7 @@ is the gate contract it enforces.
   flow's threshold (default: wrong-decision <0.5%, override rate stable or
   falling), zero Sev1/Sev2, zero regulatory breaches. Window restarts on any breach.
 - [ ] **Duplicate-injection green:** A07 suite passes on the frozen version.
-- [ ] **Rollback plan:** one-rule-PR default flip (docs/versioning.md) tested in
+- [ ] **Rollback plan:** one-rule-PR default flip (docs/core/versioning.md) tested in
   stage within the last 14 days; rollback owner named; rollback SLO ≤30 min.
 - [ ] **Rule versions pinned:** every `uses_rule` cites an exact version; "latest" forbidden.
 - [ ] **Touchpoints ready:** customer/employee comms for auto-decisions live (H72/H74),

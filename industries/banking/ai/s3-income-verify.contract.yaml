@@ -1,4 +1,4 @@
-# income-verify contract v1.0 (issue #63) — under docs/ai-contract.md
+# income-verify contract v1.0 (issue #63) — under docs/core/ai-contract.md
 step_id: s3-income-verify
 version: 1.0.0
 input_schema: events/income-verify.in.v1.json

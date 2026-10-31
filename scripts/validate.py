@@ -25,7 +25,7 @@ def main():
     print(f"meta: all {len(schemas)} schemas require `version` — OK")
     # Issue #3: every schema links glossary terms, and all linked terms exist
     import re
-    gtext = (ROOT / "docs" / "glossary.md").read_text()
+    gtext = (ROOT / "docs" / "core" / "glossary.md").read_text()
     terms = set(t.rstrip(":") for t in re.findall(r"^- \*\*(.+?)\*\*", gtext, re.M))
     assert terms, "no glossary terms parsed"
     for s, sc in schemas.items():
@@ -192,7 +192,9 @@ def main():
             ref_ok += 1
     print(f"schema_ref: {ref_ok}/{ref_total} resolve (pending #121 curated event examples) — OK")
     # Issue #31: event catalog has 40 rows + naming convention section
-    cat = (ROOT / "docs" / "event-catalog.md").read_text().splitlines()
+    cat_files = sorted(_glob.glob(str(ROOT / "industries" / "*" / "docs" / "event-catalog.md")))
+    assert cat_files, "no industries/*/docs/event-catalog.md"
+    cat = Path(cat_files[0]).read_text().splitlines()
     rows = [l for l in cat if l.startswith("| `")]
     assert len(rows) == 40, f"want 40 catalog rows, found {len(rows)}"
     assert any("Naming convention" in l for l in cat), "naming convention doc missing"

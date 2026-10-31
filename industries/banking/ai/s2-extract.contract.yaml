@@ -1,4 +1,4 @@
-# s2-extract contract v1.0 (issue #62) — first contract under docs/ai-contract.md
+# s2-extract contract v1.0 (issue #62) — first contract under docs/core/ai-contract.md
 step_id: s2-extract
 version: 1.0.0
 input_schema: events/doc-extract.in.v1.json

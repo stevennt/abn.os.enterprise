@@ -1,0 +1,32 @@
+# Fee & interest rule pack v1.0 (issue #45) — validates against metamodel/rule.schema.yaml
+- id: FEE-SCHED-01
+  version: 1.0.0-2026-10-01
+  authority: "Retail pricing schedule 2026-09 (published tariff)"
+  inputs: [product, fee_type, customer_segment]
+  table:
+    - {when: "product=savings AND fee_type=maintenance", then: "0 VND (all segments)"}
+    - {when: "product=current AND segment=priority", then: "waived"}
+    - {when: "product=current AND segment=standard", then: "22000 VND/month"}
+    - {when: "fee_type=early-redemption AND product=term-deposit", then: "2% of withdrawn amount"}
+  effect: "published tariff is the default; deviations need a waiver row below"
+- id: FEE-WAIVER-02
+  version: 1.0.0-2026-10-01
+  authority: "Revenue protection policy 2026-07 (waiver ladder)"
+  inputs: [waiver_amount, reason, approver_band]
+  table:
+    - {when: "waiver<=100000 AND reason in [goodwill, bank-error]", then: officer-may-waive}
+    - {when: "waiver<=1000000", then: manager-must-approve}
+    - {when: "waiver>1000000", then: director-must-approve-with-note}
+  effect: "waivers above band need the next band up; bank-error waivers are unlimited but audited"
+- id: INT-RATE-03
+  version: 1.0.0-2026-10-01
+  authority: "ALCO rate sheet 2026-10 (weekly)"
+  inputs: [product, tenor_band, segment]
+  table:
+    - {when: "product=savings-flex", then: "sheet-rate"}
+    - {when: "product=term AND tenor>=12m AND segment=priority", then: "sheet-rate+0.3pp"}
+    - {when: "rate>sheet (preferential)", then: "needs-treasury-desk-approval"}
+  effect: "preferential rates above sheet need treasury desk sign-off, logged per deal"
+# Waiver ladder (VND): officer <=100k (goodwill/bank-error) -> manager <=1M ->
+# director above 1M with note. Bank-error refunds unlimited but every case audited.
+# Leakage control: monthly waiver report per unit + exception review above band median.

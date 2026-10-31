@@ -1,0 +1,5 @@
+# Sample tuples for the 3 checks (synthetic ids). Mirrors engine/authz.fga.
+- [user:ownerA, owner, loan:APP-1]
+- [user:officer1, assigned_officer, loan:APP-1]
+- [user:auditor1, auditor, loan:APP-1]
+- [user:strangerX, owner, loan:APP-9]

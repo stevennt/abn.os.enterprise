@@ -17,3 +17,4 @@ jobs:
       - run: python scripts/audit_chain.py --demo
       - run: python scripts/migrate_check.py examples/bank/loan-approval.flow.yaml tests/fixtures/loan-approval.v1.4.0-minor.flow.yaml
       - run: python scripts/migrate_check.py examples/bank/loan-approval.flow.yaml tests/fixtures/loan-approval.v2.0.0-major.flow.yaml
+      - run: python scripts/authz_check.py

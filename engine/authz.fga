@@ -1,0 +1,28 @@
+# OpenFGA authorization model v1.0 (issue #17) — enforcement must match the org model.
+# Full server-side evaluation lands with the runtime (track F); this file is the
+# contract that scripts/authz_check.py executes for the 3 sample checks.
+model
+  schema 1.1
+
+type user
+
+type role
+  relations
+    define member: [user]
+
+type loan_application
+  relations
+    define owner: [user]
+    define assigned_officer: [user]
+    define auditor: [user]
+    define viewer: owner or assigned_officer or auditor
+    define approver: assigned_officer
+    define writer: assigned_officer
+
+type complaint
+  relations
+    define owner: [user]
+    define assigned_agent: [user]
+    define auditor: [user]
+    define viewer: owner or assigned_agent or auditor
+    define resolver: assigned_agent

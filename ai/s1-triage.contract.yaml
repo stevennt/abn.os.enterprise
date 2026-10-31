@@ -1,0 +1,13 @@
+# complaint-triage contract v1.0 (issue #65) — under docs/ai-contract.md
+step_id: s1-triage
+version: 1.0.0
+input_schema: events/complaint.received.v1.json
+output_schema: events/complaint.triage.out.v1.json
+output_fields: [severity, intent, draft_reply_vi, confidence]
+model: {name: complaint-triage, version: 2026-10-20, temperature: 0}
+pii_class: confidential
+eval_suite: evals/complaint-triage/
+abstain_below: 0.70
+fallback: REVIEW
+notes: "Draft VI reply only — humans send (complaint flow s4). Never promises
+  compensation, never admits fault, never cites internal rule ids to customers."

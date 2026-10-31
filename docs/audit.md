@@ -23,3 +23,24 @@ inputs) + `payload_ref` (pointer to the sealed payload store) instead.
 
 Joining audit to payload requires the sealed-store key: auditors get
 time-boxed grants, never standing access.
+
+## Query API spec (issue #49) — "why was I declined?" must be answerable
+
+Base: `GET /api/v1/audit`. Auth: staff JWT with case scope, or auditor grant.
+PII in responses follows the masking table above; full payloads need the sealed key.
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /api/v1/audit/instances/{id}` | full step chain + actor/rule/model versions + hashes |
+| `GET /api/v1/audit/decisions?customer_id=…&from=…&to=…` | all decisions for a customer in a window, with reasons |
+| `GET /api/v1/audit/verify/{instance_id}` | recompute chain, return OK/broken-at-seq |
+
+Sample queries:
+
+1. Explain one decline:
+   `GET /api/v1/audit/instances/INST-88123` → steps s1–s6 with
+   `SBV-DSTI-04@2026-10-01`, dsti 0.68 cited, actor chain, linked hashes.
+2. Customer history: `GET /api/v1/audit/decisions?customer_id=C-88123&from=2026-01-01`
+   → every decision + reason codes, masked PII.
+3. Integrity proof: `GET /api/v1/audit/verify/INST-88123` → `{"ok":true,"events":6}`
+   or `{"ok":false,"broken_at":3}` for tamper evidence.

@@ -1,0 +1,65 @@
+# Domestic + SWIFT transfer flow v1.0 (issue #26) — idempotency proven here
+id: transfer.domestic
+version: 1.0.0
+event_type: transfer.domestic.requested
+department: payments
+inputs:
+  schema_ref: events/transfer.domestic.v2.json
+  fields: [sender_account, payee_account, amount, rail, narration, client_key]
+steps:
+  - id: s1-dedupe
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [IDEM-01]
+    sla_minutes: 1
+    on_fail: "return-cached-response"
+  - id: s2-limits
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [LIMIT-TXN-02]
+    sla_minutes: 1
+    on_fail: "REVIEW"
+  - id: s3-sanctions
+    kind: workflow
+    owner_role: compliance_bot
+    level: L4
+    uses_rule: [AML-SCREEN-02]
+    sla_minutes: 2
+    on_fail: "hold:compliance"
+  - id: s4-route
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [RAIL-ROUTE-03]
+    uses_touchpoint: TP-S-napas
+    sla_minutes: 2
+    on_fail: "failover-rail-then-REVIEW"
+  - id: s5-release
+    kind: workflow
+    owner_role: payments_operator
+    level: L4
+    uses_rule: [RELEASE-04]
+    uses_touchpoint: TP-S-core
+    sla_minutes: 5
+    on_fail: "hold:payments_manager"
+  - id: s6-notify
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [NOTIFY-TPL-01]
+    uses_touchpoint: TP-C-app-status
+    sla_minutes: 5
+    on_fail: "retry+page"
+outputs: {decision: "POSTED|HELD|REVIEW", txn_ref: "nullable", rail_used: "napas|swift"}
+kpis: [post_rate, double_post_rate, sanctions_hold_rate, tta_p50]
+automation_target: L4
+# Cut-off table: NAPAS same-day 16:00 ICT; SWIFT 20:00 ICT; salary batch 14:00
+# payday-1; billpay 22:00 daily (see org-payments.yaml). After cut-off the flow
+# value-dates next business day instead of failing.
+# Duplicate-safe design: s1 runs FIRST — derive key (client Key header, else
+# sender+payee+amount+rail+minute hash per A07), atomic insert-if-absent into
+# processed-keys; duplicates return the cached response with zero side effects.
+# s5 posts to core with the same key as txn ref; core dedupes on it. Offsets
+# commit only after s6. Kill-mid-handler redelivery is covered by the A07 drill.

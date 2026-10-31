@@ -1,0 +1,33 @@
+# SBV DSTI/LTV credit grid pack v1.0 (issue #44) — validates against metamodel/rule.schema.yaml
+- id: SBV-DSTI-04
+  version: 1.0.0-2026-10-01
+  authority: "SBV Circular 16 + internal credit policy 2026-03 (unsecured DSTI caps)"
+  inputs: [dsti, income_verified, product]
+  table:
+    - {when: "dsti<=0.40 AND income_verified=true", then: APPROVE}
+    - {when: "dsti 0.40-0.60 AND income_verified=true", then: APPROVE-WITH-REVIEW}
+    - {when: "dsti>0.60", then: REVIEW}
+    - {when: "income_verified=false", then: REVIEW}
+  effect: "caps decision at REVIEW above 0.60 or unverified income; overrides score"
+- id: SBV-LTV-02
+  version: 1.0.0-2026-10-01
+  authority: "SBV mortgage LTV limits + internal collateral policy 2026-02"
+  inputs: [ltv, property_type, first_home]
+  table:
+    - {when: "ltv<=0.70", then: APPROVE}
+    - {when: "ltv 0.70-0.85 AND first_home=true", then: APPROVE-WITH-REVIEW}
+    - {when: "ltv>0.85 OR (ltv>0.70 AND first_home=false)", then: REVIEW}
+  effect: "caps decision at REVIEW above thresholds; valuation disputes freeze at REVIEW"
+- id: CREDIT-GRID-11
+  version: 1.0.0-2026-10-01
+  authority: "Internal credit policy 2026-03 (manager decision grid)"
+  inputs: [score_band, dsti_band, ltv_band, amount_band]
+  table:
+    - {when: "score_band=A AND dsti_band<=2 AND amount_band<=manager-limit", then: APPROVE}
+    - {when: "score_band=B OR dsti_band=3", then: MANAGER-REVIEW}
+    - {when: "score_band=C OR amount_band>manager-limit", then: COMMITTEE}
+  effect: "routes the decision to the right authority; nobody approves above their band"
+# Override conditions: DSTI/LTV REVIEW caps lift only with (a) verified additional
+# income docs + (b) manager-or-above sign-off + (c) audit note citing this pack
+# version. LTV>0.85 never overrides on valuation dispute — re-appraise first.
+# Grid versions move with SBV circulars via the E46 pipeline (intake E50).

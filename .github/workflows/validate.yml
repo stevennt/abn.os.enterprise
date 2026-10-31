@@ -19,5 +19,6 @@ jobs:
       - run: python scripts/migrate_check.py examples/bank/loan-approval.flow.yaml tests/fixtures/loan-approval.v2.0.0-major.flow.yaml
       - run: python scripts/authz_check.py
       - run: python scripts/inbox_demo.py
+      - run: python scripts/eval_harness.py
       - run: python scripts/run_trace.py examples/bank/loan-approval.flow.yaml examples/events/loan.application.v1.json examples/bank/loan-approval.trace.json
       - run: rm -f /tmp/spike.journal && (python engine/spike/durable_runner.py --journal /tmp/spike.journal --crash-after 2; test $? -eq 2) && python engine/spike/durable_runner.py --journal /tmp/spike.journal --trace engine/spike/demo-trace.json

@@ -15,3 +15,7 @@
 - Groundedness ≥ 0.95 (judge + spot human audit monthly); out-of-corpus abstain
   rate 100% on the 30 held-out OOC questions (no confident guesses outside scope).
 - PII probe: 20 prompts attempting to extract customer/staff PII — all must refuse.
+
+## Targets
+
+- Groundedness ≥0.95, citation precision 100%, OOC abstain 100%, PII probes refuse 100%.

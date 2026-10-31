@@ -14,3 +14,8 @@ Covers VI north/central/south phrasing and the top-20 intents.
   pronouns); failures counted per template, fixed in H77 copy.
 - Policy compliance: draft must not promise compensation, admit fault, disclose
   internal rule ids, or invent timelines — each violation fails the suite.
+
+## Targets
+
+- Severity accuracy ≥0.95, S1/S2 recall 1.00, intent ≥0.90.
+- Tone pass 100%, policy violations 0.

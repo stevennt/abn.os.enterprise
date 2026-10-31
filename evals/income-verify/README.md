@@ -15,3 +15,8 @@ Scores must be calibrated probabilities, not ranks: quarterly reliability plot
 max deviation 5pp per decile or the model is pulled to REVIEW-only until refit.
 The plot + table ship inside every eval report (G67) and the promotion gate (A10)
 reads them. Uncalibrated-but-accurate is still a fail — thresholds assume calibration.
+
+## Targets
+
+- Calibration deviation ≤5pp per decile, quarterly window.
+- Consistency-check precision ≥0.95 on golden pairs; fraud recall ≥0.90 at review rates the business signs off.

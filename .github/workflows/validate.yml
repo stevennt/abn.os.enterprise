@@ -31,6 +31,7 @@ jobs:
       - run: python bin/verify-industry-tags.py
       - run: python scripts/pack_lint.py && python scripts/pack_lint.py --self-test
       - run: python scripts/pack_cite_check.py && python scripts/pack_cite_check.py --self-test
+      - run: python scripts/test_bundle.py
       - run: python scripts/dlq_drill.py
       - run: python scripts/money_drill.py --report /tmp/drill.json && python -c "import json;d=json.load(open('/tmp/drill.json'));assert d['double_posts']==0 and d['ledger_balanced']"
       - run: python scripts/chaos_exec.py

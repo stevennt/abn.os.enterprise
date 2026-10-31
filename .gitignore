@@ -17,3 +17,4 @@ engine/stage/*.out
 engine/stage/*.log
 
 build/
+dist/

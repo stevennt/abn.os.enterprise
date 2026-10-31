@@ -1,0 +1,206 @@
+#!/usr/bin/env python3
+"""bin/build-pack — deterministic, verifiable bundle of one industry's agent pack
+(issue #130).
+
+A consumer (OpenGate) fetches the tarball and MANIFEST.sha256, verifies the hash of
+every entry, and only then resolves it. Byte-identical rebuilds are the point: if
+the consumer's hash check fails, the bundle is rejected rather than half-applied.
+
+Usage:
+  bin/build-pack <industry> [--out dist] [--sign KEYFILE] [--verify FILE]
+  bin/build-pack --verify dist/banking-pack-2026.10.1.tar.gz
+
+Determinism: entries sorted, mtime fixed to SOURCE_DATE_EPOCH (default 1980-01-01),
+no uid/gid/uname, gzip mtime 0, tar format PAX. Excludes secrets and large binaries
+by allowlist of extensions, not by trust.
+"""
+import argparse
+import gzip
+import hashlib
+import io
+import sys
+import tarfile
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+EPOCH = 315532800  # 1980-01-01T00:00:00Z — fixed so rebuilds are byte-identical
+
+# Only these extensions may enter a bundle. Anything else is a build error, not a
+# silent skip: a pack that gains a PDF should fail loudly.
+ALLOWED_EXT = {".md", ".yaml", ".yml", ".json", ".txt"}
+DENY_NAMES = {".env", "credentials", "secrets", ".netrc"}
+DENY_TERMS = ("secret", "token", "credential", "password", "private-key")
+MAX_BYTES = 256 * 1024
+
+
+def die(msg):
+    sys.exit(f"build-pack: {msg}")
+
+
+def iter_pack_files(pack_dir):
+    for p in sorted(pack_dir.rglob("*")):
+        if not p.is_file():
+            continue
+        rel = p.relative_to(pack_dir).as_posix()
+        if "__pycache__" in rel or rel.endswith(".pyc"):
+            continue
+        yield p, rel
+
+
+def collect(pack_dir):
+    """Validate + return [(abs_path, rel_path)] in stable order."""
+    if not pack_dir.is_dir():
+        die(f"no pack at {pack_dir}")
+    out, problems = [], []
+    for p, rel in iter_pack_files(pack_dir):
+        name = p.name.lower()
+        ext = p.suffix.lower()
+        if ext not in ALLOWED_EXT:
+            problems.append(f"{rel}: extension {ext or '<none>'} not allowed in a bundle")
+        if name in DENY_NAMES or any(t in rel.lower() for t in DENY_TERMS):
+            problems.append(f"{rel}: name looks like a secret")
+        if p.stat().st_size > MAX_BYTES:
+            problems.append(f"{rel}: {p.stat().st_size} bytes > {MAX_BYTES} limit")
+    if problems:
+        die("refusing to build:\n  " + "\n  ".join(problems))
+    for p, rel in iter_pack_files(pack_dir):
+        out.append((p, rel))
+    return out
+
+
+def build(industry, out_dir, sign_key=None):
+    indir = ROOT / "industries" / industry
+    pack_dir = indir / "pack"
+    try:
+        import yaml
+    except ImportError:
+        die("PyYAML required")
+    man = yaml.safe_load((indir / "industry.yaml").read_text())
+    files = collect(pack_dir)
+
+    import subprocess
+    tag = subprocess.run(["git", "describe", "--tags", "--abbrev=0", "--match",
+                          f"{industry}-pack-*"], cwd=ROOT, capture_output=True, text=True)
+    version = tag.stdout.strip().rsplit("-", 1)[-1] if tag.returncode == 0 else "0.0.0-dev"
+    head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT,
+                          capture_output=True, text=True).stdout.strip()[:12]
+    name = f"{industry}-pack-{version}"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    tar_path = out_dir / f"{name}.tar.gz"
+    manifest_path = out_dir / f"{name}.MANIFEST.sha256"
+
+    # tarball (deterministic)
+    raw = io.BytesIO()
+    with tarfile.open(fileobj=raw, mode="w", format=tarfile.PAX_FORMAT) as tar:
+        for p, rel in files:
+            data = p.read_bytes()
+            info = tarfile.TarInfo(name=rel)
+            info.size = len(data)
+            info.mtime = EPOCH
+            info.mode = 0o644
+            info.uid = info.gid = 0
+            info.uname = info.gname = ""
+            tar.addfile(info, io.BytesIO(data))
+    with gzip.GzipFile(filename="", mode="wb", fileobj=open(tar_path, "wb"),
+                       mtime=0, compresslevel=9) as gz:
+        gz.write(raw.getvalue())
+
+    # manifest: one line per file + a header block with provenance
+    lines = [f"# {name}",
+             f"# commit {head}",
+             f"# industry {industry} tier {man['tier']}",
+             f"# files {len(files)}"]
+    for p, rel in files:
+        h = hashlib.sha256(p.read_bytes()).hexdigest()
+        lines.append(f"{h}  {rel}")
+    bundle_sha = hashlib.sha256(tar_path.read_bytes()).hexdigest()
+    lines.append(f"# bundle-sha256 {bundle_sha}")
+    manifest_path.write_text("\n".join(lines) + "\n")
+    sig_path = None
+    if sign_key:
+        key = Path(sign_key)
+        if not key.is_file():
+            die(f"sign key not found: {key}")
+        sig_path = out_dir / f"{name}.sha256.sig"
+        import subprocess as sp
+        r = sp.run(["openssl", "dgst", "-sha256", "-sign", str(key),
+                    "-out", str(sig_path), str(tar_path)], capture_output=True, text=True)
+        if r.returncode != 0:
+            die(f"signing failed: {r.stderr.strip()[:200]}")
+        lines_out = [f"bundle    {bundle_sha}", f"signature {sig_path.name}"]
+    else:
+        lines_out = [f"bundle    {bundle_sha}"]
+    def show(x):
+        try:
+            return x.relative_to(ROOT)
+        except ValueError:
+            return x
+    print(f"built  {show(tar_path)}  sha256 {bundle_sha[:16]}…")
+    print(f"       {show(manifest_path)}  ({len(files)} files)")
+    for l in lines_out:
+        print(f"       {l}")
+    return 0
+
+
+def verify(path):
+    """Re-verify a built bundle: hash of every entry against the manifest."""
+    tar_path = Path(path)
+    if not tar_path.is_file():
+        die(f"no bundle at {tar_path}")
+    manifest = tar_path.with_name(tar_path.name.replace(".tar.gz", ".MANIFEST.sha256"))
+    if not manifest.is_file():
+        die(f"manifest missing next to bundle: {manifest}")
+    want, recorded = {}, None
+    for line in manifest.read_text().splitlines():
+        if line.startswith("# bundle-sha256 "):
+            recorded = line.split()[-1]
+            continue
+        if line.startswith("#") or not line.strip():
+            continue
+        h, rel = line.split(None, 1)
+        want[rel.strip()] = h
+    actual = hashlib.sha256(tar_path.read_bytes()).hexdigest()
+    if recorded is None:
+        die("manifest has no '# bundle-sha256' line — cannot prove archive integrity")
+    if recorded != actual:
+        print(f"BUNDLE RED: archive sha256 {actual[:16]}… != manifest {recorded[:16]}…")
+        return 1
+    got = {}
+    with tarfile.open(tar_path, "r:gz") as tar:
+        for m in tar.getmembers():
+            if m.isfile():
+                got[m.name] = hashlib.sha256(tar.extractfile(m).read()).hexdigest()
+    problems = []
+    for rel, h in want.items():
+        if rel not in got:
+            problems.append(f"missing from bundle: {rel}")
+        elif got[rel] != h:
+            problems.append(f"hash mismatch: {rel}")
+    for rel in got:
+        if rel not in want:
+            problems.append(f"unlisted file in bundle: {rel}")
+    if problems:
+        print("BUNDLE RED:")
+        for p in problems[:20]:
+            print(f"  - {p}")
+        return 1
+    print(f"verify OK: {len(want)} files, bundle sha256 {actual[:16]}…")
+    return 0
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("industry", nargs="?")
+    ap.add_argument("--out", default="dist")
+    ap.add_argument("--sign")
+    ap.add_argument("--verify")
+    a = ap.parse_args()
+    if a.verify:
+        return verify(a.verify)
+    if not a.industry:
+        die("usage: bin/build-pack <industry> [--out dist] [--sign KEY] | --verify FILE")
+    return build(a.industry, ROOT / a.out, a.sign)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

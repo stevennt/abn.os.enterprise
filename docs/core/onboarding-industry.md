@@ -135,6 +135,7 @@ assurance, so a new industry inherits them rather than exercising them:
 | `scripts/pack_cite_check.py` | pack cites resolve to same-repo rules/flows | only with `--with-pack` |
 | `scripts/run_trace.py` | single-flow trace regeneration | the demo flow; `run_all_traces.py` covers yours |
 | `scripts/docs_link_check.py` | front-page docs point at real paths | applies to shared docs, not to your industry folder |
+| `scripts/loop_ledger_check.py` | the loop review matches its ledger, and recorded commits exist | programme-level; `--repos <path>` also checks the platform repo |
 | `scripts/pack_rule_drift.py` | prose thresholds match the rule tables | **your pack must pass this if it states numbers** |
 | `scripts/test_drift.py` | proves the drift check still bites | shared assurance |
 

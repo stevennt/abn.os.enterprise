@@ -1,0 +1,1815 @@
+{
+  "version": 1,
+  "loop": 5,
+  "range": [
+    141,
+    240
+  ],
+  "generatedAt": "2026-11-01",
+  "method": "status from the GitHub issue state plus a commit naming the issue in either repo; the open issues without a commit are classified by hand with a pointer to the code or the blocking comment",
+  "summary": {
+    "total": 100,
+    "done": 77,
+    "delivered_open": 1,
+    "covered": 5,
+    "partial": 4,
+    "blocked": 1,
+    "not_started": 12
+  },
+  "issues": [
+    {
+      "number": 141,
+      "title": "L5-001 — Tenant model: single entity vs group",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "efa754493bc795415b2c348ce0b89eb98630d65e",
+          "short": "efa7544",
+          "date": "2026-10-31",
+          "subject": "tenant shape — single legal entity vs group of companies"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 142,
+      "title": "L5-002 — 1ID: per-tenant OIDC via sso.json",
+      "state": "open",
+      "status": "partial",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "engine",
+      "commits": [],
+      "note": "sso.json schema + validator + the rotation runbook shipped (#237); the OIDC login itself is #208 and not merged."
+    },
+    {
+      "number": 143,
+      "title": "L5-003 — Map 1ID claims to tenant and company",
+      "state": "open",
+      "status": "not_started",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "engine",
+      "commits": [],
+      "note": "Claim mapping to tenant/company lives in the unmerged SSO service (#208)."
+    },
+    {
+      "number": 144,
+      "title": "L5-004 — Tenant registry + active-tenant resolution",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "3eaf59e4dc5ada2dcdf10b645f5eb92c9a4bed61",
+          "short": "3eaf59e",
+          "date": "2026-10-31",
+          "subject": "tenant registry and fail-closed active-tenant resolution"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 145,
+      "title": "L5-005 — tenant-template v2: group-aware provisioning template",
+      "state": "open",
+      "status": "partial",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "engine",
+      "commits": [],
+      "note": "Groups are provisioned by gateway/provision.py and documented (#238); onboarding/tenant-template/profile.json is still single-entity."
+    },
+    {
+      "number": 146,
+      "title": "L5-006 — Tenant directory layout + isolation rule",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "grc",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "37b077f1912ddfb39b7cc8e62838b99c9ad5c51d",
+          "short": "37b077f",
+          "date": "2026-10-31",
+          "subject": "tenant/company directory layout and path isolation"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 147,
+      "title": "L5-007 — Tenant profile fields for groups",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "be98f44ff2ae6f613b0fe8c1b2b0021473fb044e",
+          "short": "be98f44",
+          "date": "2026-10-31",
+          "subject": "tenant profile fields for groups, one fact one scope"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 148,
+      "title": "L5-008 — Multi-company org.json",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "cef65f734409912e733ccf31966067ab8cc78fff",
+          "short": "cef65f7",
+          "date": "2026-10-31",
+          "subject": "one org tree per company, cross-company refs refused"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 149,
+      "title": "L5-009 — Role to company scoping",
+      "state": "open",
+      "status": "covered",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "engine",
+      "commits": [],
+      "note": "Units are company-local and cross-company references are refused (tenant_registry.find_unit, #148); an account carries a unit, so its role is scoped to that company."
+    },
+    {
+      "number": 150,
+      "title": "L5-010 — Tenant config audit trail",
+      "state": "open",
+      "status": "covered",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "grc",
+      "commits": [],
+      "note": "Config changes write one audit chain (domains, companies, branding, accounts) via companies.core.auditAppend (#207); no separate config ledger."
+    },
+    {
+      "number": 151,
+      "title": "L5-011 — Company org schema: units, positions, heads",
+      "state": "open",
+      "status": "partial",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "data",
+      "commits": [],
+      "note": "Units and portalRoles are in schemas/org.json; positions shipped as schemas/positions.json + tenant_registry.position_problems (#204); no unit `head` field."
+    },
+    {
+      "number": 152,
+      "title": "L5-012 — Department taxonomy shared across companies",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "0d95d060fa3abdb9f59ad74cddca07dff1de343d",
+          "short": "0d95d06",
+          "date": "2026-10-31",
+          "subject": "one department taxonomy, omit but never rename"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 153,
+      "title": "L5-013 — RACI per unit per process, per company",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "c490acac6903f3e891bb27816c0937540e4a8a82",
+          "short": "c490aca",
+          "date": "2026-10-31",
+          "subject": "RACI per unit per process, per company"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 154,
+      "title": "L5-014 — Approval authority grid per company",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "grc",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "f26bd02352b3e64edb5f0cd6f0ea13236ca33d44",
+          "short": "f26bd02",
+          "date": "2026-10-31",
+          "subject": "approval authority grid per company"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 155,
+      "title": "L5-015 — Group shared-services modelling",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "9c750e4c6bdbdffd95071248618dcbcda46434a9",
+          "short": "9c750e4",
+          "date": "2026-10-31",
+          "subject": "group shared services declared once, referenced by RACI"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 156,
+      "title": "L5-016 — Org import from CSV/XLSX",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "49a9a28b6146e362bb4ca205201677b9b1dae5ba",
+          "short": "49a9a28",
+          "date": "2026-10-31",
+          "subject": "org import from CSV/XLSX, line-numbered errors, idempotent"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 157,
+      "title": "L5-017 — Org validation: cycles, orphans, duplicate ids",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "e4ec618ab2ba956fda6ba59c9d1c785cca2e7750",
+          "short": "e4ec618",
+          "date": "2026-10-31",
+          "subject": "org validation — cycles, orphans, duplicate ids"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 158,
+      "title": "L5-018 — Headcount plan vs actual people",
+      "state": "open",
+      "status": "covered",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "data",
+      "commits": [],
+      "note": "The roster page merges positions[] (plan) against accounts + pending invites (actual) (#204)."
+    },
+    {
+      "number": 159,
+      "title": "L5-019 — Org versioning with effective dates",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "cd2aaabb4952aaa13fc80344e6430caeafefc4f2",
+          "short": "cd2aaab",
+          "date": "2026-10-31",
+          "subject": "org versioning with effective dates"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 160,
+      "title": "L5-020 — Unit to domain pack mapping",
+      "state": "open",
+      "status": "not_started",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "engine",
+      "commits": [],
+      "note": "No unit-to-pack mapping in the registry or the resolver."
+    },
+    {
+      "number": 161,
+      "title": "L5-021 — Folder taxonomy per company",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "450524501bc8942afad8454fc6643c9f794bcb5d",
+          "short": "4505245",
+          "date": "2026-10-31",
+          "subject": "folder taxonomy per company"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 162,
+      "title": "L5-022 — Storage abstraction per tenant",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "c32213481766bd0d2d292be859c54438699bb2ad",
+          "short": "c322134",
+          "date": "2026-10-31",
+          "subject": "storage abstraction per tenant with an enforced prefix"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 163,
+      "title": "L5-023 — Upload policy: quota, type allowlist, size",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "ee702c27cabb1b75eabebed7494c39661ab0964e",
+          "short": "ee702c2",
+          "date": "2026-10-31",
+          "subject": "upload policy — quota, type allowlist, size"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 164,
+      "title": "L5-024 — Path safety: no traversal, tenant prefix",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "grc",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "b3d20b7ea6d76c7e2a13ce921ddce5d160a9a651",
+          "short": "b3d20b7",
+          "date": "2026-10-31",
+          "subject": "one path-safety rule, and fix the S3 archive symlink leak"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 165,
+      "title": "L5-025 — Per-folder ACLs tied to org units",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "708b2cfee6b900d6b4db0d9b6b3a47fbafb48b3a",
+          "short": "708b2cf",
+          "date": "2026-10-31",
+          "subject": "folder ACLs resolved by org unit, denials recorded"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 166,
+      "title": "L5-026 — Case to folder to document linking",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "8822fd3681cba28d32c89a922660b9962f5d80e0",
+          "short": "8822fd3",
+          "date": "2026-10-31",
+          "subject": "case <-> document links with a deletion guard"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 167,
+      "title": "L5-027 — Retention policy per folder type",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "grc",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "f82433b450006cce9862b6880a4ac818f4c37f3a",
+          "short": "f82433b",
+          "date": "2026-10-31",
+          "subject": "retention per folder, hold-aware, dry run by default"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 168,
+      "title": "L5-028 — Per-tenant search index",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "c6104dbb3ef561835002c79c95d9e77261ede7d0",
+          "short": "c6104db",
+          "date": "2026-10-31",
+          "subject": "per-tenant search index, no cross-tenant reads"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 169,
+      "title": "L5-029 — Bulk import (zip + manifest)",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "3b6a5dc434bb9b9148ca1a1a9b0b4e0c436c7eed",
+          "short": "3b6a5dc",
+          "date": "2026-10-31",
+          "subject": "bulk import from a zip with a manifest"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 170,
+      "title": "L5-030 — Storage usage metering per company",
+      "state": "open",
+      "status": "partial",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "data",
+      "commits": [],
+      "note": "Metering attributes usage events per company and carries a storage dimension (#214/#215), but the storage gauge is tenant-level (company=tenant)."
+    },
+    {
+      "number": 171,
+      "title": "L5-031 — Department pack: business/operations",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "metamodel",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "4d8ee67e71cfe056250b5b2e530e1811dbd838a4",
+          "short": "4d8ee67",
+          "date": "2026-10-31",
+          "subject": "business/operations department pack"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 172,
+      "title": "L5-032 — Department pack: HR",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "metamodel",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "fe7af90b18ac17dc09a713d9d6f669892c93df2c",
+          "short": "fe7af90",
+          "date": "2026-10-31",
+          "subject": "HR department pack with a policy register that asserts no law"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 173,
+      "title": "L5-033 — Department pack: documents/knowledge",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "metamodel",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "97c7a1f8ec47c0c540bb0d286e26e8d57b722791",
+          "short": "97c7a1f",
+          "date": "2026-10-31",
+          "subject": "documents/knowledge pack — citation, versions, no client data"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 174,
+      "title": "L5-034 — Department pack: marketing",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "metamodel",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "a687d86d28879f164695c10d3f476c588b239d98",
+          "short": "a687d86",
+          "date": "2026-10-31",
+          "subject": "marketing pack — assets by id, review gate, no invented claims"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 175,
+      "title": "L5-035 — Pack composition per tenant plan",
+      "state": "open",
+      "status": "covered",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "engine",
+      "commits": [],
+      "note": "onboarding/plans.json defines each plan's pack list; plan change enables/disables packs with a checklist (#221/#227)."
+    },
+    {
+      "number": 176,
+      "title": "L5-036 — Pack version pinning per tenant (bundle refs)",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "cba71c79c4ee30d699ba81d2f38831914826e3ad",
+          "short": "cba71c7",
+          "date": "2026-10-31",
+          "subject": "tenant pack pins by tag, verified, with a defined fallback"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 177,
+      "title": "L5-037 — First enterprise tenant pack set",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "both",
+      "type": "metamodel",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "2b06ee8be03c38739a5261e1da7647ec12ddec43",
+          "short": "2b06ee8",
+          "date": "2026-10-31",
+          "subject": "first tenant pack set, one owner per pack"
+        },
+        {
+          "repo": "enterprise",
+          "sha": "7d5e333e160da86cf9e5499e88438e176ec751d9",
+          "short": "7d5e333",
+          "date": "2026-10-31",
+          "subject": "first tenant pack set with one master per pack"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 178,
+      "title": "L5-038 — Link abn.os.enterprise industries to tenant companies",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "both",
+      "type": "metamodel",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "f01983e80118f4d5079879f8ec3f6d3834135751",
+          "short": "f01983e",
+          "date": "2026-10-31",
+          "subject": "link a tenant company to an enterprise industry model"
+        },
+        {
+          "repo": "enterprise",
+          "sha": "b439088b153ef2a8d411c5c734804b0c6c4c2c74",
+          "short": "b439088",
+          "date": "2026-10-31",
+          "subject": "company -> industry model link, and the company-1 decision"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 179,
+      "title": "L5-039 — Pack lint gate for new department packs",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "dbc6c1c3df918f7f84dccc90e7bf0380839e1bb2",
+          "short": "dbc6c1c",
+          "date": "2026-10-31",
+          "subject": "commit the CI gate that only existed in the working tree"
+        },
+        {
+          "repo": "opengate",
+          "sha": "9c90113f258c78b41360f139af171ce52581e7d8",
+          "short": "9c90113",
+          "date": "2026-10-31",
+          "subject": "the pack gate now enforces the staffing laws, for every domain"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 180,
+      "title": "L5-040 — Industry registry to pack mapping",
+      "state": "open",
+      "status": "not_started",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "data",
+      "commits": [],
+      "note": "The industry registry carries tracks, not a pack mapping; #178 links a company to an industry model."
+    },
+    {
+      "number": 181,
+      "title": "L5-041 — Tenant boundary test suite",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "grc",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "43086f758359a397387c5ce8cc957cac69537f7b",
+          "short": "43086f7",
+          "date": "2026-10-31",
+          "subject": "tenant boundary red-team suite"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 182,
+      "title": "L5-042 — 1ID token tenant enforcement",
+      "state": "open",
+      "status": "not_started",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "grc",
+      "commits": [],
+      "note": "Token-to-tenant enforcement needs the unmerged SSO service (#208)."
+    },
+    {
+      "number": 183,
+      "title": "L5-043 — Per-tenant secrets handling",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "grc",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "ef4f4342ac835e408c481ef0b675918d53944c38",
+          "short": "ef4f434",
+          "date": "2026-10-31",
+          "subject": "per-tenant secrets — named by env, scanned, fail closed"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 184,
+      "title": "L5-044 — Jurisdiction and data-residency tagging",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "grc",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "938227106483987d448c6799e375a4bd3f7cc18e",
+          "short": "9382271",
+          "date": "2026-10-31",
+          "subject": "data residency tag, checked against storage, reported"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 185,
+      "title": "L5-045 — PII classification per tenant field",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "grc",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "242ca4b9e8c73189d6fc6231cff537bffc4ebc3e",
+          "short": "242ca4b",
+          "date": "2026-10-31",
+          "subject": "PII classification per tenant, masking that keeps shape"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 186,
+      "title": "L5-046 — Platform admin vs tenant admin separation",
+      "state": "open",
+      "status": "covered",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "grc",
+      "commits": [],
+      "note": "platform-admin is a distinct role with tenant='*'; /ops, /audit, /benchmark and /exit are platform-only (auth-user.ts, ops.controller.ts, #207 phase A 0e46aeaf)."
+    },
+    {
+      "number": 187,
+      "title": "L5-047 — Break-glass access with audit",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "grc",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "44fc76c52ae470246131469f711fe6f93f27a7d7",
+          "short": "44fc76c",
+          "date": "2026-10-31",
+          "subject": "break-glass grants, time-boxed, recorded, expired by timestamp"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 188,
+      "title": "L5-048 — Per-tenant rate limits",
+      "state": "open",
+      "status": "not_started",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "engine",
+      "commits": [],
+      "note": "Only signup has a limiter; no per-tenant rate limit on the API."
+    },
+    {
+      "number": 189,
+      "title": "L5-049 — Tenant export bundle",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "c9b776124ea2d067f7a773885c0bf45c17aedcf8",
+          "short": "c9b7761",
+          "date": "2026-10-31",
+          "subject": "signed tenant export, verifiable and re-importable"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 190,
+      "title": "L5-050 — Tenant offboarding and deletion",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "grc",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "01c8328161e37cbee79c43b00533abd556be0fa6",
+          "short": "01c8328",
+          "date": "2026-10-31",
+          "subject": "tenant offboarding — enforced checklist, crypto-shred, certificate"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 191,
+      "title": "L5-051 — Onboarding wizard v2: group or single",
+      "state": "open",
+      "status": "not_started",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "touchpoint",
+      "commits": [],
+      "note": "The onboarding page shows the pack's steps; no group/single wizard v2."
+    },
+    {
+      "number": 192,
+      "title": "L5-052 — Wizard step: companies",
+      "state": "open",
+      "status": "not_started",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "touchpoint",
+      "commits": [],
+      "note": "No wizard step for companies; the console (/admin/companies) is the current path."
+    },
+    {
+      "number": 193,
+      "title": "L5-053 — Wizard step: connect 1ID",
+      "state": "open",
+      "status": "not_started",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "touchpoint",
+      "commits": [],
+      "note": "No wizard step for 1ID; SSO login is unmerged (#208)."
+    },
+    {
+      "number": 194,
+      "title": "L5-054 — Wizard step: departments",
+      "state": "open",
+      "status": "not_started",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "touchpoint",
+      "commits": [],
+      "note": "No wizard step for departments; the taxonomy is applied at provisioning."
+    },
+    {
+      "number": 195,
+      "title": "L5-055 — Wizard step: folders",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "touchpoint",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "bd280c8354dc83c57cdc8e612f7e3ec1e18773e3",
+          "short": "bd280c8",
+          "date": "2026-10-31",
+          "subject": "folder tree preview, trimming before creation, creation report"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 196,
+      "title": "L5-056 — Dry-run provisioning",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "a6716fbafaf3702910f06ea6466d9067e0268032",
+          "short": "a6716fb",
+          "date": "2026-10-31",
+          "subject": "dry-run provisioning — plan and run are the same list"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 197,
+      "title": "L5-057 — Idempotent provisioner",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "dfd595ef9e4360a113ba0713126f682bbe721c59",
+          "short": "dfd595e",
+          "date": "2026-10-31",
+          "subject": "idempotent provisioning via reconcile, drift reported"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 198,
+      "title": "L5-058 — Provisioning rollback",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "109491080189a48b1213843b76ee15b5f57d2462",
+          "short": "1094910",
+          "date": "2026-10-31",
+          "subject": "provisioning rollback — write-ahead journal, orphan-free undo"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 199,
+      "title": "L5-059 — Golden tenant acceptance test",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "94c3fedd5f3856eae7ce2cfad4854b255e2f9661",
+          "short": "94c3fed",
+          "date": "2026-10-31",
+          "subject": "golden tenant acceptance test (2-company group, CI-provisioned)"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 200,
+      "title": "L5-060 — Onboarding API contract",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "196f62b300efd7f133337ba929f505b61fa539f6",
+          "short": "196f62b",
+          "date": "2026-10-31",
+          "subject": "onboarding API contract — one module for the portal and the CLI"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 201,
+      "title": "L5-061 — Tenant/company switcher",
+      "state": "open",
+      "status": "not_started",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "touchpoint",
+      "commits": [],
+      "note": "No tenant/company switcher in the web app."
+    },
+    {
+      "number": 202,
+      "title": "L5-062 — Company-scoped dashboard",
+      "state": "open",
+      "status": "not_started",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "touchpoint",
+      "commits": [],
+      "note": "The dashboard is tenant-scoped; no company filter."
+    },
+    {
+      "number": 203,
+      "title": "L5-063 — Org chart viewer",
+      "state": "open",
+      "status": "delivered_open",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "touchpoint",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "1e0c1dac85af3a765cf63c78d793420925616ad4",
+          "short": "1e0c1da",
+          "date": "2026-10-31",
+          "subject": "org chart viewer — bounded rows, unit detail panel"
+        }
+      ],
+      "note": "Committed, but the issue was never closed."
+    },
+    {
+      "number": 204,
+      "title": "L5-064 — Roster and positions page",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "touchpoint",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "6b531b289b93661d95aad3ae905617b614c1a151",
+          "short": "6b531b2",
+          "date": "2026-11-01",
+          "subject": "roster and positions page — plan vs actual, filters, invite"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 205,
+      "title": "L5-065 — Folder browser",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "touchpoint",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "2803ef1c1255f6c2e6f6cd9f144faf2506bc7cdb",
+          "short": "2803ef1",
+          "date": "2026-11-01",
+          "subject": "folder browser — breadcrumb + list, policy-checked upload, ACL hints"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 206,
+      "title": "L5-066 — Case workspace",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "touchpoint",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "47e22b0089d8357228ae2842322a1d874e24e7cc",
+          "short": "47e22b0",
+          "date": "2026-11-01",
+          "subject": "case workspace — header, documents, analysis, assignee, audit tab"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 207,
+      "title": "L5-067 — Admin console: companies",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "touchpoint",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "d1bf01ee1d9f4e2fe730b3d928f370825d421147",
+          "short": "d1bf01e",
+          "date": "2026-11-01",
+          "subject": "admin console companies — CRUD with validation, disable keeps data, audited"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 208,
+      "title": "L5-068 — Admin console: identity status",
+      "state": "open",
+      "status": "blocked",
+      "closedAt": null,
+      "target": "opengate",
+      "type": "touchpoint",
+      "commits": [],
+      "note": "Blocked: apps/api/src/sso.service.ts, sso.controller.ts and web/app/login/sso are another session's uncommitted work; openid-client is not in HEAD. Blocker comment on the issue."
+    },
+    {
+      "number": 209,
+      "title": "L5-069 — Per-tenant branding",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "touchpoint",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "67a57954cc8cbfdc6d0ca57244d69553e396594e",
+          "short": "67a5795",
+          "date": "2026-11-01",
+          "subject": "per-tenant branding — logo with limits, platform fallback, bounded names"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 210,
+      "title": "L5-070 — Onboarding checklist after provisioning",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "touchpoint",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "5a3a944c92d3526c2cf72c2051bcd0bb808b0082",
+          "short": "5a3a944",
+          "date": "2026-11-01",
+          "subject": "readiness checklist — derived from config, deep links, persisted completion"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 211,
+      "title": "L5-071 — Dataset scoping per tenant",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "3794bd199ed156f1e1adbab6922a705b5f758240",
+          "short": "3794bd1",
+          "date": "2026-11-01",
+          "subject": "dataset scoping per tenant — own roots, tenant-required loader, mixed builds refused"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 212,
+      "title": "L5-072 — Model pinning per tenant",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "718e478da12d084886e6bdec0507e4a24e66d0f8",
+          "short": "718e478",
+          "date": "2026-11-01",
+          "subject": "model pinning per tenant — pinned id/version, drift report, explicit fallback"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 213,
+      "title": "L5-073 — Trace retention policy per tenant",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "grc",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "55c8228fbedc2cf405b5a0aa31321e2a0893c1dd",
+          "short": "55c8228",
+          "date": "2026-11-01",
+          "subject": "trace retention per tenant — policy, purge, export gate"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 214,
+      "title": "L5-074 — Per-tenant usage analytics",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "0f1f7d345246f0281f2ed10140f126427b8047af",
+          "short": "0f1f7d3",
+          "date": "2026-11-01",
+          "subject": "per-tenant usage analytics — company-attributed events, rollup, no content"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 215,
+      "title": "L5-075 — Metering event schema",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "d75583c6dc6e232da826e9743da22e6c7619c69e",
+          "short": "d75583c",
+          "date": "2026-11-01",
+          "subject": "metering event schema — one shape, idempotent writes, backfill from logs"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 216,
+      "title": "L5-076 — Tenant data import",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "8633f971692fff0d05d5a33c3b4aed6f1492f131",
+          "short": "8633f97",
+          "date": "2026-11-01",
+          "subject": "tenant data import — one bundle, validated before write, per-entity report"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 217,
+      "title": "L5-077 — Tenant data export (self-service)",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "touchpoint",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "1567795846d47cb567b2522ba31981ab961cb911",
+          "short": "1567795",
+          "date": "2026-11-01",
+          "subject": "tenant data export (self-service) — one click, expiring link, recorded"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 218,
+      "title": "L5-078 — Golden fixtures per tenant",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "d4d8d261c07c596645df15df8672ea40a81fc4e4",
+          "short": "d4d8d26",
+          "date": "2026-11-01",
+          "subject": "golden fixtures per tenant — frozen fingerprint, hash, used by the suite"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 219,
+      "title": "L5-079 — Platform-level cross-tenant benchmark",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "716c730f99203482b8d517f298ff214535a2e1ab",
+          "short": "716c730",
+          "date": "2026-11-01",
+          "subject": "platform cross-tenant benchmark — k-anonymous aggregates, no per-tenant rows"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 220,
+      "title": "L5-080 — Tenant data catalog",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "255eef6f2ffb3268cde4ae48c9e6a80d7256c1f4",
+          "short": "255eef6",
+          "date": "2026-11-01",
+          "subject": "tenant data catalog — generated from config, source + classification, tenant-admin readable"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 221,
+      "title": "L5-081 — Plan enforcement at runtime",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "e440a6419c71be0315a503d43ceffdab64a82790",
+          "short": "e440a64",
+          "date": "2026-11-01",
+          "subject": "plan enforcement at runtime — flags per plan, listed points, refusals that explain the plan"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 222,
+      "title": "L5-082 — Seat limits and invites",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "775f2e52d6e4754f2d5ee08cf591d8a615f30bf5",
+          "short": "775f2e5",
+          "date": "2026-11-01",
+          "subject": "seat limits and invites — seats per company, invites refused at the plan limit"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 223,
+      "title": "L5-083 — Quota alerts",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "ecde01e64452395bf0e8f0155c816ef01490a8d3",
+          "short": "ecde01e",
+          "date": "2026-11-01",
+          "subject": "quota alerts — warn at 80/100%, record them for the tenant admin"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 224,
+      "title": "L5-084 — Trial expiry behaviour",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "5349bfbb09c976415b50acfcca2a14f97f2a3013",
+          "short": "5349bfb",
+          "date": "2026-11-01",
+          "subject": "trial expiry behaviour — read-only on day 15, data retained"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 225,
+      "title": "L5-085 — Metering to invoices (no billing yet)",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "1983f255ec225d118325112ed6f1ef4828aa87b6",
+          "short": "1983f25",
+          "date": "2026-11-01",
+          "subject": "monthly usage statement per tenant — line items traceable to events, no billing"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 226,
+      "title": "L5-086 — Contract and terms per tenant",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "grc",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "4698669b9b0fdee06e1a8699072084dd09d72526",
+          "short": "4698669",
+          "date": "2026-11-01",
+          "subject": "contract and terms per tenant — registried documents, hashed acceptance, per-tenant privacy"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 227,
+      "title": "L5-087 — Upgrade and downgrade path",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "88db5b0c6db03698827b364a62a0c8f51ac62493",
+          "short": "88db5b0",
+          "date": "2026-11-01",
+          "subject": "upgrade and downgrade path — checklist first, packs disabled gracefully, data kept"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 228,
+      "title": "L5-088 — Group pricing and rollup",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "1f6f303bb81a48c1129e1628790b32d153e76cda",
+          "short": "1f6f303",
+          "date": "2026-11-01",
+          "subject": "group pricing and rollup — one contract, per-company usage"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 229,
+      "title": "L5-089 — Tenant health score",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "0f75ff339128aed9ac04e449f1ed2c878dc8db64",
+          "short": "0f75ff3",
+          "date": "2026-11-01",
+          "subject": "tenant health score — usage, errors, onboarding, explainable and recorded"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 230,
+      "title": "L5-090 — Commercial onboarding pack",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "both",
+      "type": "data",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "11ca1e257cf712824a1c40484fb8b749399e0989",
+          "short": "11ca1e2",
+          "date": "2026-11-01",
+          "subject": "commercial onboarding pack — checklist with owners, template, validator"
+        },
+        {
+          "repo": "enterprise",
+          "sha": "a7baab409dce013bd296b57aafc500565b878dfa",
+          "short": "a7baab4",
+          "date": "2026-11-01",
+          "subject": "commercial onboarding pack — checklist, owners and template"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 231,
+      "title": "L5-091 — Enterprise OS model per company (repo template)",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "enterprise",
+      "type": "metamodel",
+      "commits": [
+        {
+          "repo": "enterprise",
+          "sha": "cd0327aa7cfaabbd000308d877513e95d0653581",
+          "short": "cd0327a",
+          "date": "2026-11-01",
+          "subject": "per-company enterprise OS model — bin/new-company, validator, contract pin"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 232,
+      "title": "L5-092 — Tenant to enterprise-repo mapping",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "both",
+      "type": "metamodel",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "3d9c7b0e9362016db485dddfc7a26c2ef818b574",
+          "short": "3d9c7b0",
+          "date": "2026-11-01",
+          "subject": "tenant to enterprise-repo mapping — tenant config, resolver refusal"
+        },
+        {
+          "repo": "enterprise",
+          "sha": "0226e9e52ec23ce5720bff2957425e0cf794af1b",
+          "short": "0226e9e",
+          "date": "2026-11-01",
+          "subject": "tenant to enterprise-repo mapping — contract and company #1"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 233,
+      "title": "L5-093 — Sync enterprise tags to tenant pins",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "both",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "d37ddc54a02502633c2598b75739f40e597874dd",
+          "short": "d37ddc5",
+          "date": "2026-11-01",
+          "subject": "sync enterprise tags to tenant pins — tag list, confirmed bumps, drift"
+        },
+        {
+          "repo": "enterprise",
+          "sha": "06cb03253900fe3b439e2c5887fb1edd4adfba39",
+          "short": "06cb032",
+          "date": "2026-11-01",
+          "subject": "tag list and tenant pin contract — streams, snapshot, drift"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 234,
+      "title": "L5-094 — Pilot: single-entity tenant end to end",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "pilot",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "368c875825296933e9b232b3dac25cc358fa19b4",
+          "short": "368c875",
+          "date": "2026-11-01",
+          "subject": "pilot — single-entity tenant end to end, evidence and rollback"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 235,
+      "title": "L5-095 — Pilot: two-company group end to end",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "pilot",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "86125ae55ce91fd46915fea650f1eb32cdd6c4fa",
+          "short": "86125ae",
+          "date": "2026-11-01",
+          "subject": "pilot — two-company group end to end, isolation and shared services"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 236,
+      "title": "L5-096 — Ops runbook: add a company to a group",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "377b9b0df906c87c7c1baea733f1950efdb1595d",
+          "short": "377b9b0",
+          "date": "2026-11-01",
+          "subject": "ops runbook — add a company to a group, with validation and rollback"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 237,
+      "title": "L5-097 — Ops runbook: rotate 1ID client secret",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "opengate",
+      "type": "engine",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "6d5d5513134bc24827023676544c16458b585d96",
+          "short": "6d5d551",
+          "date": "2026-11-01",
+          "subject": "keep the runbook's verification note durable (no repo-state claim)"
+        },
+        {
+          "repo": "opengate",
+          "sha": "5724900be430d0d81de194bb940ccecfe1e59d05",
+          "short": "5724900",
+          "date": "2026-11-01",
+          "subject": "ops runbook — rotate the 1ID client secret with zero downtime"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 238,
+      "title": "L5-098 — Tenant onboarding guide (operator facing)",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "both",
+      "type": "touchpoint",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "e287f18d6f2984240c19fb4d7f9d7c2a6c4441a9",
+          "short": "e287f18",
+          "date": "2026-11-01",
+          "subject": "tenant onboarding guide — operator facing, with screenshots, failure modes and a real run"
+        },
+        {
+          "repo": "enterprise",
+          "sha": "3eb0116efff40011f8b2b82bcd2767c344f99e93",
+          "short": "3eb0116",
+          "date": "2026-11-01",
+          "subject": "onboarding a tenant — the contract view (operators)"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 239,
+      "title": "L5-099 — Tenant readiness scorecard",
+      "state": "closed",
+      "status": "done",
+      "closedAt": "2026-10-31",
+      "target": "both",
+      "type": "pilot",
+      "commits": [
+        {
+          "repo": "opengate",
+          "sha": "e0ffb4060a1f9be76313da036b1b53220c656791",
+          "short": "e0ffb40",
+          "date": "2026-11-01",
+          "subject": "give an open advisory gate its owner/date blanks in the report"
+        },
+        {
+          "repo": "opengate",
+          "sha": "ca67d70eae843d74627af3f2e9b56a8a3d2f0102",
+          "short": "ca67d70",
+          "date": "2026-11-01",
+          "subject": "tenant readiness scorecard — ten gates, evidence per gate, recorded go/no-go"
+        },
+        {
+          "repo": "enterprise",
+          "sha": "e3ce80c3f4e8a2e1046234e9720736ce2397174a",
+          "short": "e3ce80c",
+          "date": "2026-11-01",
+          "subject": "readiness scorecard — the ten-gate go/no-go contract"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "number": 240,
+      "title": "L5-100 — Program review: what the 100 issues changed",
+      "state": "open",
+      "status": "not_started",
+      "closedAt": null,
+      "target": "both",
+      "type": "data",
+      "commits": [],
+      "note": ""
+    }
+  ]
+}

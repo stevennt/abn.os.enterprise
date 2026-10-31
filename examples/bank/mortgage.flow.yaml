@@ -1,0 +1,77 @@
+# Mortgage flow v1.0 (issue #23) — longest flow, most X touchpoints
+id: loan.retail.mortgage
+version: 1.0.0
+event_type: loan.mortgage.requested
+department: retail.credit
+inputs:
+  schema_ref: events/loan.mortgage.v1.json
+  fields: [customer_id, cccd, income_docs, requested_amount, term_m, property_id, consent_ref]
+steps:
+  - id: s1-verify
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [KYC-01]
+    sla_minutes: 5
+    on_fail: "REVIEW"
+  - id: s2-score
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [SBV-DSTI-04, SBV-LTV-02]
+    sla_minutes: 5
+    on_fail: "REVIEW"
+  - id: s3-appraise
+    kind: human
+    owner_role: external_appraiser
+    level: L2
+    uses_rule: [COLLATERAL-VAL-01]
+    uses_touchpoint: TP-X-appraiser
+    sla_minutes: 2880
+    on_fail: "escalate:credit_officer"
+  - id: s4-notarize
+    kind: human
+    owner_role: external_notary
+    level: L2
+    uses_rule: [NOTARY-01]
+    uses_touchpoint: TP-X-notary
+    sla_minutes: 1440
+    on_fail: "escalate:credit_officer"
+  - id: s5-lien
+    kind: workflow
+    owner_role: system
+    level: L3
+    uses_rule: [LIEN-REG-01]
+    uses_touchpoint: TP-X-land-office
+    sla_minutes: 4320
+    on_fail: "escalate:credit_manager"
+  - id: s6-aml
+    kind: workflow
+    owner_role: compliance_bot
+    level: L4
+    uses_rule: [AML-SCREEN-02]
+    sla_minutes: 10
+    on_fail: "hold:compliance"
+  - id: s7-decide
+    kind: human
+    owner_role: credit_manager
+    level: L3
+    uses_rule: [CREDIT-GRID-11]
+    sla_minutes: 480
+    uses_touchpoint: TP-E-inbox
+    on_fail: "escalate:risk"
+  - id: s8-disburse
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_touchpoint: TP-S-core
+    sla_minutes: 60
+    on_fail: "retry+page"
+outputs: {decision: "APPROVE|DECLINE|REVIEW", limit_vnd: 0, ltv: 0.0, reasons: []}
+kpis: [approval_rate, avg_ltv, tta_p50, valuation_dispute_rate]
+automation_target: L3
+# Collateral sub-flow: s3 (independent appraiser values property, X) -> s4
+# (notarized mortgage contract, X) -> s5 (lien registered at land office, X).
+# Credit track (s1-s2) runs in parallel; s7 needs both tracks green.
+# X touchpoints: TP-X-appraiser, TP-X-notary, TP-X-land-office — external parties
+# with signed payloads, statutory SLAs, and manual-fallback forms (H80).

@@ -1,0 +1,59 @@
+# Corporate org (full v1.0, issue #12) — validates against metamodel/org.schema.yaml
+- id: corporate
+  version: 1.0.0
+  name: "Corporate Banking"
+  parent_id: null
+  mandate: "Own corporate relationships, bilateral facilities, guarantees, corp accounts"
+  headcount_plan: 400
+  systems_used: [los-corp, core, trade, cic]
+  roles:
+    - id: senior_rm
+      title: "Senior Relationship Manager (pod)"
+      raci_scope:
+        - "R:loan.corporate.term.steps.1-2"
+        - "R:loan.corporate.working_capital.steps.1-2"
+        - "R:account.corporate.open"
+        - "R:guarantee.issue.steps.1-2"
+      approvals:
+        - "recommend-only"
+      headcount: 120
+    - id: corp_credit_analyst
+      title: "Corporate Credit Analyst"
+      raci_scope:
+        - "R:loan.corporate.term.steps.3-4"
+        - "R:loan.corporate.working_capital.steps.3-4"
+        - "R:guarantee.issue.risk-review"
+        - "C:risk.limit.review"
+      approvals:
+        - "analysis-signoff"
+      headcount: 60
+    - id: corp_director
+      title: "Corporate Banking Director"
+      raci_scope:
+        - "A:account.corporate.open"
+        - "A:loan.corporate.term<=50B"
+        - "A:loan.corporate.working_capital<=50B"
+        - "A:guarantee.issue<=20B"
+      approvals:
+        - "facility<=50000000000"
+        - "guarantee<=20000000000"
+      headcount: 8
+    - id: credit_committee
+      title: "Credit Committee (corporate)"
+      raci_scope:
+        - "A:loan.corporate.term>50B"
+        - "A:loan.corporate.working_capital>50B"
+        - "A:guarantee.issue>20B"
+        - "I:covenant-breaches"
+      approvals:
+        - "above-director-limits"
+        - "covenant-waiver"
+      headcount: 7
+  approval_thresholds:
+    term-facility: {pod_vnd: 0, director_vnd: 50000000000, above: credit_committee}
+    working-capital: {pod_vnd: 0, director_vnd: 50000000000, above: credit_committee}
+    guarantee: {director_vnd: 20000000000, above: credit_committee}
+    corp-account-open: {approver: corp_director, limit: "KYC/UBO-gated"}
+# Deal-size approval ladder (VND): pod recommends at any size; analyst signs the
+# analysis; director approves facilities <=50B and guarantees <=20B; everything
+# above goes to credit committee; covenant waivers always committee.

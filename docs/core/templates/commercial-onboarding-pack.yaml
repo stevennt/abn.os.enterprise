@@ -1,0 +1,60 @@
+# Commercial onboarding pack — blank form
+#
+# Fill one per tenant, save as customers/<tenant>/commercial-pack.json in the
+# OpenGate repo, then run:
+#   python3 infra/commercial_pack.py check --tenant <tenant>
+#
+# Contract: docs/core/commercial-onboarding.md
+# Shape:    schemas/commercial-pack.json (OpenGate repo)
+# Rule: no pack, no provisioning; secrets never go in this file.
+
+version: 1
+tenant: "<tenant-id>"                       # owner: sales
+preparedBy: "sales@example.com"             # owner: sales
+preparedAt: "YYYY-MM-DD"                    # owner: sales
+status: draft                               # draft | ready   (owner: sales)
+
+profile:
+  legal_name: "<registered name>"           # owner: legal
+  jurisdiction: "VN"                        # owner: legal
+  practice_focus: ["<focus>"]               # owner: sales
+  working_languages: ["vi", "en"]           # owner: sales
+  confidentiality: "strict"                 # owner: legal
+  default_data_mode: "không mật"            # owner: legal
+
+companies:                                  # one entry per legal entity
+  - id: "<tenant-id>"                       # owner: sales; single entity = tenant id
+    name: "<display name>"                  # owner: sales
+    legal_name: "<registered name>"         # owner: legal
+    tax_id: "<tax id>"                      # owner: legal (customer supplies)
+    registration_number: "<number>"         # owner: legal
+    registered_address: "<address>"         # owner: legal
+    departments: ["<department id>"]        # owner: sales (taxonomy: onboarding/departments.json)
+
+sso:                                        # owner: engineering (values: customer IT)
+  mode: password                            # password | sso
+  # when mode: sso, all of these are required — and no client secret:
+  # provider: "entra-id"
+  # issuer: "https://login.microsoftonline.com/<tenant>/v2.0"
+  # clientId: "<application-client-id>"
+  # redirectUri: "https://<portal>/login/sso"
+  # scopes: ["openid", "profile", "email"]
+  # linkClaim: "sub"
+  # ssoOnly: false
+
+packs: ["base"]                             # owner: sales; ids from onboarding/pack-set.json
+
+contacts:                                   # owner: sales (security: optional)
+  sales:
+    name: "<name>"
+    email: "sales@example.com"
+    phone: "<phone>"
+  billing:
+    name: "<name>"
+    email: "billing@example.com"
+  technical:
+    name: "<name>"
+    email: "engineering@example.com"
+  security:
+    name: "<name>"
+    email: "security@example.com"

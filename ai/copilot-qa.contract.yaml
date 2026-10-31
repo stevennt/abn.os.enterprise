@@ -1,0 +1,14 @@
+# policy-copilot contract v1.0 (issue #66) — under docs/ai-contract.md
+step_id: copilot-qa
+version: 1.0.0
+input_schema: events/copilot.in.v1.json
+output_schema: events/copilot.out.v1.json
+output_fields: [answer_vi, citations, confidence]
+model: {name: policy-copilot, version: 2026-10-20, temperature: 0}
+pii_class: internal
+eval_suite: evals/policy-copilot/
+abstain_below: 0.65
+fallback: REVIEW
+notes: "Staff-facing only (never customer-facing). Answers ONLY from the corpus
+  below with section citations; out-of-corpus questions abstain with a pointer
+  to the owning unit. No customer PII in the corpus or the index."

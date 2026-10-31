@@ -11,7 +11,7 @@ import yaml
 import jsonschema
 
 ROOT = Path(__file__).resolve().parent.parent
-SCHEMAS = ["org", "process", "rule", "event", "touchpoint", "audit", "industry"]
+SCHEMAS = ["org", "process", "rule", "event", "touchpoint", "audit", "industry", "pack"]
 
 def load(p):
     return yaml.safe_load((ROOT / p).read_text())

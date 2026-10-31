@@ -1,0 +1,118 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://github.com/stevennt/abn.os.enterprise/metamodel/pack.schema.yaml/v1.0.0"
+title: "Industry agent pack v1.0.0 — L2-content contract (owned here, consumed by OpenGate)"
+description: >
+  Three artefacts make a pack: roles.yaml (role manifests), each skill's SKILL.md
+  frontmatter, and each agent template's frontmatter. This schema covers all three
+  so the content can be validated where it lives.
+type: object
+required: [version]
+properties:
+  version:
+    type: string
+    pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+  roles:
+    $ref: "#/$defs/rolesDoc"
+  skills:
+    type: array
+    items: {$ref: "#/$defs/skillFrontmatter"}
+  agents:
+    type: array
+    items: {$ref: "#/$defs/agentFrontmatter"}
+additionalProperties: false
+
+$defs:
+
+  rolesDoc:
+    type: object
+    required: [roles]
+    properties:
+      roles:
+        type: object
+        minProperties: 1
+        propertyNames: {pattern: "^[a-z][a-z0-9-]*$"}
+        additionalProperties: {$ref: "#/$defs/role"}
+    additionalProperties: true   # comment keys allowed (yaml comments are stripped anyway)
+
+  role:
+    type: object
+    required: [position, template]
+    properties:
+      position:
+        type: string
+        enum: [maker, checker, orchestrator]
+        description: "maker drafts, checker verifies, orchestrator runs the pipeline"
+      template:
+        type: string
+        pattern: "^agents/[a-z0-9-]+\\.md$"
+        description: "path relative to the pack dir; must carry YAML frontmatter"
+      skills_required:
+        type: array
+        items: {type: string, pattern: "^[a-z][a-z0-9-]*$"}
+      rubric:
+        type: string
+        description: "exactly one rubric skill a checker pins"
+      tools_allow:
+        type: array
+        items: {type: string}
+      may_invoke:
+        type: array
+        items: {type: string}
+        description: "roles this role may call; checkers should be empty"
+      harness_allow:
+        type: array
+        items: {type: string}
+      note:
+        type: string
+    additionalProperties: false
+
+  skillFrontmatter:
+    type: object
+    required: [name, version, description]
+    properties:
+      name: {type: string, pattern: "^[a-z][a-z0-9-]*$"}
+      version:
+        type: string
+        pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        description: "strict semver; OpenGate refuses unversioned skills at release"
+      description: {type: string, minLength: 10}
+      license: {type: string}
+      compatibility: {type: string}
+      metadata:
+        type: object
+        properties:
+          domain: {type: string}
+          qc_id: {type: string, pattern: "^QC-[A-Z]+-[0-9]{3}$"}
+        additionalProperties: true
+    additionalProperties: true
+
+  agentFrontmatter:
+    type: object
+    required: [description, mode, temperature, steps]
+    properties:
+      description: {type: string, minLength: 10}
+      mode:
+        type: string
+        enum: [primary, subagent, all]
+      temperature: {type: number, minimum: 0, maximum: 1}
+      steps: {type: integer, minimum: 1}
+      permission:
+        type: object
+        description: >
+          Each key is a tool family; the value is either a plain decision or a
+          pattern->decision map (real packs use the map form to allow one command
+          family while denying the rest, e.g. bash: {"*": deny, qc_schema: allow}).
+        additionalProperties: {$ref: "#/$defs/permissionValue"}
+    additionalProperties: true
+
+  permissionValue:
+    oneOf:
+      - type: string
+        enum: [allow, deny, ask]
+      - type: object
+        minProperties: 1
+        additionalProperties:
+          type: string
+          enum: [allow, deny, ask]
+    additionalProperties: true
+x-glossary: [Role, Process]

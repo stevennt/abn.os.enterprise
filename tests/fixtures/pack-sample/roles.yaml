@@ -1,0 +1,14 @@
+# Fixture pack (issue #127) — minimal but valid; mirrors OpenGate roles.yaml shape.
+roles:
+  analyst:
+    position: maker
+    template: agents/analyst.md
+    skills_required: [sample-screening]
+    tools_allow: []
+    may_invoke: []
+  reviewer:
+    position: checker
+    template: agents/reviewer.md
+    rubric: sample-screening
+    tools_allow: []
+    may_invoke: []

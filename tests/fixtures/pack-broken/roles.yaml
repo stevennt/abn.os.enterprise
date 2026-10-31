@@ -1,0 +1,14 @@
+# Broken fixture (issue #127): bad position, inline limit, unversioned skill ref.
+roles:
+  bad-analyst:
+    position: drafter
+    template: agents/missing.md
+    skills_required: [broken-skill]
+    tools_allow: []
+    may_invoke: []
+  bad-checker:
+    position: checker
+    template: agents/bad-checker.md
+    rubric: broken-skill
+    tools_allow: []
+    may_invoke: [bad-analyst]

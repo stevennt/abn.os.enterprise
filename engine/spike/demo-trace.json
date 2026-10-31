@@ -1,0 +1,43 @@
+{
+ "flow": "loan.retail.unsecured",
+ "version": "1.3.0",
+ "steps": [
+  {
+   "step": "s1-verify",
+   "resumed": true
+  },
+  {
+   "step": "s2-extract",
+   "attempt": 2,
+   "outcome": "FIELDS"
+  },
+  {
+   "step": "s3-score",
+   "attempt": 1,
+   "outcome": "PASS"
+  },
+  {
+   "step": "s4-aml",
+   "attempt": 1,
+   "outcome": "PASS"
+  },
+  {
+   "step": "s5-decide",
+   "attempt": 1,
+   "outcome": "APPROVE"
+  },
+  {
+   "step": "s6-notify",
+   "attempt": 1,
+   "outcome": "PASS"
+  }
+ ],
+ "effects_ran_once": [
+  "s1-verify",
+  "s2-extract",
+  "s3-score",
+  "s4-aml",
+  "s5-decide",
+  "s6-notify"
+ ]
+}

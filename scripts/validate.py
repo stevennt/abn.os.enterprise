@@ -54,7 +54,13 @@ def main():
         assert len(procs) == len(set(procs)), f"{cf}: duplicate process ids"
         total_procs += n
         print(f"catalog: {Path(cf).parent.parent.name} {n} processes indexed — OK")
-    assert total_procs >= 46, f"catalogs hold {total_procs} processes, want >= 46 (banking reference)"
+    # Regression guard on the reference implementation only: if the banking
+    # reference exists it must keep its full catalog. Other industries may be thin.
+    for cf in cat_files:
+        if Path(cf).parent.parent.name == "banking":
+            n = sum(len(v) for v in yaml.safe_load(open(cf)).values())
+            assert n >= 46, f"banking reference catalog shrank to {n} (was 46)"
+    assert total_procs >= len(cat_files), f"{len(cat_files)} catalogs but {total_procs} processes"
 
     # Issue #131: per-industry org index + reconciliation
     org_files = sorted(_glob.glob(str(ROOT / "industries" / "*" / "org" / "org-chart.yaml")))

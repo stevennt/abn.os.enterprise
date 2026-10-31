@@ -28,8 +28,7 @@ CLAIM = [
     re.compile(r"\bphạt\s+(?:tù|cải tạo)\s+\d+"),
     re.compile(r"\b\d[\d.,]*\s*(?:đồng|VND)\b"),   # monetary penalty
 ]
-ALLOW = ("placeholder:", "rules/", "flows/", "org/", "event-examples/",
-         "industries/legal/docs/")
+ALLOW = ("placeholder:", "rules/", "flows/", "org/", "event-examples/", "docs/")
 SKIP_LINE = (
     re.compile(r"^\s*version:"), re.compile(r"qc_id"), re.compile(r"^\s*#"),
     re.compile(r"https?://"),

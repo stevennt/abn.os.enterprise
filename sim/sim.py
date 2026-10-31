@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Minimal simulator (issue #105, contract I81): replay the loan trace fixture
 with what-if multipliers. Seeded only (--seed); stdlib only.
-Usage: python sim/sim.py --trace industries/banking/flows/loan-approval.trace.json
+Usage: python sim/sim.py --trace <path/to/flow>.trace.json  (pick one with
+  python scripts/industrylib.py --demo-paths)
   --instances 1000 --staffing 1.0 --sla 1.0 --fraud 1.0 --seed 42 --out /tmp/sim.json
 Outputs: TTA p50/p95, per-step totals, review load, byte-identical per seed.
 """

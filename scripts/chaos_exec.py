@@ -11,6 +11,9 @@ import sys
 import tempfile
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from industrylib import demo_paths  # noqa: E402  (issue #135: no hardcoded paths)
+
 ROOT = Path(__file__).resolve().parent.parent
 PY = sys.executable
 
@@ -30,10 +33,11 @@ def drill_engine_loss(tmp):
 def drill_lag_storm(tmp):
     base = tmp / "base.json"
     lag = tmp / "lag.json"
-    r = sh(PY, "sim/sim.py", "--trace", "industries/banking/flows/loan-approval.trace.json",
+    trace = str(demo_paths()["trace"].relative_to(ROOT))
+    r = sh(PY, "sim/sim.py", "--trace", trace,
            "--instances", "300", "--seed", "7", "--out", str(base))
     assert r.returncode == 0, r.stderr[-500:]
-    r = sh(PY, "sim/sim.py", "--trace", "industries/banking/flows/loan-approval.trace.json",
+    r = sh(PY, "sim/sim.py", "--trace", trace,
            "--instances", "300", "--seed", "7", "--sla", "5.0", "--out", str(lag))
     assert r.returncode == 0, r.stderr[-500:]
     b, l = json.load(open(base)), json.load(open(lag))

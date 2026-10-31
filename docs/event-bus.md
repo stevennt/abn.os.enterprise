@@ -34,3 +34,21 @@ Compression lz4, min.insync.replicas=2, acks=all on money topics.
 - DLQ 90d hot (triage SLO is 1 day, A04) then cold archive; replay topic 7d.
 - Partition counts scale with throughput (payments 24 first); re-partitioning needs
   a key-preserving migration plan, never mid-pilot.
+
+## CDC from core banking (issue #37) — Debezium, outbox pattern
+
+Core is untouchable: no triggers on core tables, no direct queries from flows.
+All core state enters the OS through CDC.
+
+- **Pattern: transactional outbox.** Core services write business row + outbox row
+  in one local transaction; Debezium tails the outbox (not the business tables).
+  Rejected alternative: DB triggers (hidden logic in prod, bypass audit, painful
+  rollback) — documented here so nobody re-litigates it.
+- **Table list (outbox feeds):** `casa_balances`, `loan_statuses`, `card_statuses`,
+  `customer_statuses`, `txn_postings`, `hold_statuses`, `limit_utilizations`.
+- **Lag SLO:** p99 <5s core→topic during business hours, <30s overnight batch windows;
+  lag breach pages ITOps and pauses L4 auto-posting to REVIEW (never guess on stale reads).
+- Outbox rows carry `(aggregate, aggregate_id, event_type, payload_hash, occurred_at)`;
+  relay publishes to the matching `bank.*` topic with key = aggregate id.
+- Initial snapshot: Debezium snapshot mode per table, then streaming; snapshot rows
+  are marked so consumers treat them as state-sync, not new events.

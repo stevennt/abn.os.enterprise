@@ -1,0 +1,8 @@
+# Fixture for issue #129 — one rule at a known version.
+- id: FIX-SCREEN-01
+  version: 1.0.0-2026-10-01
+  authority: "fixture"
+  inputs: [x]
+  table:
+    - {when: "*", then: REVIEW}
+  effect: "fixture only"

@@ -20,8 +20,9 @@ evals: []
 pack:
   path: pack
   schema: metamodel/pack.schema.yaml
-  status: absent
+  status: draft
 notes: >
-  Scaffold only: org skeleton, two structural rule packs, one review flow.
-  Substantive law content (charge elements, sentencing bands, limitation periods)
-  requires legal review before it may enter this repo at all.
+  Pack imported as DRAFT (issue #132): agents + skills + roles, structure only.
+  No article numbers, injury percentages, penalty ranges or deadlines are asserted;
+  see industries/legal/docs/placeholders.md for the tracked absences and
+  scripts/pack_claim_scan.py for the CI guard.

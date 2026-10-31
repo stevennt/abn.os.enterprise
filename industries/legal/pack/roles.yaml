@@ -1,0 +1,35 @@
+# Legal staff registry (product source)
+# Roles compose from shared skills; only the rubric lens differs per checker.
+# Resolver validates templates exist; per-role skill/tool enforcement lands
+# with fork materialization.
+roles:
+  investigator:
+    position: maker
+    template: agents/investigator.md
+    skills_required: [base-opinion-structure, base-evidence-hygiene, legal-issue-spotting,
+                      legal-citation, legal-evidence-weighing, legal-charge-determination]
+    tools_allow: []
+    may_invoke: []
+  legal-judge-coverage:
+    position: checker
+    template: agents/legal-judge-coverage.md
+    rubric: legal-issue-spotting
+    tools_allow: [qc_schema]
+    harness_allow: [gstack-review, gstack-qa-only]
+    may_invoke: []
+  legal-judge-reasoning:
+    position: checker
+    template: agents/legal-judge-reasoning.md
+    rubric: legal-citation
+    tools_allow: [qc_schema, qc_citation]
+    harness_allow: [gstack-review, gstack-qa-only]
+    may_invoke: []
+  legal-judge-weighing:
+    position: checker
+    template: agents/legal-judge-weighing.md
+    rubric: legal-evidence-weighing
+    tools_allow: [qc_schema]
+    harness_allow: [gstack-review, gstack-qa-only]
+    may_invoke: []
+# Orchestrator: the /qc pipeline (gateway/templates/commands/qc.md + aggregation).
+# No LLM persona; runs scripts first, fans out checkers, aggregates verdicts.

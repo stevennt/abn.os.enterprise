@@ -1,0 +1,29 @@
+{
+ "doctype": "DocType",
+ "name": "OS Task",
+ "module": "OS Inbox",
+ "custom": 1,
+ "fields": [
+  {"fieldname": "subject", "fieldtype": "Data", "label": "Subject", "reqd": 1},
+  {"fieldname": "instance_id", "fieldtype": "Data", "label": "Instance", "reqd": 1},
+  {"fieldname": "step_id", "fieldtype": "Data", "label": "Step", "reqd": 1},
+  {"fieldname": "flow", "fieldtype": "Data", "label": "Flow (id@version)"},
+  {"fieldname": "role_queue", "fieldtype": "Data", "label": "Role queue", "reqd": 1},
+  {"fieldname": "assignee", "fieldtype": "Data", "label": "Assignee"},
+  {"fieldname": "maker", "fieldtype": "Data", "label": "Maker (SoD)"},
+  {"fieldname": "checker_role", "fieldtype": "Data", "label": "Checker role (SoD)"},
+  {"fieldname": "sla_due", "fieldtype": "Datetime", "label": "SLA due"},
+  {"fieldname": "state", "fieldtype": "Select", "label": "State",
+   "options": "OPEN\nCLAIMED\nBREACHED\nESCALATED\nDONE", "default": "OPEN"},
+  {"fieldname": "on_fail", "fieldtype": "Data", "label": "On-fail lane"},
+  {"fieldname": "escalate_at", "fieldtype": "Datetime", "label": "Escalate at"},
+  {"fieldname": "delegate_to", "fieldtype": "Data", "label": "Delegate to"},
+  {"fieldname": "delegate_until", "fieldtype": "Date", "label": "Delegate until"},
+  {"fieldname": "decision", "fieldtype": "Select", "label": "Decision",
+   "options": "\nAPPROVE\nDECLINE\nREVIEW"},
+  {"fieldname": "decision_note", "fieldtype": "Small Text", "label": "Decision note"},
+  {"fieldname": "rule_version", "fieldtype": "Data", "label": "Rule version (read-only)"},
+  {"fieldname": "ai_draft", "fieldtype": "Text", "label": "AI draft (advisory only)"}
+ ],
+ "permissions": [{"role": "System Manager", "read": 1, "write": 1}]
+}

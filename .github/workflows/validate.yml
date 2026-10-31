@@ -19,6 +19,7 @@ jobs:
       - run: python scripts/migrate_check.py examples/bank/loan-approval.flow.yaml tests/fixtures/loan-approval.v2.0.0-major.flow.yaml
       - run: python scripts/authz_check.py
       - run: python scripts/inbox_demo.py
+      - run: cd /Users/thanhson/Workspace/abn.os.enterprise && python frappe/test_os_task.py
       - run: python scripts/eval_harness.py
       - run: python scripts/gen_goldens.py --seed 42 && git diff --exit-code -- evals/ && python scripts/eval_harness.py --strict
       - run: curl -sL https://github.com/grafana/k6/releases/download/v0.53.0/k6-v0.53.0-linux-amd64.tar.gz | tar xz && (python engine/load/stub.py 8099 &>/tmp/stub.log & echo $! > /tmp/stub.pid) && sleep 2 && ./k6-v0.53.0-linux-amd64/k6 run -e SMOKE=1 -e BASE_URL=http://127.0.0.1:8099 engine/load/loan-spike.js; code=$?; kill $(cat /tmp/stub.pid); exit $code

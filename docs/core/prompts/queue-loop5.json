@@ -1,0 +1,602 @@
+[
+ {
+  "order": 1,
+  "issue": 141,
+  "title": "L5-001 — Tenant model: single entity vs group",
+  "prompt": "[L5-1/100 · issue #141] Tenant model: single entity vs group\nRead first: gh issue view 141 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: schemas/customer.json, onboarding/tenant-template/, customers/hvcs/{profile,org}.json shapes.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #141: ...') and close: gh issue close 141 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 2,
+  "issue": 142,
+  "title": "L5-002 — 1ID: per-tenant OIDC via sso.json",
+  "prompt": "[L5-2/100 · issue #142] 1ID: per-tenant OIDC via sso.json\nRead first: gh issue view 142 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: schemas/sso.json (per-tenant OIDC, secret by env name), apps/api auth code, customers/*/profile.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #142: ...') and close: gh issue close 142 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 3,
+  "issue": 143,
+  "title": "L5-003 — Map 1ID claims to tenant and company",
+  "prompt": "[L5-3/100 · issue #143] Map 1ID claims to tenant and company\nRead first: gh issue view 143 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: schemas/sso.json, apps/api auth-user.ts, customers/README rules.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #143: ...') and close: gh issue close 143 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 4,
+  "issue": 144,
+  "title": "L5-004 — Tenant registry + active-tenant resolution",
+  "prompt": "[L5-4/100 · issue #144] Tenant registry + active-tenant resolution\nRead first: gh issue view 144 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: gateway/resolve.py (load_tenant_pins, --tenant), opengate.json customer key.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #144: ...') and close: gh issue close 144 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 5,
+  "issue": 145,
+  "title": "L5-005 — tenant-template v2: group-aware provisioning template",
+  "prompt": "[L5-5/100 · issue #145] tenant-template v2: group-aware provisioning template\nRead first: gh issue view 145 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: onboarding/tenant-template/{profile,org,instructions}.md.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #145: ...') and close: gh issue close 145 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 6,
+  "issue": 146,
+  "title": "L5-006 — Tenant directory layout + isolation rule",
+  "prompt": "[L5-6/100 · issue #146] Tenant directory layout + isolation rule\nRead first: gh issue view 146 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: customers/ layout, gateway/resolve.py path handling.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #146: ...') and close: gh issue close 146 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 7,
+  "issue": 147,
+  "title": "L5-007 — Tenant profile fields for groups",
+  "prompt": "[L5-7/100 · issue #147] Tenant profile fields for groups\nRead first: gh issue view 147 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: schemas/customer.json, customers/hvcs/profile.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #147: ...') and close: gh issue close 147 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 8,
+  "issue": 148,
+  "title": "L5-008 — Multi-company org.json",
+  "prompt": "[L5-8/100 · issue #148] Multi-company org.json\nRead first: gh issue view 148 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: schemas/org.json, customers/hvcs/org.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #148: ...') and close: gh issue close 148 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 9,
+  "issue": 149,
+  "title": "L5-009 — Role to company scoping",
+  "prompt": "[L5-9/100 · issue #149] Role to company scoping\nRead first: gh issue view 149 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: domains/base roles model, docs/roles.md maker/checker law, gateway/resolve.py role wiring.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #149: ...') and close: gh issue close 149 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 10,
+  "issue": 150,
+  "title": "L5-010 — Tenant config audit trail",
+  "prompt": "[L5-10/100 · issue #150] Tenant config audit trail\nRead first: gh issue view 150 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: customers/_platform/audit.jsonl, apps/api audit.service.ts.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #150: ...') and close: gh issue close 150 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 11,
+  "issue": 151,
+  "title": "L5-011 — Company org schema: units, positions, heads",
+  "prompt": "[L5-11/100 · issue #151] Company org schema: units, positions, heads\nRead first: gh issue view 151 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: schemas/org.json, customers/hvcs/org.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #151: ...') and close: gh issue close 151 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 12,
+  "issue": 152,
+  "title": "L5-012 — Department taxonomy shared across companies",
+  "prompt": "[L5-12/100 · issue #152] Department taxonomy shared across companies\nRead first: gh issue view 152 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: onboarding/industries.json, domains/*/roles.yaml.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #152: ...') and close: gh issue close 152 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 13,
+  "issue": 153,
+  "title": "L5-013 — RACI per unit per process, per company",
+  "prompt": "[L5-13/100 · issue #153] RACI per unit per process, per company\nRead first: gh issue view 153 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: schemas/org.json, docs/roles.md.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #153: ...') and close: gh issue close 153 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 14,
+  "issue": 154,
+  "title": "L5-014 — Approval authority grid per company",
+  "prompt": "[L5-14/100 · issue #154] Approval authority grid per company\nRead first: gh issue view 154 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: domains/legal/roles.yaml and domains/banking/roles.yaml patterns.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #154: ...') and close: gh issue close 154 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 15,
+  "issue": 155,
+  "title": "L5-015 — Group shared-services modelling",
+  "prompt": "[L5-15/100 · issue #155] Group shared-services modelling\nRead first: gh issue view 155 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: schemas/org.json, customers/hvcs/org.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #155: ...') and close: gh issue close 155 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 16,
+  "issue": 156,
+  "title": "L5-016 — Org import from CSV/XLSX",
+  "prompt": "[L5-16/100 · issue #156] Org import from CSV/XLSX\nRead first: gh issue view 156 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: schemas/org.json, infra/ scripts style.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #156: ...') and close: gh issue close 156 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 17,
+  "issue": 157,
+  "title": "L5-017 — Org validation: cycles, orphans, duplicate ids",
+  "prompt": "[L5-17/100 · issue #157] Org validation: cycles, orphans, duplicate ids\nRead first: gh issue view 157 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: gateway/resolve.py validate_org(), schemas/org.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #157: ...') and close: gh issue close 157 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 18,
+  "issue": 158,
+  "title": "L5-018 — Headcount plan vs actual people",
+  "prompt": "[L5-18/100 · issue #158] Headcount plan vs actual people\nRead first: gh issue view 158 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: schemas/org.json, apps/api roster code.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #158: ...') and close: gh issue close 158 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 19,
+  "issue": 159,
+  "title": "L5-019 — Org versioning with effective dates",
+  "prompt": "[L5-19/100 · issue #159] Org versioning with effective dates\nRead first: gh issue view 159 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: schemas/org.json, gateway/resolve.py version handling.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #159: ...') and close: gh issue close 159 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 20,
+  "issue": 160,
+  "title": "L5-020 — Unit to domain pack mapping",
+  "prompt": "[L5-20/100 · issue #160] Unit to domain pack mapping\nRead first: gh issue view 160 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: onboarding/industries.json, gateway/resolve.py domains.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #160: ...') and close: gh issue close 160 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 21,
+  "issue": 161,
+  "title": "L5-021 — Folder taxonomy per company",
+  "prompt": "[L5-21/100 · issue #161] Folder taxonomy per company\nRead first: gh issue view 161 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: customers/<t>/ layout, infra/files.py.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #161: ...') and close: gh issue close 161 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 22,
+  "issue": 162,
+  "title": "L5-022 — Storage abstraction per tenant",
+  "prompt": "[L5-22/100 · issue #162] Storage abstraction per tenant\nRead first: gh issue view 162 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: infra/files.py, infra/files/.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #162: ...') and close: gh issue close 162 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 23,
+  "issue": 163,
+  "title": "L5-023 — Upload policy: quota, type allowlist, size",
+  "prompt": "[L5-23/100 · issue #163] Upload policy: quota, type allowlist, size\nRead first: gh issue view 163 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: infra/files.py, apps/api file-scan.service.ts.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #163: ...') and close: gh issue close 163 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 24,
+  "issue": 164,
+  "title": "L5-024 — Path safety: no traversal, tenant prefix",
+  "prompt": "[L5-24/100 · issue #164] Path safety: no traversal, tenant prefix\nRead first: gh issue view 164 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: infra/files.py path handling.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #164: ...') and close: gh issue close 164 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 25,
+  "issue": 165,
+  "title": "L5-025 — Per-folder ACLs tied to org units",
+  "prompt": "[L5-25/100 · issue #165] Per-folder ACLs tied to org units\nRead first: gh issue view 165 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: infra/files.py, schemas/org.json units, apps/api.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #165: ...') and close: gh issue close 165 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 26,
+  "issue": 166,
+  "title": "L5-026 — Case to folder to document linking",
+  "prompt": "[L5-26/100 · issue #166] Case to folder to document linking\nRead first: gh issue view 166 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: infra/cases.py, customers/<t>/cases/<id>/case.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #166: ...') and close: gh issue close 166 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 27,
+  "issue": 167,
+  "title": "L5-027 — Retention policy per folder type",
+  "prompt": "[L5-27/100 · issue #167] Retention policy per folder type\nRead first: gh issue view 167 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: infra/files.py, onboarding/privacy.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #167: ...') and close: gh issue close 167 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 28,
+  "issue": 168,
+  "title": "L5-028 — Per-tenant search index",
+  "prompt": "[L5-28/100 · issue #168] Per-tenant search index\nRead first: gh issue view 168 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: infra/search.py, infra/search/.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #168: ...') and close: gh issue close 168 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 29,
+  "issue": 169,
+  "title": "L5-029 — Bulk import (zip + manifest)",
+  "prompt": "[L5-29/100 · issue #169] Bulk import (zip + manifest)\nRead first: gh issue view 169 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: infra/files.py, infra/cases.py.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #169: ...') and close: gh issue close 169 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 30,
+  "issue": 170,
+  "title": "L5-030 — Storage usage metering per company",
+  "prompt": "[L5-30/100 · issue #170] Storage usage metering per company\nRead first: gh issue view 170 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: infra/files.py, onboarding/plans.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #170: ...') and close: gh issue close 170 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 31,
+  "issue": 171,
+  "title": "L5-031 — Department pack: business/operations",
+  "prompt": "[L5-31/100 · issue #171] Department pack: business/operations\nRead first: gh issue view 171 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: domains/base (pack anatomy), domains/legal (biggest example), gateway/resolve.py validate_pack.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #171: ...') and close: gh issue close 171 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 32,
+  "issue": 172,
+  "title": "L5-032 — Department pack: HR",
+  "prompt": "[L5-32/100 · issue #172] Department pack: HR\nRead first: gh issue view 172 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: domains/legal/roles.yaml (authority pending-review pattern).\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #172: ...') and close: gh issue close 172 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 33,
+  "issue": 173,
+  "title": "L5-033 — Department pack: documents/knowledge",
+  "prompt": "[L5-33/100 · issue #173] Department pack: documents/knowledge\nRead first: gh issue view 173 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: domains/legal/skills/legal-citation, domains/base/skills.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #173: ...') and close: gh issue close 173 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 34,
+  "issue": 174,
+  "title": "L5-034 — Department pack: marketing",
+  "prompt": "[L5-34/100 · issue #174] Department pack: marketing\nRead first: gh issue view 174 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: domains/base/skills, domains/legal/templates.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #174: ...') and close: gh issue close 174 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 35,
+  "issue": 175,
+  "title": "L5-035 — Pack composition per tenant plan",
+  "prompt": "[L5-35/100 · issue #175] Pack composition per tenant plan\nRead first: gh issue view 175 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: onboarding/plans.json, gateway/resolve.py domains enable/disable.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #175: ...') and close: gh issue close 175 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 36,
+  "issue": 176,
+  "title": "L5-036 — Pack version pinning per tenant (bundle refs)",
+  "prompt": "[L5-36/100 · issue #176] Pack version pinning per tenant (bundle refs)\nRead first: gh issue view 176 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: gateway/bundle_store.py, customers/*/domains.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #176: ...') and close: gh issue close 176 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 37,
+  "issue": 177,
+  "title": "L5-037 — First enterprise tenant pack set",
+  "prompt": "[L5-37/100 · issue #177] First enterprise tenant pack set\nRead first: gh issue view 177 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.os.enterprise (contract/docs) then /Users/thanhson/Workspace/abn.platform.opengate (implementation). Background: opengate.json domains, . /docs/domains.md.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): enterprise checks in /Users/thanhson/Workspace/abn.os.enterprise, then python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched) in /Users/thanhson/Workspace/abn.platform.opengate.\nThen commit + push DEV ('Issue #177: ...') and close: gh issue close 177 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 38,
+  "issue": 178,
+  "title": "L5-038 — Link abn.os.enterprise industries to tenant companies",
+  "prompt": "[L5-38/100 · issue #178] Link abn.os.enterprise industries to tenant companies\nRead first: gh issue view 178 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.os.enterprise (contract/docs) then /Users/thanhson/Workspace/abn.platform.opengate (implementation). Background: docs/core/pack-mapping.md (here), gateway/bundle_store.py (there).\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): enterprise checks in /Users/thanhson/Workspace/abn.os.enterprise, then python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched) in /Users/thanhson/Workspace/abn.platform.opengate.\nThen commit + push DEV ('Issue #178: ...') and close: gh issue close 178 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 39,
+  "issue": 179,
+  "title": "L5-039 — Pack lint gate for new department packs",
+  "prompt": "[L5-39/100 · issue #179] Pack lint gate for new department packs\nRead first: gh issue view 179 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: gateway/resolve.py validate_pack, .github/workflows/gate.yml.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #179: ...') and close: gh issue close 179 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 40,
+  "issue": 180,
+  "title": "L5-040 — Industry registry to pack mapping",
+  "prompt": "[L5-40/100 · issue #180] Industry registry to pack mapping\nRead first: gh issue view 180 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: onboarding/industries.json, onboarding/plans.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #180: ...') and close: gh issue close 180 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 41,
+  "issue": 181,
+  "title": "L5-041 — Tenant boundary test suite",
+  "prompt": "[L5-41/100 · issue #181] Tenant boundary test suite\nRead first: gh issue view 181 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: gateway/resolve.py, apps/api auth, tests/.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #181: ...') and close: gh issue close 181 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 42,
+  "issue": 182,
+  "title": "L5-042 — 1ID token tenant enforcement",
+  "prompt": "[L5-42/100 · issue #182] 1ID token tenant enforcement\nRead first: gh issue view 182 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/api auth-user.ts, schemas/sso.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #182: ...') and close: gh issue close 182 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 43,
+  "issue": 183,
+  "title": "L5-043 — Per-tenant secrets handling",
+  "prompt": "[L5-43/100 · issue #183] Per-tenant secrets handling\nRead first: gh issue view 183 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: schemas/sso.json (clientSecretEnv), vault rules.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #183: ...') and close: gh issue close 183 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 44,
+  "issue": 184,
+  "title": "L5-044 — Jurisdiction and data-residency tagging",
+  "prompt": "[L5-44/100 · issue #184] Jurisdiction and data-residency tagging\nRead first: gh issue view 184 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: schemas/customer.json, onboarding/privacy.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #184: ...') and close: gh issue close 184 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 45,
+  "issue": 185,
+  "title": "L5-045 — PII classification per tenant field",
+  "prompt": "[L5-45/100 · issue #185] PII classification per tenant field\nRead first: gh issue view 185 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: schemas/customer.json, apps/api analytics.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #185: ...') and close: gh issue close 185 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 46,
+  "issue": 186,
+  "title": "L5-046 — Platform admin vs tenant admin separation",
+  "prompt": "[L5-46/100 · issue #186] Platform admin vs tenant admin separation\nRead first: gh issue view 186 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/api admin.controller.ts, roles.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #186: ...') and close: gh issue close 186 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 47,
+  "issue": 187,
+  "title": "L5-047 — Break-glass access with audit",
+  "prompt": "[L5-47/100 · issue #187] Break-glass access with audit\nRead first: gh issue view 187 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/api audit.service.ts, customers/_platform/audit.jsonl.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #187: ...') and close: gh issue close 187 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 48,
+  "issue": 188,
+  "title": "L5-048 — Per-tenant rate limits",
+  "prompt": "[L5-48/100 · issue #188] Per-tenant rate limits\nRead first: gh issue view 188 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/api, infra/.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #188: ...') and close: gh issue close 188 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 49,
+  "issue": 189,
+  "title": "L5-049 — Tenant export bundle",
+  "prompt": "[L5-49/100 · issue #189] Tenant export bundle\nRead first: gh issue view 189 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: infra/edge/pack.py (bundle pattern), customers/<t>/.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #189: ...') and close: gh issue close 189 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 50,
+  "issue": 190,
+  "title": "L5-050 — Tenant offboarding and deletion",
+  "prompt": "[L5-50/100 · issue #190] Tenant offboarding and deletion\nRead first: gh issue view 190 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: infra/files.py, infra/edge, customers/<t>/.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #190: ...') and close: gh issue close 190 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 51,
+  "issue": 191,
+  "title": "L5-051 — Onboarding wizard v2: group or single",
+  "prompt": "[L5-51/100 · issue #191] Onboarding wizard v2: group or single\nRead first: gh issue view 191 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/web onboarding wizard, apps/api onboarding.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #191: ...') and close: gh issue close 191 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 52,
+  "issue": 192,
+  "title": "L5-052 — Wizard step: companies",
+  "prompt": "[L5-52/100 · issue #192] Wizard step: companies\nRead first: gh issue view 192 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: schemas/customer.json companies[], onboarding/tenant-template.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #192: ...') and close: gh issue close 192 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 53,
+  "issue": 193,
+  "title": "L5-053 — Wizard step: connect 1ID",
+  "prompt": "[L5-53/100 · issue #193] Wizard step: connect 1ID\nRead first: gh issue view 193 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: schemas/sso.json, apps/api auth.controller.ts.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #193: ...') and close: gh issue close 193 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 54,
+  "issue": 194,
+  "title": "L5-054 — Wizard step: departments",
+  "prompt": "[L5-54/100 · issue #194] Wizard step: departments\nRead first: gh issue view 194 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: onboarding/industries.json, onboarding/plans.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #194: ...') and close: gh issue close 194 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 55,
+  "issue": 195,
+  "title": "L5-055 — Wizard step: folders",
+  "prompt": "[L5-55/100 · issue #195] Wizard step: folders\nRead first: gh issue view 195 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: infra/files.py folder taxonomy.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #195: ...') and close: gh issue close 195 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 56,
+  "issue": 196,
+  "title": "L5-056 — Dry-run provisioning",
+  "prompt": "[L5-56/100 · issue #196] Dry-run provisioning\nRead first: gh issue view 196 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: infra/ scripts style, apps/api onboarding.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #196: ...') and close: gh issue close 196 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 57,
+  "issue": 197,
+  "title": "L5-057 — Idempotent provisioner",
+  "prompt": "[L5-57/100 · issue #197] Idempotent provisioner\nRead first: gh issue view 197 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/api onboarding service, infra/.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #197: ...') and close: gh issue close 197 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 58,
+  "issue": 198,
+  "title": "L5-058 — Provisioning rollback",
+  "prompt": "[L5-58/100 · issue #198] Provisioning rollback\nRead first: gh issue view 198 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/api onboarding, customers/<t>/.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #198: ...') and close: gh issue close 198 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 59,
+  "issue": 199,
+  "title": "L5-059 — Golden tenant acceptance test",
+  "prompt": "[L5-59/100 · issue #199] Golden tenant acceptance test\nRead first: gh issue view 199 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: tests/, onboarding/tenant-template.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #199: ...') and close: gh issue close 199 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 60,
+  "issue": 200,
+  "title": "L5-060 — Onboarding API contract",
+  "prompt": "[L5-60/100 · issue #200] Onboarding API contract\nRead first: gh issue view 200 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/api controllers, bin/opengate CLI.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #200: ...') and close: gh issue close 200 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 61,
+  "issue": 201,
+  "title": "L5-061 — Tenant/company switcher",
+  "prompt": "[L5-61/100 · issue #201] Tenant/company switcher\nRead first: gh issue view 201 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/web session/auth, apps/api auth-user.ts.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #201: ...') and close: gh issue close 201 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 62,
+  "issue": 202,
+  "title": "L5-062 — Company-scoped dashboard",
+  "prompt": "[L5-62/100 · issue #202] Company-scoped dashboard\nRead first: gh issue view 202 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/web dashboard widgets.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #202: ...') and close: gh issue close 202 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 63,
+  "issue": 203,
+  "title": "L5-063 — Org chart viewer",
+  "prompt": "[L5-63/100 · issue #203] Org chart viewer\nRead first: gh issue view 203 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/web, schemas/org.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #203: ...') and close: gh issue close 203 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 64,
+  "issue": 204,
+  "title": "L5-064 — Roster and positions page",
+  "prompt": "[L5-64/100 · issue #204] Roster and positions page\nRead first: gh issue view 204 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/web, apps/api roster.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #204: ...') and close: gh issue close 204 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 65,
+  "issue": 205,
+  "title": "L5-065 — Folder browser",
+  "prompt": "[L5-65/100 · issue #205] Folder browser\nRead first: gh issue view 205 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/web, infra/files.py.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #205: ...') and close: gh issue close 205 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 66,
+  "issue": 206,
+  "title": "L5-066 — Case workspace",
+  "prompt": "[L5-66/100 · issue #206] Case workspace\nRead first: gh issue view 206 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: infra/cases.py, apps/web cases.controller.ts.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #206: ...') and close: gh issue close 206 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 67,
+  "issue": 207,
+  "title": "L5-067 — Admin console: companies",
+  "prompt": "[L5-67/100 · issue #207] Admin console: companies\nRead first: gh issue view 207 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/web admin console, apps/api admin.controller.ts.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #207: ...') and close: gh issue close 207 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 68,
+  "issue": 208,
+  "title": "L5-068 — Admin console: identity status",
+  "prompt": "[L5-68/100 · issue #208] Admin console: identity status\nRead first: gh issue view 208 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: schemas/sso.json, apps/api auth.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #208: ...') and close: gh issue close 208 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 69,
+  "issue": 209,
+  "title": "L5-069 — Per-tenant branding",
+  "prompt": "[L5-69/100 · issue #209] Per-tenant branding\nRead first: gh issue view 209 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/web theme, customers/<t>/profile.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #209: ...') and close: gh issue close 209 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 70,
+  "issue": 210,
+  "title": "L5-070 — Onboarding checklist after provisioning",
+  "prompt": "[L5-70/100 · issue #210] Onboarding checklist after provisioning\nRead first: gh issue view 210 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/web onboarding, gateway/resolve.py --sync output.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #210: ...') and close: gh issue close 210 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 71,
+  "issue": 211,
+  "title": "L5-071 — Dataset scoping per tenant",
+  "prompt": "[L5-71/100 · issue #211] Dataset scoping per tenant\nRead first: gh issue view 211 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: evals/, infra/finetune.py.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #211: ...') and close: gh issue close 211 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 72,
+  "issue": 212,
+  "title": "L5-072 — Model pinning per tenant",
+  "prompt": "[L5-72/100 · issue #212] Model pinning per tenant\nRead first: gh issue view 212 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: customers/<t>/models.json, infra/models.py.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #212: ...') and close: gh issue close 212 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 73,
+  "issue": 213,
+  "title": "L5-073 — Trace retention policy per tenant",
+  "prompt": "[L5-73/100 · issue #213] Trace retention policy per tenant\nRead first: gh issue view 213 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: infra/cases.py trace handling, onboarding/privacy.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #213: ...') and close: gh issue close 213 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 74,
+  "issue": 214,
+  "title": "L5-074 — Per-tenant usage analytics",
+  "prompt": "[L5-74/100 · issue #214] Per-tenant usage analytics\nRead first: gh issue view 214 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/api analytics.service.ts.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #214: ...') and close: gh issue close 214 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 75,
+  "issue": 215,
+  "title": "L5-075 — Metering event schema",
+  "prompt": "[L5-75/100 · issue #215] Metering event schema\nRead first: gh issue view 215 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: onboarding/plans.json, apps/api analytics.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #215: ...') and close: gh issue close 215 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 76,
+  "issue": 216,
+  "title": "L5-076 — Tenant data import",
+  "prompt": "[L5-76/100 · issue #216] Tenant data import\nRead first: gh issue view 216 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: infra/files.py, infra/cases.py, schemas/org.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #216: ...') and close: gh issue close 216 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 77,
+  "issue": 217,
+  "title": "L5-077 — Tenant data export (self-service)",
+  "prompt": "[L5-77/100 · issue #217] Tenant data export (self-service)\nRead first: gh issue view 217 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/api export, apps/web.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #217: ...') and close: gh issue close 217 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 78,
+  "issue": 218,
+  "title": "L5-078 — Golden fixtures per tenant",
+  "prompt": "[L5-78/100 · issue #218] Golden fixtures per tenant\nRead first: gh issue view 218 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: evals/, customers/<t>/.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #218: ...') and close: gh issue close 218 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 79,
+  "issue": 219,
+  "title": "L5-079 — Platform-level cross-tenant benchmark",
+  "prompt": "[L5-79/100 · issue #219] Platform-level cross-tenant benchmark\nRead first: gh issue view 219 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/api analytics, evals/run.py.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #219: ...') and close: gh issue close 219 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 80,
+  "issue": 220,
+  "title": "L5-080 — Tenant data catalog",
+  "prompt": "[L5-80/100 · issue #220] Tenant data catalog\nRead first: gh issue view 220 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/api, customers/<t>/.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #220: ...') and close: gh issue close 220 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 81,
+  "issue": 221,
+  "title": "L5-081 — Plan enforcement at runtime",
+  "prompt": "[L5-81/100 · issue #221] Plan enforcement at runtime\nRead first: gh issue view 221 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: onboarding/plans.json, gateway/resolve.py.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #221: ...') and close: gh issue close 221 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 82,
+  "issue": 222,
+  "title": "L5-082 — Seat limits and invites",
+  "prompt": "[L5-82/100 · issue #222] Seat limits and invites\nRead first: gh issue view 222 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/api invite.service.ts, onboarding/plans.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #222: ...') and close: gh issue close 222 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 83,
+  "issue": 223,
+  "title": "L5-083 — Quota alerts",
+  "prompt": "[L5-83/100 · issue #223] Quota alerts\nRead first: gh issue view 223 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/api analytics, onboarding/plans.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #223: ...') and close: gh issue close 223 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 84,
+  "issue": 224,
+  "title": "L5-084 — Trial expiry behaviour",
+  "prompt": "[L5-84/100 · issue #224] Trial expiry behaviour\nRead first: gh issue view 224 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: onboarding/plans.json, apps/api.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #224: ...') and close: gh issue close 224 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 85,
+  "issue": 225,
+  "title": "L5-085 — Metering to invoices (no billing yet)",
+  "prompt": "[L5-85/100 · issue #225] Metering to invoices (no billing yet)\nRead first: gh issue view 225 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/api analytics.service.ts, onboarding/plans.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #225: ...') and close: gh issue close 225 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 86,
+  "issue": 226,
+  "title": "L5-086 — Contract and terms per tenant",
+  "prompt": "[L5-86/100 · issue #226] Contract and terms per tenant\nRead first: gh issue view 226 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: onboarding/privacy.json, schemas/customer.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #226: ...') and close: gh issue close 226 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 87,
+  "issue": 227,
+  "title": "L5-087 — Upgrade and downgrade path",
+  "prompt": "[L5-87/100 · issue #227] Upgrade and downgrade path\nRead first: gh issue view 227 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: onboarding/plans.json, gateway/resolve.py.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #227: ...') and close: gh issue close 227 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 88,
+  "issue": 228,
+  "title": "L5-088 — Group pricing and rollup",
+  "prompt": "[L5-88/100 · issue #228] Group pricing and rollup\nRead first: gh issue view 228 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: onboarding/plans.json.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #228: ...') and close: gh issue close 228 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 89,
+  "issue": 229,
+  "title": "L5-089 — Tenant health score",
+  "prompt": "[L5-89/100 · issue #229] Tenant health score\nRead first: gh issue view 229 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: apps/api analytics.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #229: ...') and close: gh issue close 229 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 90,
+  "issue": 230,
+  "title": "L5-090 — Commercial onboarding pack",
+  "prompt": "[L5-90/100 · issue #230] Commercial onboarding pack\nRead first: gh issue view 230 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.os.enterprise (contract/docs) then /Users/thanhson/Workspace/abn.platform.opengate (implementation). Background: onboarding/tenant-template, customers/README.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): enterprise checks in /Users/thanhson/Workspace/abn.os.enterprise, then python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched) in /Users/thanhson/Workspace/abn.platform.opengate.\nThen commit + push DEV ('Issue #230: ...') and close: gh issue close 230 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 91,
+  "issue": 231,
+  "title": "L5-091 — Enterprise OS model per company (repo template)",
+  "prompt": "[L5-91/100 · issue #231] Enterprise OS model per company (repo template)\nRead first: gh issue view 231 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.os.enterprise. Background: this repo's bin/new-industry, docs/core/onboarding-industry.md.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): yamllint the dirs you touched && python scripts/validate.py && every CI script in .github/workflows/validate.yml green (use &&, stop on red).\nThen commit + push DEV ('Issue #231: ...') and close: gh issue close 231 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 92,
+  "issue": 232,
+  "title": "L5-092 — Tenant to enterprise-repo mapping",
+  "prompt": "[L5-92/100 · issue #232] Tenant to enterprise-repo mapping\nRead first: gh issue view 232 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.os.enterprise (contract/docs) then /Users/thanhson/Workspace/abn.platform.opengate (implementation). Background: docs/core/pack-mapping.md, docs/core/bundles.md (here); customers/<t>/domains.json (there).\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): enterprise checks in /Users/thanhson/Workspace/abn.os.enterprise, then python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched) in /Users/thanhson/Workspace/abn.platform.opengate.\nThen commit + push DEV ('Issue #232: ...') and close: gh issue close 232 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 93,
+  "issue": 233,
+  "title": "L5-093 — Sync enterprise tags to tenant pins",
+  "prompt": "[L5-93/100 · issue #233] Sync enterprise tags to tenant pins\nRead first: gh issue view 233 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.os.enterprise (contract/docs) then /Users/thanhson/Workspace/abn.platform.opengate (implementation). Background: bin/tag-industry, bin/verify-industry-tags.py (here).\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): enterprise checks in /Users/thanhson/Workspace/abn.os.enterprise, then python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched) in /Users/thanhson/Workspace/abn.platform.opengate.\nThen commit + push DEV ('Issue #233: ...') and close: gh issue close 233 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 94,
+  "issue": 234,
+  "title": "L5-094 — Pilot: single-entity tenant end to end",
+  "prompt": "[L5-94/100 · issue #234] Pilot: single-entity tenant end to end\nRead first: gh issue view 234 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: everything above; customers/hvcs as the working example.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #234: ...') and close: gh issue close 234 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 95,
+  "issue": 235,
+  "title": "L5-095 — Pilot: two-company group end to end",
+  "prompt": "[L5-95/100 · issue #235] Pilot: two-company group end to end\nRead first: gh issue view 235 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: everything above plus schemas/org.json multi-company.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #235: ...') and close: gh issue close 235 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 96,
+  "issue": 236,
+  "title": "L5-096 — Ops runbook: add a company to a group",
+  "prompt": "[L5-96/100 · issue #236] Ops runbook: add a company to a group\nRead first: gh issue view 236 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: customers/ layout, gateway/resolve.py --sync.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #236: ...') and close: gh issue close 236 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 97,
+  "issue": 237,
+  "title": "L5-097 — Ops runbook: rotate 1ID client secret",
+  "prompt": "[L5-97/100 · issue #237] Ops runbook: rotate 1ID client secret\nRead first: gh issue view 237 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.platform.opengate. Background: schemas/sso.json, vault rules.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched).\nThen commit + push DEV ('Issue #237: ...') and close: gh issue close 237 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 98,
+  "issue": 238,
+  "title": "L5-098 — Tenant onboarding guide (operator facing)",
+  "prompt": "[L5-98/100 · issue #238] Tenant onboarding guide (operator facing)\nRead first: gh issue view 238 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.os.enterprise (contract/docs) then /Users/thanhson/Workspace/abn.platform.opengate (implementation). Background: onboarding/, docs/.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): enterprise checks in /Users/thanhson/Workspace/abn.os.enterprise, then python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched) in /Users/thanhson/Workspace/abn.platform.opengate.\nThen commit + push DEV ('Issue #238: ...') and close: gh issue close 238 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 99,
+  "issue": 239,
+  "title": "L5-099 — Tenant readiness scorecard",
+  "prompt": "[L5-99/100 · issue #239] Tenant readiness scorecard\nRead first: gh issue view 239 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.os.enterprise (contract/docs) then /Users/thanhson/Workspace/abn.platform.opengate (implementation). Background: onboarding/plans.json, customers/README.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): enterprise checks in /Users/thanhson/Workspace/abn.os.enterprise, then python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched) in /Users/thanhson/Workspace/abn.platform.opengate.\nThen commit + push DEV ('Issue #239: ...') and close: gh issue close 239 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ },
+ {
+  "order": 100,
+  "issue": 240,
+  "title": "L5-100 — Program review: what the 100 issues changed",
+  "prompt": "[L5-100/100 · issue #240] Program review: what the 100 issues changed\nRead first: gh issue view 240 --repo stevennt/abn.os.enterprise --json title,body. Target repo(s): /Users/thanhson/Workspace/abn.os.enterprise (contract/docs) then /Users/thanhson/Workspace/abn.platform.opengate (implementation). Background: all L5 issues.\nMeet EVERY acceptance criterion. Keep uncommitted work from other sessions intact: stage only this issue's files (never git add -A), branch DEV, git pull first.\nVerify with && (stop on red): enterprise checks in /Users/thanhson/Workspace/abn.os.enterprise, then python3 gateway/resolve.py --root . --sync && validate-pack for each domain you touched && python3 -m pytest tests/ -q && npm run typecheck --prefix apps/api (and apps/web if touched) in /Users/thanhson/Workspace/abn.platform.opengate.\nThen commit + push DEV ('Issue #240: ...') and close: gh issue close 240 --repo stevennt/abn.os.enterprise --comment 'Done: <files + proof + repo>'. Exactly this 1 issue. If blocked, comment why on the issue and stop - do not guess."
+ }
+]

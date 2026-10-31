@@ -1,3 +1,3 @@
 6da6eccca1c86df65726688254bfcfdacdd067c4913771a28b7259cb2ab66ac1  doc-extract/golden.jsonl (300 rows)
 4cd6a6868d60f0f638cf3dc915c980dd9873561f674eac3c0b1554dc980a22d1  complaint-triage/golden.jsonl (200 rows)
-d6c6d238a6228f0808c2d596f5266c2a6dfced42902c04dfce6f4671c4694bd2  policy-copilot/golden.jsonl (200 rows)
+8550c9b98a9d7e17fa6d908f9a4cfd0dddf01d2139189eefd779ea50f21a1cac  policy-copilot/golden.jsonl (200 rows)

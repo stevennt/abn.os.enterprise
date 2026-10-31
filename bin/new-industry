@@ -1,0 +1,333 @@
+#!/usr/bin/env python3
+"""bin/new-industry — scaffold a validated industry (issue #138).
+
+Creates the minimum that passes every CI check in this repo, using the industry id
+as the namespace prefix so ids cannot collide with another industry:
+
+    industries/<id>/
+      industry.yaml
+      org/org-chart.yaml + org/org-<unit>.yaml (+ process-catalog.yaml)
+      rules/<id>-baseline-pack.yaml          structural, authority: pending-review
+      flows/<id>-primary.flow.yaml
+      event-examples/<id>.primary.v1.json
+      docs/status.md
+      pack/{roles.yaml,agents/<role>.md,skills/<id>-skill/SKILL.md}   (optional)
+
+Ids: rules <ID-UPPER>-01.., flow <id>.primary, event <id>.primary.requested.
+Tier must be public|commercial (restricted/classified belong in a split repo —
+see docs/core/confidentiality.md).
+
+Usage:
+  bin/new-industry <id> --label "..." [--owner "..."] [--jurisdiction VN]
+                          [--tier commercial] [--units a,b] [--with-pack]
+                          [--dry-run] [--force]
+"""
+import argparse
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+
+MANIFEST = """# industries/{id}/industry.yaml — scaffolded by bin/new-industry
+id: {id}
+version: 0.1.0
+label: "{label}"
+tier: {tier}
+jurisdiction: {jurisdiction}
+owner: "{owner}"
+tag_stream:
+  policy_prefix: {id}-policy
+  pack_prefix: {id}-pack
+rules:
+  - rules/{id}-baseline-pack.yaml
+flows:
+  - flows/{id}-primary.flow.yaml
+evals: []
+pack:
+  path: pack
+  schema: metamodel/pack.schema.yaml
+  status: {pack_status}
+notes: >
+  Scaffold: one structural rule pack, one flow, org skeleton. Substantive domain
+  content requires a named reviewer before `authority` leaves pending-review
+  (see industries/{id}/docs/status.md).
+"""
+
+ORG_CHART = """# {label} org index — scaffolded
+{rows}
+"""
+
+ORG_UNIT = """# {unit} unit — scaffolded
+- id: {unit}
+  version: 0.1.0
+  name: "{unit_title}"
+  parent_id: null
+  mandate: "Own {id} work in this unit; no output leaves unreviewed"
+  headcount_plan: {headcount}
+  roles:
+    - id: {unit}-maker
+      title: "{unit_title} maker"
+      raci_scope:
+        - "R:{id}.primary.steps.1-2"
+      approvals:
+        - "draft-only"
+      headcount: {maker}
+    - id: {unit}-checker
+      title: "{unit_title} checker"
+      raci_scope:
+        - "A:{id}.primary"
+      approvals:
+        - "sign-off-required"
+      headcount: {checker}
+  approval_thresholds:
+    primary-conclusion: {{approver: "{unit}-checker", limit: "always human"}}
+"""
+
+CATALOG = """# {label} process catalog — scaffolded
+{unit}: [{id}.primary]
+"""
+
+RULE_PACK = """# {label} baseline rule pack — STRUCTURAL ONLY, authority pending review
+- id: {prefix}-01
+  version: 0.1.0-{stamp}
+  authority: "pending-review — structural rule, no domain substance asserted"
+  inputs: [has_evidence, has_citation]
+  table:
+    - {{when: "has_evidence=false", then: BLOCK}}
+    - {{when: "has_citation=false", then: BLOCK}}
+    - {{when: "*", then: PENDING-REVIEW}}
+  effect: >
+    Nothing leaves the maker stage without evidence and a citation. PENDING-REVIEW
+    is not approval: a named human decides (see docs/core/confidentiality.md for
+    what may not be asserted here at all).
+"""
+
+FLOW = """# {id}.primary v0.1 — scaffolded end-to-end flow
+id: {id}.primary
+version: 0.1.0
+event_type: {id}.primary.requested
+department: {unit}
+inputs:
+  schema_ref: event-examples/{id}.primary.v1.json
+  fields: [case_id, evidence_ref, draft_ref]
+steps:
+  - id: s1-intake
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [{prefix}-01]
+    sla_minutes: 15
+    on_fail: "REVIEW"
+  - id: s2-draft
+    kind: ai
+    owner_role: {unit}-maker
+    level: L3
+    uses_rule: [{prefix}-01]
+    sla_minutes: 120
+    on_fail: "escalate:{unit}-checker"
+  - id: s3-check
+    kind: human
+    owner_role: {unit}-checker
+    level: L2
+    uses_rule: [{prefix}-01]
+    sla_minutes: 1440
+    on_fail: "escalate:{unit}-maker"
+  - id: s4-release
+    kind: workflow
+    owner_role: system
+    level: L3
+    uses_rule: [{prefix}-01]
+    sla_minutes: 30
+    on_fail: "retry+page"
+outputs: {{decision: "APPROVED|BLOCKED|ESCALATED", reviewer: "nullable"}}
+kpis: [review_p50, block_rate]
+automation_target: L2
+"""
+
+EVENT = """{{
+ "_synthetic_pii": true,
+ "event_type": "{id}.primary.requested",
+ "event_version": "1.0.0",
+ "idempotency_key": "CASE-TEST-0001+{id}",
+ "payload": {{
+  "case_id": "CASE-TEST-0001",
+  "evidence_ref": "store/test-evidence.pdf",
+  "draft_ref": "store/test-draft.docx"
+ }},
+ "producer": "system:scaffold",
+ "ts": 1793422800
+}}
+"""
+
+STATUS = """# {label} — status
+
+Scaffolded by `bin/new-industry`. **Not usable for real work yet.**
+
+## What is real
+- manifest, org skeleton, one structural rule pack, one end-to-end flow, one event
+  example; all CI checks pass.
+
+## What is deliberately missing
+Substantive domain content: numbers, thresholds, legal/professional statements,
+named clients. `rules/*.yaml` carries `authority: pending-review` until a named
+reviewer signs; `scripts/pack_claim_scan.py` enforces this in CI.
+
+## Gate to become usable
+1. Named reviewer signs each rule row (replace `authority` + bump `version`).
+2. Add real flows; each needs owner/rule/SLA/on_fail and a trace.
+3. If the content is restricted/classified: it does not belong here at all
+   (`docs/core/confidentiality.md`).
+4. Tag it: `bin/tag-industry {id} --kind policy --push`.
+"""
+
+PACK_ROLES = """# {label} agent pack — scaffolded
+roles:
+  {unit}-maker:
+    position: maker
+    template: agents/{unit}-maker.md
+    skills_required: [{id}-skill]
+    tools_allow: []
+    may_invoke: []
+  {unit}-checker:
+    position: checker
+    template: agents/{unit}-checker.md
+    rubric: {id}-skill
+    tools_allow: []
+    may_invoke: []
+"""
+
+PACK_AGENT = """---
+description: {role_desc}
+mode: subagent
+temperature: {temp}
+steps: 15
+permission:
+  edit: deny
+  bash: deny
+  skill: allow
+---
+
+# {title}
+
+{body}
+"""
+
+PACK_SKILL = """---
+name: {id}-skill
+version: "0.1.0"
+description: Scaffolded skill for {label}; structure only until a reviewer signs.
+license: Proprietary
+compatibility: opencode
+metadata:
+  domain: {id}
+  qc_id: QC-{qc}-001
+---
+
+# {label} skill (scaffold)
+
+placeholder: substantive domain content, thresholds and professional statements are
+not asserted here. They arrive after review; see `industries/{id}/docs/status.md`.
+
+- Evidence discipline: every claim cites evidence from the case.
+- Review rule: `rules/{id}-baseline-pack.yaml` `{prefix}-01`.
+- No output leaves unreviewed. A recorded human decision is the only exit.
+"""
+
+
+def slug_upper(iid):
+    return re.sub(r"[^A-Z0-9]+", "-", iid.upper()).strip("-")
+
+
+def write(path, text):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("id")
+    ap.add_argument("--label", required=True)
+    ap.add_argument("--owner", default="unassigned — name an accountable owner")
+    ap.add_argument("--jurisdiction", default="VN")
+    ap.add_argument("--tier", default="commercial", choices=["public", "commercial"])
+    ap.add_argument("--units", default="core", help="comma-separated unit ids")
+    ap.add_argument("--with-pack", action="store_true")
+    ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--force", action="store_true")
+    a = ap.parse_args()
+
+    iid = a.id
+    if not re.fullmatch(r"[a-z][a-z0-9-]{1,30}", iid):
+        sys.exit("id must be lowercase [a-z0-9-], 2-31 chars")
+    target = ROOT / "industries" / iid
+    if target.exists() and not a.force and not a.dry_run:
+        sys.exit(f"{target} already exists (pass --force to overwrite)")
+    units = [u.strip() for u in a.units.split(",") if u.strip()]
+    prefix = slug_upper(iid)
+    stamp = "2026-10-31"
+    first = units[0]
+    ctx = dict(id=iid, label=a.label, tier=a.tier, jurisdiction=a.jurisdiction,
+               owner=a.owner, prefix=prefix, stamp=stamp, unit=first,
+               pack_status="draft" if a.with_pack else "absent",
+               qc=prefix.split("-")[0][:4])
+
+    plan = {
+        "industry.yaml": MANIFEST.format(**ctx),
+        "org/org-chart.yaml": ORG_CHART.format(
+            label=a.label,
+            rows="\n".join(f"- {{id: {u}, name: \"{u.title()}\", parent_id: null, "
+                           f"headcount_plan: 3}}" for u in units)),
+        "org/process-catalog.yaml": CATALOG.format(label=a.label, unit=first, id=iid),
+        "rules/%s-baseline-pack.yaml" % iid: RULE_PACK.format(**ctx),
+        "flows/%s-primary.flow.yaml" % iid: FLOW.format(**ctx),
+        "event-examples/%s.primary.v1.json" % iid: EVENT.format(**ctx),
+        "docs/status.md": STATUS.format(**ctx),
+    }
+    for u in units:
+        plan[f"org/org-{u}.yaml"] = ORG_UNIT.format(
+            unit=u, unit_title=u.replace("-", " ").title(), id=iid,
+            headcount=3, maker=2, checker=1)
+    if a.with_pack:
+        plan["pack/roles.yaml"] = PACK_ROLES.format(**ctx)
+        plan["pack/agents/%s-maker.md" % first] = PACK_AGENT.format(
+            role_desc=f"Drafts {a.label} output from the scaffolded skill",
+            temp="0.2", title=f"{first.title()} maker",
+            body="Maker. Drafts; never approves.", **ctx)
+        plan["pack/agents/%s-checker.md" % first] = PACK_AGENT.format(
+            role_desc=f"Checks {a.label} output against evidence and citations",
+            temp="0.1", title=f"{first.title()} checker",
+            body="Checker. Cannot clear a finding; only a re-check can.", **ctx)
+        plan["pack/skills/%s-skill/SKILL.md" % iid] = PACK_SKILL.format(**ctx)
+        plan["pack/MIGRATION.md"] = (
+            f"# {a.label} pack — migration notes\n\n"
+            f"## [0.1.0]\n\nInitial scaffold. No migration needed.\n\n"
+            f"### Migration\n\nNo migration needed — first release.\n")
+
+    for rel, text in sorted(plan.items()):
+        p = target / rel
+        print(("would write " if a.dry_run else "write ") + str(p.relative_to(ROOT)))
+        if not a.dry_run:
+            write(p, text)
+
+    if a.dry_run:
+        print(f"\ndry-run: {len(plan)} files planned, nothing written")
+        return 0
+
+    print(f"""
+next steps (all must pass before the industry counts as real):
+  1. python scripts/validate.py                 # manifest, org, catalog, flow, trace
+  2. python scripts/run_all_traces.py           # generates the trace file
+  3. python scripts/rule_lint.py                # wildcard coverage, no duplicates
+  4. python scripts/pack_lint.py                # only if --with-pack
+  5. python scripts/pack_claim_scan.py --industry {iid}
+  6. python scripts/cross_industry.py           # ids unique across industries
+  7. python scripts/no_hardcoded_paths.py
+  8. python scripts/tier_guard.py               # tier must be public/commercial
+  9. bin/tag-industry {iid} --kind policy --push
+then name a reviewer in industries/{iid}/docs/status.md before anyone uses it.""")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

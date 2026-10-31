@@ -1,6 +1,7 @@
 $schema: "https://json-schema.org/draft/2020-12/schema"
 $id: "https://github.com/stevennt/abn.os.enterprise/metamodel/process.schema.yaml/v1.0.0"
 title: "Process v1.0.0 — the 'flow' primitive"
+x-glossary: [Process, Event, Level, Touchpoint, Rule, Instance]
 type: object
 required: [id, version, event_type, inputs, steps, outputs, kpis, automation_target]
 properties:

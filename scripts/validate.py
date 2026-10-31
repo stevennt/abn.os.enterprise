@@ -22,6 +22,17 @@ def main():
     for s, sc in schemas.items():
         assert "version" in sc.get("required", []), f"{s} schema lacks required version"
     print("meta: all 5 schemas require `version` — OK")
+    # Issue #3: every schema links glossary terms, and all linked terms exist
+    import re
+    gtext = (ROOT / "docs" / "glossary.md").read_text()
+    terms = set(t.rstrip(":") for t in re.findall(r"^- \*\*(.+?)\*\*", gtext, re.M))
+    assert terms, "no glossary terms parsed"
+    for s, sc in schemas.items():
+        linked = sc.get("x-glossary", [])
+        assert linked, f"{s} schema has no x-glossary links"
+        unknown = [t for t in linked if t not in terms]
+        assert not unknown, f"{s} links unknown terms: {unknown}"
+    print(f"glossary: 5 schemas link {sum(len(sc.get('x-glossary', [])) for sc in schemas.values())} terms, all defined ({len(terms)} terms) — OK")
     # Acceptance #1: worked example validates green
     flow = load("examples/bank/loan-approval.flow.yaml")
     jsonschema.validate(flow, schemas["process"])

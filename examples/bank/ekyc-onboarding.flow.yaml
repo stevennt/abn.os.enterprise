@@ -1,0 +1,66 @@
+# eKYC onboarding flow v1.0 (issue #21) — target L4, highest-volume front door
+id: ekyc.onboarding
+version: 1.0.0
+event_type: ekyc.onboarding.requested
+department: retail
+inputs:
+  schema_ref: events/ekyc.request.v1.json
+  fields: [cccd_front_img, cccd_back_img, selfie_video, channel, consent_ref]
+steps:
+  - id: s1-capture
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_touchpoint: TP-C-onboarding
+    sla_minutes: 5
+    on_fail: "REVIEW"
+  - id: s2-ocr
+    kind: ai
+    owner_role: system
+    level: L4
+    uses_touchpoint: TP-S-ekyc-provider
+    sla_minutes: 5
+    on_fail: "retry-once-then-REVIEW"
+  - id: s3-liveness
+    kind: ai
+    owner_role: system
+    level: L4
+    uses_touchpoint: TP-S-ekyc-provider
+    sla_minutes: 5
+    on_fail: "REVIEW"
+  - id: s4-blacklist
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [KYC-01, AML-SCREEN-02]
+    sla_minutes: 5
+    on_fail: "hold:compliance"
+  - id: s5-decide
+    kind: human
+    owner_role: branch_manager
+    level: L3
+    uses_rule: [KYC-01]
+    sla_minutes: 60
+    uses_touchpoint: TP-E-inbox
+    on_fail: "escalate:compliance_manager"
+  - id: s6-open
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_touchpoint: TP-S-core
+    sla_minutes: 5
+    on_fail: "retry+page"
+  - id: s7-notify
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_touchpoint: TP-C-app-status
+    sla_minutes: 5
+    on_fail: "retry+page"
+outputs: {decision: "PASS|REVIEW|FAIL", account_id: "nullable", reasons: [ocr_ok, liveness_ok]}
+kpis: [pass_rate, fraud_catch_rate, tta_p50, review_rate]
+automation_target: L4
+# AI/human split: AI reads + scores (s2-s3) with abstain->REVIEW; straight cases
+# auto-pass to s6 without human; only flagged cases visit s5 (human).
+# Touchpoints: TP-C-onboarding + TP-C-app-status (customer), TP-S-ekyc-provider
+# + TP-S-core (systems), TP-E-inbox (employee, review lane only).

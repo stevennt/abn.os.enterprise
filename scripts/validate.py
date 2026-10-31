@@ -33,10 +33,11 @@ def main():
         unknown = [t for t in linked if t not in terms]
         assert not unknown, f"{s} links unknown terms: {unknown}"
     print(f"glossary: {len(schemas)} schemas link {sum(len(sc.get('x-glossary', [])) for sc in schemas.values())} terms, all defined ({len(terms)} terms) — OK")
-    # Acceptance #1: worked example validates green
-    flow = load("examples/bank/loan-approval.flow.yaml")
-    jsonschema.validate(flow, schemas["process"])
-    print("flow: loan-approval.flow.yaml validates against process v1.0.0 — OK")
+    # Acceptance #1: worked example validates green (+ every flow file, issue #21)
+    for f in sorted(_glob.glob(str(ROOT / "examples" / "bank" / "*.flow.yaml"))):
+        flow = load(str(Path(f).relative_to(ROOT)))
+        jsonschema.validate(flow, schemas["process"])
+        print(f"flow: {Path(f).name} validates against process v1.0.0 — OK")
     # Index hygiene (full RACI per unit is B11/B20, not this issue)
     catalog = load("examples/bank/process-catalog.yaml")
     n = sum(len(v) for v in catalog.values())

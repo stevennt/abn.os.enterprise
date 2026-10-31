@@ -1,0 +1,55 @@
+# AML screening + STR filing flow v1.0 (issue #25) — regulator-visible
+id: aml.str.filing
+version: 1.0.0
+event_type: aml.screening.hit
+department: compliance
+inputs:
+  schema_ref: events/aml.screening.hit.v1.json
+  fields: [customer_id, entity_name, list, match_score, recommendation]
+steps:
+  - id: s1-triage
+    kind: workflow
+    owner_role: aml_analyst
+    level: L3
+    uses_rule: [AML-TRIAGE-01]
+    sla_minutes: 1440
+    on_fail: "escalate:compliance_manager"
+  - id: s2-hold
+    kind: human
+    owner_role: compliance_manager
+    level: L3
+    uses_rule: [AML-HOLD-02]
+    sla_minutes: 1440
+    on_fail: "escalate:mlro"
+  - id: s3-investigate
+    kind: human
+    owner_role: aml_analyst
+    level: L2
+    uses_rule: [AML-INV-03]
+    sla_minutes: 7200
+    on_fail: "escalate:compliance_manager"
+  - id: s4-peer-review
+    kind: human
+    owner_role: compliance_manager
+    level: L2
+    uses_rule: [AML-4EYES-04]
+    sla_minutes: 2880
+    on_fail: "escalate:mlro"
+  - id: s5-file
+    kind: human
+    owner_role: mlro
+    level: L2
+    uses_rule: [STR-FILE-05]
+    uses_touchpoint: TP-X-regulator
+    sla_minutes: 2880
+    on_fail: "page:mlro-deputy"
+outputs: {decision: "FILED|DISMISSED", str_ref: "nullable", reasons: []}
+kpis: [hit_to_file_days, false_positive_rate, dismissal_rate, overdue_cases]
+automation_target: L2
+# Evidence-pack checklist (every FILED case carries all 8; DISMISSED carries 1-6):
+# 1 alert + screening snapshots (list versions); 2 KYC pack + UBO chart;
+# 3 12-month txn records; 4 prior holds/clears; 5 investigation notes w/ timestamps;
+# 6 peer-review sign-off (a DIFFERENT person than s3 investigator — 4-eyes);
+# 7 manager review; 8 mlro decision + filing receipt.
+# Filing SLA: triage <=1 business day; investigation <=5 business days;
+# review <=2 business days; mlro files within statutory deadline (no tipping-off).

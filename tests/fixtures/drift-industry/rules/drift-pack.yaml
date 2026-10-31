@@ -1,0 +1,10 @@
+# Drift fixture (issue #140): the rule says hold >= 0.90, review >= 0.80.
+- id: DRIFT-SCREEN-01
+  version: 1.0.0-2026-10-01
+  authority: "fixture"
+  inputs: [match_score]
+  table:
+    - {when: "match_score>=0.90", then: HOLD}
+    - {when: "match_score 0.80-0.90", then: REVIEW}
+    - {when: "*", then: PASS}
+  effect: "fixture only"

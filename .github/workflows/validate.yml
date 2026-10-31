@@ -37,6 +37,7 @@ jobs:
       - run: python scripts/no_hardcoded_paths.py && python scripts/industrylib.py
       - run: python scripts/playbook_sync.py && python scripts/playbook_sync.py --self-test
       - run: python scripts/docs_link_check.py
+      - run: python scripts/pack_rule_drift.py && python scripts/pack_rule_drift.py --self-test && python scripts/test_drift.py
       - run: python scripts/test_bundle.py
       - run: python scripts/dlq_drill.py
       - run: python scripts/money_drill.py --report /tmp/drill.json && python -c "import json;d=json.load(open('/tmp/drill.json'));assert d['double_posts']==0 and d['ledger_balanced']"

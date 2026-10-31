@@ -35,10 +35,12 @@ land in the same commit and the same release tag.
 1. **Sanctions**: screen consolidated list version pinned in evidence.
    Hit → evidence spans + timestamp; disposition cleared|escalated with
    reviewer + ref. Never cleared by the drafter (`AML-HOLD-02`).
+   Thresholds as declared in `AML-SCREEN-02`: hold at 0.95, review from 0.80.
 2. **PEP**: domestic + foreign PEP/adverse-media screen. Same hit rules.
 3. **Adverse media**: name + DOB + id-number match; near-misses dispositioned
    (cleared with mismatch reason, never silently dropped).
 4. **Amounts**: value + currency + value date + source ref, verbatim. No
    netting, no rounding, no reclassification (`docs/core/master-data.md`).
 5. **Decision**: ship only over zero uncleared hits; otherwise revise
-   (needs re-screen) or escalate.
+   (needs re-screen) or escalate (`LEG-TRIAGE-01` is not used here — see
+   `AML-TRIAGE-01`).

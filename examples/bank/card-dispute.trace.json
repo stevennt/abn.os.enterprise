@@ -1,0 +1,112 @@
+{
+ "instance_id": "trace-card.dispute",
+ "flow": "card.dispute",
+ "flow_version": "1.0.0",
+ "event_type": "card.dispute.opened",
+ "event_idem": "411111+TXN-TEST-9+13.1",
+ "synthesized_event": false,
+ "steps": [
+  {
+   "step_id": "s1-triage",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s2-provisional",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s3-evidence",
+   "outcome": "FIELDS"
+  },
+  {
+   "step_id": "s4-represent",
+   "outcome": "APPROVE"
+  },
+  {
+   "step_id": "s5-close",
+   "outcome": "PASS"
+  }
+ ],
+ "audit": [
+  {
+   "id": "ae-0000",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 0,
+   "step_id": "s1-triage",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "DISPUTE-TRIAGE-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1,
+   "hash_prev": "GENESIS",
+   "hash": "13e57247610f25d0d27edb86377cfdd442303106db34b55635977e102c75d19e"
+  },
+  {
+   "id": "ae-0001",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 1,
+   "step_id": "s2-provisional",
+   "actor": "credit_officer",
+   "decision": "PASS",
+   "rule_version": "DISPUTE-PROV-02",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 2,
+   "hash_prev": "13e57247610f25d0d27edb86377cfdd442303106db34b55635977e102c75d19e",
+   "hash": "03dfbc6aafc67636513f8a33945d3df51a5a0bba6ff28cd8dac1cb153b32a1dd"
+  },
+  {
+   "id": "ae-0002",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 2,
+   "step_id": "s3-evidence",
+   "actor": "credit_officer",
+   "decision": "FIELDS",
+   "rule_version": "DISPUTE-EV-03",
+   "model_version": "model-for-s3-evidence@test",
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 3,
+   "hash_prev": "03dfbc6aafc67636513f8a33945d3df51a5a0bba6ff28cd8dac1cb153b32a1dd",
+   "hash": "e723b3a4fffa053be4b563180490730acf541c7585121928d7be5d2a84211bf7"
+  },
+  {
+   "id": "ae-0003",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 3,
+   "step_id": "s4-represent",
+   "actor": "credit_manager",
+   "decision": "APPROVE",
+   "rule_version": "DISPUTE-SCHEME-04",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 4,
+   "hash_prev": "e723b3a4fffa053be4b563180490730acf541c7585121928d7be5d2a84211bf7",
+   "hash": "d7a1bb7112074141139c6f1f4f1f7ee00ce26c6dc0925dc570e987a65c76c262"
+  },
+  {
+   "id": "ae-0004",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 4,
+   "step_id": "s5-close",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "NOTIFY-TPL-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 5,
+   "hash_prev": "d7a1bb7112074141139c6f1f4f1f7ee00ce26c6dc0925dc570e987a65c76c262",
+   "hash": "20d68e00a878473a7aaa5c420dfd146db8358f2719d8c7e907304bc9c79ae80b"
+  }
+ ]
+}

@@ -1,0 +1,52 @@
+{
+ "instance_id": "trace-hr.leave.approve",
+ "flow": "hr.leave.approve",
+ "flow_version": "1.0.0",
+ "event_type": "hr.leave.requested",
+ "event_idem": "TEST-hr.leave.approve",
+ "synthesized_event": true,
+ "steps": [
+  {
+   "step_id": "s1-check",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s2-approve",
+   "outcome": "APPROVE"
+  }
+ ],
+ "audit": [
+  {
+   "id": "ae-0000",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 0,
+   "step_id": "s1-check",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "HR-LEAVE-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1,
+   "hash_prev": "GENESIS",
+   "hash": "29191d8a7e1bc72644955316f3595cda210919fd9282279cfe85bd5ae6b75a0f"
+  },
+  {
+   "id": "ae-0001",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 1,
+   "step_id": "s2-approve",
+   "actor": "hr_manager",
+   "decision": "APPROVE",
+   "rule_version": "HR-LEAVE-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 2,
+   "hash_prev": "29191d8a7e1bc72644955316f3595cda210919fd9282279cfe85bd5ae6b75a0f",
+   "hash": "9565bbf5094d9019839e73b8267f9a535b2f341367e3b5c29f505c53cc0e4827"
+  }
+ ]
+}

@@ -1,0 +1,32 @@
+{
+ "instance_id": "trace-hr.perf.review",
+ "flow": "hr.perf.review",
+ "flow_version": "1.0.0",
+ "event_type": "hr.perf.cycle.open",
+ "event_idem": "TEST-hr.perf.review",
+ "synthesized_event": true,
+ "steps": [
+  {
+   "step_id": "s1-calibrate",
+   "outcome": "APPROVE"
+  }
+ ],
+ "audit": [
+  {
+   "id": "ae-0000",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 0,
+   "step_id": "s1-calibrate",
+   "actor": "hr_manager",
+   "decision": "APPROVE",
+   "rule_version": "HR-PERF-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1,
+   "hash_prev": "GENESIS",
+   "hash": "679651971600c5fb20ecff43db7d7a2672992d94c2fbbcbfd517aa433911c599"
+  }
+ ]
+}

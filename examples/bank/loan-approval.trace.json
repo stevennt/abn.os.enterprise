@@ -1,62 +1,33 @@
 {
- "instance_id": "trace-demo-1",
+ "instance_id": "trace-loan.retail.unsecured",
  "flow": "loan.retail.unsecured",
  "flow_version": "1.3.0",
  "event_type": "loan.application.submitted",
  "event_idem": "C-88123+APP-2026-104231",
+ "synthesized_event": false,
  "steps": [
   {
    "step_id": "s1-verify",
-   "kind": "workflow",
-   "owner": "system",
-   "level": "L4",
-   "sla_minutes": 5,
-   "on_fail": "REVIEW",
    "outcome": "PASS"
   },
   {
    "step_id": "s2-extract",
-   "kind": "ai",
-   "owner": "credit_officer",
-   "level": "L3",
-   "sla_minutes": 15,
-   "on_fail": "escalate:credit_officer",
    "outcome": "FIELDS"
   },
   {
    "step_id": "s3-score",
-   "kind": "workflow",
-   "owner": "system",
-   "level": "L4",
-   "sla_minutes": 5,
-   "on_fail": "REVIEW",
    "outcome": "PASS"
   },
   {
    "step_id": "s4-aml",
-   "kind": "workflow",
-   "owner": "compliance_bot",
-   "level": "L4",
-   "sla_minutes": 10,
-   "on_fail": "hold:compliance",
    "outcome": "PASS"
   },
   {
    "step_id": "s5-decide",
-   "kind": "human",
-   "owner": "credit_manager",
-   "level": "L3",
-   "sla_minutes": 240,
-   "on_fail": "escalate:risk",
    "outcome": "APPROVE"
   },
   {
    "step_id": "s6-notify",
-   "kind": "workflow",
-   "owner": "system",
-   "level": "L4",
-   "sla_minutes": 5,
-   "on_fail": "retry+page",
    "outcome": "PASS"
   }
  ],
@@ -73,9 +44,9 @@
    "model_version": null,
    "inputs_hash": null,
    "payload_ref": null,
-   "ts": 1793422801,
+   "ts": 1,
    "hash_prev": "GENESIS",
-   "hash": "2ea0bf7a581f42312fabe70c6ddd377ff6d1ad8f43a78717338727681acab595"
+   "hash": "bb2f011c2dc88dd29ffb55f411e6e4a173703113b3ca99d89a76d644ea339eda"
   },
   {
    "id": "ae-0001",
@@ -86,12 +57,12 @@
    "actor": "credit_officer",
    "decision": "FIELDS",
    "rule_version": "DOC-EXTRACT-01",
-   "model_version": "model-for-s2-extract@2026-10-20",
+   "model_version": "model-for-s2-extract@test",
    "inputs_hash": null,
    "payload_ref": null,
-   "ts": 1793422802,
-   "hash_prev": "2ea0bf7a581f42312fabe70c6ddd377ff6d1ad8f43a78717338727681acab595",
-   "hash": "b956ac1ab2b6aeab2d64161b789e39cb1914d3887eb0f573993d727e0b657b51"
+   "ts": 2,
+   "hash_prev": "bb2f011c2dc88dd29ffb55f411e6e4a173703113b3ca99d89a76d644ea339eda",
+   "hash": "5c4a282b43034129286bdc406c0ae3bde74ed4be25b202a7587ece536b9b167c"
   },
   {
    "id": "ae-0002",
@@ -105,9 +76,9 @@
    "model_version": null,
    "inputs_hash": null,
    "payload_ref": null,
-   "ts": 1793422803,
-   "hash_prev": "b956ac1ab2b6aeab2d64161b789e39cb1914d3887eb0f573993d727e0b657b51",
-   "hash": "60fe1193db4445960d55b3ef54e8ec951edae962ec7169a8c6ab151b5a863aa0"
+   "ts": 3,
+   "hash_prev": "5c4a282b43034129286bdc406c0ae3bde74ed4be25b202a7587ece536b9b167c",
+   "hash": "11a179d81d4852fad1d83f1ab00c460b8a7f27e5ff7e1fb2230959ae66872cc3"
   },
   {
    "id": "ae-0003",
@@ -121,9 +92,9 @@
    "model_version": null,
    "inputs_hash": null,
    "payload_ref": null,
-   "ts": 1793422804,
-   "hash_prev": "60fe1193db4445960d55b3ef54e8ec951edae962ec7169a8c6ab151b5a863aa0",
-   "hash": "48aa16000307cd9d9a3959ce055858bfe8e62971fa815a947e5a3724af752475"
+   "ts": 4,
+   "hash_prev": "11a179d81d4852fad1d83f1ab00c460b8a7f27e5ff7e1fb2230959ae66872cc3",
+   "hash": "dd5ee4808af9d6f0638043d73f4bcb7f0bd29e7468362c0f0bcb3092c0e4ebe5"
   },
   {
    "id": "ae-0004",
@@ -137,9 +108,9 @@
    "model_version": null,
    "inputs_hash": null,
    "payload_ref": null,
-   "ts": 1793422805,
-   "hash_prev": "48aa16000307cd9d9a3959ce055858bfe8e62971fa815a947e5a3724af752475",
-   "hash": "8fec4028afe5c8906888aee9a75b4a42bca838fdd982a7543c66ae52bb229c40"
+   "ts": 5,
+   "hash_prev": "dd5ee4808af9d6f0638043d73f4bcb7f0bd29e7468362c0f0bcb3092c0e4ebe5",
+   "hash": "4162146106eefbca74c24038617d1098ad331ff9d6b2767dd3a7c831cf3734b8"
   },
   {
    "id": "ae-0005",
@@ -153,9 +124,9 @@
    "model_version": null,
    "inputs_hash": null,
    "payload_ref": null,
-   "ts": 1793422806,
-   "hash_prev": "8fec4028afe5c8906888aee9a75b4a42bca838fdd982a7543c66ae52bb229c40",
-   "hash": "b725c789ec30c9a169055d34567297695b5ae2d6070c00f46afca0f3af35873e"
+   "ts": 6,
+   "hash_prev": "4162146106eefbca74c24038617d1098ad331ff9d6b2767dd3a7c831cf3734b8",
+   "hash": "76c09f1099b81225312d125777c1926ee6f3afe4157412d6f8a4a403320babd5"
   }
  ]
 }

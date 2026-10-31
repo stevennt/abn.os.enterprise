@@ -1,0 +1,172 @@
+{
+ "instance_id": "trace-loan.retail.mortgage",
+ "flow": "loan.retail.mortgage",
+ "flow_version": "1.0.0",
+ "event_type": "loan.mortgage.requested",
+ "event_idem": "TEST-loan.retail.mortgage",
+ "synthesized_event": true,
+ "steps": [
+  {
+   "step_id": "s1-verify",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s2-score",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s3-appraise",
+   "outcome": "APPROVE"
+  },
+  {
+   "step_id": "s4-notarize",
+   "outcome": "APPROVE"
+  },
+  {
+   "step_id": "s5-lien",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s6-aml",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s7-decide",
+   "outcome": "APPROVE"
+  },
+  {
+   "step_id": "s8-disburse",
+   "outcome": "PASS"
+  }
+ ],
+ "audit": [
+  {
+   "id": "ae-0000",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 0,
+   "step_id": "s1-verify",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "KYC-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1,
+   "hash_prev": "GENESIS",
+   "hash": "bb2f011c2dc88dd29ffb55f411e6e4a173703113b3ca99d89a76d644ea339eda"
+  },
+  {
+   "id": "ae-0001",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 1,
+   "step_id": "s2-score",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "SBV-DSTI-04",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 2,
+   "hash_prev": "bb2f011c2dc88dd29ffb55f411e6e4a173703113b3ca99d89a76d644ea339eda",
+   "hash": "92e89fe44de5a1eb07550b21e0c595c6c15e7c97a3ea480761be4134cc9bfe76"
+  },
+  {
+   "id": "ae-0002",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 2,
+   "step_id": "s3-appraise",
+   "actor": "external_appraiser",
+   "decision": "APPROVE",
+   "rule_version": "COLLATERAL-VAL-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 3,
+   "hash_prev": "92e89fe44de5a1eb07550b21e0c595c6c15e7c97a3ea480761be4134cc9bfe76",
+   "hash": "150f8a606932234963836dfaba71f0e6d2d5a4d0f95afdcdd3ded5b3755e8650"
+  },
+  {
+   "id": "ae-0003",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 3,
+   "step_id": "s4-notarize",
+   "actor": "external_notary",
+   "decision": "APPROVE",
+   "rule_version": "NOTARY-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 4,
+   "hash_prev": "150f8a606932234963836dfaba71f0e6d2d5a4d0f95afdcdd3ded5b3755e8650",
+   "hash": "3adb30a90fd64a1321eefdd536a8a5d851b1ae38fb04f5ce3b62648d2d8c1230"
+  },
+  {
+   "id": "ae-0004",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 4,
+   "step_id": "s5-lien",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "LIEN-REG-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 5,
+   "hash_prev": "3adb30a90fd64a1321eefdd536a8a5d851b1ae38fb04f5ce3b62648d2d8c1230",
+   "hash": "c87a4b1186ac05a3cd6c32d9755b12f4e8af52332267a102af6573923b65b849"
+  },
+  {
+   "id": "ae-0005",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 5,
+   "step_id": "s6-aml",
+   "actor": "compliance_bot",
+   "decision": "PASS",
+   "rule_version": "AML-SCREEN-02",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 6,
+   "hash_prev": "c87a4b1186ac05a3cd6c32d9755b12f4e8af52332267a102af6573923b65b849",
+   "hash": "f55f8b8779880ff5026c63ed13439d063c8817a98497a38dd4589ad54d52fc98"
+  },
+  {
+   "id": "ae-0006",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 6,
+   "step_id": "s7-decide",
+   "actor": "credit_manager",
+   "decision": "APPROVE",
+   "rule_version": "CREDIT-GRID-11",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 7,
+   "hash_prev": "f55f8b8779880ff5026c63ed13439d063c8817a98497a38dd4589ad54d52fc98",
+   "hash": "ef531ef3d38c41a4f810e69710a5e46c207c693d27c21cc2fa22b59a50619ca7"
+  },
+  {
+   "id": "ae-0007",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 7,
+   "step_id": "s8-disburse",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "TRANCHE-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 8,
+   "hash_prev": "ef531ef3d38c41a4f810e69710a5e46c207c693d27c21cc2fa22b59a50619ca7",
+   "hash": "8cef17138bcfd6af5eeabdc630b2119a7ce33bbe8d43ab44154bdfcda2c32e2b"
+  }
+ ]
+}

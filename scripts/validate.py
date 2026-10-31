@@ -129,24 +129,28 @@ def main():
         assert int(r["headcount"]) > 0 and float(r["mins_per_task"]) > 0, f"bad row {r['role']}"
         assert 0 < float(r["utilization"]) <= 0.9, f"utilization out of range {r['role']}"
     print(f"capacity: {len(cap)} roles with throughput + assumptions — OK")
-    # Issue #22: runnable-spec trace — 6 steps in order, chain verifies
+    # Issue #22/#111: runnable-spec traces — steps in order, chains verify
     import json as _json2
-    tr = _json2.loads((ROOT / "examples" / "bank" / "loan-approval.trace.json").read_text())
-    loan = load("examples/bank/loan-approval.flow.yaml")
-    assert [s["step_id"] for s in tr["steps"]] == [s["id"] for s in loan["steps"]], "trace/flow step mismatch"
-    assert tr["flow_version"] == loan["version"], "trace pins stale flow version"
-    for s in loan["steps"]:
-        assert s.get("owner_role") and s.get("sla_minutes") and s.get("on_fail"), f"step {s['id']} incomplete"
-        assert s.get("uses_rule"), f"step {s['id']} has no rule"
-    prev = "GENESIS"
+    import glob as _glob3
     import hashlib as _hl
-    for i, env in enumerate(tr["audit"]):
-        assert env["seq"] == i and env["hash_prev"] == prev, f"audit link broken at {i}"
-        body = {k: v for k, v in env.items() if k != "hash"}
-        assert env["hash"] == _hl.sha256(_json2.dumps(body, sort_keys=True, separators=(",", ":"),
-                                         ensure_ascii=False).encode()).hexdigest(), f"audit hash bad at {i}"
-        prev = env["hash"]
-    print(f"trace: {len(tr['steps'])} steps, audit chain verifies, all steps have owner/rule/SLA/fail-path — OK")
+    ntr = 0
+    for tf in sorted(_glob3.glob(str(ROOT / "examples" / "bank" / "*.trace.json"))):
+        tr = _json2.loads(Path(tf).read_text())
+        flow = load(f"examples/bank/{Path(tf).stem.replace('.trace', '')}.flow.yaml")
+        assert [s["step_id"] for s in tr["steps"]] == [s["id"] for s in flow["steps"]], f"{tf} step mismatch"
+        assert tr["flow_version"] == flow["version"], f"{tf} pins stale version"
+        for s in flow["steps"]:
+            assert s.get("owner_role") and s.get("sla_minutes") and s.get("on_fail"), f"{tf} step {s['id']} incomplete"
+            assert s.get("uses_rule"), f"{tf} step {s['id']} has no rule"
+        prev = "GENESIS"
+        for i, env in enumerate(tr["audit"]):
+            assert env["seq"] == i and env["hash_prev"] == prev, f"{tf} audit link broken at {i}"
+            body = {k: v for k, v in env.items() if k != "hash"}
+            assert env["hash"] == _hl.sha256(_json2.dumps(body, sort_keys=True, separators=(",", ":"),
+                                             ensure_ascii=False).encode()).hexdigest(), f"{tf} audit hash bad at {i}"
+            prev = env["hash"]
+        ntr += 1
+    print(f"trace: {ntr} traces, steps in order, chains verify, owner/rule/SLA/fail-path — OK")
     # Issue #31: event catalog has 40 rows + naming convention section
     cat = (ROOT / "docs" / "event-catalog.md").read_text().splitlines()
     rows = [l for l in cat if l.startswith("| `")]

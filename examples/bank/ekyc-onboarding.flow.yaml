@@ -11,6 +11,7 @@ steps:
     kind: workflow
     owner_role: system
     level: L4
+    uses_rule: [KYC-01]
     uses_touchpoint: TP-C-onboarding
     sla_minutes: 5
     on_fail: "REVIEW"
@@ -18,6 +19,7 @@ steps:
     kind: ai
     owner_role: system
     level: L4
+    uses_rule: [KYC-01]
     uses_touchpoint: TP-S-ekyc-provider
     sla_minutes: 5
     on_fail: "retry-once-then-REVIEW"
@@ -25,6 +27,7 @@ steps:
     kind: ai
     owner_role: system
     level: L4
+    uses_rule: [KYC-02]
     uses_touchpoint: TP-S-ekyc-provider
     sla_minutes: 5
     on_fail: "REVIEW"
@@ -47,6 +50,7 @@ steps:
     kind: workflow
     owner_role: system
     level: L4
+    uses_rule: [KYC-01, KYC-03]
     uses_touchpoint: TP-S-core
     sla_minutes: 5
     on_fail: "retry+page"
@@ -54,6 +58,7 @@ steps:
     kind: workflow
     owner_role: system
     level: L4
+    uses_rule: [NOTIFY-TPL-01]
     uses_touchpoint: TP-C-app-status
     sla_minutes: 5
     on_fail: "retry+page"

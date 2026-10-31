@@ -64,6 +64,7 @@ steps:
     kind: workflow
     owner_role: system
     level: L4
+    uses_rule: [TRANCHE-01]
     uses_touchpoint: TP-S-core
     sla_minutes: 60
     on_fail: "retry+page"

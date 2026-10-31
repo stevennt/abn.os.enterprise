@@ -1,0 +1,52 @@
+{
+ "instance_id": "trace-hr.onboard.employee",
+ "flow": "hr.onboard.employee",
+ "flow_version": "1.0.0",
+ "event_type": "hr.offer.accepted",
+ "event_idem": "TEST-hr.onboard.employee",
+ "synthesized_event": true,
+ "steps": [
+  {
+   "step_id": "s1-provision",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s2-confirm",
+   "outcome": "APPROVE"
+  }
+ ],
+ "audit": [
+  {
+   "id": "ae-0000",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 0,
+   "step_id": "s1-provision",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "HR-ONBOARD-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1,
+   "hash_prev": "GENESIS",
+   "hash": "f16f2bb5de585bae7629390ab24d9e550f2643f2d1b76757408ab0b7371ee153"
+  },
+  {
+   "id": "ae-0001",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 1,
+   "step_id": "s2-confirm",
+   "actor": "hr_specialist",
+   "decision": "APPROVE",
+   "rule_version": "HR-ONBOARD-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 2,
+   "hash_prev": "f16f2bb5de585bae7629390ab24d9e550f2643f2d1b76757408ab0b7371ee153",
+   "hash": "dc83781834f2f10faa3f7438b70ec5ca13e3d1280c1a0fb9c6b607e7c65d03ea"
+  }
+ ]
+}

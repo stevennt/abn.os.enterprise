@@ -1,0 +1,52 @@
+{
+ "instance_id": "trace-hr.recruit.offer",
+ "flow": "hr.recruit.offer",
+ "flow_version": "1.0.0",
+ "event_type": "hr.recruit.decided",
+ "event_idem": "TEST-hr.recruit.offer",
+ "synthesized_event": true,
+ "steps": [
+  {
+   "step_id": "s1-draft",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s2-approve",
+   "outcome": "APPROVE"
+  }
+ ],
+ "audit": [
+  {
+   "id": "ae-0000",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 0,
+   "step_id": "s1-draft",
+   "actor": "hr_specialist",
+   "decision": "PASS",
+   "rule_version": "HR-BAND-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1,
+   "hash_prev": "GENESIS",
+   "hash": "99e9b4a2e575a9156801a5ab85ace652afa44dc58f65b9f88c31f15ad328de5e"
+  },
+  {
+   "id": "ae-0001",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 1,
+   "step_id": "s2-approve",
+   "actor": "hr_manager",
+   "decision": "APPROVE",
+   "rule_version": "HR-BAND-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 2,
+   "hash_prev": "99e9b4a2e575a9156801a5ab85ace652afa44dc58f65b9f88c31f15ad328de5e",
+   "hash": "fbcb329eb706c504ab78af5f66f7eb8942e02001df88a0cf7e911807c06df0de"
+  }
+ ]
+}

@@ -1,0 +1,132 @@
+{
+ "instance_id": "trace-transfer.domestic",
+ "flow": "transfer.domestic",
+ "flow_version": "1.0.0",
+ "event_type": "transfer.domestic.requested",
+ "event_idem": "IDEM-7f3a9c1e",
+ "synthesized_event": false,
+ "steps": [
+  {
+   "step_id": "s1-dedupe",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s2-limits",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s3-sanctions",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s4-route",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s5-release",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s6-notify",
+   "outcome": "PASS"
+  }
+ ],
+ "audit": [
+  {
+   "id": "ae-0000",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 0,
+   "step_id": "s1-dedupe",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "IDEM-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1,
+   "hash_prev": "GENESIS",
+   "hash": "6d324b6e1755960ca1aeec57efae72a6bff06b5a818cad12982d9a1069f6b6e5"
+  },
+  {
+   "id": "ae-0001",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 1,
+   "step_id": "s2-limits",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "LIMIT-TXN-02",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 2,
+   "hash_prev": "6d324b6e1755960ca1aeec57efae72a6bff06b5a818cad12982d9a1069f6b6e5",
+   "hash": "7474aafb4b9ec5d18093d687aebb5b9c6b76f3c6a607907fcfa79c582a26656e"
+  },
+  {
+   "id": "ae-0002",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 2,
+   "step_id": "s3-sanctions",
+   "actor": "compliance_bot",
+   "decision": "PASS",
+   "rule_version": "AML-SCREEN-02",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 3,
+   "hash_prev": "7474aafb4b9ec5d18093d687aebb5b9c6b76f3c6a607907fcfa79c582a26656e",
+   "hash": "abe2d9cf13b40a7776dab6045c2eeb7841b61f9b36fdd587e9e4b565a64ffdb6"
+  },
+  {
+   "id": "ae-0003",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 3,
+   "step_id": "s4-route",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "RAIL-ROUTE-03",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 4,
+   "hash_prev": "abe2d9cf13b40a7776dab6045c2eeb7841b61f9b36fdd587e9e4b565a64ffdb6",
+   "hash": "0862b4814f700ede6c98a000e566e195fd93d67b4fd3db8898ba7138c70c079e"
+  },
+  {
+   "id": "ae-0004",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 4,
+   "step_id": "s5-release",
+   "actor": "payments_operator",
+   "decision": "PASS",
+   "rule_version": "RELEASE-04",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 5,
+   "hash_prev": "0862b4814f700ede6c98a000e566e195fd93d67b4fd3db8898ba7138c70c079e",
+   "hash": "08cb3d07d3cff55a01c4ce246e45ecef01efe19a4eb506827ea2d18b5bd304cd"
+  },
+  {
+   "id": "ae-0005",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 5,
+   "step_id": "s6-notify",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "NOTIFY-TPL-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 6,
+   "hash_prev": "08cb3d07d3cff55a01c4ce246e45ecef01efe19a4eb506827ea2d18b5bd304cd",
+   "hash": "1ae67103e6f12fe71f9c7b8b9d7e8ce2434324743513dbf0828b4ff1df3bf56d"
+  }
+ ]
+}

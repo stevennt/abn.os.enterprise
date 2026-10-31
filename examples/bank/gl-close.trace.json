@@ -1,0 +1,92 @@
+{
+ "instance_id": "trace-finance.gl.close.month",
+ "flow": "finance.gl.close.month",
+ "flow_version": "1.0.0",
+ "event_type": "gl.close.month.started",
+ "event_idem": "TEST-finance.gl.close.month",
+ "synthesized_event": true,
+ "steps": [
+  {
+   "step_id": "s1-freeze",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s2-accrue",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s3-reconcile",
+   "outcome": "FIELDS"
+  },
+  {
+   "step_id": "s4-signoff",
+   "outcome": "APPROVE"
+  }
+ ],
+ "audit": [
+  {
+   "id": "ae-0000",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 0,
+   "step_id": "s1-freeze",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "CLOSE-FREEZE-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1,
+   "hash_prev": "GENESIS",
+   "hash": "85434b13a73f5a06ed8a7b38c5daae86848a9eda370d43524ba16826cf3e4f27"
+  },
+  {
+   "id": "ae-0001",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 1,
+   "step_id": "s2-accrue",
+   "actor": "accountant",
+   "decision": "PASS",
+   "rule_version": "ACCRUAL-02",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 2,
+   "hash_prev": "85434b13a73f5a06ed8a7b38c5daae86848a9eda370d43524ba16826cf3e4f27",
+   "hash": "2c9b93c3414cce095253c06a2fafc67e51a33574b6b2306d344a4de7ccdee2e1"
+  },
+  {
+   "id": "ae-0002",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 2,
+   "step_id": "s3-reconcile",
+   "actor": "accountant",
+   "decision": "FIELDS",
+   "rule_version": "RECON-03",
+   "model_version": "model-for-s3-reconcile@test",
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 3,
+   "hash_prev": "2c9b93c3414cce095253c06a2fafc67e51a33574b6b2306d344a4de7ccdee2e1",
+   "hash": "d5fd3b177d15cce4617be6a15232e3ca6051c6f0d638ad0d24fd5f08c09c2a8b"
+  },
+  {
+   "id": "ae-0003",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 3,
+   "step_id": "s4-signoff",
+   "actor": "cfo_delegate",
+   "decision": "APPROVE",
+   "rule_version": "CLOSE-SIGN-04",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 4,
+   "hash_prev": "d5fd3b177d15cce4617be6a15232e3ca6051c6f0d638ad0d24fd5f08c09c2a8b",
+   "hash": "d0e15c4f092f7676aab7302a6ac2fa24dbd1275953e220d44a98be1481f53d3a"
+  }
+ ]
+}

@@ -1,0 +1,112 @@
+{
+ "instance_id": "trace-aml.str.filing",
+ "flow": "aml.str.filing",
+ "flow_version": "1.0.0",
+ "event_type": "aml.screening.hit",
+ "event_idem": "C-77002+sanctions-v2026-10-30",
+ "synthesized_event": false,
+ "steps": [
+  {
+   "step_id": "s1-triage",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s2-hold",
+   "outcome": "APPROVE"
+  },
+  {
+   "step_id": "s3-investigate",
+   "outcome": "APPROVE"
+  },
+  {
+   "step_id": "s4-peer-review",
+   "outcome": "APPROVE"
+  },
+  {
+   "step_id": "s5-file",
+   "outcome": "APPROVE"
+  }
+ ],
+ "audit": [
+  {
+   "id": "ae-0000",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 0,
+   "step_id": "s1-triage",
+   "actor": "aml_analyst",
+   "decision": "PASS",
+   "rule_version": "AML-TRIAGE-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1,
+   "hash_prev": "GENESIS",
+   "hash": "c05265bd6889cfe4337120f1214ac5a2be744469900c226e7664d427abe0c1a7"
+  },
+  {
+   "id": "ae-0001",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 1,
+   "step_id": "s2-hold",
+   "actor": "compliance_manager",
+   "decision": "APPROVE",
+   "rule_version": "AML-HOLD-02",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 2,
+   "hash_prev": "c05265bd6889cfe4337120f1214ac5a2be744469900c226e7664d427abe0c1a7",
+   "hash": "abfb2442abf1051e225fa836168096bfa70cede8ecacfe8c7c47228f3da9a533"
+  },
+  {
+   "id": "ae-0002",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 2,
+   "step_id": "s3-investigate",
+   "actor": "aml_analyst",
+   "decision": "APPROVE",
+   "rule_version": "AML-INV-03",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 3,
+   "hash_prev": "abfb2442abf1051e225fa836168096bfa70cede8ecacfe8c7c47228f3da9a533",
+   "hash": "127cac4693a3b197adb8a266ee76330ce46667080d99c8cd52998c63b14b5567"
+  },
+  {
+   "id": "ae-0003",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 3,
+   "step_id": "s4-peer-review",
+   "actor": "compliance_manager",
+   "decision": "APPROVE",
+   "rule_version": "AML-4EYES-04",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 4,
+   "hash_prev": "127cac4693a3b197adb8a266ee76330ce46667080d99c8cd52998c63b14b5567",
+   "hash": "87867213e8b0f694bfec0b1617b7590250213ed72fa6d8a7d3fe78068940efbc"
+  },
+  {
+   "id": "ae-0004",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 4,
+   "step_id": "s5-file",
+   "actor": "mlro",
+   "decision": "APPROVE",
+   "rule_version": "STR-FILE-05",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 5,
+   "hash_prev": "87867213e8b0f694bfec0b1617b7590250213ed72fa6d8a7d3fe78068940efbc",
+   "hash": "9a9e6f20db0230dedc7c9cfe4fb47968f2026fc54aeb1a87defc9af066742ade"
+  }
+ ]
+}

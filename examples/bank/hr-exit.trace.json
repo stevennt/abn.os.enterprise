@@ -1,0 +1,52 @@
+{
+ "instance_id": "trace-hr.offboard.exit",
+ "flow": "hr.offboard.exit",
+ "flow_version": "1.0.0",
+ "event_type": "hr.exit.initiated",
+ "event_idem": "TEST-hr.offboard.exit",
+ "synthesized_event": true,
+ "steps": [
+  {
+   "step_id": "s1-clearance",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s2-signoff",
+   "outcome": "APPROVE"
+  }
+ ],
+ "audit": [
+  {
+   "id": "ae-0000",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 0,
+   "step_id": "s1-clearance",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "HR-EXIT-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1,
+   "hash_prev": "GENESIS",
+   "hash": "04835c418473504f533ada9b93c7d9df6f914af41eb54235329b285a78875c08"
+  },
+  {
+   "id": "ae-0001",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 1,
+   "step_id": "s2-signoff",
+   "actor": "hr_manager",
+   "decision": "APPROVE",
+   "rule_version": "HR-EXIT-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 2,
+   "hash_prev": "04835c418473504f533ada9b93c7d9df6f914af41eb54235329b285a78875c08",
+   "hash": "91e2dda48c8e24b023ffad46095a372739aeefa2b6537e27c6169841061d50e2"
+  }
+ ]
+}

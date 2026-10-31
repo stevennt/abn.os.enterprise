@@ -1,0 +1,72 @@
+{
+ "instance_id": "trace-finance.ap.invoice",
+ "flow": "finance.ap.invoice",
+ "flow_version": "1.0.0",
+ "event_type": "ap.invoice.received",
+ "event_idem": "TEST-finance.ap.invoice",
+ "synthesized_event": true,
+ "steps": [
+  {
+   "step_id": "s1-match",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s2-approve",
+   "outcome": "APPROVE"
+  },
+  {
+   "step_id": "s3-post",
+   "outcome": "PASS"
+  }
+ ],
+ "audit": [
+  {
+   "id": "ae-0000",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 0,
+   "step_id": "s1-match",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "AP-3WAY-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1,
+   "hash_prev": "GENESIS",
+   "hash": "d4f066cfd1efdce3520a41b868ddb7570172a6730ca762166bc8bdd813c098a3"
+  },
+  {
+   "id": "ae-0001",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 1,
+   "step_id": "s2-approve",
+   "actor": "cfo_delegate",
+   "decision": "APPROVE",
+   "rule_version": "AP-LADDER-02",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 2,
+   "hash_prev": "d4f066cfd1efdce3520a41b868ddb7570172a6730ca762166bc8bdd813c098a3",
+   "hash": "0b993a5b5481e5b8178e7a15f7db21b98b52e69bc44bfcc9bd7b8e90bff7f626"
+  },
+  {
+   "id": "ae-0002",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 2,
+   "step_id": "s3-post",
+   "actor": "accountant",
+   "decision": "PASS",
+   "rule_version": "AP-POST-03",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 3,
+   "hash_prev": "0b993a5b5481e5b8178e7a15f7db21b98b52e69bc44bfcc9bd7b8e90bff7f626",
+   "hash": "fca88994740f4d15460b7f239ce663e9abcf48f284491f72991027f60935009f"
+  }
+ ]
+}

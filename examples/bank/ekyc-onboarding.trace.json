@@ -1,0 +1,152 @@
+{
+ "instance_id": "trace-ekyc.onboarding",
+ "flow": "ekyc.onboarding",
+ "flow_version": "1.0.0",
+ "event_type": "ekyc.onboarding.requested",
+ "event_idem": "TEST-ekyc.onboarding",
+ "synthesized_event": true,
+ "steps": [
+  {
+   "step_id": "s1-capture",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s2-ocr",
+   "outcome": "FIELDS"
+  },
+  {
+   "step_id": "s3-liveness",
+   "outcome": "FIELDS"
+  },
+  {
+   "step_id": "s4-blacklist",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s5-decide",
+   "outcome": "APPROVE"
+  },
+  {
+   "step_id": "s6-open",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s7-notify",
+   "outcome": "PASS"
+  }
+ ],
+ "audit": [
+  {
+   "id": "ae-0000",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 0,
+   "step_id": "s1-capture",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "KYC-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1,
+   "hash_prev": "GENESIS",
+   "hash": "94cf807446c2aa76aa8f0a1a93a0a4a9b92cb4955164469428eeff791d998294"
+  },
+  {
+   "id": "ae-0001",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 1,
+   "step_id": "s2-ocr",
+   "actor": "system",
+   "decision": "FIELDS",
+   "rule_version": "KYC-01",
+   "model_version": "model-for-s2-ocr@test",
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 2,
+   "hash_prev": "94cf807446c2aa76aa8f0a1a93a0a4a9b92cb4955164469428eeff791d998294",
+   "hash": "c14049f39daa307ad03894148e962b631bb75b70ac70487631221ac9b5b24bb6"
+  },
+  {
+   "id": "ae-0002",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 2,
+   "step_id": "s3-liveness",
+   "actor": "system",
+   "decision": "FIELDS",
+   "rule_version": "KYC-02",
+   "model_version": "model-for-s3-liveness@test",
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 3,
+   "hash_prev": "c14049f39daa307ad03894148e962b631bb75b70ac70487631221ac9b5b24bb6",
+   "hash": "c66303df6f8e5434536d509514bd54184cd94f93633c4bed620913cc7d4970ec"
+  },
+  {
+   "id": "ae-0003",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 3,
+   "step_id": "s4-blacklist",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "KYC-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 4,
+   "hash_prev": "c66303df6f8e5434536d509514bd54184cd94f93633c4bed620913cc7d4970ec",
+   "hash": "a7e7aada9c3ef6e185fc9db1903e0a11ee9872374a416511aeb121d6bf3f7ae8"
+  },
+  {
+   "id": "ae-0004",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 4,
+   "step_id": "s5-decide",
+   "actor": "branch_manager",
+   "decision": "APPROVE",
+   "rule_version": "KYC-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 5,
+   "hash_prev": "a7e7aada9c3ef6e185fc9db1903e0a11ee9872374a416511aeb121d6bf3f7ae8",
+   "hash": "c53809444dc377b820e3eae42ca1ff5c62112fdb9dbe9d434340c681e64a1184"
+  },
+  {
+   "id": "ae-0005",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 5,
+   "step_id": "s6-open",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "KYC-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 6,
+   "hash_prev": "c53809444dc377b820e3eae42ca1ff5c62112fdb9dbe9d434340c681e64a1184",
+   "hash": "e5612e07e9dd9fd37b318dbd3d2fb4f78f64f1376fc709d6112dde108b0817bb"
+  },
+  {
+   "id": "ae-0006",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 6,
+   "step_id": "s7-notify",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "NOTIFY-TPL-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 7,
+   "hash_prev": "e5612e07e9dd9fd37b318dbd3d2fb4f78f64f1376fc709d6112dde108b0817bb",
+   "hash": "9395d276b9f9444a4cfbb4ed89cfb98f22b6f5f691c1e3ccae27c370666d50f3"
+  }
+ ]
+}

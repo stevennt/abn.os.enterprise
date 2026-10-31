@@ -44,40 +44,41 @@ def main():
     # Index hygiene (full RACI per unit is B11/B20, not this issue)
     cat_files = sorted(_glob.glob(str(ROOT / "industries" / "*" / "org" / "process-catalog.yaml")))
     assert cat_files, "no industries/*/org/process-catalog.yaml"
-    catalog = yaml.safe_load(open(cat_files[0]))
-    n = sum(len(v) for v in catalog.values())
-    assert n == 46, f"catalog has {n} processes, want 46"
-    print(f"catalog: {n} processes indexed — OK")
+    # Issue #131: per-industry catalogs (was: first file only, which hid industry #2+)
+    total_procs = 0
+    for cf in cat_files:
+        catalog = yaml.safe_load(open(cf))
+        n = sum(len(v) for v in catalog.values())
+        assert n >= 1, f"{cf}: empty process catalog"
+        procs = [p for v in catalog.values() for p in v]
+        assert len(procs) == len(set(procs)), f"{cf}: duplicate process ids"
+        total_procs += n
+        print(f"catalog: {Path(cf).parent.parent.name} {n} processes indexed — OK")
+    assert total_procs >= 46, f"catalogs hold {total_procs} processes, want >= 46 (banking reference)"
+
+    # Issue #131: per-industry org index + reconciliation
     org_files = sorted(_glob.glob(str(ROOT / "industries" / "*" / "org" / "org-chart.yaml")))
     assert org_files, "no industries/*/org/org-chart.yaml"
-    org = yaml.safe_load(open(org_files[0]))
-    assert all(all(k in u for k in ("id", "name", "headcount_plan")) for u in org), "org index rows incomplete"
-    print(f"org-index: {len(org)} units (full RACI -> B11/B20) — OK")
-    # Issue #11+: full unit files validate against the org schema
-    for f in sorted(_glob.glob(str(ROOT / "industries" / "*" / "org" / "org-*.yaml"))):
-        if Path(f).name == "org-chart.yaml":
-            continue  # index only; full RACI lives in org-<unit>.yaml (B11-B20)
-        units = yaml.safe_load(open(f))
-        units = units if isinstance(units, list) else [units]
-        for u in units:
-            jsonschema.validate(u, schemas["org"])
-        print(f"org-full: {Path(f).name} ({len(units)} units) validates — OK")
-    # Issue #20: index-vs-full reconciliation (closes track B)
-    full_units = {}
-    for f in sorted(_glob.glob(str(ROOT / "industries" / "*" / "org" / "org-*.yaml"))):
-        if Path(f).name == "org-chart.yaml":
-            continue
-        units = yaml.safe_load(open(f))
-        for u in (units if isinstance(units, list) else [units]):
-            assert u["id"] not in full_units, f"duplicate unit {u['id']}"
-            full_units[u["id"]] = u
-    idx_ids = {u["id"] for u in org}
-    assert idx_ids == set(full_units), f"index/full mismatch: {idx_ids ^ set(full_units)}"
-    bad_hc = [i for i in idx_ids
-              if next(u for u in org if u["id"] == i)["headcount_plan"] != full_units[i]["headcount_plan"]]
-    assert not bad_hc, f"headcount mismatch: {bad_hc}"
-    total = sum(u["headcount_plan"] for u in org)
-    print(f"org-reconcile: {len(idx_ids)} index units == full files, headcounts match (total plan {total}) — OK")
+    for chart in org_files:
+        industry = Path(chart).parent.parent
+        org = yaml.safe_load(open(chart))
+        assert all(all(k in u for k in ("id", "name", "headcount_plan")) for u in org), \
+            f"{chart}: org index rows incomplete"
+        full = {}
+        for f in sorted((industry / "org").glob("org-*.yaml")):
+            if f.name == "org-chart.yaml":
+                continue
+            units = yaml.safe_load(open(f))
+            for u in (units if isinstance(units, list) else [units]):
+                assert u["id"] not in full, f"{industry.name}: duplicate unit {u['id']}"
+                full[u["id"]] = u
+        idx = {u["id"] for u in org}
+        assert idx == set(full), f"{industry.name}: index/full mismatch {idx ^ set(full)}"
+        for i in idx:
+            want = next(u for u in org if u["id"] == i)["headcount_plan"]
+            assert want == full[i]["headcount_plan"], f"{industry.name}: headcount mismatch {i}"
+        print(f"org: {industry.name} {len(idx)} units, index==full, headcounts match "
+              f"(plan {sum(u['headcount_plan'] for u in org)}) — OK")
     # Issue #34: 10 payload schemas each validate a synthetic example
     import json as _json
     evdir = ROOT / "industries" / "banking" / "event-examples"

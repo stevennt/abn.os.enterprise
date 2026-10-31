@@ -1,0 +1,117 @@
+{
+ "instance_id": "trace-legal.charge-review",
+ "flow": "legal.charge-review",
+ "flow_version": "0.1.0",
+ "event_type": "legal.charge.review.requested",
+ "event_idem": "CASE-TEST-0001+charge-review",
+ "synthesized_event": false,
+ "steps": [
+  {
+   "step_id": "s1-intake",
+   "kind": "workflow",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s2-issue-spotting",
+   "kind": "ai",
+   "outcome": "FIELDS"
+  },
+  {
+   "step_id": "s3-citation-check",
+   "kind": "workflow",
+   "outcome": "PASS"
+  },
+  {
+   "step_id": "s4-counsel-review",
+   "kind": "human",
+   "outcome": "APPROVE"
+  },
+  {
+   "step_id": "s5-release",
+   "kind": "workflow",
+   "outcome": "PASS"
+  }
+ ],
+ "audit": [
+  {
+   "id": "ae-0000",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 0,
+   "step_id": "s1-intake",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "LEG-CITE-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 1,
+   "hash_prev": "GENESIS",
+   "hash": "1612ecc00bb3e61a6ee1d830c9ba20f91c4635294d9e1150e92b766bcac0050e"
+  },
+  {
+   "id": "ae-0001",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 1,
+   "step_id": "s2-issue-spotting",
+   "actor": "case-investigator",
+   "decision": "FIELDS",
+   "rule_version": "LEG-CITE-01",
+   "model_version": "model-for-s2-issue-spotting@test",
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 2,
+   "hash_prev": "1612ecc00bb3e61a6ee1d830c9ba20f91c4635294d9e1150e92b766bcac0050e",
+   "hash": "49d3b9142fa43041d9080157c9c0747b2ca9065aa75f1815b3def21b26c5352d"
+  },
+  {
+   "id": "ae-0002",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 2,
+   "step_id": "s3-citation-check",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "LEG-CITE-02",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 3,
+   "hash_prev": "49d3b9142fa43041d9080157c9c0747b2ca9065aa75f1815b3def21b26c5352d",
+   "hash": "aa5fe033915657cfbd8e744395605b693f1e0fe4858564e6cf69aae2b5f2e681"
+  },
+  {
+   "id": "ae-0003",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 3,
+   "step_id": "s4-counsel-review",
+   "actor": "senior_counsel",
+   "decision": "APPROVE",
+   "rule_version": "LEG-SIGNOFF-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 4,
+   "hash_prev": "aa5fe033915657cfbd8e744395605b693f1e0fe4858564e6cf69aae2b5f2e681",
+   "hash": "83db3fd66d912d3bc14901d44a4e1742bf3a987b8a148dd09979e32c1e59926f"
+  },
+  {
+   "id": "ae-0004",
+   "version": "1.0.0",
+   "instance_id": "demo-1",
+   "seq": 4,
+   "step_id": "s5-release",
+   "actor": "system",
+   "decision": "PASS",
+   "rule_version": "LEG-SIGNOFF-01",
+   "model_version": null,
+   "inputs_hash": null,
+   "payload_ref": null,
+   "ts": 5,
+   "hash_prev": "83db3fd66d912d3bc14901d44a4e1742bf3a987b8a148dd09979e32c1e59926f",
+   "hash": "b54a0b32489fd380476e13ba122d5459fc05c909fb9c8b351337c6e98b6b2937"
+  }
+ ]
+}

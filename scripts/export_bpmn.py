@@ -41,7 +41,7 @@ def roundtrip(xml, flow):
 def main():
     check = "--check" in sys.argv
     files = sorted(glob.glob(str(ROOT / "industries" / "*" / "flows" / "*.flow.yaml")))
-    assert len(files) == 15, f"want 15 flows, found {len(files)}"
+    assert len(files) >= 15, f"want >=15 flows (banking reference), found {len(files)}"
     if not check:
         OUT.mkdir(parents=True, exist_ok=True)
     for f in files:

@@ -1,0 +1,4 @@
+# Legal practice org index (issue #131) — skeleton, 3 units (issue #131 scope).
+- {id: litigation, name: "Litigation", parent_id: null, headcount_plan: 12}
+- {id: advisory, name: "Advisory & Compliance", parent_id: null, headcount_plan: 8}
+- {id: knowledge, name: "Legal Knowledge & Precedent", parent_id: null, headcount_plan: 4}

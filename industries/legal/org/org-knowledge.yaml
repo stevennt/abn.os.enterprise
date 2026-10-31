@@ -1,0 +1,25 @@
+# Legal knowledge unit (full v0.1, issue #131) — validates against metamodel/org.schema.yaml
+- id: knowledge
+  version: 0.1.0
+  name: "Legal Knowledge & Precedent"
+  parent_id: null
+  mandate: "Keep the precedent index and instrument register current; never assert law without a reviewer"
+  headcount_plan: 4
+  systems_used: [precedent-index, instrument-register]
+  roles:
+    - id: knowledge-curator
+      title: "Knowledge Curator (maker)"
+      raci_scope:
+        - "R:legal.precedent-refresh"
+      approvals:
+        - "index-only"
+      headcount: 3
+    - id: senior-counsel
+      title: "Senior Counsel (checker)"
+      raci_scope:
+        - "A:legal.precedent-refresh"
+      approvals:
+        - "index-release"
+      headcount: 1
+  approval_thresholds:
+    index-release: {approver: senior_counsel, note: "stale index is worse than none"}

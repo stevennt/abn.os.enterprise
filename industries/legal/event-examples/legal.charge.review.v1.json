@@ -1,0 +1,14 @@
+{
+ "_synthetic_pii": true,
+ "event_type": "legal.charge.review.requested",
+ "event_version": "1.0.0",
+ "idempotency_key": "CASE-TEST-0001+charge-review",
+ "payload": {
+  "case_id": "CASE-TEST-0001",
+  "facts_ref": "doc-store/test-facts.pdf",
+  "draft_ref": "doc-store/test-draft-v1.docx",
+  "instrument_refs": ["TEST-INSTRUMENT-A", "TEST-INSTRUMENT-B"]
+ },
+ "producer": "system:case-mgmt",
+ "ts": 1793422800
+}

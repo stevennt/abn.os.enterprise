@@ -1,0 +1,26 @@
+# Legal sign-off rule pack v0.1 (issue #131) — validates against metamodel/rule.schema.yaml
+# STRUCTURAL ONLY: the rule is who may decide, never what the decision should be.
+- id: LEG-SIGNOFF-01
+  version: 0.1.0-2026-10-31
+  authority: "pending-legal-review — escalation ladder is internal policy, not law"
+  inputs: [document_kind, has_human_signoff, signer_role]
+  table:
+    - {when: "document_kind=client-advice AND has_human_signoff=false", then: BLOCK}
+    - {when: "document_kind=hearing-brief AND has_human_signoff=false", then: BLOCK}
+    - {when: "signer_role!=senior-counsel", then: ESCALATE}
+    - {when: "*", then: PASS}
+  effect: >
+    No AI-originated document reaches a client or a court unsigned. Signer must hold
+    the checker role; a maker may never sign its own draft.
+
+- id: LEG-SIGNOFF-02
+  version: 0.1.0-2026-10-31
+  authority: "pending-legal-review — internal policy on AI use"
+  inputs: [claim_is_legal_conclusion, human_decision_recorded]
+  table:
+    - {when: "claim_is_legal_conclusion=true AND human_decision_recorded=false", then: BLOCK}
+    - {when: "claim_is_legal_conclusion=true", then: PASS-TO-HUMAN}
+    - {when: "*", then: PASS}
+  effect: >
+    The system may assemble evidence and structure issues; it may not assert a legal
+    conclusion. A recorded human decision is the only path to one.

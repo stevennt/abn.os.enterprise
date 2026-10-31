@@ -1,0 +1,4 @@
+# Legal process catalog v0.1 (issue #131) — 4 processes, skeleton depth
+litigation: [legal.charge-review, legal.hearing-prep]
+advisory:   [legal.advisory-opinion]
+knowledge:  [legal.precedent-refresh]

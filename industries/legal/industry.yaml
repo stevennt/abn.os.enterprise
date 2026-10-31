@@ -1,0 +1,27 @@
+# industries/legal/industry.yaml — second industry (issue #131). Proves the contract.
+# Content is deliberately STRUCTURAL: no statute numbers, no sentencing ranges, no
+# case outcomes. Every rule row carries authority: pending-legal-review until a
+# qualified Vietnamese lawyer signs it off (see industries/legal/docs/status.md).
+id: legal
+version: 0.1.0
+label: "Legal practice (litigation, advisory, knowledge)"
+tier: commercial
+jurisdiction: VN
+owner: "litigation practice head (to be named)"
+tag_stream:
+  policy_prefix: legal-policy
+  pack_prefix: legal-pack
+rules:
+  - rules/legal-citation-pack.yaml
+  - rules/legal-signoff-pack.yaml
+flows:
+  - flows/legal-charge-review.flow.yaml
+evals: []
+pack:
+  path: pack
+  schema: metamodel/pack.schema.yaml
+  status: absent
+notes: >
+  Scaffold only: org skeleton, two structural rule packs, one review flow.
+  Substantive law content (charge elements, sentencing bands, limitation periods)
+  requires legal review before it may enter this repo at all.

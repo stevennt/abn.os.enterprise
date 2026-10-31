@@ -1,0 +1,29 @@
+# Legal citation-integrity rule pack v0.1 (issue #131) — validates against metamodel/rule.schema.yaml
+# STRUCTURAL ONLY. No statute numbers, no penalties, no limitation periods.
+# Every row: authority pending-legal-review until a qualified VN lawyer signs off.
+- id: LEG-CITE-01
+  version: 0.1.0-2026-10-31
+  authority: "pending-legal-review — structural rule, no substantive law asserted"
+  inputs: [claim_has_citation, instrument_in_force, instrument_matches_claim]
+  table:
+    - {when: "claim_has_citation=false", then: BLOCK}
+    - {when: "instrument_in_force=false", then: BLOCK}
+    - {when: "instrument_matches_claim=false", then: BLOCK}
+    - {when: "*", then: PASS-TO-HUMAN}
+  effect: >
+    Any assertion without a resolvable, in-force, topically matching instrument is
+    blocked from leaving the maker stage. PASS-TO-HUMAN is not approval — it means
+    "citable, now a human decides".
+
+- id: LEG-CITE-02
+  version: 0.1.0-2026-10-31
+  authority: "pending-legal-review — structural rule, no substantive law asserted"
+  inputs: [quote_verbatim, quote_attributed, quote_version_checked]
+  table:
+    - {when: "quote_verbatim=false", then: BLOCK}
+    - {when: "quote_attributed=false", then: BLOCK}
+    - {when: "quote_version_checked=false", then: REVIEW}
+    - {when: "*", then: PASS-TO-HUMAN}
+  effect: >
+    Quotations must be verbatim, attributed, and checked against the current version
+    of the instrument. Paraphrase must not be presented as quotation.

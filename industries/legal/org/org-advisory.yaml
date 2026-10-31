@@ -1,0 +1,26 @@
+# Advisory unit (full v0.1, issue #131) — validates against metamodel/org.schema.yaml
+- id: advisory
+  version: 0.1.0
+  name: "Advisory & Compliance"
+  parent_id: null
+  mandate: "Client advisory and internal compliance opinions; no opinion ships unsigned"
+  headcount_plan: 8
+  systems_used: [case-mgmt, doc-store, compliance-register]
+  roles:
+    - id: advisory-analyst
+      title: "Advisory Analyst (maker)"
+      raci_scope:
+        - "R:legal.advisory-opinion.steps.1-2"
+      approvals:
+        - "draft-only"
+      headcount: 5
+    - id: senior-counsel
+      title: "Senior Counsel (checker)"
+      raci_scope:
+        - "A:legal.advisory-opinion"
+        - "C:legal.charge-review"
+      approvals:
+        - "sign-off-required"
+      headcount: 3
+  approval_thresholds:
+    legal-conclusion: {approver: senior_counsel, limit: "always human"}

@@ -1,0 +1,35 @@
+# Litigation unit (full v0.1, issue #131) — validates against metamodel/org.schema.yaml
+- id: litigation
+  version: 0.1.0
+  name: "Litigation"
+  parent_id: null
+  mandate: "Run case analysis and hearing preparation; no legal conclusion leaves the unit unreviewed"
+  headcount_plan: 12
+  systems_used: [case-mgmt, doc-store, precedent-index]
+  roles:
+    - id: case-investigator
+      title: "Case Investigator (maker)"
+      raci_scope:
+        - "R:legal.charge-review.steps.1-3"
+      approvals:
+        - "draft-only"
+      headcount: 7
+    - id: senior-counsel
+      title: "Senior Counsel (checker)"
+      raci_scope:
+        - "A:legal.charge-review"
+        - "C:legal.advisory-opinion"
+      approvals:
+        - "sign-off-required"
+      headcount: 4
+    - id: practice-head
+      title: "Practice Head"
+      raci_scope:
+        - "A:legal.charge-review.escalations"
+        - "I:all-legal"
+      approvals:
+        - "escalation-final"
+      headcount: 1
+  approval_thresholds:
+    legal-conclusion: {approver: senior_counsel, limit: "always human"}
+    client-delivery: {approver: senior_counsel, note: "no draft reaches a client unsigned"}

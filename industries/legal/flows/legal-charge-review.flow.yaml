@@ -1,0 +1,50 @@
+# Legal charge review v0.1 (issue #131) — structural flow, no substantive law
+id: legal.charge-review
+version: 0.1.0
+event_type: legal.charge.review.requested
+department: litigation
+inputs:
+  schema_ref: event-examples/legal.charge.review.v1.json
+  fields: [case_id, facts_ref, draft_ref, instrument_refs]
+steps:
+  - id: s1-intake
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [LEG-CITE-01]
+    sla_minutes: 15
+    on_fail: "REVIEW"
+  - id: s2-issue-spotting
+    kind: ai
+    owner_role: case-investigator
+    level: L3
+    uses_rule: [LEG-CITE-01]
+    sla_minutes: 120
+    on_fail: "escalate:senior-counsel"
+  - id: s3-citation-check
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [LEG-CITE-02]
+    sla_minutes: 15
+    on_fail: "BLOCK"
+  - id: s4-counsel-review
+    kind: human
+    owner_role: senior_counsel
+    level: L2
+    uses_rule: [LEG-SIGNOFF-01, LEG-SIGNOFF-02]
+    sla_minutes: 1440
+    uses_touchpoint: legal-counsel-review
+    on_fail: "escalate:practice-head"
+  - id: s5-release
+    kind: workflow
+    owner_role: system
+    level: L3
+    uses_rule: [LEG-SIGNOFF-01]
+    sla_minutes: 30
+    on_fail: "retry+page"
+outputs: {decision: "SIGNED|BLOCKED|ESCALATED", reviewer: "nullable", notes_ref: "nullable"}
+kpis: [block_rate, review_p50, signoff_without_reread_rate]
+automation_target: L2
+# Nothing here asserts law. The flow moves a draft to a human who is qualified to
+# decide, and guarantees the decision is recorded (LEG-SIGNOFF-02).

@@ -28,6 +28,7 @@ jobs:
       - run: python scripts/export_bpmn.py && python scripts/export_bpmn.py --check
       - run: python scripts/pii_scan.py && python scripts/pii_scan.py --self-test
       - run: python scripts/rule_lint.py && python scripts/rule_lint.py --self-test
+      - run: python scripts/dlq_drill.py
       - run: python scripts/run_trace.py examples/bank/loan-approval.flow.yaml examples/events/loan.application.v1.json examples/bank/loan-approval.trace.json
       - run: python scripts/run_all_traces.py
       - run: rm -f /tmp/spike.journal && (python engine/spike/durable_runner.py --journal /tmp/spike.journal --crash-after 2; test $? -eq 2) && python engine/spike/durable_runner.py --journal /tmp/spike.journal --trace engine/spike/demo-trace.json

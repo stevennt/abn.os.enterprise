@@ -1,0 +1,16 @@
+id: fix.flow
+version: 1.0.0
+event_type: fix.requested
+department: fixture
+inputs: {fields: [x]}
+steps:
+  - id: s1
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [FIX-SCREEN-01]
+    sla_minutes: 5
+    on_fail: "REVIEW"
+outputs: {decision: "REVIEW"}
+kpis: [fix_rate]
+automation_target: L4

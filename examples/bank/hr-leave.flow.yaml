@@ -1,0 +1,27 @@
+# HR leave flow v1.0 (issue #29, 3/5)
+id: hr.leave.approve
+version: 1.0.0
+event_type: hr.leave.requested
+department: hr
+inputs:
+  schema_ref: events/hr.leave.v1.json
+  fields: [employee_id, leave_id, from_date, to_date, leave_type]
+steps:
+  - id: s1-check
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [HR-LEAVE-01]
+    sla_minutes: 240
+    on_fail: "REVIEW"
+  - id: s2-approve
+    kind: human
+    owner_role: hr_manager
+    level: L3
+    uses_rule: [HR-LEAVE-01]
+    uses_touchpoint: TP-E-inbox
+    sla_minutes: 2880
+    on_fail: "escalate:retail_director"
+outputs: {decision: "APPROVED|REJECTED", days: 0}
+kpis: [decision_p50, reject_rate]
+automation_target: L4

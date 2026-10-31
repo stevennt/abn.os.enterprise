@@ -1,0 +1,19 @@
+# HR perf review flow v1.0 (issue #29, 4/5)
+id: hr.perf.review
+version: 1.0.0
+event_type: hr.perf.cycle.open
+department: hr
+inputs:
+  schema_ref: events/hr.perf.v1.json
+  fields: [employee_id, cycle, self_review_ref]
+steps:
+  - id: s1-calibrate
+    kind: human
+    owner_role: hr_manager
+    level: L2
+    uses_rule: [HR-PERF-01]
+    sla_minutes: 10080
+    on_fail: "escalate:retail_director"
+outputs: {decision: "RECORDED", rating: "nullable"}
+kpis: [completion_rate, calibration_spread]
+automation_target: L2

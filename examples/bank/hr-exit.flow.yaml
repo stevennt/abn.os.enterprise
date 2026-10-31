@@ -1,0 +1,28 @@
+# HR exit flow v1.0 (issue #29, 5/5)
+id: hr.offboard.exit
+version: 1.0.0
+event_type: hr.exit.initiated
+department: hr
+inputs:
+  schema_ref: events/hr.exit.v1.json
+  fields: [employee_id, exit_id, last_date, exit_type]
+steps:
+  - id: s1-clearance
+    kind: workflow
+    owner_role: system
+    level: L3
+    uses_rule: [HR-EXIT-01]
+    uses_touchpoint: TP-S-iam
+    sla_minutes: 2880
+    on_fail: "escalate:hr_manager"
+  - id: s2-signoff
+    kind: human
+    owner_role: hr_manager
+    level: L3
+    uses_rule: [HR-EXIT-01]
+    uses_touchpoint: TP-E-inbox
+    sla_minutes: 2880
+    on_fail: "escalate:retail_director"
+outputs: {decision: "CLEARED|PENDING", access_revoked: true}
+kpis: [clearance_p50, access_lingering_rate]
+automation_target: L3

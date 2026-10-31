@@ -1,0 +1,27 @@
+# HR recruit flow v1.0 (issue #29, 1/5)
+id: hr.recruit.offer
+version: 1.0.0
+event_type: hr.recruit.decided
+department: hr
+inputs:
+  schema_ref: events/hr.recruit.v1.json
+  fields: [candidate_id, req_id, level, offer_amount, hiring_manager]
+steps:
+  - id: s1-draft
+    kind: workflow
+    owner_role: hr_specialist
+    level: L3
+    uses_rule: [HR-BAND-01]
+    sla_minutes: 1440
+    on_fail: "escalate:hr_manager"
+  - id: s2-approve
+    kind: human
+    owner_role: hr_manager
+    level: L3
+    uses_rule: [HR-BAND-01]
+    uses_touchpoint: TP-E-inbox
+    sla_minutes: 2880
+    on_fail: "escalate:retail_director"
+outputs: {decision: "OFFERED|REJECTED", offer_ref: "nullable"}
+kpis: [offer_turnaround_days, accept_rate]
+automation_target: L3

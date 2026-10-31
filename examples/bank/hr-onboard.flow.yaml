@@ -1,0 +1,27 @@
+# HR onboard flow v1.0 (issue #29, 2/5)
+id: hr.onboard.employee
+version: 1.0.0
+event_type: hr.offer.accepted
+department: hr
+inputs:
+  schema_ref: events/hr.onboard.v1.json
+  fields: [employee_id, start_date, unit_id, role_id]
+steps:
+  - id: s1-provision
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [HR-ONBOARD-01]
+    uses_touchpoint: TP-S-iam
+    sla_minutes: 1440
+    on_fail: "page:ops_engineer"
+  - id: s2-confirm
+    kind: human
+    owner_role: hr_specialist
+    level: L3
+    uses_rule: [HR-ONBOARD-01]
+    sla_minutes: 1440
+    on_fail: "escalate:hr_manager"
+outputs: {decision: "READY|PENDING", checklist_done: true}
+kpis: [day1_ready_rate]
+automation_target: L4

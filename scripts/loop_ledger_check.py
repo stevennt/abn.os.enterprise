@@ -29,10 +29,10 @@ ROOT = Path(__file__).resolve().parent.parent
 LEDGER = ROOT / "docs" / "core" / "loop5-ledger.json"
 REVIEW = ROOT / "docs" / "core" / "program-review-loop5.md"
 STATUSES = {"done", "delivered_open", "covered", "partial", "blocked",
-            "not_started"}
+            "not_started", "this_review"}
 LABELS = {"done": "done", "delivered_open": "delivered, open",
           "covered": "covered", "partial": "partial", "blocked": "blocked",
-          "not_started": "not started"}
+          "not_started": "not started", "this_review": "this review"}
 SHA = re.compile(r"^[0-9a-f]{40}$")
 DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 ROW = re.compile(r"^\| (\d+) \| \[#(\d+)\]\([^)]*\) \| (.+?) \| ([a-z, ]+) \|",
@@ -99,7 +99,7 @@ def check(repos=None):
             problems.append(f"issue {number}: state must be closed or open")
         if status == "done" and row.get("state") != "closed":
             problems.append(f"issue {number}: done but not closed")
-        if status in ("covered", "partial", "blocked") and not str(
+        if status in ("covered", "partial", "blocked", "this_review") and not str(
                 row.get("note") or "").strip():
             problems.append(f"issue {number}: {status} needs a note saying why")
         commits = row.get("commits") or []
@@ -123,6 +123,10 @@ def check(repos=None):
         if summary.get(key) != value:
             problems.append(f"ledger: summary.{key} = {summary.get(key)!r}, "
                             f"rows say {value}")
+    scored = len(rows) - counts.get("this_review", 0)
+    if summary.get("scored") != scored:
+        problems.append(f"ledger: summary.scored = {summary.get('scored')!r}, "
+                        f"rows say {scored}")
     if summary.get("total") != len(rows):
         problems.append(f"ledger: summary.total = {summary.get('total')!r}, "
                         f"rows say {len(rows)}")

@@ -5,7 +5,8 @@ OpenGate tenant — a group of companies or a single legal entity, each with its
 own org chart, departments and folders — and its people sign in through 1ID.*
 
 **Verdict: the tenant side is real, gated and evidenced; the identity side is
-not.** 78 of 100 issues are delivered, 77 of them closed. Every concern of
+not.** 78 of the 99 scored issues are delivered — 77 closed and 1 committed but
+left open (#203); this review is the 100th and is not scored. Every concern of
 tenant onboarding now has a contract, a CLI and a record: shape, org, folders,
 ACL, seats, plans, terms, metering, statements, export/import, health, the
 onboarding guide and the go/no-go scorecard. What the loop was named after —
@@ -24,7 +25,8 @@ customer through.
 | Open but covered by another issue | **5** |
 | Open and partially delivered | **4** |
 | Open and blocked | **1** (#208) |
-| Open and not started | **12** (incl. this review) |
+| Open and not started | **11** |
+| Issues scored | **99** (+ this review, unscored) |
 | Commits naming loop-5 issues | 88 (80 platform, 8 contract), 2026-10-31 → 11-01 |
 | Target split | 91 platform, 8 both, 1 contract |
 | Type split | 33 engine, 24 data, 17 touchpoint, 15 grc, 8 metamodel, 3 pilot |
@@ -162,7 +164,7 @@ named blocker; **not started** = no code.
 | 237 | [#237](https://github.com/stevennt/abn.os.enterprise/issues/237) | Ops runbook: rotate 1ID client secret | done | [6d5d551](https://github.com/stevennt/abn.platform.opengate/commit/6d5d5513134bc24827023676544c16458b585d96), [5724900](https://github.com/stevennt/abn.platform.opengate/commit/5724900be430d0d81de194bb940ccecfe1e59d05) |
 | 238 | [#238](https://github.com/stevennt/abn.os.enterprise/issues/238) | Tenant onboarding guide (operator facing) | done | [e287f18](https://github.com/stevennt/abn.platform.opengate/commit/e287f18d6f2984240c19fb4d7f9d7c2a6c4441a9), [3eb0116](https://github.com/stevennt/abn.os.enterprise/commit/3eb0116efff40011f8b2b82bcd2767c344f99e93) |
 | 239 | [#239](https://github.com/stevennt/abn.os.enterprise/issues/239) | Tenant readiness scorecard | done | [e0ffb40](https://github.com/stevennt/abn.platform.opengate/commit/e0ffb4060a1f9be76313da036b1b53220c656791), [ca67d70](https://github.com/stevennt/abn.platform.opengate/commit/ca67d70eae843d74627af3f2e9b56a8a3d2f0102), [e3ce80c](https://github.com/stevennt/abn.os.enterprise/commit/e3ce80c3f4e8a2e1046234e9720736ce2397174a) |
-| 240 | [#240](https://github.com/stevennt/abn.os.enterprise/issues/240) | Program review: what the 100 issues changed | not started | — |
+| 240 | [#240](https://github.com/stevennt/abn.os.enterprise/issues/240) | Program review: what the 100 issues changed | this review | — |
 
 ## The open 22, one by one
 
@@ -208,13 +210,12 @@ named blocker; **not started** = no code.
   (`sso.service.ts`, `sso.controller.ts`, `web/app/login/sso` are untracked);
   the blocker comment on the issue has the details.
 
-**Not started (12)**
+**Not started (11)**
 
 #143 (claim mapping), #160 (unit→pack mapping), #180 (industry→pack mapping),
 #182 (token tenant enforcement), #188 (per-tenant rate limits), #191–#194
 (onboarding wizard v2: group/single, companies, 1ID, departments), #201
-(switcher), #202 (company-scoped dashboard), #240 (this review — done by being
-read).
+(switcher), #202 (company-scoped dashboard).
 
 ## Top-5 blockers
 

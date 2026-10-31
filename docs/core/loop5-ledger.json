@@ -9,12 +9,14 @@
   "method": "status from the GitHub issue state plus a commit naming the issue in either repo; the open issues without a commit are classified by hand with a pointer to the code or the blocking comment",
   "summary": {
     "total": 100,
+    "scored": 99,
     "done": 77,
     "delivered_open": 1,
     "covered": 5,
     "partial": 4,
     "blocked": 1,
-    "not_started": 12
+    "not_started": 11,
+    "this_review": 1
   },
   "issues": [
     {
@@ -1804,12 +1806,12 @@
       "number": 240,
       "title": "L5-100 — Program review: what the 100 issues changed",
       "state": "open",
-      "status": "not_started",
+      "status": "this_review",
       "closedAt": null,
       "target": "both",
       "type": "data",
       "commits": [],
-      "note": ""
+      "note": "The review itself: not scored (it cannot cite the commit that contains it). Delivered by the close-out commit."
     }
   ]
 }

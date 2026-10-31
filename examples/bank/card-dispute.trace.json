@@ -8,22 +8,27 @@
  "steps": [
   {
    "step_id": "s1-triage",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s2-provisional",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s3-evidence",
+   "kind": "ai",
    "outcome": "FIELDS"
   },
   {
    "step_id": "s4-represent",
+   "kind": "human",
    "outcome": "APPROVE"
   },
   {
    "step_id": "s5-close",
+   "kind": "workflow",
    "outcome": "PASS"
   }
  ],

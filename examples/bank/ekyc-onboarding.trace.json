@@ -8,30 +8,37 @@
  "steps": [
   {
    "step_id": "s1-capture",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s2-ocr",
+   "kind": "ai",
    "outcome": "FIELDS"
   },
   {
    "step_id": "s3-liveness",
+   "kind": "ai",
    "outcome": "FIELDS"
   },
   {
    "step_id": "s4-blacklist",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s5-decide",
+   "kind": "human",
    "outcome": "APPROVE"
   },
   {
    "step_id": "s6-open",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s7-notify",
+   "kind": "workflow",
    "outcome": "PASS"
   }
  ],

@@ -8,10 +8,12 @@
  "steps": [
   {
    "step_id": "s1-provision",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s2-confirm",
+   "kind": "human",
    "outcome": "APPROVE"
   }
  ],

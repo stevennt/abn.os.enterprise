@@ -8,34 +8,42 @@
  "steps": [
   {
    "step_id": "s1-verify",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s2-score",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s3-appraise",
+   "kind": "human",
    "outcome": "APPROVE"
   },
   {
    "step_id": "s4-notarize",
+   "kind": "human",
    "outcome": "APPROVE"
   },
   {
    "step_id": "s5-lien",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s6-aml",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s7-decide",
+   "kind": "human",
    "outcome": "APPROVE"
   },
   {
    "step_id": "s8-disburse",
+   "kind": "workflow",
    "outcome": "PASS"
   }
  ],

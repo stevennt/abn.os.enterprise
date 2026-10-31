@@ -8,22 +8,27 @@
  "steps": [
   {
    "step_id": "s1-triage",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s2-hold",
+   "kind": "human",
    "outcome": "APPROVE"
   },
   {
    "step_id": "s3-investigate",
+   "kind": "human",
    "outcome": "APPROVE"
   },
   {
    "step_id": "s4-peer-review",
+   "kind": "human",
    "outcome": "APPROVE"
   },
   {
    "step_id": "s5-file",
+   "kind": "human",
    "outcome": "APPROVE"
   }
  ],

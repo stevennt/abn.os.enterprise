@@ -8,10 +8,12 @@
  "steps": [
   {
    "step_id": "s1-clearance",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s2-signoff",
+   "kind": "human",
    "outcome": "APPROVE"
   }
  ],

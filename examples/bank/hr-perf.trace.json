@@ -8,6 +8,7 @@
  "steps": [
   {
    "step_id": "s1-calibrate",
+   "kind": "human",
    "outcome": "APPROVE"
   }
  ],

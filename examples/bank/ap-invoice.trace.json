@@ -8,14 +8,17 @@
  "steps": [
   {
    "step_id": "s1-match",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s2-approve",
+   "kind": "human",
    "outcome": "APPROVE"
   },
   {
    "step_id": "s3-post",
+   "kind": "workflow",
    "outcome": "PASS"
   }
  ],

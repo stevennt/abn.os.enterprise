@@ -8,26 +8,32 @@
  "steps": [
   {
    "step_id": "s1-dedupe",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s2-limits",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s3-sanctions",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s4-route",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s5-release",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s6-notify",
+   "kind": "workflow",
    "outcome": "PASS"
   }
  ],

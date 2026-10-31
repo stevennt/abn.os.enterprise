@@ -8,30 +8,37 @@
  "steps": [
   {
    "step_id": "s1-ubo",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s2-boardres",
+   "kind": "human",
    "outcome": "APPROVE"
   },
   {
    "step_id": "s3-analysis",
+   "kind": "ai",
    "outcome": "FIELDS"
   },
   {
    "step_id": "s4-committee",
+   "kind": "human",
    "outcome": "APPROVE"
   },
   {
    "step_id": "s5-tranche1",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s6-trancheN",
+   "kind": "workflow",
    "outcome": "PASS"
   },
   {
    "step_id": "s7-monitor",
+   "kind": "workflow",
    "outcome": "PASS"
   }
  ],

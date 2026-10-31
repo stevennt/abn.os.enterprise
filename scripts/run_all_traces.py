@@ -56,7 +56,7 @@ def main():
             env = append(chain, s["id"], s["owner_role"], OUTCOMES[s["kind"]],
                          rules[0] if rules else None,
                          f"model-for-{s['id']}@test" if s["kind"] == "ai" else None, i)
-            steps.append({"step_id": s["id"], "outcome": env["decision"]})
+            steps.append({"step_id": s["id"], "kind": s["kind"], "outcome": env["decision"]})
         ok, msg = verify(chain)
         assert ok, f"{flow['id']}: {msg}"
         trace = {"instance_id": f"trace-{flow['id']}", "flow": flow["id"],

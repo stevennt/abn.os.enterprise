@@ -1,0 +1,6 @@
+- id: FIX-DEF-01
+  version: 0.1.0
+  authority: fixture
+  inputs: [x]
+  table: [{when: "*", then: REVIEW}]
+  effect: fixture

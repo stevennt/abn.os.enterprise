@@ -1,0 +1,10 @@
+id: fix.def
+version: 0.1.0
+event_type: fix.def.requested
+department: defense
+inputs: {fields: [x]}
+steps:
+  - {id: s1, kind: workflow, owner_role: system, level: L4, uses_rule: [FIX-DEF-01], sla_minutes: 5, on_fail: REVIEW}
+outputs: {decision: REVIEW}
+kpis: [x]
+automation_target: L4

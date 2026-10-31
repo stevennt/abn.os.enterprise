@@ -33,6 +33,7 @@ jobs:
       - run: python scripts/pack_cite_check.py && python scripts/pack_cite_check.py --self-test
       - run: python scripts/pack_claim_scan.py && python scripts/pack_claim_scan.py --self-test
       - run: python scripts/cross_industry.py && python scripts/cross_industry.py --self-test
+      - run: python scripts/tier_guard.py && python scripts/tier_guard.py --self-test
       - run: python scripts/test_bundle.py
       - run: python scripts/dlq_drill.py
       - run: python scripts/money_drill.py --report /tmp/drill.json && python -c "import json;d=json.load(open('/tmp/drill.json'));assert d['double_posts']==0 and d['ledger_balanced']"

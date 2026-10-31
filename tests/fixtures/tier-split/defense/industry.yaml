@@ -1,0 +1,11 @@
+# Fixture (issue #134): a classified industry committed to a repo that hosts only
+# public/commercial. MUST be refused by scripts/tier_guard.py.
+id: defense
+version: 0.1.0
+label: "Defence operations (fixture — must never be accepted here)"
+tier: classified
+jurisdiction: VN
+owner: fixture
+tag_stream: {policy_prefix: defense-policy, pack_prefix: defense-pack}
+rules: [rules/x.yaml]
+flows: [flows/x.flow.yaml]

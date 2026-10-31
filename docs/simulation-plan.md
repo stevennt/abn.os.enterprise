@@ -17,3 +17,14 @@
 - 24/7 desks (payments, fraud, P1) divide daily capacity across 3 shifts.
 - Simulator draws task times from a lognormal around `mins_per_task` (σ=0.4);
   arrivals are Poisson per process volume (D40 sandbox provides the rates).
+
+## Simulator I/O + determinism (issue #81) — the twin core
+
+Inputs: audit-log export (traces), capacity.csv, what-if params
+(`staffing×`, `sla×`, `fraud_rate×`, `volume×`), `--seed` (required).
+Outputs: p50/p95 TTA per process, queue depth over time, override load,
+cost/instance, bottleneck ranking — all stamped with seed + code version.
+Determinism: same inputs + seed = byte-identical outputs (asserted in CI on the
+loan trace fixture); RNG streams split per process so adding a process never
+reshuffles others. Simulator code lives in `sim/` (track-I build); this doc is
+the contract it implements.

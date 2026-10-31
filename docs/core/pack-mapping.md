@@ -134,3 +134,39 @@ again once it is emptied before the migration is done.
 
 `medical`, `civil-protection` and `defense-ops` remain OpenGate-owned: no
 industry copy exists here, so there is no duplication to resolve yet.
+
+### Linking a company to an industry model (issue #178)
+
+The pack table above says what a tenant gets. A **company** may additionally point
+at an industry model in this repo:
+
+```json
+// customers/<tenant>/companies/<company>/industry.json
+{ "version": 1,
+  "industry": "legal",
+  "repo": "stevennt/abn.os.enterprise",
+  "tag": "legal-policy-2026.10.1" }
+```
+
+- The link is **per company**, because a group may mix industries (one company
+  legal, one banking) and each company's org chart is its own.
+- The tag is a **policy** tag (`<industry>-policy-<YYYY.MM.N>`) — the model
+  stream: org, process, rules. A **pack** tag (`<industry>-pack-…`) is refused,
+  because it names the staffed skillset, not the operating model. OpenGate
+  enforces that distinction (`tag … must be a policy tag … a pack tag names
+  skills, not the operating model`).
+- OpenGate reads the link and exposes it: `--industry` prints it, or states
+  explicitly that the company has none; `--show` carries
+  `opengate.industry_links`. A malformed link is refused at `--sync`, not
+  ignored.
+
+**Decision for company #1: no industry link.** The first enterprise tenant is a
+generic company with business, HR, documents and marketing departments — its
+operating model is the tenant pack set, not an industry. An industry link is
+added when a company's practice actually is that industry (a law firm company, a
+bank company), which is also when a `<industry>-policy` tag exists to point at.
+
+Note for #241: `legal-pack-2026.10.1` and `legal-policy-2026.10.1` are already
+tagged in this repo while `industries/legal/industry.yaml` still says
+`pack.status: draft`. The bundle exists; the manifest's status is what still
+blocks shipping it as a certification.

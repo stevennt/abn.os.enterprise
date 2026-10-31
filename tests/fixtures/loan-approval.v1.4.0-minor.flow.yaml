@@ -1,0 +1,80 @@
+audit: every step emits {step, actor, rule_version, model_version, ts, hash_prev}
+automation_target: L4
+department: retail.credit
+event_type: loan.application.submitted
+id: loan.retail.unsecured
+inputs:
+  example_payload:
+    customer_id: C-88123
+    requested_amount: 300000000
+    term_m: 24
+  fields:
+  - customer_id
+  - cccd
+  - income_docs
+  - requested_amount
+  - term_m
+  - consent_ref
+  - employer_name
+  schema_ref: events/loan.application.v1.json
+kpis:
+- approval_rate
+- default_30d
+- tta_p50
+- override_rate
+- fraud_hit_rate
+outputs:
+  decision: APPROVE|DECLINE|REVIEW
+  limit_vnd: 300000000
+  reasons:
+  - dsti_ok
+  - aml_clear
+steps:
+- id: s1-verify
+  kind: workflow
+  level: L4
+  on_fail: REVIEW
+  owner_role: system
+  sla_minutes: 5
+  uses_rule:
+  - KYC-01
+- id: s2-extract
+  kind: ai
+  level: L3
+  on_fail: escalate:credit_officer
+  owner_role: credit_officer
+  sla_minutes: 15
+  uses_rule: []
+- id: s3-score
+  kind: workflow
+  level: L4
+  on_fail: REVIEW
+  owner_role: system
+  sla_minutes: 5
+  uses_rule:
+  - SBV-DSTI-04
+- id: s4-aml
+  kind: workflow
+  level: L4
+  on_fail: hold:compliance
+  owner_role: compliance_bot
+  sla_minutes: 10
+  uses_rule:
+  - AML-SCREEN-02
+- id: s5-decide
+  kind: human
+  level: L3
+  on_fail: escalate:risk
+  owner_role: credit_manager
+  sla_minutes: 240
+  uses_rule:
+  - CREDIT-GRID-11
+  uses_touchpoint: TP-E-inbox
+- id: s6-notify
+  kind: workflow
+  level: L4
+  on_fail: retry+page
+  owner_role: system
+  sla_minutes: 5
+  uses_touchpoint: TP-C-app-status
+version: 1.4.0

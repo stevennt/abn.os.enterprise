@@ -1,0 +1,36 @@
+# IT & Operations org (full v1.0, issue #16) — validates against metamodel/org.schema.yaml
+- id: itops
+  version: 1.0.0
+  name: "IT & Operations"
+  parent_id: null
+  mandate: "Own incidents, changes, access, EOD batches; platform reliability owner"
+  headcount_plan: 350
+  systems_used: [itsm, ci-cd, iam, batch-scheduler]
+  roles:
+    - id: ops_engineer
+      title: "Ops Engineer"
+      raci_scope:
+        - "R:incident.p1.respond"
+        - "R:change.deploy.execute"
+        - "R:access.grant.provision"
+        - "R:batch.eod.run"
+      approvals:
+        - "standard-change"
+      headcount: 280
+    - id: itops_manager
+      title: "ITOps Manager"
+      raci_scope:
+        - "A:incident.p1"
+        - "A:change.deploy"
+        - "A:access.grant"
+        - "A:batch.eod"
+      approvals:
+        - "emergency-change"
+        - "prod-access"
+      headcount: 30
+  service_slas:
+    p1-respond: "15 min, 24/7"
+    p1-restore: "4h"
+    access-grant: "4 business hours (standard), 1h (emergency)"
+    change-window: "weekly Thu 22:00-02:00 ICT"
+    eod-complete: "before 06:00 ICT next day"

@@ -1,0 +1,37 @@
+# HR org (full v1.0, issue #16) — validates against metamodel/org.schema.yaml
+- id: hr
+  version: 1.0.0
+  name: "Human Resources"
+  parent_id: null
+  mandate: "Own employee lifecycle: recruit, onboard, leave, perf, exit"
+  headcount_plan: 70
+  systems_used: [hrms, recruit-ats]
+  roles:
+    - id: hr_specialist
+      title: "HR Specialist"
+      raci_scope:
+        - "R:recruit.offer.prep"
+        - "R:onboard.employee"
+        - "R:leave.approve.review"
+        - "R:offboard.exit.checklist"
+      approvals:
+        - "leave<=3d"
+      headcount: 50
+    - id: hr_manager
+      title: "HR Manager"
+      raci_scope:
+        - "A:recruit.offer"
+        - "A:onboard.employee"
+        - "A:leave.approve"
+        - "A:perf.review"
+        - "A:offboard.exit"
+      approvals:
+        - "offer-any"
+        - "leave-any"
+        - "exit-clearance"
+      headcount: 12
+  service_slas:
+    offer-turnaround: "5 business days from hiring decision"
+    onboarding-ready: "day-1 laptop + access before start date"
+    leave-decision: "2 business days"
+    exit-clearance: "3 business days"

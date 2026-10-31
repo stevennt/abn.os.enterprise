@@ -1,0 +1,35 @@
+# Finance org (full v1.0, issue #16) — validates against metamodel/org.schema.yaml
+- id: finance
+  version: 1.0.0
+  name: "Finance & Accounting"
+  parent_id: null
+  mandate: "Own AP, GL close, tax filing, budgets; ledger integrity owner"
+  headcount_plan: 100
+  systems_used: [erp-gl, ap-workflow, tax-portal]
+  roles:
+    - id: accountant
+      title: "Accountant"
+      raci_scope:
+        - "R:ap.invoice.match"
+        - "R:gl.close.month.tasks"
+        - "R:tax.vat.file.prep"
+        - "R:budget.request.review"
+      approvals:
+        - "post<=500M-vnd"
+      headcount: 70
+    - id: cfo_delegate
+      title: "Finance Manager (CFO delegate)"
+      raci_scope:
+        - "A:ap.invoice"
+        - "A:gl.close.month"
+        - "A:tax.vat.file"
+        - "A:budget.request"
+      approvals:
+        - "post-any"
+        - "payment-release"
+      headcount: 12
+  service_slas:
+    invoice-pay: "per terms (default NET30), 3-way match in 2 days"
+    month-close: "WD5"
+    vat-file: "before statutory deadline -3 days buffer"
+    budget-response: "10 business days"

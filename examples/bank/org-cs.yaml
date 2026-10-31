@@ -1,0 +1,32 @@
+# Customer Service org (full v1.0, issue #16) — validates against metamodel/org.schema.yaml
+- id: cs
+  version: 1.0.0
+  name: "Customer Service"
+  parent_id: null
+  mandate: "Own complaint handling, verification calls, appointments; voice of the customer"
+  headcount_plan: 500
+  systems_used: [crm, callcenter, chatbot]
+  roles:
+    - id: cs_agent
+      title: "CS Agent"
+      raci_scope:
+        - "R:complaint.handle.steps.1-3"
+        - "R:call.verify"
+        - "R:branch.appointment"
+      approvals:
+        - "remedy<=5M-vnd"
+      headcount: 420
+    - id: cs_manager
+      title: "CS Manager"
+      raci_scope:
+        - "A:complaint.handle"
+        - "A:call.verify.exceptions"
+      approvals:
+        - "remedy<=50M-vnd"
+        - "sbv-report-decide"
+      headcount: 40
+  service_slas:
+    first-response: "15 min (chat/call), 4h (email/social)"
+    complaint-resolve-S3: "3 business days"
+    complaint-resolve-S1: "24h with hourly updates"
+    csat-target: ">=4.5/5"

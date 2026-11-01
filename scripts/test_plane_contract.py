@@ -29,6 +29,8 @@ CONTRACT = ROOT / "docs" / "core" / "paperclip-integration.md"
 ADR = ROOT / "docs" / "core" / "adr-002-paperclip-three-planes.md"
 REVIEW = ROOT / "docs" / "core" / "paperclip-reviews" / "PC1-01-02-plane-contract.md"
 INDEX = ROOT / "docs" / "core" / "paperclip-program.md"
+EXPLAINER = ROOT / "docs" / "core" / "paperclip-explainer.md"
+READER = ROOT / "docs" / "core" / "paperclip-reviews" / "PC1-01-09-explainer.md"
 MAP = ROOT / "docs" / "core" / "prompts" / "paperclip-issue-map.json"
 
 DECISION_ROW = re.compile(r"^\| (D\d+) \| ([^|]*) \| ([^|]*) \| ([^|]*) \|$", re.M)
@@ -160,6 +162,40 @@ def version(text, adr_text):
     return problems
 
 
+def explainer(text, review_text):
+    """The plain-language page stays plain, complete and backed by a reader check."""
+    problems = []
+    if "## In one minute" not in text or "## Follow one task" not in text:
+        problems.append("explainer: missing the one-minute summary or the task walk-through")
+    if "```" not in text or "design plane" not in text or "tenant plane" not in text:
+        problems.append("explainer: no diagram naming the three planes")
+    for question in ("Is Paperclip replacing OpenGate?",
+                     "Where does the org chart live?",
+                     "Can an agent read another customer's files?",
+                     "What happens if Paperclip is down?",
+                     "Who owns the cost number the customer sees?"):
+        if question not in text:
+            problems.append(f"explainer: missing question {question!r}")
+    for term in ("tenant", "company", "model", "template", "run context",
+                 "record", "metering", "boundary version"):
+        if f"**{term}**" not in text and f"**pass** / **run context**" != term:
+            if term == "run context":
+                if "**run context**" not in text and "**pass** / **run context**" not in text:
+                    problems.append("explainer: term 'run context' not defined")
+            else:
+                problems.append(f"explainer: term {term!r} not defined")
+    if "PC1-01-09-explainer.md" not in text:
+        problems.append("explainer: does not link the fresh-reader record")
+    if review_text:
+        if "Fresh-reader check" not in review_text:
+            problems.append("explainer review: not a fresh-reader check")
+        if "pass after one revision" not in review_text.lower():
+            problems.append("explainer review: no verdict")
+    else:
+        problems.append("explainer review: the reader record is missing")
+    return problems
+
+
 def index(text):
     problems = []
     for rel in ("docs/core/paperclip-integration.md",
@@ -188,6 +224,7 @@ def check():
     problems += findings(_read(REVIEW), issues)
     problems += adr(_read(ADR))
     problems += version(_read(CONTRACT), _read(ADR))
+    problems += explainer(_read(EXPLAINER), _read(READER))
     problems += index(_read(INDEX))
     return problems
 
@@ -247,6 +284,13 @@ def self_test():
            version(contract.replace("## Versioning and the upgrade path",
                                     "## Versioning"), adr_text),
            "no 'Versioning")
+    explainer_text = _read(EXPLAINER)
+    expect("explainer without a term",
+           explainer(explainer_text.replace("| **metering** |", "| metering |"),
+                     _read(READER)), "not defined")
+    expect("explainer without the reader record",
+           explainer(explainer_text.replace("PC1-01-09-explainer.md", "a review"),
+                     _read(READER)), "does not link")
     return failures
 
 
@@ -259,7 +303,7 @@ def main(argv=None):
             for failure in failures:
                 print(f"  - {failure}")
             return 1
-        print("plane-contract --self-test: 11 mutations, each caught — OK")
+        print("plane-contract --self-test: 13 mutations, each caught — OK")
         return 0
     problems = check()
     if "--json" in argv:
@@ -271,7 +315,7 @@ def main(argv=None):
         return 1
     print("plane-contract: 10 decisions, 4 seams, one owner per field, "
           "9 findings dispositioned, ADR accepted, version + upgrade path, "
-          "index links — OK")
+          "explainer + reader check, index links — OK")
     return 0
 
 

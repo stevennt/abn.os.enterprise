@@ -12,6 +12,7 @@ below is required reading in order except the first three.
 
 | # | Document | Why |
 |---|---|---|
+| 0 | `docs/core/paperclip-explainer.md` | the same thing in plain language, no architecture — start here if you are new |
 | 1 | `docs/core/paperclip-integration.md` | the boundary: three planes, ten decisions, ownership matrix, seam contracts, security model |
 | 2 | `docs/core/adr-002-paperclip-three-planes.md` | the ratification (ADR-002): what was accepted, the consequences, what would reverse it |
 | 3 | `docs/core/paperclip-reviews/PC1-01-02-plane-contract.md` | the review that hardened the contract: nine findings, four fixed, five owned |

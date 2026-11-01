@@ -173,7 +173,7 @@ Rules:
 
 | Tier | Count | What it builds | Workstreams |
 |---|---|---|---|
-| 1 | 100 | the integration spine: boundary, compiler, adapter, identity, policy, evidence, money, governance, portability, harness | 10 |
+| 1 | 100 | the integration spine: boundary, compiler, adapter, identity, policy, evidence, money, governance, portability, [harness](program-harness.md) | 10 |
 | 2 | 200 | the platform surface: connector API, records, onboarding with a crew, admin, readiness, metering, quotas, secrets, residency, PII, observability, reliability, security, groups, sync, migration, docs, testing, release, support | 20 |
 | 3 | 300 | industries, pilots and operations: five industry crews, evals, quality, training, three pilot waves, onboarding playbook, capacity, cost, performance, DR, multi-region, GDPR, SOC 2, sector rules, audit, partners, marketplace, analytics, data platform, SRE, on-call, roadmap, close-out | 30 |
 

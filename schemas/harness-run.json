@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "program-harness@1",
+  "title": "Program harness run (program-harness@1)",
+  "description": "One harness run: the fixtures it used, every scripted step and what happened, and the verdict. Content-addressed, so two runs of the same fixtures and the same behaviour are the same run.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "contract",
+    "runId",
+    "at",
+    "pin",
+    "fixtures",
+    "assertions",
+    "dirty",
+    "verdict"
+  ],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "contract": {
+      "const": "program-harness@1"
+    },
+    "runId": {
+      "type": "string",
+      "pattern": "^hrn-[0-9a-f]{16}$"
+    },
+    "at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?Z$"
+    },
+    "pin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "sha"
+      ],
+      "properties": {
+        "tag": {
+          "type": "string",
+          "pattern": "^contract-[0-9]{4}\\.[0-9]{2}\\.[0-9]+$"
+        },
+        "sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      }
+    },
+    "fixtures": {
+      "type": "array",
+      "minItems": 2,
+      "description": "the fake tenant and the fake Paperclip, sorted by id",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "sha256"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "fake-paperclip",
+              "fake-tenant"
+            ]
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "assertions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "step",
+          "expect",
+          "observed",
+          "ok"
+        ],
+        "properties": {
+          "step": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expect": {
+            "enum": [
+              "allowed",
+              "refused"
+            ]
+          },
+          "code": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "observed": {
+            "enum": [
+              "allowed",
+              "refused"
+            ]
+          },
+          "observedCode": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ok": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "dirty": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "paths the run changed that the script did not declare"
+    },
+    "verdict": {
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    },
+    "repeatRunId": {
+      "type": "string",
+      "pattern": "^hrn-[0-9a-f]{16}$",
+      "description": "the id an immediate second run produced; equal to runId or the fixtures are not deterministic"
+    }
+  }
+}

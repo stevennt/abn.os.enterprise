@@ -1,0 +1,106 @@
+{
+  "tenant": "acme",
+  "pin": {
+    "tag": "contract-2026.11.1",
+    "sha": "a7baab409dce013bd296b57aafc500565b878dfa"
+  },
+  "notes": "One tenant, one company, six steps across the contracts: a permitted read, a mật read refused for its own code, a finish that meters, an approval the requester may not sign, a reconciliation naming the overcommit, and an offboarding that needs a second signature.",
+  "fixtures": [
+    {
+      "id": "fake-paperclip",
+      "sha256": "a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90"
+    },
+    {
+      "id": "fake-tenant",
+      "sha256": "b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90a1"
+    }
+  ],
+  "fixturePins": {
+    "fake-paperclip": "contract-2026.11.1",
+    "fake-tenant": "contract-2026.11.1"
+  },
+  "steps": [
+    {
+      "id": "S1",
+      "action": "read",
+      "target": "finance/report.docx",
+      "expect": "allowed"
+    },
+    {
+      "id": "S2",
+      "action": "read",
+      "target": "finance/customer-statement.docx",
+      "expect": "refused",
+      "code": "E-ACL-04"
+    },
+    {
+      "id": "S3",
+      "action": "finish",
+      "run": "PC-1-1",
+      "artifacts": 1,
+      "expect": "allowed"
+    },
+    {
+      "id": "S4",
+      "action": "approve",
+      "request": "REQ-1",
+      "amount": 800000000,
+      "actor": "agent-co",
+      "expect": "refused",
+      "code": "E-GOV-04"
+    },
+    {
+      "id": "S5",
+      "action": "reconcile",
+      "expect": "refused",
+      "code": "E-BUD-05"
+    },
+    {
+      "id": "S6",
+      "action": "offboard",
+      "expect": "refused",
+      "code": "E-GOV-02"
+    }
+  ],
+  "observed": [
+    {
+      "id": "S1",
+      "observed": "allowed"
+    },
+    {
+      "id": "S2",
+      "observed": "refused",
+      "observedCode": "E-ACL-04"
+    },
+    {
+      "id": "S3",
+      "observed": "allowed"
+    },
+    {
+      "id": "S4",
+      "observed": "refused",
+      "observedCode": "E-GOV-04"
+    },
+    {
+      "id": "S5",
+      "observed": "refused",
+      "observedCode": "E-BUD-05"
+    },
+    {
+      "id": "S6",
+      "observed": "refused",
+      "observedCode": "E-GOV-02"
+    }
+  ],
+  "dirty": [],
+  "previousRunId": "hrn-11223344556677ff",
+  "at": "2026-11-01T09:00:00.000Z",
+  "expected": {
+    "findings": [],
+    "verdict": "pass",
+    "run": {
+      "runId": "hrn-401664bbcef6ec68"
+    }
+  },
+  "repeatRunId": "hrn-401664bbcef6ec68"
+}

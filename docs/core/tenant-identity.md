@@ -122,6 +122,7 @@ HTTP 4xx and to the CLI's exit codes.
 | `E-IDN-07` | an agent invariant is broken (owner missing / owner disabled / owner is an agent / credential present) | fix the store; reassign the agent first |
 | `E-IDN-08` | `accounts.json` is malformed or the tenant has no store | repair the store; `resolve.py --sync` lists every problem |
 | `E-IDN-09` | the acting account is not an active admin | use a tenant admin or platform admin for identity changes |
+| `E-IDN-10` | another identity change holds the tenant lock, or the change was applied but its audit line could not be written | retry (a crashed lock expires after 5 minutes); repair the audit log before the next change |
 
 Refusals are recorded in the tenant's audit chain (`identity.refused`, with the
 code) and never mint a session or a pass.
@@ -139,7 +140,14 @@ code) and never mint a session or a pass.
 7. The audit line for an agent action names the account; the pass names the
    `owner` in `responsibleUser`.
 8. Offboarding order: **disable the agent first, then the person** — a store
-   that reverses it is `E-IDN-07`, not a silent orphan.
+   that reverses it is `E-IDN-07`, not a silent orphan; the **last active admin**
+   cannot be disabled (it would lock the tenant out).
+9. One email per account: two accounts sharing an email cannot be told apart at
+   invite time (`E-IDN-07`).
+10. A store with a duplicate id or a subject bound twice is refused at
+    resolution, never resolved to "the first match" (`E-IDN-07`).
+11. Changes are serialised per tenant (`.identity.lock`); a change whose audit
+    line cannot be written is reported as applied-but-unrecorded (`E-IDN-10`).
 
 ## Records
 

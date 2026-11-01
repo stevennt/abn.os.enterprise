@@ -172,6 +172,7 @@ One document — `schemas/budget-reconciliation.json`:
 | `E-BUD-06` | an agent's spend exceeds its finite budget | warning | the throttle did not hold (or `enforced` was false): fix the budget or the runner |
 | `E-BUD-07` | total spend exceeds the plan cap | critical | the tenant is past what it bought: upgrade the plan, and check `quota_alerts` history |
 | `E-BUD-08` | an **enforced** budget is exhausted when a run asks to start (spent ≥ budget for the period) — the one refusal, raised on the run path, not in the report | critical | raise the budget, record the stop as expected, or move the work to another agent; the run does not start and no artifact is written |
+| `E-BUD-09` | a **closed** period already has a report and would be rewritten, or a future period is requested | critical | record the current period; a closed period is corrected by an amendment, not by rewriting its report |
 
 `E-BUD-08` is the only code raised as an exception rather than reported as a
 finding: it stops a run. It fires in `paperclip.begin` **after** the pass
@@ -231,6 +232,22 @@ fails if the committed report differs, so the example is not prose: it is
 executed. `--self-test` then mutates the inputs seven ways (an unknown plan, a
 malformed store, a budget on a person, an overcommitted plan, unbudgeted spend,
 an overrun, a tenant past its cap) and asserts each expected code appears.
+
+## The record
+
+A reconciliation is recorded per run, in two halves
+(`customers/<tenant>/budget-reports/`):
+
+| Piece | Rule |
+|---|---|
+| `<YYYY-MM>.json` | the period's snapshot; the **open** period may be re-recorded as spend changes, a **closed** one may not (`E-BUD-09`) |
+| `budget-reports.jsonl` | one append-only row per recording run — `at`, `period`, `digest`, `findings`, `agents`, `written` |
+
+The digest is over the report's content, not its `at`: two recordings of the same
+facts digest the same and the second is a silent no-op, so "per run" never turns
+into "per duplicate". `--sync` validates both halves — the file name is the
+period, the document agrees with it, and a finding carries a report code (the two
+raised codes never appear in a report).
 
 ## The conformance matrix
 

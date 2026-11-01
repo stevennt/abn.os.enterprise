@@ -132,11 +132,14 @@ def reconcile(case):
         bucket[kind] += int(row.get("quantity") or 0)
 
     findings = []
-    if plan is None:
-        why = (f"plan {plan_id!r} is not in the registry" if plan_id
-               else "the tenant has no assigned plan")
-        findings.append(_finding("E-BUD-01", f"the ceiling is unknown — {why}",
-                                 kind="plan"))
+    if plan is None and plan_id:
+        findings.append(_finding(
+            "E-BUD-01", f"the ceiling is unknown — plan {plan_id!r} is not in the "
+                        f"registry", kind="plan"))
+    elif plan is None:
+        # no subscription at all: a legacy tenant, unlimited by contract, and the
+        # report says so with `plan: null` and no finding
+        pass
     if problems:
         findings.append(_finding(
             "E-BUD-02", f"{len(problems)} problem(s) in the budget store — the "

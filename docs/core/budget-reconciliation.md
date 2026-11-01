@@ -30,9 +30,13 @@ metered spend (measured) ──┘
 * **Not a second ledger.** D5: the metering store is the truth about spend; the
   statements (#225 area) price it. Reconciliation reads counts and never prices
   anything, never writes an event, never changes a statement.
-* **Not an enforcement point.** A budget stop happens in Paperclip before a run;
-  a quota wall happens where the quota is enforced (seats block, storage and jobs
-  read out). This report is periodic and read-only — it explains, it does not gate.
+* **The report is not an enforcement point.** It is periodic and read-only: it
+  explains, it does not gate. **The store is**: the run path asks for an
+  allowance before it writes a run record and refuses with `E-BUD-08` when an
+  enforced budget is exhausted. That is the throttle D5 promises.
+  **The plan is still not a block** — a seat wall refuses an account, but
+  storage and jobs stay metered-and-alerted (`docs/quota-alerts.md`); a tenant
+  past its plan is `E-BUD-07` in the report, not a refused run.
 * **Not a scheduler.** Nightly is the intended cadence (D5); the contract does
   not own the clock.
 
@@ -146,7 +150,7 @@ One document — `schemas/budget-reconciliation.json`:
 
 | Field | Meaning |
 |---|---|
-| `plan` | `null` when the tenant has no assigned plan — and then every quota row is absent, because an unknown ceiling is not an infinite one |
+| `plan` | `null` with **no** `E-BUD-01` means a legacy tenant (no subscription): unlimited, no quota rows, no finding. `null` **with** `E-BUD-01` means a plan was assigned and cannot be found — the ceiling is unknown, and every quota row is absent because unknown is not infinite |
 | `agents[]` | one row per agent **with a budget**, plus one per agent with spend and no budget (`budget: null`) |
 | `agents[].state` | `within` · `over` · `unbudgeted` · `unlimited`; precedence `over` › `unbudgeted` › `unlimited` › `within` |
 | the three maps | carry the kinds that appear in the store or the period, not a fixed list |
@@ -160,15 +164,23 @@ One document — `schemas/budget-reconciliation.json`:
 
 | Code | When | Severity | What the operator does |
 |---|---|---|---|
-| `E-BUD-01` | no assigned plan, or the plan id is not in the registry | critical | assign a plan (`PUT /ops/tenants/:tenant/plan`); until then the ceiling is unknown, not unlimited |
+| `E-BUD-01` | an **assigned** plan id is not in the registry | critical | fix the subscription, or restore the plan; the ceiling is unknown, not unlimited (a tenant with *no* subscription is legacy and unlimited — no finding) |
 | `E-BUD-02` | the budget store is malformed (shape, version, tenant, negative, unknown kind, duplicate account) | critical | fix `customers/<t>/budgets.json`; the report lists each problem |
 | `E-BUD-03` | a budget names an account that is not an active agent in this tenant | warning | remove the entry, or make the account an agent |
 | `E-BUD-05` | the finite agent budgets **sum above** the plan cap for `jobs` or `storage` | warning | lower the budgets, or buy a plan that covers them — the promise must fit the purchase |
 | `E-BUD-04` | an agent has spend and no budget for that kind | warning | add the budget, or accept it explicitly with `enforced: false` |
 | `E-BUD-06` | an agent's spend exceeds its finite budget | warning | the throttle did not hold (or `enforced` was false): fix the budget or the runner |
 | `E-BUD-07` | total spend exceeds the plan cap | critical | the tenant is past what it bought: upgrade the plan, and check `quota_alerts` history |
+| `E-BUD-08` | an **enforced** budget is exhausted when a run asks to start (spent ≥ budget for the period) — the one refusal, raised on the run path, not in the report | critical | raise the budget, record the stop as expected, or move the work to another agent; the run does not start and no artifact is written |
 
-The order is deliberate: can we know the ceiling (`01`), is the store readable
+`E-BUD-08` is the only code raised as an exception rather than reported as a
+finding: it stops a run. It fires in `paperclip.begin` **after** the pass
+verifies and **before** the run record is written, so a stopped run leaves a
+`run.refused` line and nothing else. A budget with `enforced: false` is advisory
+and never raises it, and a tenant without a budget store is never throttled — the
+legacy behaviour, by contract.
+
+The report order is deliberate: can we know the ceiling (`01`), is the store readable
 (`02`), is the budget attributable (`03`), does the promise fit the purchase
 (`05`), is all spend owned (`04`), did an agent exceed (`06`), did the tenant
 exceed (`07`). Shape and identity before arithmetic; capacity before

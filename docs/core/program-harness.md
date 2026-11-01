@@ -3,8 +3,8 @@
 **Status:** interface specified (#332), implemented in
 `abn.platform.opengate/gateway/harness.py` (#333) and run as
 `abn.platform.opengate/infra/harness.py` (#334), recorded under `harness/runs/`
-and checked in CI (#336), surfaced (#337); the harden, measure and demo steps
-follow (#338–#341). **Shape:** `schemas/harness-run.json`. **Checker:**
+checked in CI (#336), surfaced (#337), documented (#338); the harden, measure and
+demo steps follow (#339–#341). **Shape:** `schemas/harness-run.json`. **Checker:**
 `scripts/check_harness_spec.py` (CI, `--self-test`). **Boundary:** ADR-002 — the
 three planes meet nowhere else.
 
@@ -138,6 +138,20 @@ signature): every assertion `ok`, `dirty` empty, verdict `pass`. The self-test t
 mutates it seven ways — a drifted fixture, a wrong outcome, a right outcome for the
 wrong code, a dirty tree, a mixed pin pair, a step with no assertion, a run that is
 not repeatable — and asserts each code fires.
+
+## The runbook
+
+`abn.platform.opengate/docs/harness-walkthrough.md` is the generated, end-to-end
+transcript of the surface (#338): a script and its verdict, the list, one record
+shown, verify, the store check, a script whose expectation is wrong, a record
+edited after the fact, and a run that does not exist. `--check` regenerates and
+diffs it, so a stale transcript fails the suite.
+
+The transcript forced a distinction worth keeping: **a recorded failure is history,
+not corruption.** The store check verifies that each record tells the truth about
+itself — its verdict follows from its assertions — while the run-level checks stay
+in `verify`. Without that split, a committed store holding a failed run would make
+CI red for being honest.
 
 ## The record store
 

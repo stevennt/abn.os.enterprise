@@ -13,6 +13,9 @@ satisfy, and they fail if a behaviour is removed:
   T7  the nested model (three units, two flows, a shared role, an external party)
       compiles to its own golden, with the hierarchy, the touchpoint and the
       exclusions right;
+  T16 hardening: a malformed file, a duplicate unit, a parent cycle and an empty
+      crew each produce a refusal that names the fix (every E-COMP line ends with
+      "— fix: …");
   T15 the spec keeps the verbatim walk-through: every command it teaches, the
       refusal table and the expected output line;
   T14 `--show` and `--render` give a human the crew (deterministic, no secrets,
@@ -51,6 +54,10 @@ def _copy(tmp):
     target = Path(tmp) / "model"
     shutil.copytree(MODEL, target)
     return target
+
+
+def _has_fix(result):
+    return "— fix: " in (result.stderr or "")
 
 
 def _mutate(path, old, new):
@@ -101,8 +108,8 @@ def tests():
         model = _copy(tmp)
         (model / "companies" / "demo" / "company.yaml").unlink()
         result = _run(model)
-        check("T5 E-COMP-01", result.returncode == 1 and "E-COMP-01" in result.stderr,
-              result.stderr.strip())
+        check("T5 E-COMP-01", result.returncode == 1 and "E-COMP-01" in result.stderr
+              and _has_fix(result), result.stderr.strip())
 
     with tempfile.TemporaryDirectory() as tmp:
         model = _copy(tmp)
@@ -110,24 +117,24 @@ def tests():
                 "sha: a7baab409dce013bd296b57aafc500565b878dfa",
                 "sha: " + "0" * 40)
         result = _run(model)
-        check("T5 E-COMP-02", result.returncode == 1 and "E-COMP-02" in result.stderr,
-              result.stderr.strip())
+        check("T5 E-COMP-02", result.returncode == 1 and "E-COMP-02" in result.stderr
+              and _has_fix(result), result.stderr.strip())
 
     with tempfile.TemporaryDirectory() as tmp:
         model = _copy(tmp)
         _mutate(model / "industries" / "demo" / "flows" / "demo.flow.yaml",
                 "department: ops.credit", "department: nowhere")
         result = _run(model)
-        check("T5 E-COMP-03", result.returncode == 1 and "E-COMP-03" in result.stderr,
-              result.stderr.strip())
+        check("T5 E-COMP-03", result.returncode == 1 and "E-COMP-03" in result.stderr
+              and _has_fix(result), result.stderr.strip())
 
     with tempfile.TemporaryDirectory() as tmp:
         model = _copy(tmp)
         _mutate(model / "industries" / "demo" / "flows" / "demo.flow.yaml",
                 "uses_rule: [DEMO-01]", "uses_rule: [GHOST-01]")
         result = _run(model)
-        check("T5 E-COMP-07", result.returncode == 1 and "E-COMP-07" in result.stderr,
-              result.stderr.strip())
+        check("T5 E-COMP-07", result.returncode == 1 and "E-COMP-07" in result.stderr
+              and _has_fix(result), result.stderr.strip())
 
     with tempfile.TemporaryDirectory() as tmp:
         import yaml
@@ -138,8 +145,8 @@ def tests():
             step["kind"] = "human"  # no routines -> no agents -> template invalid
         flow_path.write_text(yaml.safe_dump(flow, sort_keys=False))
         result = _run(model)
-        check("T5 E-COMP-10", result.returncode == 1 and "E-COMP-10" in result.stderr,
-              result.stderr.strip())
+        check("T5 E-COMP-10", result.returncode == 1 and "E-COMP-10" in result.stderr
+              and _has_fix(result), result.stderr.strip())
 
     # T7–T11 — the nested model: hierarchy, shared role, touchpoint, exclusions
     nested_out = Path(tempfile.mkdtemp()) / "nested.json"
@@ -171,7 +178,8 @@ def tests():
         (model / "companies" / "demo" / "org" / "org-chart.yaml").unlink()
         result = _run(model)
         check("T12 E-COMP-01 chart", result.returncode == 1
-              and "E-COMP-01" in result.stderr, result.stderr.strip())
+              and "E-COMP-01" in result.stderr and _has_fix(result),
+              result.stderr.strip())
 
     with tempfile.TemporaryDirectory() as tmp:
         model = _copy(tmp)
@@ -179,7 +187,8 @@ def tests():
                 "flows:\n- demo.flow", "flows:\n- demo.flow\n- ghost.flow")
         result = _run(model)
         check("T12 E-COMP-07 flow", result.returncode == 1
-              and "E-COMP-07" in result.stderr, result.stderr.strip())
+              and "E-COMP-07" in result.stderr and _has_fix(result),
+              result.stderr.strip())
 
     with tempfile.TemporaryDirectory() as tmp:
         model = _copy(tmp)
@@ -187,7 +196,8 @@ def tests():
                 "    owner_role: credit_officer\n", "")
         result = _run(model)
         check("T12 E-COMP-03 owner_role", result.returncode == 1
-              and "E-COMP-03" in result.stderr, result.stderr.strip())
+              and "E-COMP-03" in result.stderr and _has_fix(result),
+              result.stderr.strip())
 
     with tempfile.TemporaryDirectory() as tmp:
         model = _copy(tmp)
@@ -195,7 +205,8 @@ def tests():
                 "tag: contract-2026.11.1", "tag: v1")
         result = _run(model)
         check("T12 E-COMP-02 tag", result.returncode == 1
-              and "E-COMP-02" in result.stderr, result.stderr.strip())
+              and "E-COMP-02" in result.stderr and _has_fix(result),
+              result.stderr.strip())
 
     # T14 — the human surface
     shown = subprocess.run([PY, str(CLI), "--root", str(MODEL), "--company", "nested",
@@ -292,6 +303,43 @@ def tests():
               all_run.stdout + all_run.stderr)
         check("T6 skip is labelled", "broken: skip" in all_run.stdout, all_run.stdout)
 
+    # T16 — hardening: bad files and bad structure refuse, and name the fix
+    with tempfile.TemporaryDirectory() as tmp:
+        model = _copy(tmp)
+        (model / "companies" / "demo" / "company.yaml").write_text(": not yaml\n")
+        result = _run(model)
+        check("T16 malformed model", result.returncode == 1
+              and "E-COMP-01" in result.stderr and _has_fix(result),
+              result.stderr.strip())
+
+    with tempfile.TemporaryDirectory() as tmp:
+        model = _copy(tmp)
+        chart = model / "companies" / "demo" / "org" / "org-chart.yaml"
+        chart.write_text(chart.read_text() + "- {id: ops, name: Duplicate, parent_id: null}\n")
+        result = _run(model)
+        check("T16 duplicate unit", result.returncode == 1
+              and "E-COMP-11" in result.stderr and "duplicate" in result.stderr,
+              result.stderr.strip())
+
+    with tempfile.TemporaryDirectory() as tmp:
+        model = _copy(tmp)
+        chart = model / "companies" / "demo" / "org" / "org-chart.yaml"
+        chart.write_text(
+            "- {id: a, name: A, parent_id: b}\n- {id: b, name: B, parent_id: a}\n")
+        result = _run(model)
+        check("T16 parent cycle", result.returncode == 1
+              and "E-COMP-11" in result.stderr and "cycles" in result.stderr,
+              result.stderr.strip())
+
+    with tempfile.TemporaryDirectory() as tmp:
+        model = _copy(tmp)
+        _mutate(model / "industries" / "demo" / "flows" / "demo.flow.yaml",
+                "uses_rule: [DEMO-01]", "bad: [yaml")
+        result = _run(model)
+        check("T16 malformed flow", result.returncode == 1
+              and "E-COMP-07" in result.stderr and _has_fix(result),
+              result.stderr.strip())
+
     # T15 — the walk-through stays in the spec
     spec = (ROOT / "docs" / "core" / "paperclip-compiler.md").read_text()
     for anchor in ("bin/paperclip-company --root tests/fixtures/paperclip-model "
@@ -322,7 +370,7 @@ def main():
         return 1
     print("paperclip-compiler tests: 2 goldens, determinism, hierarchy, shared "
           "role, touchpoint, human/system/external exclusion, 9 refusals, --all "
-          "opt-in policy, compile record, surface, spec walk-through — OK")
+          "opt-in policy, compile record, surface, spec walk-through, hardening — OK")
     return 0
 
 

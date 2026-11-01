@@ -59,7 +59,12 @@ timestamps in the template; the compile time is recorded outside it).
 | `E-COMP-07` | a cited pack skill or eval path does not exist | `flow <f>: skill <s> not found` |
 | `E-COMP-08` | `reportsTo` names no agent, or no agent is a root | `agent <a>: reportsTo <b> does not resolve` / `no root agent` |
 | `E-COMP-09` | the boundary version in the template and the contract page disagree | `boundary <v> != contract <w>` |
-| `E-COMP-10` | the emitted template fails `schemas/paperclip-company.json` | `template invalid: <jsonschema message>` |
+| `E-COMP-10` | the emitted template fails `schemas/paperclip-company.json`, or the crew has no routine at all (every step is human/system/external) | `template invalid: <jsonschema message>` / `every step is human, system or external — the crew has no routine` |
+| `E-COMP-11` | the company model is structurally invalid: a duplicate unit id, a `parent_id` cycle, an unreadable chart | `duplicate unit id(s) …` / `the org chart cycles through …` |
+
+**Every refusal ends with `— fix: …`**, naming the action rather than only the
+fact. A malformed YAML file, a duplicate unit, a parent cycle and an empty crew
+are refusals with a fix, not a traceback (#259).
 
 ## Exit codes
 
@@ -154,7 +159,7 @@ On the repository itself the same command reports the reference model as skipped
 rather than failing — it has not opted in:
 
 ```
-  example-bank: skip E-COMP-07 flow aml.str.filing step s3-investigate: rule(s) not defined by any pack: AML-INV-03
+  example-bank: skip E-COMP-07 flow aml.str.filing step s3-investigate: rule(s) not defined by any pack: AML-INV-03 — fix: define them in industries/banking/rules/ or fix the citation
 paperclip-company --all: 0/1 compiled
 ```
 
@@ -169,7 +174,7 @@ paperclip-company --self-test: fixture compiles deterministically, pending rules
 
 ```
 $ bin/paperclip-company --root /tmp/broken --company demo --check
-paperclip-company: E-COMP-07: flow demo.flow step s1-check: rule(s) not defined by any pack: GHOST-01
+paperclip-company: E-COMP-07: flow demo.flow step s1-check: rule(s) not defined by any pack: GHOST-01 — fix: define them in industries/demo/rules/ or fix the citation
 ```
 
 Exit code 1, and nothing is written.
@@ -181,7 +186,8 @@ Exit code 1, and nothing is written.
 | `E-COMP-03` | a flow's department has no unit in the company chart, or a step has no `owner_role` — fix the model, not the compiler |
 | `E-COMP-07` | a cited rule is defined by no pack, or a flow/skill/eval path is missing — add the rule to the pack, or fix the citation |
 | `E-COMP-09` | the contract page carries no `paperclip-boundary@X.Y` — fix the contract, then re-run |
-| `E-COMP-10` | the template fails the checker: read the S1–S8 message it prints (root, manager, ids, autonomy, paths, skills) |
+| `E-COMP-10` | the template fails the checker: read the S1–S8 message it prints (root, manager, ids, autonomy, paths, skills); an empty crew means every step is human/system/external |
+| `E-COMP-11` | the company model is structurally invalid: a duplicate unit id, a `parent_id` cycle, or a chart that is not a list |
 
 ## Surface (#257)
 

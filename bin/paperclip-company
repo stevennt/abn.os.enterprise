@@ -40,10 +40,16 @@ SLUG = re.compile(r"[^a-z0-9]+")
 
 
 class Refused(Exception):
-    def __init__(self, code, message):
-        super().__init__(f"{code}: {message}")
+    """A refusal names the code, the fact, and the fix (issue #259)."""
+
+    def __init__(self, code, message, hint=None):
         self.code = code
         self.message = message
+        self.hint = hint
+        text = f"{code}: {message}"
+        if hint:
+            text += f" — fix: {hint}"
+        super().__init__(text)
 
 
 def _yaml(path):
@@ -51,6 +57,16 @@ def _yaml(path):
 
     with open(path, encoding="utf-8") as fh:
         return yaml.safe_load(fh)
+
+
+def _yaml_doc(path, label, code, hint):
+    """Parse a model file; a bad file is a refusal that names the fix."""
+    try:
+        return _yaml(path) or None
+    except FileNotFoundError:
+        raise Refused(code, f"{label} is missing", hint)
+    except Exception as exc:  # yaml.YAMLError, UnicodeDecodeError, OSError
+        raise Refused(code, f"{label} is unreadable ({exc.__class__.__name__})", hint)
 
 
 def _slug(text):
@@ -61,7 +77,8 @@ def _boundary():
     text = CONTRACT.read_text() if CONTRACT.is_file() else ""
     found = VERSION.search(text)
     if not found:
-        raise Refused("E-COMP-09", "the contract page carries no boundary version")
+        raise Refused("E-COMP-09", "the contract page carries no boundary version",
+                      "add `paperclip-boundary@X.Y` to docs/core/paperclip-integration.md")
     return found.group(0)
 
 
@@ -76,7 +93,8 @@ def _checker():
 def _rules(industry_dir):
     rules = {}
     for path in sorted((industry_dir / "rules").glob("*.y*ml")):
-        doc = _yaml(path) or []
+        doc = _yaml_doc(path, path.name, "E-COMP-07",
+                        "fix the rule pack YAML; rule_lint.py names the line") or []
         rows = doc if isinstance(doc, list) else (doc.get("rules") or [])
         for row in rows:
             if isinstance(row, dict) and row.get("id"):
@@ -87,7 +105,8 @@ def _rules(industry_dir):
 def _flows(industry_dir, wanted):
     found = {}
     for path in sorted((industry_dir / "flows").glob("*.y*ml")):
-        doc = _yaml(path) or {}
+        doc = _yaml_doc(path, path.name, "E-COMP-07",
+                        "fix the flow YAML; rule_lint.py names the line") or {}
         if doc.get("id") in wanted:
             found[doc["id"]] = (path, doc)
     return found
@@ -109,43 +128,80 @@ def compile_company(root, company):
     base = root / "companies" / company
     model_path = base / "company.yaml"
     if not model_path.is_file():
-        raise Refused("E-COMP-01", f"company {company}: no company.yaml")
-    model = _yaml(model_path) or {}
+        raise Refused("E-COMP-01", f"company {company}: no company.yaml",
+                          f"create companies/{company}/company.yaml (bin/new-company scaffolds one)")
+    model = _yaml_doc(model_path, f"companies/{company}/company.yaml",
+                      "E-COMP-01", "fix the YAML; validate_company.py names the line") or {}
     if model.get("id") != company:
         raise Refused("E-COMP-01", f"company {company}: company.yaml id is "
-                                   f"{model.get('id')!r}")
+                                   f"{model.get('id')!r}",
+                          "make id match the directory name")
 
     pin = model.get("contract") or {}
     tag, sha = str(pin.get("tag") or ""), str(pin.get("sha") or "")
     if not PIN_TAG.match(tag) or not PIN_SHA.match(sha):
         raise Refused("E-COMP-02", f"company {company}: contract pin "
                                    f"{tag or 'missing'} / {sha[:12] or 'missing'} "
-                                   f"is malformed")
-    probe = subprocess.run(["git", "cat-file", "-e", f"{sha}^{{commit}}"],
-                           cwd=GATE, capture_output=True)
+                                   f"is malformed",
+                          "use a released contract-YYYY.MM.N tag and its 40-hex sha")
+    try:
+        probe = subprocess.run(["git", "cat-file", "-e", f"{sha}^{{commit}}"],
+                               cwd=GATE, capture_output=True)
+    except FileNotFoundError:
+        raise Refused("E-COMP-02", "git is not installed, so the pin cannot resolve",
+                      "install git (the compiler resolves the contract pin with it)")
     if probe.returncode != 0:
         raise Refused("E-COMP-02", f"company {company}: contract pin {tag} does "
-                                   f"not resolve to {sha[:12]}…")
+                                   f"not resolve to {sha[:12]}…",
+                          "point the pin at a commit in this repository")
 
     industry = (model.get("industry") or {}).get("id")
     industry_dir = root / "industries" / str(industry)
     if not industry or not industry_dir.is_dir():
         raise Refused("E-COMP-07", f"company {company}: industry "
-                                   f"{industry!r} has no directory")
+                                   f"{industry!r} has no directory",
+                          f"create industries/{industry}/ or fix industry.id")
 
     chart = base / str((model.get("org") or {}).get("chart") or "")
     if not chart.is_file():
         raise Refused("E-COMP-01", f"company {company}: org chart "
-                                   f"{chart} is missing")
-    units = {str(row["id"]): row for row in (_yaml(chart) or [])
-             if isinstance(row, dict) and row.get("id")}
+                                   f"{chart} is missing",
+                          "write the chart file the model points at")
+    rows = _yaml_doc(chart, f"companies/{company}/org chart", "E-COMP-11",
+                     "the chart is a list of {id, name, parent_id} units") or []
+    if not isinstance(rows, list):
+        raise Refused("E-COMP-11", f"company {company}: the org chart is not a list",
+                      "write one mapping per unit")
+    units, duplicates = {}, []
+    for row in rows:
+        if not isinstance(row, dict) or not row.get("id"):
+            raise Refused("E-COMP-11", f"company {company}: an org unit has no id",
+                          "every unit needs an id")
+        uid = str(row["id"])
+        if uid in units:
+            duplicates.append(uid)
+        units[uid] = row
+    if duplicates:
+        raise Refused("E-COMP-11", f"company {company}: duplicate unit id(s) "
+                                   f"{', '.join(sorted(set(duplicates)))}",
+                      "one line per unit; ids are the key")
+    for uid in units:
+        trail, walk = set(), uid
+        while walk is not None and walk in units:
+            if walk in trail:
+                raise Refused("E-COMP-11", f"company {company}: the org chart "
+                                           f"cycles through {walk!r}",
+                              "fix parent_id so the chain ends in a root")
+            trail.add(walk)
+            walk = units[walk].get("parent_id")
 
     wanted = [str(f) for f in (model.get("flows") or [])]
     flows = _flows(industry_dir, set(wanted))
     missing_flows = [f for f in wanted if f not in flows]
     if missing_flows:
         raise Refused("E-COMP-07", f"company {company}: flow(s) not found: "
-                                   f"{', '.join(missing_flows)}")
+                                   f"{', '.join(missing_flows)}",
+                          f"check the ids in industries/{industry}/flows/")
     rules = _rules(industry_dir)
 
     steps_by_unit_role, projects, routines, sources = {}, [], [], []
@@ -156,7 +212,8 @@ def compile_company(root, company):
         if unit is None:
             raise Refused("E-COMP-03", f"flow {flow_id}: department "
                                        f"{flow.get('department')!r} has no unit in "
-                                       f"the company chart")
+                                       f"the company chart",
+                          "add the unit to the chart (or fix the flow department)")
         projects.append({"id": flow_id, "name": str(flow.get("name") or flow_id),
                          "sourceFlow": path.relative_to(root).as_posix()})
         for step in flow.get("steps") or []:
@@ -165,13 +222,16 @@ def compile_company(root, company):
             kind = str(step.get("kind") or "")
             if not sid or not role:
                 raise Refused("E-COMP-03", f"flow {flow_id} step {sid or '?'}: "
-                                           f"needs id and owner_role")
+                                           f"needs id and owner_role",
+                          "give the step an id and the role that owns it")
             cited = [str(r) for r in (step.get("uses_rule") or [])]
             unknown = [r for r in cited if r not in rules]
             if unknown:
                 raise Refused("E-COMP-07", f"flow {flow_id} step {sid}: rule(s) not "
                                            f"defined by any pack: "
-                                           f"{', '.join(unknown)}")
+                                           f"{', '.join(unknown)}",
+                          f"define them in industries/{industry}/rules/ or fix "
+                          f"the citation")
             if kind == "human" or role == "system" or role.startswith("external_"):
                 continue  # no routine: a human, an automation, or an outside party
             pending = any(rules[r].lower().startswith("pending-") for r in cited)
@@ -186,6 +246,12 @@ def compile_company(root, company):
                    if step.get("uses_touchpoint") else {}),
             })
             steps_by_unit_role.setdefault((unit, role), []).append((flow_id, sid))
+
+    if not routines:
+        raise Refused("E-COMP-10", f"company {company}: every step is human, "
+                                   f"system or external — the crew has no routine",
+                      "check step.kind and owner_role; a crew with no agent step is "
+                      "a modelling error")
 
     roles_doc = industry_dir / "pack" / "roles.yaml"
     pack_roles = {}
@@ -208,8 +274,9 @@ def compile_company(root, company):
 
     agents = []
     for (unit, role), steps in sorted(steps_by_unit_role.items()):
-        parent = units[unit].get("parent_id")
-        while parent is not None and parent not in lead:
+        parent, seen = units[unit].get("parent_id"), set()
+        while parent is not None and parent not in lead and parent not in seen:
+            seen.add(parent)
             parent = units.get(parent, {}).get("parent_id")
         pack = pack_roles.get(role) or {}
         agents.append({
@@ -237,7 +304,8 @@ def compile_company(root, company):
     }
     problems = _checker().check_template(template, root=root)
     if problems:
-        raise Refused("E-COMP-10", "template invalid: " + "; ".join(problems[:5]))
+        raise Refused("E-COMP-10", "template invalid: " + "; ".join(problems[:5]),
+                      "read the S1–S8 message and fix the model, not the checker")
     return template
 
 
@@ -252,7 +320,8 @@ def compile_all(root, out_dir=None, check=False, record_rows=False):
     rows, failed = [], False
     for model_path in sorted((root / "companies").glob("*/company.yaml")):
         company = model_path.parent.name
-        model = _yaml(model_path) or {}
+        model = _yaml_doc(model_path, f"companies/{company}/company.yaml",
+                      "E-COMP-01", "fix the YAML; validate_company.py names the line") or {}
         opted_in = bool((model.get("paperclip") or {}).get("compile"))
         try:
             template = compile_company(root, company)
@@ -279,10 +348,12 @@ def compile_all(root, out_dir=None, check=False, record_rows=False):
         except Refused as exc:
             rows.append({"company": company, "opted_in": opted_in,
                          "status": "refused", "code": exc.code,
-                         "message": exc.message})
+                         "message": exc.message, "hint": exc.hint})
             if record_rows:
                 record(root, company, "refused",
-                       {"code": exc.code, "message": exc.message})
+                       {"code": exc.code,
+                        "message": (f"{exc.message} — fix: {exc.hint}"
+                                    if exc.hint else exc.message)})
             failed = failed or opted_in
     return rows, failed
 
@@ -448,7 +519,7 @@ def main(argv=None):
         try:
             template = compile_company(args.root, args.company)
         except Refused as exc:
-            print(f"paperclip-company: {exc.code}: {exc.message}", file=sys.stderr)
+            print(f"paperclip-company: {exc}", file=sys.stderr)
             return 1
         if args.show:
             print(show(template))
@@ -470,7 +541,8 @@ def main(argv=None):
                       f"{row['routines']} routines")
             else:
                 flag = "FAIL" if row["opted_in"] else "skip"
-                print(f"  {row['company']}: {flag} {row['code']} {row['message']}")
+                fix = f" — fix: {row['hint']}" if row.get("hint") else ""
+                print(f"  {row['company']}: {flag} {row['code']} {row['message']}{fix}")
         compiled = sum(1 for row in rows if row["status"] == "compiled")
         print(f"paperclip-company --all: {compiled}/{len(rows)} compiled"
               f"{' (opted-in company failed)' if failed else ''}")
@@ -480,7 +552,7 @@ def main(argv=None):
     try:
         template = compile_company(args.root, args.company)
     except Refused as exc:
-        print(f"paperclip-company: {exc.code}: {exc.message}", file=sys.stderr)
+        print(f"paperclip-company: {exc}", file=sys.stderr)
         return 1
     except (OSError, ValueError) as exc:
         print(f"paperclip-company: {exc}", file=sys.stderr)

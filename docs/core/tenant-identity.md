@@ -198,8 +198,14 @@ identity --self-test: 9 mutations refused, the committed example validates — O
 The self-test mutates `tests/fixtures/identity/accounts.valid.json` one rule at
 a time — an agent with a password, two accounts on one subject, an agent owned by
 an agent, a disabled owner, a role that is not a portal role — and fails if any
-mutation is accepted. The example and the mutations live in the repo; CI runs
-both commands, so the contract cannot quietly stop matching the fixture.
+mutation is accepted. `scripts/test_identity_matrix.py` goes further: each of 14
+named cases must earn **its own sentence** (a negative test that accepts the
+wrong refusal hides a regression), and the clean cases — including the offboarded
+agent whose owner is disabled — must stay clean. CI runs all three commands.
+
+The tenant side mirrors the matrix (`tests/test_identity_matrix.py` in
+OpenGate): the same shapes through `identity.validate_tenant`, plus a local
+cross-check against this checker when both repositories are checked out.
 
 ## Not in this contract
 

@@ -294,13 +294,17 @@ def record(root, company, template_path=None, platform=None, now=None):
     carrier = _carrier(root, company, manifest["bundleId"])
     if carrier.is_dir():
         stored = carrier / "bundle.json"
-        if stored.is_file():
-            existing = json.loads(stored.read_text())
-            if existing == manifest:
-                return {"tenant": company, "bundleId": manifest["bundleId"],
-                        "recorded": False}, []
-        return None, [("E-PORT-04", f"{manifest['bundleId']} is already stored "
-                                    f"with different contents")]
+        if not stored.is_file():
+            return None, [("E-PORT-03", f"{manifest['bundleId']} has no stored "
+                                        f"manifest")]
+        # the id is the identity: a carrier with this id is this bundle, whatever
+        # its `createdAt` or `platform` say. What must still hold is that the
+        # carrier was not edited after it was stored.
+        _existing, findings = _bundle_integrity(stored)
+        if findings:
+            return None, findings
+        return {"company": company, "bundleId": manifest["bundleId"],
+                "recorded": False}, []
     carrier.mkdir(parents=True, exist_ok=True)
     (carrier / "bundle.json").write_text(json.dumps(manifest, indent=2) + "\n")
     source = root / manifest["template"]["path"]
@@ -311,7 +315,7 @@ def record(root, company, template_path=None, platform=None, now=None):
            "artefacts": len(manifest["artefacts"]), "action": "export"}
     with open(_log_path(root, company), "a", encoding="utf-8") as fh:
         fh.write(json.dumps(row, sort_keys=True) + "\n")
-    return {"tenant": company, "bundleId": manifest["bundleId"],
+    return {"company": company, "bundleId": manifest["bundleId"],
             "recorded": True, "path": str(carrier.relative_to(root))}, []
 
 

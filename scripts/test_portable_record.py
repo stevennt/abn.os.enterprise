@@ -66,16 +66,17 @@ def main():
         if P.bundles(root, "acme")[0]["bundleId"] != payload["bundleId"]:
             problems.append("the newest log row is not the bundle just recorded")
 
-        # a different carrier at an existing id is refused
+        # a carrier edited after it was stored is refused, by either code
         if carrier:
             stored = carrier / "bundle.json"
             doc = json.loads(stored.read_text())
-            doc["platform"]["contractTag"] = "contract-2026.12.0"
+            doc["artefacts"][0]["sha256"] = "0" * 64
             stored.write_text(json.dumps(doc))
             _payload, refused = P.record(root, "acme", platform=PLATFORM)
-            if "E-PORT-04" not in codes(refused):
-                problems.append(f"a changed carrier was accepted: {refused}")
-            problems.extend(P.validate_bundles(root))
+            if not ({"E-PORT-01", "E-PORT-04"} & set(codes(refused))):
+                problems.append(f"an edited carrier was accepted: {refused}")
+            if P.validate_bundles(root) == []:
+                problems.append("an edited carrier passed validate_bundles")
             shutil.rmtree(carrier)  # restore for the rollback test
 
         # record again, then roll back over a stale template

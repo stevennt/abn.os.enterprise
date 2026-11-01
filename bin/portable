@@ -1,0 +1,244 @@
+#!/usr/bin/env python3
+"""portable — move a company between checkouts, and prove you got the same one.
+
+Spec: `docs/core/portability.md`. Shape: `schemas/portability-manifest.json`.
+Oracle: `scripts/check_portability_spec.py`. Implementation: `scripts/portable.py`
+(this binary is a surface over it, never a second implementation).
+
+    bin/portable export   --company <id> [--template P] [--platform T] [--out DIR]
+    bin/portable record   --company <id> [--template P] [--platform T]
+    bin/portable bundles  --company <id> [--limit N]
+    bin/portable show     --company <id> --bundle <id>
+    bin/portable import   --bundle <path> [--platform T]
+    bin/portable rollback --company <id> --to <id> [--force]
+    bin/portable verify   --bundle <path>
+    bin/portable diff     --left A --right B
+    bin/portable check
+
+Exit codes: 0 the operation happened; 1 a refusal (the code and its fix are on
+stderr); 2 usage. `--json` prints the payload any command already produces.
+
+What the human lines say, and why:
+
+    export   company, bundle id, artefacts, the pin it was compiled against
+    record   whether it was stored (a second identical record says "unchanged")
+    bundles  newest first, with the action that produced each
+    show     one stored carrier: its pin, its artefacts, its findings
+    import   the template that landed, and from which bundle
+    rollback the id it went back to, and whether --force was needed
+    check    how many carriers were verified, and every problem found
+"""
+
+import argparse
+import importlib.util
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+
+
+def _portable():
+    spec = importlib.util.spec_from_file_location(
+        "portable", ROOT / "scripts" / "portable.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    sys.modules["portable"] = module
+    return module
+
+
+P = _portable()
+
+
+def _fail(findings):
+    for code, reason in findings:
+        print(f"portable: {code}: {reason} — fix: {P.FIX[code]}", file=sys.stderr)
+    return 1
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(prog="portable")
+    # --root and --json belong to every command, and an operator types them after
+    # the command; a shared parent keeps both spellings working
+    common = argparse.ArgumentParser(add_help=False)
+    common.add_argument("--json", action="store_true", help="print the payload")
+    common.add_argument("--root", default=str(ROOT))
+    ap.add_argument("--json", action="store_true", help=argparse.SUPPRESS)
+    ap.add_argument("--root", default=str(ROOT), help=argparse.SUPPRESS)
+    sub = ap.add_subparsers(dest="cmd", required=True)
+
+    p = sub.add_parser("export", parents=[common])
+    p.add_argument("--company", required=True)
+    p.add_argument("--template")
+    p.add_argument("--platform")
+    p.add_argument("--out")
+
+    p = sub.add_parser("record", parents=[common])
+    p.add_argument("--company", required=True)
+    p.add_argument("--template")
+    p.add_argument("--platform")
+
+    p = sub.add_parser("bundles", parents=[common])
+    p.add_argument("--company", required=True)
+    p.add_argument("--limit", type=int, default=20)
+
+    p = sub.add_parser("show", parents=[common])
+    p.add_argument("--company", required=True)
+    p.add_argument("--bundle", required=True)
+
+    p = sub.add_parser("import", parents=[common])
+    p.add_argument("--bundle", required=True)
+    p.add_argument("--platform")
+
+    p = sub.add_parser("rollback", parents=[common])
+    p.add_argument("--company", required=True)
+    p.add_argument("--to", required=True)
+    p.add_argument("--force", action="store_true")
+
+    p = sub.add_parser("verify", parents=[common])
+    p.add_argument("--bundle", required=True)
+
+    p = sub.add_parser("diff", parents=[common])
+    p.add_argument("--left", required=True)
+    p.add_argument("--right", required=True)
+
+    sub.add_parser("check", parents=[common])
+
+    args = ap.parse_args(argv)
+    try:
+        if args.cmd == "export":
+            manifest, findings = P.export(args.root, args.company,
+                                          template_path=args.template,
+                                          platform=args.platform)
+            if findings:
+                return _fail(findings)
+            if args.out:
+                out = Path(args.out)
+                out.mkdir(parents=True, exist_ok=True)
+                (out / "bundle.json").write_text(
+                    json.dumps(manifest, indent=2) + "\n")
+                source = Path(args.root) / manifest["template"]["path"]
+                (out / source.name).write_bytes(source.read_bytes())
+            if args.json:
+                print(json.dumps(manifest, indent=2))
+            else:
+                pin = manifest["template"]["contract"]["tag"]
+                print(f"{manifest['company']}  {manifest['bundleId']}  "
+                      f"{len(manifest['artefacts'])} artefact(s)  pinned at {pin}"
+                      f"  → {manifest['platform']['contractTag'] or 'unpinned'}")
+            return 0
+
+        if args.cmd == "record":
+            payload, findings = P.record(args.root, args.company,
+                                         template_path=args.template,
+                                         platform=args.platform)
+            if findings:
+                return _fail(findings)
+            if args.json:
+                print(json.dumps(payload, indent=2))
+            elif payload["recorded"]:
+                print(f"{payload['company']}  {payload['bundleId']}  stored at "
+                      f"{payload['path']}")
+            else:
+                print(f"{payload['company']}  {payload['bundleId']}  unchanged "
+                      f"(already stored)")
+            return 0
+
+        if args.cmd == "bundles":
+            rows = P.bundles(args.root, args.company, limit=args.limit)
+            if args.json:
+                print(json.dumps({"company": args.company, "bundles": rows},
+                                 indent=2))
+            elif not rows:
+                print(f"{args.company}: no stored bundles")
+            else:
+                print(f"{args.company}: {len(rows)} stored bundle(s), newest "
+                      f"first")
+                for row in rows:
+                    print(f"  {row.get('at')}  {row.get('bundleId')}  "
+                          f"{row.get('artefacts')} artefact(s)  "
+                          f"{row.get('action')}")
+            return 0
+
+        if args.cmd == "show":
+            path = P._carrier(args.root, args.company, args.bundle) / "bundle.json"
+            if not path.is_file():
+                print(f"portable: no stored bundle {args.bundle!r} for "
+                      f"{args.company!r}", file=sys.stderr)
+                return 1
+            manifest, findings = P._bundle_integrity(path)
+            if args.json:
+                print(json.dumps(manifest, indent=2))
+            else:
+                pin = manifest["template"]["contract"]["tag"]
+                print(f"{manifest['company']}  {manifest['bundleId']}  pinned at "
+                      f"{pin}  {len(manifest['artefacts'])} artefact(s)")
+                for row in manifest["artefacts"]:
+                    print(f"  {row['kind']:<5} {row['id']:<24} "
+                          f"{row['version']:<12} {row['sha256'][:12]}…")
+            if findings:
+                return _fail(findings)
+            return 0
+
+        if args.cmd == "import":
+            manifest, findings, rel = P.do_import(args.root, args.bundle,
+                                                  platform=args.platform)
+            if findings:
+                return _fail(findings)
+            if args.json:
+                print(json.dumps({"bundleId": manifest["bundleId"],
+                                  "template": rel}, indent=2))
+            else:
+                print(f"{manifest['company']}  {manifest['bundleId']}  imported "
+                      f"→ {rel}")
+            return 0
+
+        if args.cmd == "rollback":
+            payload, findings = P.rollback(args.root, args.company, args.to,
+                                           force=args.force)
+            if findings:
+                return _fail(findings)
+            if args.json:
+                print(json.dumps(payload, indent=2))
+            else:
+                how = "forced" if args.force else "clean"
+                print(f"{payload['company']}  rolled back to "
+                      f"{payload['rolledBackTo']} ({how})  → {payload['template']}")
+            return 0
+
+        if args.cmd == "verify":
+            manifest, findings = P.verify(args.root, args.bundle)
+            if findings:
+                return _fail(findings)
+            print(f"{manifest['company']}  {manifest['bundleId']}  verifies")
+            return 0
+
+        if args.cmd == "diff":
+            report = P.diff(args.left, args.right)
+            if args.json:
+                print(json.dumps(report, indent=2))
+            elif report["same"]:
+                print("the same bundle")
+            else:
+                for key in ("added", "removed", "changed"):
+                    if report[key]:
+                        print(f"  {key}: {', '.join(report[key])}")
+            return 0
+
+        if args.cmd == "check":
+            problems = P.validate_bundles(args.root)
+            if problems:
+                return _fail([tuple(problem.split(" ", 1)) for problem in problems])
+            carriers = sum(1 for _ in Path(args.root, "companies").glob(
+                f"*/{P.BUNDLES}/*/bundle.json")) if Path(
+                    args.root, "companies").is_dir() else 0
+            print(f"portable: {carriers} stored bundle(s) verify")
+            return 0
+    except P.PortabilityError as exc:
+        print(f"portable: {exc}", file=sys.stderr)
+        return 1
+    return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main())

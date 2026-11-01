@@ -1,8 +1,8 @@
 # Company portability — templates, pins, and a bundle that proves itself (contract `company-portability@1`)
 
 **Status:** interface specified (#322), implemented in `scripts/portable.py`
-(#323), wired into the compiler (#324), tested (#325), recorded (#326); the
-surface, harden, measure and demo steps follow (#327–#331). **Shape:** `schemas/portability-manifest.json`. **Checker:**
+(#323), wired into the compiler (#324), tested (#325), recorded (#326),
+surfaced (#327); the harden, measure and demo steps follow (#328–#331). **Shape:** `schemas/portability-manifest.json`. **Checker:**
 `scripts/check_portability_spec.py` (CI, `--self-test`). **Boundary:** ADR-002 D8
 — *company templates carry a contract pin; import refuses an unresolvable pin;
 upgrades are explicit.*
@@ -149,6 +149,37 @@ a clean tree fail on the very artefacts it was delivering.
 
 `--bundle` requires `--out` inside the repository: a manifest whose template sits
 outside it would carry an absolute path, which is `E-PORT-07`.
+
+## The operator surface (#327)
+
+```
+$ bin/portable export   --company <id> [--template P] [--platform T] [--out DIR]
+$ bin/portable record   --company <id> [--template P] [--platform T]
+$ bin/portable bundles  --company <id> [--limit N]
+$ bin/portable show     --company <id> --bundle <id>
+$ bin/portable import   --bundle <path> [--platform T]
+$ bin/portable rollback --company <id> --to <id> [--force]
+$ bin/portable verify   --bundle <path>
+$ bin/portable diff     --left A --right B
+$ bin/portable check
+```
+
+The binary is a surface over `scripts/portable.py`, never a second implementation.
+Its lines say what an operator needs and nothing else:
+
+```
+$ bin/portable export --company acme --platform contract-2026.11.3
+acme  bundle-7428f5cbc337d64d  3 artefact(s)  pinned at contract-2026.11.1  → contract-2026.11.3
+$ bin/portable record …
+acme  bundle-7428f5cbc337d64d  stored at companies/acme/bundles/bundle-7428f5cbc337d64d
+$ bin/portable record …            # again
+acme  bundle-7428f5cbc337d64d  unchanged (already stored)
+```
+
+`--json` prints the payload for machines, and every refusal exits 1 with its code
+and fix on stderr. **There is no actor model here** — the tenant-facing gate lives
+in the platform; in this repository the operator has the checkout, and what the
+surface owes them is an explicit action and a refusal they can act on.
 
 ## The record (#326)
 

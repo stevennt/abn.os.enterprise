@@ -51,6 +51,7 @@ jobs:
       - run: python scripts/test_portable_wire.py
       - run: python scripts/test_portability_matrix.py
       - run: python scripts/test_portable_record.py
+      - run: python scripts/test_portable_surface.py
       - run: python scripts/portable.py verify-bundles
       - run: python scripts/test_identity_matrix.py
       - run: python scripts/test_paperclip_company.py && python bin/paperclip-company --self-test

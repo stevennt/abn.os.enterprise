@@ -207,6 +207,21 @@ tenant tree and with it the audit lines. A tenant **without** a grid keeps the
 every legacy tenant. The gate is the same `approvals.decide`; there is no second
 implementation on the delete path.
 
+## The measurement (#320)
+
+`gateway/approval_metrics.py` in the tenant repo: `G1` refusal-spike and `G2`
+probing-approver read the **chain** (a refusal is an attempt, never a standing
+decision), `G3` open-escalation reads the **store** (an escalation is a route
+somebody must walk), and `G4` is trust. Alerts are one line per rule per day;
+`--sync` validates the store and the drill proves each fires while a clean tenant
+stays quiet.
+
+Writing `G3` found a bug: the implementation stored an escalated request as the
+standing decision, so the role it named could never approve it (`E-GOV-06`). An
+escalation is a route, not a verdict — `decide` now lets the named role (or any
+role whose limit covers the amount) **supersede** it, and the audit line records
+`supersedes: "escalated"`.
+
 ## Hardening
 
 The implementation's edges (#319), each with its code: the tenant is a path

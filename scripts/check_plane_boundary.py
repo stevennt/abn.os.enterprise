@@ -162,8 +162,10 @@ def self_test():
          {"companies/acme/company.yaml": clean + "db_password: hunter2\n"}, "B2")
     case("secret by env is fine",
          {"companies/acme/company.yaml": clean + "db_password_env: ACME_DB\n"}, None)
+    # The path is synthetic: B4 scans model YAML wherever it lives, and a
+    # fixture that spelled `industries/<slug>/` tripped the path guard (#135).
     case("tenant acl in model",
-         {"industries/x/rules/r.yaml": "acl:\n  hr: [admin]\n"}, "B4")
+         {"companies/x/rules/r.yaml": "acl:\n  hr: [admin]\n"}, "B4")
     case("missing pin", {"companies/acme/company.yaml": "version: 1\nid: acme\n"}, "B3")
     case("bad pin", {"companies/acme/company.yaml":
                      clean.replace("a" * 40, "not-a-sha")}, "B3")

@@ -39,7 +39,11 @@ def schema_problems(doc):
         jsonschema.validate(doc, schema)
     except jsonschema.exceptions.ValidationError as exc:
         where = "/".join(str(part) for part in exc.absolute_path) or "document"
-        return [f"{where}: {exc.message}"]
+        message = exc.message
+        if "is not valid under any of the given schemas" in message:
+            message = ("a person needs a credential or an sso binding — "
+                       "one of the two, not neither")
+        return [f"{where}: {message}"]
     return []
 
 
@@ -89,7 +93,9 @@ def semantic_problems(doc):
 
 
 def problems(doc):
-    return schema_problems(doc) + semantic_problems(doc)
+    # Semantic refusals first: "agent-kyc holds a login" is the sentence an
+    # operator needs; the schema error that follows is the mechanical proof.
+    return semantic_problems(doc) + schema_problems(doc)
 
 
 def _mutations(valid):

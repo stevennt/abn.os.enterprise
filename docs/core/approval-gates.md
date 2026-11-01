@@ -166,6 +166,17 @@ each code fires for its own reason.
 | the gate check | `--sync` validates the grid and the recorded decisions (#314) |
 | the measure | `gateway/approval_metrics.py` — escalations, refusals, gates open too long (#317) |
 
+## Where it fires today (#314)
+
+The first real path is tenant deletion (`infra/offboard_tenant.py --yes
+--confirm`): a tenant **with** an authority grid needs `--approver <account>` — a
+second person whose role is in the grid — and the decision is written into the
+signed deletion certificate under `approval`, because the deletion removes the
+tenant tree and with it the audit lines. A tenant **without** a grid keeps the
+`--yes`/`--confirm` guard and nothing else: failing closed there would strand
+every legacy tenant. The gate is the same `approvals.decide`; there is no second
+implementation on the delete path.
+
 ## Recorded, not guessed
 
 The implementation stores a decision under

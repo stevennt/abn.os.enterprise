@@ -1,8 +1,8 @@
 # Tenant onboarding with a crew — `tenant-crew@1` (issue #362)
 
-**Status:** specified (#362); implement (#363), wire (#364), test (#365), record
-(#366), surface (#367), document (#368), harden (#369), measure (#370) and demo
-(#371) follow. **Boundary:** ADR-002 D3 and D4 — every data access goes through
+**Status:** specified (#362), implemented (#363), wired (#364); test (#365),
+record (#366), surface (#367), document (#368), harden (#369), measure (#370)
+and demo (#371) follow. **Boundary:** ADR-002 D3 and D4 — every data access goes through
 the OpenGate API, and **agents are service accounts with a responsible person**.
 **Shape:** `schemas/tenant-crew.json`. **The executable oracle:**
 `scripts/check_tenant_crew_spec.py` (`--self-test` mutates the record eight ways).
@@ -48,7 +48,7 @@ industry pack            ┘      │            │
 | 5 | `crew` | the agent accounts: `kind: agent`, owner, purpose | the crew |
 | 6 | `folders` | the ACL: which unit may read/write which folder | the crew |
 | 7 | `plans` | the plan, its ceilings, the trial window | the crew |
-| 8 | `verify` | `resolve.py --sync` green, and the record written | the crew |
+| 8 | `verify` | `resolve.py --sync` green — which now reads this record too (#364) — and the record written | the crew |
 
 Then the handover: `goNoGo` — a person's signature, with a decision and a time.
 
@@ -119,6 +119,21 @@ design decision. The **evidence** lives in the tenant: the agent accounts
 [tenant-crew.md](https://github.com/stevennt/abn.platform.opengate/blob/DEV/docs/tenant-crew.md),
 and the seam is the same one the adapter uses: the design plane never writes a
 tenant file, and the tenant never reads a company model.
+
+## Wired (#364)
+
+The crew is not a side artefact: **the record is checked by the gate the tenant
+already runs**. The OpenGate `resolve.py --sync` calls the tenant-side
+`crew.validate_tenant`, which applies the same rules this page states — the order,
+each step inside its member's mandate, an owner who is a person, units on the
+chart, and a handover that is a person's and comes last. So a tenant that was
+onboarded by a crew cannot be `--sync`-green with a record that contradicts what
+it did, and a tenant onboarded by one operator (no crew, no record) stays valid:
+**the gate requires no crew, only that a crew's record, if present, is true.**
+
+The two checkers are deliberately two: the tenant's writer *prevents* an invalid
+record from being written, and this plane's oracle *detects* one that was edited
+after the fact. One contract page, one order table, one set of codes.
 
 ## The oracle
 

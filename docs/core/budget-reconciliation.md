@@ -258,6 +258,16 @@ or the recorded snapshot with `--recorded`), `record` (write the period), and
 rather than identity. `check` takes no actor: it validates the store and the
 recorded reports, which is the same read `--sync` makes.
 
+## The runbook
+
+`abn.platform.opengate/docs/budget-walkthrough.md` is the generated, end-to-end
+transcript (#308): a tenant with no throttle, a seeded budget, two real runs, the
+measure firing, the cron exit code, a recording and a silent re-recording, the
+history, the throttle refusing a third run (`E-BUD-08`), an overcommit the plan
+cannot afford (`E-BUD-05`), the non-admin refusal, and `check`. It is generated
+by `infra/budget_walkthrough.py`; `--check` regenerates and diffs it, so a stale
+transcript fails the suite.
+
 ## The conformance matrix
 
 The implementation's matrix is `abn.platform.opengate/tests/test_budget_matrix.py`

@@ -1,8 +1,8 @@
 # Company portability — templates, pins, and a bundle that proves itself (contract `company-portability@1`)
 
 **Status:** interface specified (#322), implemented in `scripts/portable.py`
-(#323), wired into the compiler (#324); the record, surface, harden, measure and
-demo steps follow (#325–#331). **Shape:** `schemas/portability-manifest.json`. **Checker:**
+(#323), wired into the compiler (#324), tested (#325); the record, surface,
+harden, measure and demo steps follow (#326–#331). **Shape:** `schemas/portability-manifest.json`. **Checker:**
 `scripts/check_portability_spec.py` (CI, `--self-test`). **Boundary:** ADR-002 D8
 — *company templates carry a contract pin; import refuses an unresolvable pin;
 upgrades are explicit.*
@@ -149,6 +149,25 @@ a clean tree fail on the very artefacts it was delivering.
 
 `--bundle` requires `--out` inside the repository: a manifest whose template sits
 outside it would carry an absolute path, which is `E-PORT-07`.
+
+## The conformance matrix
+
+`scripts/test_portability_matrix.py` runs 18 cases against the **implementation**
+(not only the oracle), each asserting which code fires **and why**:
+
+| Group | Cases |
+|---|---|
+| the pin | a template with no pin; a pin whose sha is not a commit in the repository |
+| completeness | a cited file the checkout does not have |
+| scope | a cited tenant file; a cited absolute path |
+| era | a platform older than the pin |
+| the carrier | a manifest that is not JSON; another contract; an id that no longer matches its contents; a shipped template whose digest is wrong; a bundle with no template beside it |
+| the checkout | an artefact tampered after export |
+| import | over a different compiled model; a bundle newer than the platform |
+| positives | a clean export; two exports of one state share an id; a newer platform accepts an older bundle; the id agrees with the oracle's own |
+
+The last line is the invariant: **every code in the matrix has a case**, and the
+four positives keep a checker that refuses everything from passing.
 
 ## Where it will live
 

@@ -285,6 +285,14 @@ def _bundle_integrity(bundle_path):
     elif _sha_file(shipped) != template.get("sha256"):
         findings.append(("E-PORT-04", f"the shipped template's digest does not "
                                       f"match the manifest"))
+    # the id is the manifest's own summary of itself: if it no longer matches,
+    # something edited the manifest after it was written
+    expected = bundle_id(str(manifest.get("company")),
+                         str(template.get("sha256")),
+                         manifest.get("artefacts") or [])
+    if manifest.get("bundleId") != expected:
+        findings.append(("E-PORT-01", f"the bundle id does not match its own "
+                                      f"contents (expected {expected})"))
     return manifest, findings
 
 

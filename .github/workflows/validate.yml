@@ -46,6 +46,7 @@ jobs:
       - run: python scripts/check_identity_spec.py && python scripts/check_identity_spec.py --self-test
       - run: python scripts/check_budget_spec.py && python scripts/check_budget_spec.py --self-test
       - run: python scripts/check_approval_spec.py && python scripts/check_approval_spec.py --self-test
+      - run: python scripts/check_portability_spec.py && python scripts/check_portability_spec.py --self-test
       - run: python scripts/test_identity_matrix.py
       - run: python scripts/test_paperclip_company.py && python bin/paperclip-company --self-test
       - run: python bin/paperclip-company --all --check

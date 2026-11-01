@@ -60,7 +60,7 @@ how far it may go alone.
 | D5 | **OpenGate is billing truth; Paperclip budgets are a throttle** | two ledgers is two invoices | spend reconciles nightly; a budget stop never changes a statement; the seam is [budget-reconciliation@1](budget-reconciliation.md) |
 | D6 | **Approvals are clicked in Paperclip, decided by the authority grid** | humans want one inbox; the rule is already modelled | `authority_limits` + RACI are imported as approval rules; OpenGate records the decision and the signer; the seam is [approval-gates@1](approval-gates.md) |
 | D7 | **Secrets live in the vault; Paperclip holds references** | one rotation path | run env is injected at heartbeat; Paperclip secret values are never populated for tenant data |
-| D8 | **Company templates carry a contract pin** (`tag` + `sha`) | an agent org must be reproducible months later | import refuses an unresolvable pin; upgrades are explicit |
+| D8 | **Company templates carry a contract pin** (`tag` + `sha`) | an agent org must be reproducible months later | import refuses an unresolvable pin; upgrades are explicit; what a complete export ships is [company-portability@1](portability.md) |
 | D9 | **No prompt-level security** | a prompt is not a control | every boundary is a code check at a tool/API edge, with a denial reason recorded |
 | D10 | **Paperclip is a service, not a library** | licence is fine (MIT), the surface is large | pinned version, telemetry off, authenticated bind, vendored adapter only |
 

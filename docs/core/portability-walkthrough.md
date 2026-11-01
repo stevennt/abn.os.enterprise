@@ -136,6 +136,51 @@ $ bin/portable rollback --company acme --to bundle-7428f5cbc337d64d --root $TMP/
 acme  rolled back to bundle-7428f5cbc337d64d (forced)  → companies/acme/paperclip-company.json
 ```
 
+## The measure
+
+Five rules over the checkout: a stale pin, an unverifiable carrier, drift from the newest bundle, an old record, a company never recorded. This checkout is clean — the bundle was recorded from the template it still has.
+
+```
+$ bin/portable metrics --root $TMP/source
+companies 1 · stored bundles 1 · unrecorded 0 · drifted 0 · stale pins 0 · newest 0 days old · contract unknown
+no alert
+```
+
+## The measure sees drift
+
+`P3`: the live template no longer matches the newest stored bundle. Only the record can answer this — a single file cannot say whether it moved. `--fail-on-alert` makes it a nightly exit code.
+
+```
+$ bin/portable metrics --root $TMP/import --fail-on-alert
+companies 1 · stored bundles 2 · unrecorded 0 · drifted 1 · stale pins 0 · newest 0 days old · contract unknown
+ALERT P3 [high] acme: the live template no longer matches bundle-7428f5cbc337d64d
+(exit 1)
+```
+
+## And a company nobody recorded
+
+`P5`: a compiled template with no stored bundle — it exists and cannot be handed over. That is the other way portability fails quietly: not drift, but a company that never had a record to drift from.
+
+```
+$ bin/portable metrics --root $TMP/unrecorded
+companies 1 · stored bundles 0 · unrecorded 1 · drifted 0 · stale pins 0 · newest 0 days old · contract unknown
+ALERT P5 [high] acme has a compiled template and no stored bundle
+```
+
+## Prove every rule can fire
+
+All five against fabricated numbers, and a clean checkout that must stay quiet.
+
+```
+$ bin/portable drill
+drill: P1 [high] — 1 bundle(s) pinned at an older contract
+drill: P2 [critical] — 1 unverifiable carrier(s)
+drill: P3 [high] — 1 company(ies) drifted from their newest bundle
+drill: P4 [medium] — the newest bundle is 90 days old
+drill: P5 [high] — 1 company(ies) with no stored bundle
+drill: P1, P2, P3, P4, P5 fired, and a clean checkout stayed quiet — OK
+```
+
 ## Check the store
 
 Every stored carrier against its own manifest, every directory named by its bundle id, every log row naming a carrier that exists.

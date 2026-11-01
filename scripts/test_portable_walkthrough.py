@@ -38,17 +38,22 @@ def main():
                     "bin/portable bundles", "bin/portable show",
                     "bin/portable import", "bin/portable rollback",
                     "bin/portable verify", "bin/portable diff",
+                    "bin/portable metrics", "bin/portable drill",
                     "bin/portable check"):
         if command not in text:
             problems.append(f"the transcript never runs {command!r}")
     for expected in ("unchanged (already stored)", "E-PORT-06", "E-PORT-05",
-                     "E-PORT-08", "(forced)", "the same bundle"):
+                     "E-PORT-08", "(forced)", "the same bundle",
+                     "ALERT P3 [high]", "ALERT P5 [high]",
+                     "P1, P2, P3, P4, P5 fired, and a clean checkout stayed quiet"):
         if expected not in text:
             problems.append(f"the transcript never shows {expected!r}")
     if "$TMP" not in text:
         problems.append("the transcript leaks a temporary path")
     if re.search(r"/var/folders/|/tmp/", text):
         problems.append("a raw temporary path leaked into the transcript")
+    if "</script" in text:
+        problems.append("the transcript leaked markup")
     if re.search(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}", text):
         problems.append("an unnormalised timestamp leaked into the transcript")
     if "portability-walkthrough.md" not in CONTRACT.read_text():

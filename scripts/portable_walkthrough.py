@@ -231,6 +231,44 @@ def transcript():
             " checkout re-exports to the same id it went back to — which makes the"
             " id a proof of the restore, not a label.")
 
+        output = call("metrics", "--root", root)
+        add("The measure",
+            "bin/portable metrics --root $TMP/source",
+            output,
+            "Five rules over the checkout: a stale pin, an unverifiable carrier,"
+            " drift from the newest bundle, an old record, a company never"
+            " recorded. This checkout is clean — the bundle was recorded from the"
+            " template it still has.")
+
+        metrics_doc = clean / "companies" / "acme" / "paperclip-company.json"
+        doc = json.loads(metrics_doc.read_text())
+        doc["label"] = "ACME (moved after the rollback)"
+        metrics_doc.write_text(json.dumps(doc, indent=2) + "\n")
+        output = call("metrics", "--root", clean, "--fail-on-alert", expect=1)
+        add("The measure sees drift",
+            "bin/portable metrics --root $TMP/import --fail-on-alert",
+            output,
+            "`P3`: the live template no longer matches the newest stored bundle."
+            " Only the record can answer this — a single file cannot say whether it"
+            " moved. `--fail-on-alert` makes it a nightly exit code.", exit_code=1)
+
+        unrecorded = base / "unrecorded"
+        shutil.copytree(TINY, unrecorded)
+        output = call("metrics", "--root", unrecorded)
+        add("And a company nobody recorded",
+            "bin/portable metrics --root $TMP/unrecorded",
+            output,
+            "`P5`: a compiled template with no stored bundle — it exists and cannot"
+            " be handed over. That is the other way portability fails quietly:"
+            " not drift, but a company that never had a record to drift from.")
+
+        output = call("drill")
+        add("Prove every rule can fire",
+            "bin/portable drill",
+            output,
+            "All five against fabricated numbers, and a clean checkout that must"
+            " stay quiet.")
+
         output = call("check", "--root", clean)
         add("Check the store",
             "bin/portable check --root $TMP/import",

@@ -1,8 +1,8 @@
 # Tenant onboarding with a crew — `tenant-crew@1` (issue #362)
 
 **Status:** specified (#362), implemented (#363), wired (#364), tested (#365),
-recorded (#366); surface (#367), document (#368), harden (#369), measure (#370)
-and demo (#371) follow. **Boundary:** ADR-002 D3 and D4 — every data access goes through
+recorded (#366), surfaced (#367); document (#368), harden (#369), measure
+(#370) and demo (#371) follow. **Boundary:** ADR-002 D3 and D4 — every data access goes through
 the OpenGate API, and **agents are service accounts with a responsible person**.
 **Shape:** `schemas/tenant-crew.json`. **The executable oracle:**
 `scripts/check_tenant_crew_spec.py` (`--self-test` mutates the record eight ways).
@@ -109,6 +109,19 @@ alone.
 Every code names its fix (`FIX` in the oracle), because the audience is an
 operator who has to finish the onboarding, not a developer who has to read a
 traceback.
+
+## Who may read it, and who may sign it (#367)
+
+Two permissions, and the split is the contract's own:
+
+| Action | Who | The rule |
+|---|---|---|
+| read the record | **tenant admin** | it names who onboarded the tenant and what each agent may do |
+| sign the handover | **a person of this tenant** | `E-CRW-08` — never a member, and the signing principal is the one the credential belongs to |
+
+So a token minted by an agent cannot sign a handover, not because a surface adds
+a rule but because the record already refuses a member's signature. That is D4
+expressed as an authorisation decision rather than a sentence.
 
 ## The tenant half
 

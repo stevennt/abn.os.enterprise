@@ -1,8 +1,8 @@
 {
  "version": 1,
  "kind": "plane-boundary-audit",
- "at": "2026-11-01T08:09:06Z",
- "commit": "0cf7fd6",
+ "at": "2026-11-01T08:11:45Z",
+ "commit": "3ad1c31",
  "contract": "paperclip-boundary@1.0",
  "checks": [
   {
@@ -34,6 +34,20 @@
    "summary": "plane-contract --self-test: 13 mutations, each caught \u2014 OK"
   },
   {
+   "check": "template spec",
+   "command": "python scripts/check_paperclip_template.py --template tests/fixtures/paperclip-company.example.json",
+   "exit": 0,
+   "outputSha256": "e4203e9f9b7e1a73d205fe4d0e11e6a1bc1598af8518ee0749ed3fc4ac831ba1",
+   "summary": "paperclip-template: paperclip-company.example.json valid \u2014 example-bank (3 agents, 2 routines, paperclip-boundary@1.0)"
+  },
+  {
+   "check": "template self-test",
+   "command": "python scripts/check_paperclip_template.py --self-test",
+   "exit": 0,
+   "outputSha256": "e81253448d787f73cf447229e2b8235a03d043da89475ae6e7ffbcd418a4615e",
+   "summary": "paperclip-template --self-test: 11 cases (1 valid, 10 refused) \u2014 OK"
+  },
+  {
    "check": "docs links",
    "command": "python scripts/docs_link_check.py",
    "exit": 0,
@@ -44,8 +58,8 @@
    "check": "playbook",
    "command": "python scripts/playbook_sync.py",
    "exit": 0,
-   "outputSha256": "45539b0185094083ac7032307a8e12fda0a9a1149a133e6170586200419a10b3",
-   "summary": "playbook: all 39 CI scripts are referenced \u2014 OK"
+   "outputSha256": "15821c15962fdbdf6d7d91f9b47185a400157479d95726446577bc4ce50d0a61",
+   "summary": "playbook: all 40 CI scripts are referenced \u2014 OK"
   },
   {
    "check": "industry model",
@@ -63,14 +77,18 @@
   }
  ],
  "inputs": {
-  "docs/core/paperclip-integration.md": "41d2711b130254c79797fd84492de709fca62699b910cbb643d31444bc735a5a",
+  "docs/core/paperclip-integration.md": "15a6f91526dc0fbfdedeea0534040acaa921d4351a401e2d3a7fc7cd5308d197",
   "docs/core/adr-002-paperclip-three-planes.md": "5cf1325f2a160b8a878e3983a46b4a4073b0d34296f895ada9230e16a1c7e474",
   "docs/core/paperclip-reviews/PC1-01-02-plane-contract.md": "9b6a5e8b854184e6bbe3df144137d2fa87fddeeeab5862b20cfa21399fa04eb5",
   "docs/core/paperclip-explainer.md": "8f051c377c9eeebe37cef28b45325d11870ed87b26d4c8979c790b84200b0dbe",
   "docs/core/paperclip-reviews/PC1-01-09-explainer.md": "eb50541a968e6963fe7712d24a6193f1604b1adb43431e4b59d312847973719f",
   "scripts/check_plane_boundary.py": "641b11e2e57dd4cba1a09ebf32c0b7306c21a178c8b05554c7cf55b5353cdaef",
   "scripts/test_plane_contract.py": "1f20fa2f8b3a3582ea0bc1ff8f84834c2017c133e7d85a05b9b3990e9a397906",
-  "scripts/audit_boundary.py": "2da23f10007a4ee2ba383ccb57339e7d28955152419817c2311e359a2e86bf0d"
+  "scripts/check_paperclip_template.py": "df41d59a5bda69a8809005498a9422fa499ec1316090fe5a6dcb3f68f4034247",
+  "schemas/paperclip-company.json": "20167cffa4623c474c54da0097e4840aea18cb25b28333060240a7b1060cfd7e",
+  "tests/fixtures/paperclip-company.example.json": "164b2fa6d3d9e4a6fbb6a4c2e251259214eadf92a0a26d439b5abba62acc6119",
+  "docs/core/paperclip-compiler.md": "a246da0a72e5edad294099ee14cee8594ee86df95244655e82db21af1e2c1c07",
+  "scripts/audit_boundary.py": "e33a9ebffa1945ffd3af89314d0f1a0a269dc6ba39c6dc2ca1da1132751fe97f"
  },
  "openItems": [
   {
@@ -84,10 +102,6 @@
   {
    "item": "per-agent budget vs tenant ceiling, group split",
    "issue": 302
-  },
-  {
-   "item": "company-template schema",
-   "issue": 252
   },
   {
    "item": "OpenGate-down semantics (fail closed)",

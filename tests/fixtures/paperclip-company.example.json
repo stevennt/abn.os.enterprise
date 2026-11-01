@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "company": "example-bank",
+  "label": "Example Bank — operations model (scaffold)",
+  "boundary": "paperclip-boundary@1.0",
+  "contract": {
+    "tag": "contract-2026.11.1",
+    "sha": "a7baab409dce013bd296b57aafc500565b878dfa"
+  },
+  "agents": [
+    {
+      "id": "retail-head",
+      "role": "retail.head",
+      "title": "Head of Retail",
+      "unit": "retail",
+      "reportsTo": null,
+      "responsibility": "Owns the retail flow outcomes.",
+      "permissions": [
+        "flow:loan.retail.unsecured"
+      ],
+      "skills": []
+    },
+    {
+      "id": "credit-officer",
+      "role": "credit.officer",
+      "title": "Credit Officer",
+      "unit": "retail",
+      "reportsTo": "retail-head",
+      "responsibility": "Prepares and scores the file.",
+      "permissions": [
+        "flow:loan.retail.unsecured"
+      ],
+      "skills": [
+        "banking-kyc-screening"
+      ]
+    },
+    {
+      "id": "compliance-bot",
+      "role": "compliance.screen",
+      "title": "Compliance screening",
+      "unit": "compliance",
+      "reportsTo": "retail-head",
+      "responsibility": "Screens for sanctions and AML holds.",
+      "permissions": [
+        "flow:loan.retail.unsecured"
+      ],
+      "skills": [
+        "banking-kyc-screening"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "loan.retail.unsecured",
+      "name": "Retail unsecured loan",
+      "sourceFlow": "industries/banking/flows/loan-approval.flow.yaml"
+    }
+  ],
+  "routines": [
+    {
+      "id": "loan.s1-verify",
+      "project": "loan.retail.unsecured",
+      "step": "s1-verify",
+      "level": "L4",
+      "autonomy": "autonomous",
+      "usesRules": [
+        "KYC-01"
+      ],
+      "ruleStatus": "signed"
+    },
+    {
+      "id": "loan.s2-extract",
+      "project": "loan.retail.unsecured",
+      "step": "s2-extract",
+      "level": "L3",
+      "autonomy": "supervised",
+      "usesRules": [
+        "DOC-EXTRACT-01"
+      ],
+      "ruleStatus": "signed"
+    }
+  ],
+  "skills": [
+    {
+      "id": "banking-kyc-screening",
+      "path": "industries/banking/pack/skills/banking-kyc-screening"
+    }
+  ],
+  "evals": [
+    {
+      "id": "doc-extract",
+      "path": "industries/banking/evals/doc-extract"
+    }
+  ],
+  "source": {
+    "company": "companies/example-bank/company.yaml",
+    "industry": "industries/banking",
+    "files": [
+      "companies/example-bank/company.yaml",
+      "companies/example-bank/org/org-chart.yaml",
+      "industries/banking/flows/loan-approval.flow.yaml"
+    ]
+  }
+}

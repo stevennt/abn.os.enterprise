@@ -34,6 +34,9 @@ CHECKS = (
     ("boundary self-test", ["scripts/check_plane_boundary.py", "--self-test"]),
     ("contract tests", ["scripts/test_plane_contract.py"]),
     ("contract self-test", ["scripts/test_plane_contract.py", "--self-test"]),
+    ("template spec", ["scripts/check_paperclip_template.py", "--template",
+                       "tests/fixtures/paperclip-company.example.json"]),
+    ("template self-test", ["scripts/check_paperclip_template.py", "--self-test"]),
     ("docs links", ["scripts/docs_link_check.py"]),
     ("playbook", ["scripts/playbook_sync.py"]),
     ("industry model", ["scripts/validate.py"]),
@@ -47,13 +50,16 @@ GUARDED = (
     "docs/core/paperclip-reviews/PC1-01-09-explainer.md",
     "scripts/check_plane_boundary.py",
     "scripts/test_plane_contract.py",
+    "scripts/check_paperclip_template.py",
+    "schemas/paperclip-company.json",
+    "tests/fixtures/paperclip-company.example.json",
+    "docs/core/paperclip-compiler.md",
     "scripts/audit_boundary.py",
 )
 OPEN_ITEMS = (
     {"item": "run-context mode in resolve.py", "issue": 283},
     {"item": "agent service accounts (no password)", "issue": 273},
     {"item": "per-agent budget vs tenant ceiling, group split", "issue": 302},
-    {"item": "company-template schema", "issue": 252},
     {"item": "OpenGate-down semantics (fail closed)", "issue": 352},
 )
 

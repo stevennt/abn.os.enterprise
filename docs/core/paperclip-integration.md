@@ -126,7 +126,8 @@ Rules:
    `{version, company, contract: {tag, sha}, agents[], projects[], routines[],
    skills[], evals[]}`. Every agent cites a role; every routine cites a process
    step and its automation level; an `L0–L2` or `authority: pending-review` step
-   cannot compile to an autonomous routine.
+   cannot compile to an autonomous routine. Shape: `schemas/paperclip-company.json`;
+   interface and refusals: `docs/core/paperclip-compiler.md`.
 2. **Run context** (OpenGate → Paperclip, resolved per heartbeat):
    `{tenant, company, account, role, unit, dataMode, skills[], acl[], case?}` from
    `gateway/resolve.py`, passed to the adapter as env + a signed context file.

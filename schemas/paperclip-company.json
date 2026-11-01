@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://abn.os.enterprise/schemas/paperclip-company.json",
+  "title": "Paperclip company template — compiled from companies/<id>",
+  "description": "The one artefact the compiler emits and Paperclip imports. Shape only; the semantic rules (org roots, rule authority, autonomy ceiling) are enforced by scripts/check_paperclip_template.py and specified in docs/core/paperclip-compiler.md.",
+  "type": "object",
+  "required": ["version", "company", "label", "boundary", "contract", "agents", "projects", "routines", "skills", "evals"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "const": 1 },
+    "company": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,30}$",
+      "description": "Companies/<company> id; the template is for one legal entity."
+    },
+    "label": { "type": "string", "minLength": 1 },
+    "boundary": {
+      "type": "string",
+      "pattern": "^paperclip-boundary@\\d+\\.\\d+$",
+      "description": "The boundary contract version this template was compiled against."
+    },
+    "contract": {
+      "type": "object",
+      "required": ["tag", "sha"],
+      "additionalProperties": false,
+      "properties": {
+        "tag": { "type": "string", "pattern": "^contract-\\d{4}\\.\\d{2}\\.\\d+$" },
+        "sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" }
+      }
+    },
+    "agents": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/agent" }
+    },
+    "projects": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/project" }
+    },
+    "routines": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/routine" }
+    },
+    "skills": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/skill" }
+    },
+    "evals": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/eval" }
+    },
+    "source": {
+      "type": "object",
+      "description": "Provenance: the files the compiler read, so a template can be re-derived and audited.",
+      "additionalProperties": false,
+      "properties": {
+        "company": { "type": "string" },
+        "industry": { "type": "string" },
+        "files": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "definitions": {
+    "agent": {
+      "type": "object",
+      "required": ["id", "role", "title", "unit", "reportsTo", "responsibility"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$" },
+        "role": { "type": "string", "pattern": "^[a-z][a-z0-9.-]{1,48}$" },
+        "title": { "type": "string", "minLength": 1 },
+        "unit": { "type": "string", "minLength": 1 },
+        "reportsTo": { "type": ["string", "null"] },
+        "responsibility": { "type": "string", "minLength": 1 },
+        "permissions": { "type": "array", "items": { "type": "string" } },
+        "skills": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "project": {
+      "type": "object",
+      "required": ["id", "name", "sourceFlow"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9.-]{1,48}$" },
+        "name": { "type": "string", "minLength": 1 },
+        "sourceFlow": { "type": "string", "minLength": 1 }
+      }
+    },
+    "routine": {
+      "type": "object",
+      "required": ["id", "project", "step", "level", "autonomy", "usesRules", "ruleStatus"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9.-]{1,48}$" },
+        "project": { "type": "string" },
+        "step": { "type": "string", "minLength": 1 },
+        "level": { "enum": ["L3", "L4", "L5"] },
+        "autonomy": { "enum": ["supervised", "autonomous"] },
+        "usesRules": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "ruleStatus": {
+          "enum": ["signed", "pending"],
+          "description": "pending = at least one cited rule still says authority: pending-*; such a routine may only be supervised."
+        },
+        "touchpoint": { "type": "string" }
+      }
+    },
+    "skill": {
+      "type": "object",
+      "required": ["id", "path"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,48}$" },
+        "path": { "type": "string", "minLength": 1 }
+      }
+    },
+    "eval": {
+      "type": "object",
+      "required": ["id", "path"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,48}$" },
+        "path": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "approval-gates@1",
+  "title": "Approval gate decision (approval-gates@1)",
+  "description": "One request, one decision, one signer. The gate freezes the limit it was decided against, so a later grid change cannot rewrite the reason.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "contract", "id", "tenant", "company", "request",
+               "gate", "decision", "reason", "escalateTo", "at"],
+  "properties": {
+    "version": { "const": 1 },
+    "contract": { "const": "approval-gates@1" },
+    "id": {
+      "type": "string",
+      "pattern": "^ap-[0-9a-f]{16}$",
+      "description": "sha256(tenant|company|request.id)[:16] — one id per request"
+    },
+    "tenant": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$" },
+    "company": { "type": "string", "minLength": 1 },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "amount", "currency", "requester", "unit"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "kind": { "enum": ["payment", "memo", "release", "exception"] },
+        "amount": { "type": "number", "minimum": 0 },
+        "currency": { "type": "string", "minLength": 1 },
+        "requester": { "type": "string", "minLength": 1 },
+        "unit": { "type": "string", "minLength": 1 }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["approver", "role", "limit", "currency"],
+      "properties": {
+        "approver": { "type": "string", "minLength": 1 },
+        "role": { "type": "string", "minLength": 1 },
+        "limit": { "type": "number", "minimum": 0 },
+        "currency": { "type": "string", "minLength": 1 }
+      }
+    },
+    "decision": { "enum": ["approved", "refused", "escalated"] },
+    "reason": { "type": "string", "minLength": 1 },
+    "escalateTo": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["role", "limit"],
+          "properties": {
+            "role": { "type": "string", "minLength": 1 },
+            "limit": { "type": "number", "minimum": 0 }
+          }
+        }
+      ]
+    },
+    "at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?Z$"
+    }
+  }
+}

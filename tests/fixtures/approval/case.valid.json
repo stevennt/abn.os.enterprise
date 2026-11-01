@@ -1,0 +1,224 @@
+{
+  "tenant": "acme",
+  "company": "acme",
+  "at": "2026-11-01T09:00:00.000Z",
+  "notes": "One company, one grid, four requests and one replay. admin approves 120M; an agent is refused as maker; a credit officer escalates 800M to admin; admin cannot approve 9bn because nobody can; and a second click on the first request is E-GOV-06.",
+  "grid": {
+    "currency": "VND",
+    "grid": [
+      {
+        "role": "credit-officer",
+        "maxAmount": 500000000
+      },
+      {
+        "role": "admin",
+        "maxAmount": 5000000000
+      }
+    ]
+  },
+  "units": {
+    "finance": [
+      "admin",
+      "credit-officer"
+    ],
+    "ops": [
+      "admin",
+      "support"
+    ]
+  },
+  "accounts": {
+    "admin-1": {
+      "role": "admin",
+      "unit": "finance",
+      "kind": "person"
+    },
+    "credit-officer-1": {
+      "role": "credit-officer",
+      "unit": "finance",
+      "kind": "person"
+    },
+    "ops-admin": {
+      "role": "admin",
+      "unit": "ops",
+      "kind": "person"
+    },
+    "agent-co": {
+      "role": "credit-officer",
+      "unit": "finance",
+      "kind": "agent"
+    },
+    "support-1": {
+      "role": "support",
+      "unit": "ops",
+      "kind": "person"
+    }
+  },
+  "raci": {
+    "finance": {
+      "accountable": "admin-1"
+    }
+  },
+  "gates": [
+    {
+      "request": {
+        "id": "REQ-1",
+        "kind": "payment",
+        "amount": 120000000,
+        "currency": "VND",
+        "requester": "agent-co",
+        "unit": "finance"
+      },
+      "approver": "admin-1"
+    },
+    {
+      "request": {
+        "id": "REQ-2",
+        "kind": "payment",
+        "amount": 120000000,
+        "currency": "VND",
+        "requester": "agent-co",
+        "unit": "finance"
+      },
+      "approver": "agent-co"
+    },
+    {
+      "request": {
+        "id": "REQ-3",
+        "kind": "payment",
+        "amount": 800000000,
+        "currency": "VND",
+        "requester": "agent-co",
+        "unit": "finance"
+      },
+      "approver": "credit-officer-1"
+    },
+    {
+      "request": {
+        "id": "REQ-4",
+        "kind": "payment",
+        "amount": 9000000000,
+        "currency": "VND",
+        "requester": "agent-co",
+        "unit": "finance"
+      },
+      "approver": "admin-1"
+    },
+    {
+      "request": {
+        "id": "REQ-1",
+        "kind": "payment",
+        "amount": 120000000,
+        "currency": "VND",
+        "requester": "agent-co",
+        "unit": "finance"
+      },
+      "approver": "ops-admin"
+    },
+    {
+      "request": {
+        "id": "REQ-5",
+        "kind": "payment",
+        "amount": 1000000,
+        "currency": "VND",
+        "requester": "agent-co",
+        "unit": "finance"
+      },
+      "approver": "ops-admin"
+    }
+  ],
+  "expected": [
+    {
+      "version": 1,
+      "contract": "approval-gates@1",
+      "id": "ap-2ae8d8a6776a1583",
+      "tenant": "acme",
+      "company": "acme",
+      "request": {
+        "id": "REQ-1",
+        "kind": "payment",
+        "amount": 120000000,
+        "currency": "VND",
+        "requester": "agent-co",
+        "unit": "finance"
+      },
+      "gate": {
+        "approver": "admin-1",
+        "role": "admin",
+        "limit": 5000000000,
+        "currency": "VND"
+      },
+      "decision": "approved",
+      "reason": "admin-1 (admin) may approve 120000000 (limit 5000000000)",
+      "escalateTo": null,
+      "at": "2026-11-01T09:00:00.000Z"
+    },
+    {
+      "code": "E-GOV-04",
+      "reason": "'agent-co' is an agent; the signer is a human",
+      "fix": "have a human who is not the requester click it"
+    },
+    {
+      "version": 1,
+      "contract": "approval-gates@1",
+      "id": "ap-168f9315472ea053",
+      "tenant": "acme",
+      "company": "acme",
+      "request": {
+        "id": "REQ-3",
+        "kind": "payment",
+        "amount": 800000000,
+        "currency": "VND",
+        "requester": "agent-co",
+        "unit": "finance"
+      },
+      "gate": {
+        "approver": "credit-officer-1",
+        "role": "credit-officer",
+        "limit": 500000000,
+        "currency": "VND"
+      },
+      "decision": "escalated",
+      "reason": "credit-officer-1 (credit-officer) may approve up to 500000000; 800000000 needs admin",
+      "escalateTo": {
+        "role": "admin",
+        "limit": 5000000000
+      },
+      "at": "2026-11-01T09:00:00.000Z"
+    },
+    {
+      "code": "E-GOV-07",
+      "reason": "no role at unit 'finance' can approve 9000000000 VND",
+      "fix": "raise a limit, or route to the group with an explicit grid"
+    },
+    {
+      "code": "E-GOV-06",
+      "reason": "request 'REQ-1' was already decided by 'admin-1'",
+      "fix": "read the record; a gate is decided once"
+    },
+    {
+      "version": 1,
+      "contract": "approval-gates@1",
+      "id": "ap-f11b0d74941f2069",
+      "tenant": "acme",
+      "company": "acme",
+      "request": {
+        "id": "REQ-5",
+        "kind": "payment",
+        "amount": 1000000,
+        "currency": "VND",
+        "requester": "agent-co",
+        "unit": "finance"
+      },
+      "gate": {
+        "approver": "ops-admin",
+        "role": "admin",
+        "limit": 5000000000,
+        "currency": "VND"
+      },
+      "decision": "approved",
+      "reason": "ops-admin (admin) may approve 1000000 (limit 5000000000)",
+      "escalateTo": null,
+      "at": "2026-11-01T09:00:00.000Z"
+    }
+  ]
+}

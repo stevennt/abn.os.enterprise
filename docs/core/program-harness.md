@@ -138,6 +138,18 @@ mutates it seven ways — a drifted fixture, a wrong outcome, a right outcome fo
 wrong code, a dirty tree, a mixed pin pair, a step with no assertion, a run that is
 not repeatable — and asserts each code fires.
 
+## The conformance matrix
+
+The implementation's matrix is `abn.platform.opengate/tests/test_harness_matrix.py`
+(#335): 15 cases, split by plane. **Four codes are the runner's** — a broken script
+(`E-HRN-01`), a wrong outcome (`02`), the right outcome for the wrong reason (`03`,
+and explicitly *not* `02`), a fixture edited between runs (`04`). **Three are the
+record's** — mixed pins (`05`), an unaccounted step (`06`), a second run with a
+different id (`07`) — and those are proved through this repository's oracle, so the
+matrix exercises both sides of the seam. A clean script passes, the id does not move
+with the clock, and a final case asserts the two code sets are disjoint and cover
+every code.
+
 ## Where it will live
 
 | Piece | Path (planned) |

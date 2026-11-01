@@ -88,7 +88,7 @@ def main():
         template.write_text(json.dumps(doc, indent=2) + "\n")
 
         _payload, refused = P.rollback(root, "acme", first["bundleId"])
-        if "E-PORT-04" not in codes(refused):
+        if "E-PORT-08" not in codes(refused):
             problems.append(f"a rollback overwrote without --force: {refused}")
         rolled, findings = P.rollback(root, "acme", first["bundleId"], force=True)
         if findings:

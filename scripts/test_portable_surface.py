@@ -105,7 +105,7 @@ def main():
         template.write_text(json.dumps(doc, indent=2) + "\n")
         refused = run("rollback", "--company", "acme", "--to", bundle_id,
                       "--root", root)
-        if refused.returncode != 1 or "E-PORT-04" not in refused.stderr:
+        if refused.returncode != 1 or "E-PORT-08" not in refused.stderr:
             problems.append(f"a bare rollback says {refused.returncode}/"
                             f"{refused.stderr.strip()!r}")
         forced = run("rollback", "--company", "acme", "--to", bundle_id,

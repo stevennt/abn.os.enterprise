@@ -195,6 +195,26 @@ def _(tmp):
     return findings
 
 
+@case("a rollback that would overwrite without --force", "E-PORT-08",
+      "would overwrite")
+def _(tmp):
+    root, path, _ = bundle(tmp)
+    _manifest, findings, _rel = P.do_import(root, path,
+                                            platform="contract-2026.11.3")
+    _payload, refused = P.record(root, "acme", platform="contract-2026.11.3")
+    if refused:
+        return refused
+    template = template_path(root)
+    doc = json.loads(template.read_text())
+    doc["label"] = "edited"
+    template.write_text(json.dumps(doc, indent=2) + "\n")
+    bundle_id = json.loads((root / "companies" / "acme" / "bundles"
+                            / "index.jsonl").read_text().splitlines()[0])[
+                                "bundleId"]
+    _payload, findings = P.rollback(root, "acme", bundle_id)
+    return findings
+
+
 @case("importing a bundle newer than the platform", "E-PORT-06", "this platform")
 def _(tmp):
     root, path, _ = bundle(tmp)

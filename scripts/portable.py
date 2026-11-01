@@ -39,7 +39,7 @@ LOG_FIELDS = ("version", "at", "company", "bundleId", "templateSha256",
               "artefacts", "action")
 TAG_RE = re.compile(r"^contract-([0-9]{4})\.([0-9]{2})\.([0-9]+)$")
 CODES = ("E-PORT-01", "E-PORT-02", "E-PORT-03", "E-PORT-04", "E-PORT-05",
-         "E-PORT-06", "E-PORT-07")
+         "E-PORT-06", "E-PORT-07", "E-PORT-08")
 FIX = {
     "E-PORT-01": "fix the export; the importer does not guess",
     "E-PORT-02": "fix the compile (E-COMP-02); a bundle without a pin is not "
@@ -52,6 +52,8 @@ FIX = {
                  "drop what it cannot read",
     "E-PORT-07": "make it relative to the repository root; an absolute path is a "
                  "bundle that only works on its own machine",
+    "E-PORT-08": "pass --force if that is what you mean; a rollback replaces a "
+                 "compiled model, so it is deliberate and it is logged",
 }
 
 
@@ -339,8 +341,8 @@ def rollback(root, company, to, force=False, platform=None, now=None):
     target = root / rel
     if target.is_file() and _sha_file(target) != manifest["template"]["sha256"] \
             and not force:
-        return None, [("E-PORT-04", f"rolling back to {to} would overwrite "
-                                    f"{rel}; pass --force to do it on purpose")]
+        return None, [("E-PORT-08", f"rolling back to {to} would overwrite "
+                                    f"{rel}")]
     target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(bundle_path.parent / Path(rel).name, target)
     row = {"version": 1, "at": now or _iso_now(), "company": company,

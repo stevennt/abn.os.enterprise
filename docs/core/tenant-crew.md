@@ -1,7 +1,7 @@
 # Tenant onboarding with a crew — `tenant-crew@1` (issue #362)
 
 **Status:** specified (#362), implemented (#363), wired (#364), tested (#365),
-recorded (#366), surfaced (#367), documented (#368); harden (#369), measure
+recorded (#366), surfaced (#367), documented (#368), hardened (#369); measure
 (#370) and demo (#371) follow. **The runbook:**
 [tenant-crew-walkthrough.md](https://github.com/stevennt/abn.platform.opengate/blob/DEV/docs/tenant-crew-walkthrough.md)
 — the roster, the eight steps with their refusals, the gate, the handover. **Boundary:** ADR-002 D3 and D4 — every data access goes through
@@ -111,6 +111,12 @@ alone.
 Every code names its fix (`FIX` in the oracle), because the audience is an
 operator who has to finish the onboarding, not a developer who has to read a
 traceback.
+
+**Hardened (#369).** A linked record or a linked chain is refused rather than
+followed; the writers take a per-tenant lock, so two runners cannot record one
+step twice and skip another; and `init` refuses to *create* the agents it names —
+an account is the identity store's to make, with an owner and no credential. The
+crew may name an agent; it may never invent one.
 
 ## Who may read it, and who may sign it (#367)
 

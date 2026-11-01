@@ -102,6 +102,27 @@ script someone remembers to run. The reference model `example-bank` is not opted
 in — see the input gap below — so the gate is green while the packs are
 incomplete, and becomes meaningful the moment a model declares the intent.
 
+## Surface (#257)
+
+An operator should not have to read the JSON to see the crew.
+
+| Command | Gives |
+|---|---|
+| `bin/paperclip-company --show --company <id>` | the crew on stdout: agents with their reporting lines, projects, routines with level, autonomy, rule status and the rules they cite |
+| `bin/paperclip-company --render --company <id> [--out …]` | `companies/<id>/crew.md` — a reviewable sheet (generated; do not edit). Deterministic, model-only: no secrets and no tenant data |
+
+A refused compile renders nothing: the command exits 1 with the `E-COMP` code.
+
+**Who may see and act on it.** In this repository the reader is the operator or
+the reviewer in the pull request. A change to `companies/` (including the
+generated sheet) is gated by `.github/CODEOWNERS` and requires a review from the
+delivery team; that gate only bites once branch protection requires code-owner
+reviews, which is a repository setting, not a file.
+
+The **tenant-admin** view of its own crew (scoped by role and unit, inside the
+portal) is a platform task — PC2-14-01 (#372). It reads the same template, and
+its permission check is OpenGate's role/unit ACL, not this repository's.
+
 ## Compile records (#256)
 
 Every real run can leave evidence:

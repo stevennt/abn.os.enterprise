@@ -1,0 +1,9 @@
+# The compiled crew is an operating decision, not a file edit. A change to a
+# company model (and the crew sheet generated from it) needs the delivery team's
+# review; so does the compiler and the template schema it must satisfy.
+#
+# This file only takes effect with branch protection that requires review from
+# code owners — see docs/core/paperclip-compiler.md (Surface).
+companies/                      @stevennt
+bin/paperclip-company           @stevennt
+schemas/paperclip-company.json  @stevennt

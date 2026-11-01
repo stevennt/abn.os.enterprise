@@ -13,6 +13,8 @@ satisfy, and they fail if a behaviour is removed:
   T7  the nested model (three units, two flows, a shared role, an external party)
       compiles to its own golden, with the hierarchy, the touchpoint and the
       exclusions right;
+  T14 `--show` and `--render` give a human the crew (deterministic, no secrets,
+      and nothing written when the compile is refused);
   T13 `--record` appends a compile record per run, and `--check` never records;
   T6  `--all` compiles every opted-in company and fails only for those: a refused
       company that opted in fails the run, a refused company that did not is
@@ -193,6 +195,44 @@ def tests():
         check("T12 E-COMP-02 tag", result.returncode == 1
               and "E-COMP-02" in result.stderr, result.stderr.strip())
 
+    # T14 — the human surface
+    shown = subprocess.run([PY, str(CLI), "--root", str(MODEL), "--company", "nested",
+                            "--show"], capture_output=True, text=True)
+    check("T14 show runs", shown.returncode == 0, shown.stderr.strip())
+    check("T14 show names the crew", "bank-ops-credit-officer" in shown.stdout
+          and "autonomous" in shown.stdout and "nested — Nested Company" in shown.stdout,
+          shown.stdout[:200])
+
+    with tempfile.TemporaryDirectory() as tmp:
+        first = Path(tmp) / "crew.md"
+        result = subprocess.run([PY, str(CLI), "--root", str(MODEL), "--company",
+                                 "nested", "--render", "--out", str(first)],
+                                capture_output=True, text=True)
+        check("T14 render runs", result.returncode == 0, result.stderr.strip())
+        if first.is_file():
+            sheet = first.read_text()
+            check("T14 sheet has the tables", "## Agents" in sheet
+                  and "## Routines" in sheet and "`nested.b.b1`" in sheet)
+            check("T14 sheet has no secret",
+                  "secret" not in sheet.lower() and "password" not in sheet.lower())
+            second = Path(tmp) / "crew2.md"
+            subprocess.run([PY, str(CLI), "--root", str(MODEL), "--company", "nested",
+                            "--render", "--out", str(second)], capture_output=True)
+            check("T14 render is deterministic", second.is_file()
+                  and second.read_text() == sheet)
+
+    with tempfile.TemporaryDirectory() as tmp:
+        model = _copy(tmp)
+        _mutate(model / "industries" / "demo" / "flows" / "demo.flow.yaml",
+                "uses_rule: [DEMO-01]", "uses_rule: [GHOST-01]")
+        sheet = model / "companies" / "demo" / "crew2.md"
+        result = subprocess.run([PY, str(CLI), "--root", str(model), "--company", "demo",
+                                 "--render", "--out", str(sheet)],
+                                capture_output=True, text=True)
+        check("T14 refusal writes no sheet", result.returncode == 1
+              and not sheet.exists()
+              and "E-COMP-07" in result.stderr, result.stderr.strip())
+
     # T13 — the compile record
     with tempfile.TemporaryDirectory() as tmp:
         model = _copy(tmp)
@@ -264,7 +304,7 @@ def main():
         return 1
     print("paperclip-compiler tests: 2 goldens, determinism, hierarchy, shared "
           "role, touchpoint, human/system/external exclusion, 9 refusals, --all "
-          "opt-in policy, compile record — OK")
+          "opt-in policy, compile record, surface — OK")
     return 0
 
 

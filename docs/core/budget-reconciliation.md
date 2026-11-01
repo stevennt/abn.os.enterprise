@@ -290,10 +290,12 @@ in `customers/<t>/budget-alerts.jsonl`; `--sync` validates the store, and
 ## The runbook
 
 `abn.platform.opengate/docs/budget-walkthrough.md` is the generated, end-to-end
-transcript (#308): a tenant with no throttle, a seeded budget, two real runs, the
-measure firing, the cron exit code, a recording and a silent re-recording, the
-history, the throttle refusing a third run (`E-BUD-08`), an overcommit the plan
-cannot afford (`E-BUD-05`), the non-admin refusal, and `check`. It is generated
+transcript of the whole workstream (#308, extended by #311): a tenant with no
+throttle, a seeded budget, two real runs, the report's measure and its cron exit
+code, a recording and a silent re-recording, the history, the throttle refusing
+three runs (`E-BUD-08`), an overcommit the plan cannot afford (`E-BUD-05`), the
+watch firing `B1`/`B3`/`B5`, the alert recorded with the second scan silent, the
+six-rule drill, the non-admin refusal, and `check`. It is generated
 by `infra/budget_walkthrough.py`; `--check` regenerates and diffs it, so a stale
 transcript fails the suite.
 

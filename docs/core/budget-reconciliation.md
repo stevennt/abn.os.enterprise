@@ -249,6 +249,15 @@ into "per duplicate". `--sync` validates both halves — the file name is the
 period, the document agrees with it, and a finding carries a report code (the two
 raised codes never appear in a report).
 
+## The operator surface
+
+`infra/budget.py` in the tenant repo: `status` (plan, agents, quota rows and
+findings on one screen, `--fail-on-findings` for cron), `report` (the document,
+or the recorded snapshot with `--recorded`), `record` (write the period), and
+`history` (the runs). All four are admin-only, and the refusal names *budgets*
+rather than identity. `check` takes no actor: it validates the store and the
+recorded reports, which is the same read `--sync` makes.
+
 ## The conformance matrix
 
 The implementation's matrix is `abn.platform.opengate/tests/test_budget_matrix.py`
@@ -273,7 +282,7 @@ A final case asserts the matrix covers every code in `SEVERITY`.
 |---|---|
 | the store | `customers/<tenant>/budgets.json` |
 | the arithmetic (and the event → run → account join) | `gateway/budget.py` (#303) |
-| the surface | `infra/budget.py` — `reconcile`, `store`, `set`, `drill` (#305) |
+| the surface | `infra/budget.py` — `status`, `report`, `record`, `history`, `check` (#307) |
 | the gate | `--sync` validates the store and the report's shape (#304) |
 | the measure | `gateway/budget_metrics.py` — overcommit, unbudgeted spend, overruns (#307) |
 

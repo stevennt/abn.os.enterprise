@@ -5,15 +5,16 @@ OpenGate tenant — a group of companies or a single legal entity, each with its
 own org chart, departments and folders — and its people sign in through 1ID.*
 
 **Verdict: the tenant side is real, gated and evidenced; the identity side is
-not.** 78 of the 99 scored issues are delivered — 77 closed and 1 committed but
-left open (#203); this review is the 100th and is not scored. Every concern of
-tenant onboarding now has a contract, a CLI and a record: shape, org, folders,
-ACL, seats, plans, terms, metering, statements, export/import, health, the
-onboarding guide and the go/no-go scorecard. What the loop was named after —
-the 1ID login — was configured (`sso.json`, rotation runbook) but its login
-path is another session's uncommitted work, and a group tenant still cannot use
-the portal. The next loop is the pilot loop: finish those two, then take one
-customer through.
+not — but the provider exists.** 78 of the 99 scored issues are delivered — 77
+closed and 1 committed but left open (#203); this review is the 100th and is not
+scored. Every concern of tenant onboarding now has a contract, a CLI and a
+record: shape, org, folders, ACL, seats, plans, terms, metering, statements,
+export/import, health, the onboarding guide and the go/no-go scorecard. What the
+loop was named after — the 1ID login — has a live provider (ONEID at
+`axum.abnasia.org`) and a configured tenant path (`sso.json`, the rotation
+runbook), but the platform's client to it is another session's uncommitted work,
+and a group tenant still cannot use the portal. The next loop is the pilot loop:
+finish those two, then take one customer through.
 
 ## The loop in numbers
 
@@ -217,14 +218,34 @@ named blocker; **not started** = no code.
 (onboarding wizard v2: group/single, companies, 1ID, departments), #201
 (switcher), #202 (company-scoped dashboard).
 
+## Correction — ONEID is live (2026-11-01)
+
+The first version of this review said "1ID login is not merged" as if the
+provider did not exist. It does: `https://axum.abnasia.org` serves a full OIDC
+discovery document (issuer `https://axum.abnasia.org/oneid/oidc`, PKCE S256,
+RS256, JWKS), and its client registry is `public.oidc_clients`. The correction
+matters for the next loop: the work is client registration and a browser-vs-API
+decision, not building an identity provider. The 401 on
+`/oneid/oidc/authorize` without a Bearer token is ONEID's documented API-first
+design, not an outage — and it is the design question loop 6 has to settle.
+
 ## Top-5 blockers
 
-1. **1ID login is not merged (#208, #142, #143, #182).** At `HEAD`,
-   `GET /auth/sso/status` returns 404 — the run behind `docs/onboarding-tenant.md`
-   proved it against a `git archive HEAD` checkout. `sso.service.ts`,
-   `sso.controller.ts` and `web/app/login/sso/` are another session's untracked
-   work; `openid-client` is imported only by the untracked `sso.service.ts`.
-   Everything around it shipped; the door is missing.
+1. **1ID is live as ONEID; the platform's client to it is not merged (#208,
+   #142, #143, #182).** ONEID at `https://axum.abnasia.org` is a real OIDC
+   provider: discovery 200 at `/.well-known/openid-configuration`, issuer
+   `https://axum.abnasia.org/oneid/oidc`, authorization-code + PKCE (S256),
+   RS256 ID tokens, JWKS, refresh and revocation, and a client registry
+   (`public.oidc_clients` with `client_id`, secret hash, `redirect_uris`).
+   What is missing is on our side: OpenGate's `sso.service.ts` /
+   `sso.controller.ts` are another session's untracked work (`/auth/sso/status`
+   is 404 at `HEAD`), and **no OpenGate client is registered in ONEID**. One
+   design mismatch is real: ONEID's authorize is *API-first* — it requires an
+   already-authenticated ONEID Bearer token and returns 401 without one — while
+   OpenGate's unmerged client is a browser PKCE redirect. So the loop-6 work is
+   a decision (add a browser-facing authorize/consent page in ONEID, or have
+   OpenGate call `POST /oneid/login` and mint its own session) plus the client
+   registration and the merge.
 2. **A group tenant cannot use the portal.** The API loads one tenant-level
    chart (`OrgService` reads `customers/<tenant>/org.json`); a group keeps one
    chart per company. The same run logged in as a group admin and every guarded
@@ -237,8 +258,9 @@ named blocker; **not started** = no code.
    *validation* in Python, not the delivery path.
 4. **Go-live evidence cannot include a real login.** Gate 9 of the scorecard
    (#239) proves the SSO *configuration*; #237's Step 4 is a recorded human
-   smoke test; no external IdP was reachable in any run. Today a tenant can be
-   "ready" with an identity path nobody has exercised.
+   smoke test; no OpenGate run has authenticated against ONEID (or any other
+   IdP). Today a tenant can be "ready" with an identity path nobody has
+   exercised.
 5. **No per-tenant rate limits or abuse controls at the API edge (#188).** Only
    signup has a limiter (per-IP, kill-switch). Uploads, exports and every
    authenticated route are unbounded. Before a customer portal is on the
@@ -254,41 +276,42 @@ Six workstreams, each with an exit test:
 
 | # | Workstream | Exit test |
 |---|---|---|
-| A | **1ID end to end** — merge the SSO layer, claim→tenant/company mapping, token enforcement, `ssoOnly`, step-up policy | a real login against a staging IdP for a `ssoOnly` tenant, and a rotation drill recorded |
+| A | **ONEID end to end** — client registration, the browser-vs-API decision, merge the SSO layer, claim→tenant/company mapping, token enforcement, `ssoOnly`, step-up policy | a real login through ONEID for a `ssoOnly` tenant, and a rotation drill recorded |
 | B | **Group portal** — per-company chart resolution, company context on every request, switcher, company dashboard, unit heads | a two-company tenant where both companies sign in and see only their own chart and folders |
 | C | **People and invites** — invite routes, real mail delivery, first-admin path, seat enforcement at the edge, offboarding | a tenant admin invites, onboards and offboards a person without a shell |
 | D | **Lifecycle surface** — scorecard page, plan/terms/statements pages, export/import UI | a tenant admin reaches `/readiness` 100% and sees the scorecard without the CLI |
 | E | **Trust and abuse** — per-tenant rate limits, audit-chain verify in CI, red-team rerun | the red-team suite green with limits on |
 | F | **The real pilot** — one customer, one IdP, one go/no-go, one offboarding | a recorded `go` in `go-no-go.jsonl` and a clean offboarding certificate |
 
-First 24 issues (the rest are cut after the pilot, not invented now):
+First 25 issues (the rest are cut after the pilot, not invented now):
 
 | ID | Issue | Workstream |
 |---|---|---|
-| L6-001 | Merge the SSO service + controller with tests (unblocks #208) | A |
-| L6-002 | Claim → tenant/company mapping (`sub`, email fallback, uniqueness) | A |
-| L6-003 | Token tenant enforcement: no cross-tenant session | A |
-| L6-004 | `ssoOnly` + kill-switch semantics, login page hides the password form | A |
-| L6-005 | MFA / step-up policy per tenant (or a written no-MFA decision) | A |
-| L6-006 | Per-company chart resolution in `OrgService` + tests | B |
-| L6-007 | Company context on every guarded request | B |
-| L6-008 | Tenant/company switcher in the web app | B |
-| L6-009 | Company-scoped dashboard | B |
-| L6-010 | Unit `head` + headcount plan vs actual on `/roster` | B |
-| L6-011 | Invite routes at `HEAD` (`/admin/invites` CRUD) + tests | C |
-| L6-012 | Real mail sender for invites (verification, bounce handling) | C |
-| L6-013 | First-admin path without a shell (platform or signup) | C |
-| L6-014 | Seat enforcement at the API edge + offboarding | C |
-| L6-015 | Scorecard page + `GET /admin/scorecard` (read-only) | D |
-| L6-016 | Plan / terms / statements pages wired to the existing routes | D |
-| L6-017 | Export / import UI over the existing bundles | D |
-| L6-018 | Readiness → scorecard handoff (one list, one gate) | D |
-| L6-019 | Per-tenant rate limits (#188) | E |
-| L6-020 | Audit-chain verify in CI, with a receipt per run | E |
-| L6-021 | Red-team rerun with limits on | E |
-| L6-022 | Staging run against a real IdP (Entra or Keycloak) | F |
-| L6-023 | One real tenant through the scorecard, signed | F |
-| L6-024 | Offboarding drill + certificate | F |
+| L6-001 | Register OpenGate as a ONEID client (`oidc_clients`, redirect URI) and decide browser vs API-first authorize | A |
+| L6-002 | Merge the SSO service + controller with tests (unblocks #208), against that decision | A |
+| L6-003 | Claim → tenant/company mapping (`sub`, email fallback, uniqueness) | A |
+| L6-004 | Token tenant enforcement: no cross-tenant session | A |
+| L6-005 | `ssoOnly` + kill-switch semantics, login page hides the password form | A |
+| L6-006 | MFA / step-up policy per tenant (or a written no-MFA decision) | A |
+| L6-007 | Per-company chart resolution in `OrgService` + tests | B |
+| L6-008 | Company context on every guarded request | B |
+| L6-009 | Tenant/company switcher in the web app | B |
+| L6-010 | Company-scoped dashboard | B |
+| L6-011 | Unit `head` + headcount plan vs actual on `/roster` | B |
+| L6-012 | Invite routes at `HEAD` (`/admin/invites` CRUD) + tests | C |
+| L6-013 | Real mail sender for invites (verification, bounce handling) | C |
+| L6-014 | First-admin path without a shell (platform or signup) | C |
+| L6-015 | Seat enforcement at the API edge + offboarding | C |
+| L6-016 | Scorecard page + `GET /admin/scorecard` (read-only) | D |
+| L6-017 | Plan / terms / statements pages wired to the existing routes | D |
+| L6-018 | Export / import UI over the existing bundles | D |
+| L6-019 | Readiness → scorecard handoff (one list, one gate) | D |
+| L6-020 | Per-tenant rate limits (#188) | E |
+| L6-021 | Audit-chain verify in CI, with a receipt per run | E |
+| L6-022 | Red-team rerun with limits on | E |
+| L6-023 | Staging run against ONEID (and a second IdP, to prove the generic path) | F |
+| L6-024 | One real tenant through the scorecard, signed | F |
+| L6-025 | Offboarding drill + certificate | F |
 
 **Not doing next loop:** more industry packs, more domain scaffolds, SAML, a
 second portal, or another 100-issue sweep. Those are breadth; the loop just

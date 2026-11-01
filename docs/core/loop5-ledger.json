@@ -47,7 +47,7 @@
       "target": "opengate",
       "type": "engine",
       "commits": [],
-      "note": "sso.json schema + validator + the rotation runbook shipped (#237); the OIDC login itself is #208 and not merged."
+      "note": "sso.json schema + validator + the rotation runbook shipped (#237); the OIDC client is #208 and not merged. ONEID at axum.abnasia.org is a live OIDC provider (discovery, PKCE S256, RS256, client registry)."
     },
     {
       "number": 143,
@@ -1162,7 +1162,7 @@
       "target": "opengate",
       "type": "touchpoint",
       "commits": [],
-      "note": "Blocked: apps/api/src/sso.service.ts, sso.controller.ts and web/app/login/sso are another session's uncommitted work; openid-client is not in HEAD. Blocker comment on the issue."
+      "note": "Blocked: apps/api/src/sso.service.ts, sso.controller.ts and web/app/login/sso are another session's uncommitted work; openid-client is imported only there. ONEID is live at axum.abnasia.org/oneid/oidc, but no OpenGate client is registered in its oidc_clients table, and its authorize is API-first (Bearer required)."
     },
     {
       "number": 209,

@@ -2,8 +2,8 @@
 
 **Status:** interface specified (#322), implemented in `scripts/portable.py`
 (#323), wired into the compiler (#324), tested (#325), recorded (#326),
-surfaced (#327), documented (#328), hardened (#329); the measure and demo steps
-follow (#330–#331). **Shape:** `schemas/portability-manifest.json`. **Checker:**
+surfaced (#327), documented (#328), hardened (#329), measured (#330); the demo
+step follows (#331). **Shape:** `schemas/portability-manifest.json`. **Checker:**
 `scripts/check_portability_spec.py` (CI, `--self-test`). **Boundary:** ADR-002 D8
 — *company templates carry a contract pin; import refuses an unresolvable pin;
 upgrades are explicit.*

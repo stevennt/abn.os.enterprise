@@ -103,6 +103,10 @@ def main(argv=None):
     p.add_argument("--right", required=True)
 
     sub.add_parser("check", parents=[common])
+    p = sub.add_parser("metrics", parents=[common])
+    p.add_argument("--fail-on-alert", action="store_true")
+    # the module owns --drill so `portable.py --drill` and this agree
+    p = sub.add_parser("drill", parents=[common])
 
     args = ap.parse_args(argv)
     try:
@@ -225,6 +229,34 @@ def main(argv=None):
                         print(f"  {key}: {', '.join(report[key])}")
             return 0
 
+        if args.cmd == "metrics":
+            spec = importlib.util.spec_from_file_location(
+                "portability_metrics", ROOT / "scripts" / "portability_metrics.py")
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            counters, alerts = module.metrics(args.root)
+            if args.json:
+                print(json.dumps({"counters": counters, "alerts": alerts},
+                                 indent=2))
+            else:
+                print(f"companies {counters['companies']} · stored bundles "
+                      f"{counters['bundles']} · unrecorded "
+                      f"{counters['unrecorded']} · drifted {counters['drift']} · "
+                      f"stale pins {counters['stalePins']} · newest "
+                      f"{counters['oldestDays']} days old · contract "
+                      f"{counters['currentTag'] or 'unknown'}")
+                for alert in alerts:
+                    print(f"ALERT {alert['id']} [{alert['severity']}] "
+                          f"{alert['detail']}")
+                if not alerts:
+                    print("no alert")
+            return 1 if args.fail_on_alert and alerts else 0
+        if args.cmd == "drill":
+            spec = importlib.util.spec_from_file_location(
+                "portability_metrics", ROOT / "scripts" / "portability_metrics.py")
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            return module.drill()
         if args.cmd == "check":
             problems = P.validate_bundles(args.root)
             if problems:

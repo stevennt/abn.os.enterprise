@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "budget-reconciliation@1",
+  "title": "Budget reconciliation report (budget-reconciliation@1)",
+  "description": "The report this contract produces: plan quota, agent budgets and metered spend side by side, with ordered findings. Read-only — no finding prices anything.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "contract", "tenant", "period", "at", "plan",
+               "agents", "totals", "quota", "findings", "problems"],
+  "properties": {
+    "version": { "const": 1 },
+    "contract": { "const": "budget-reconciliation@1" },
+    "tenant": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$" },
+    "period": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}$",
+      "description": "the calendar month reconciled, whatever the store's throttle window is"
+    },
+    "at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?Z$"
+    },
+    "plan": {
+      "description": "null when the tenant has no assigned plan: an unknown ceiling, never an infinite one",
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "limits"],
+          "properties": {
+            "id": { "type": "string", "minLength": 1 },
+            "limits": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["seats", "storageMb", "jobsPerMonth"],
+              "properties": {
+                "seats": { "type": "integer", "minimum": -1 },
+                "storageMb": { "type": "integer", "minimum": -1 },
+                "jobsPerMonth": { "type": "integer", "minimum": -1 }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "agents": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/agentRow" }
+    },
+    "totals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["budget", "spent", "unbudgeted", "unlimited"],
+      "properties": {
+        "budget": { "$ref": "#/$defs/totals" },
+        "spent": { "$ref": "#/$defs/totals" },
+        "unbudgeted": { "$ref": "#/$defs/totals" },
+        "unlimited": { "$ref": "#/$defs/accounts" }
+      }
+    },
+    "quota": {
+      "type": "array",
+      "description": "one row per comparable kind — never `documents`, which the plan does not cap",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "limit", "budget", "spent", "state"],
+        "properties": {
+          "kind": { "enum": ["jobs", "storage"] },
+          "limit": { "type": "integer", "minimum": 0 },
+          "budget": { "type": "integer", "minimum": 0 },
+          "spent": { "type": "integer", "minimum": 0 },
+          "state": { "enum": ["within", "over"] }
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+    "problems": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "shape problems in the store, verbatim; a report can be produced from a broken store, but it says so"
+    }
+  },
+  "$defs": {
+    "quantity": { "type": "integer", "minimum": 0 },
+    "totals": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "description": "one key per metering kind that appears in the store or the period",
+      "patternProperties": {
+        "^[a-z][a-z0-9_]{0,31}$": { "$ref": "#/$defs/quantity" }
+      }
+    },
+    "accounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[a-z][a-z0-9_]{0,31}$": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "agentRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["account", "budget", "spent", "state"],
+      "properties": {
+        "account": { "type": "string", "minLength": 1 },
+        "unit": { "type": "string" },
+        "budget": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "minProperties": 1,
+              "patternProperties": {
+                "^[a-z][a-z0-9_]{0,31}$": { "type": "integer", "minimum": -1 }
+              }
+            }
+          ]
+        },
+        "spent": { "$ref": "#/$defs/totals" },
+        "state": { "enum": ["within", "over", "unbudgeted", "unlimited"] }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "severity", "account", "kind", "message", "fix"],
+      "properties": {
+        "code": { "enum": ["E-BUD-01", "E-BUD-02", "E-BUD-03", "E-BUD-04",
+                           "E-BUD-05", "E-BUD-06", "E-BUD-07"] },
+        "severity": { "enum": ["critical", "warning"] },
+        "account": { "type": ["string", "null"] },
+        "kind": { "type": ["string", "null"],
+                  "description": "a metering kind, `plan`, or null" },
+        "message": { "type": "string", "minLength": 1 },
+        "fix": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

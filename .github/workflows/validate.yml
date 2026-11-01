@@ -44,6 +44,7 @@ jobs:
       - run: python scripts/test_plane_contract.py && python scripts/test_plane_contract.py --self-test
       - run: python scripts/check_paperclip_template.py --template tests/fixtures/paperclip-company.example.json && python scripts/check_paperclip_template.py --self-test
       - run: python scripts/check_identity_spec.py && python scripts/check_identity_spec.py --self-test
+      - run: python scripts/check_budget_spec.py && python scripts/check_budget_spec.py --self-test
       - run: python scripts/test_identity_matrix.py
       - run: python scripts/test_paperclip_company.py && python bin/paperclip-company --self-test
       - run: python bin/paperclip-company --all --check

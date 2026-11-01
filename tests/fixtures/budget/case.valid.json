@@ -1,0 +1,189 @@
+{
+  "tenant": "acme",
+  "period": "2026-11",
+  "at": "2026-11-30T23:59:59.000Z",
+  "notes": "One tenant, one month: agent-co inside all three budgets, agent-research unlimited for jobs and storage but 52 documents against a budget of 50 — the case carries exactly one finding.",
+  "registry": {
+    "trial": {
+      "id": "trial",
+      "label": "Trial",
+      "seats": 5,
+      "storageMb": 1024,
+      "jobsPerMonth": 100
+    },
+    "team": {
+      "id": "team",
+      "label": "Team",
+      "seats": 25,
+      "storageMb": 10240,
+      "jobsPerMonth": 2000
+    }
+  },
+  "subscription": {
+    "plan": "team",
+    "startedAt": "2026-01-05T00:00:00Z"
+  },
+  "agents": [
+    "agent-co",
+    "agent-research"
+  ],
+  "budgets": {
+    "version": 1,
+    "tenant": "acme",
+    "period": "monthly",
+    "agents": [
+      {
+        "account": "agent-co",
+        "unit": "finance",
+        "budget": {
+          "jobs": 500,
+          "documents": 200,
+          "storage": 104857600
+        },
+        "enforced": true
+      },
+      {
+        "account": "agent-research",
+        "unit": "research",
+        "budget": {
+          "jobs": -1,
+          "documents": 50,
+          "storage": -1
+        },
+        "enforced": true
+      }
+    ]
+  },
+  "spend": [
+    {
+      "account": "agent-co",
+      "kind": "jobs",
+      "quantity": 120
+    },
+    {
+      "account": "agent-co",
+      "kind": "documents",
+      "quantity": 30
+    },
+    {
+      "account": "agent-co",
+      "kind": "storage",
+      "quantity": 5242880
+    },
+    {
+      "account": "agent-research",
+      "kind": "jobs",
+      "quantity": 700
+    },
+    {
+      "account": "agent-research",
+      "kind": "documents",
+      "quantity": 52
+    },
+    {
+      "account": "agent-research",
+      "kind": "storage",
+      "quantity": 10485760
+    }
+  ],
+  "expected": {
+    "version": 1,
+    "contract": "budget-reconciliation@1",
+    "tenant": "acme",
+    "period": "2026-11",
+    "at": "2026-11-30T23:59:59.000Z",
+    "plan": {
+      "id": "team",
+      "limits": {
+        "seats": 25,
+        "storageMb": 10240,
+        "jobsPerMonth": 2000
+      }
+    },
+    "agents": [
+      {
+        "account": "agent-co",
+        "budget": {
+          "jobs": 500,
+          "documents": 200,
+          "storage": 104857600
+        },
+        "spent": {
+          "jobs": 120,
+          "documents": 30,
+          "storage": 5242880
+        },
+        "state": "within",
+        "unit": "finance"
+      },
+      {
+        "account": "agent-research",
+        "budget": {
+          "jobs": -1,
+          "documents": 50,
+          "storage": -1
+        },
+        "spent": {
+          "jobs": 700,
+          "documents": 52,
+          "storage": 10485760
+        },
+        "state": "over",
+        "unit": "research"
+      }
+    ],
+    "totals": {
+      "budget": {
+        "jobs": 500,
+        "documents": 250,
+        "storage": 104857600
+      },
+      "spent": {
+        "jobs": 820,
+        "documents": 82,
+        "storage": 15728640
+      },
+      "unbudgeted": {
+        "jobs": 0,
+        "documents": 0,
+        "storage": 0
+      },
+      "unlimited": {
+        "jobs": [
+          "agent-research"
+        ],
+        "documents": [],
+        "storage": [
+          "agent-research"
+        ]
+      }
+    },
+    "quota": [
+      {
+        "kind": "jobs",
+        "limit": 2000,
+        "budget": 500,
+        "spent": 820,
+        "state": "within"
+      },
+      {
+        "kind": "storage",
+        "limit": 10737418240,
+        "budget": 104857600,
+        "spent": 15728640,
+        "state": "within"
+      }
+    ],
+    "findings": [
+      {
+        "code": "E-BUD-06",
+        "severity": "warning",
+        "account": "agent-research",
+        "kind": "documents",
+        "message": "agent-research: documents 52 > 50 — the throttle did not hold",
+        "fix": "fix the budget or the runner: the throttle did not hold"
+      }
+    ],
+    "problems": []
+  }
+}

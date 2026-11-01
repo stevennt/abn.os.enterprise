@@ -57,7 +57,7 @@ how far it may go alone.
 | D2 | **Paperclip tickets are work units; OpenGate cases/documents are the durable record** | tasks are ephemeral, evidence is not | no dual-write of task state; a closed ticket must point at its OpenGate record |
 | D3 | **Every data access goes through OpenGate tools/API**, never a raw path from an agent | the ACL and `dataMode` must be enforced where data lives | Paperclip connectors for tenant data are disabled; the MCP gateway exposes OpenGate tools only |
 | D4 | **ONEID is the only human identity**; agents are OpenGate service accounts with a responsible human | one identity tree, one offboarding | Paperclip local accounts are for break-glass only; every agent action names `responsibleUser`; the seam is [tenant-identity@1](tenant-identity.md) |
-| D5 | **OpenGate is billing truth; Paperclip budgets are a throttle** | two ledgers is two invoices | spend reconciles nightly; a budget stop never changes a statement |
+| D5 | **OpenGate is billing truth; Paperclip budgets are a throttle** | two ledgers is two invoices | spend reconciles nightly; a budget stop never changes a statement; the seam is [budget-reconciliation@1](budget-reconciliation.md) |
 | D6 | **Approvals are clicked in Paperclip, decided by the authority grid** | humans want one inbox; the rule is already modelled | `authority_limits` + RACI are imported as approval rules; OpenGate records the decision and the signer |
 | D7 | **Secrets live in the vault; Paperclip holds references** | one rotation path | run env is injected at heartbeat; Paperclip secret values are never populated for tenant data |
 | D8 | **Company templates carry a contract pin** (`tag` + `sha`) | an agent org must be reproducible months later | import refuses an unresolvable pin; upgrades are explicit |
@@ -115,7 +115,7 @@ Rules:
 | accounts, role assignments, seats | OpenGate | Paperclip members | Paperclip |
 | tickets, comments, run logs, approvals UI | Paperclip | activity events | OpenGate |
 | cases, documents, artifacts-of-record | OpenGate | links in tickets | Paperclip |
-| plans, quotas, statements, metering | OpenGate | budget seeds | Paperclip |
+| plans, quotas, statements, metering | OpenGate | budget seeds ([budget-store@1](budget-reconciliation.md)) | Paperclip |
 | audit chain | OpenGate | — | Paperclip (it emits events) |
 | secrets | vault | run env | both stores |
 | contract pin, template version | Enterprise OS | template metadata | Paperclip |

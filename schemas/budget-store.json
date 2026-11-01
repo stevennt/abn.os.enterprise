@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "budget-store@1",
+  "title": "Budget store (budget-store@1)",
+  "description": "customers/<tenant>/budgets.json — the per-agent throttle. A missing kind is unbudgeted, not zero; -1 is unlimited and must be written on purpose.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "tenant", "agents"],
+  "properties": {
+    "version": { "const": 1 },
+    "tenant": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,30}$",
+      "description": "must equal the directory it sits in"
+    },
+    "period": {
+      "enum": ["monthly", "daily"],
+      "description": "the window Paperclip throttles over; the report always reconciles the calendar month"
+    },
+    "agents": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/agent" }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+    },
+    "quantity": {
+      "type": "integer",
+      "minimum": -1,
+      "description": "0 or more, or -1 for unlimited"
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "description": "keyed by metering kind (jobs, documents, storage, and any kind added later); a missing kind is unbudgeted — the report says so instead of assuming zero",
+      "patternProperties": {
+        "^[a-z][a-z0-9_]{0,31}$": { "$ref": "#/$defs/quantity" }
+      }
+    },
+    "agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["account", "budget"],
+      "properties": {
+        "account": { "$ref": "#/$defs/id" },
+        "unit": { "$ref": "#/$defs/id" },
+        "budget": { "$ref": "#/$defs/budget" },
+        "enforced": {
+          "type": "boolean",
+          "default": true,
+          "description": "false records an advisory budget: the report may still find an overrun, but the throttle never stopped it"
+        }
+      }
+    }
+  }
+}

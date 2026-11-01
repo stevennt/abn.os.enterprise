@@ -2,7 +2,9 @@
 
 **Status:** specified (#362), implemented (#363), wired (#364), tested (#365),
 recorded (#366), surfaced (#367), documented (#368), hardened (#369), measured
-(#370); the demo (#371) follows. **The runbook:**
+(#370), demonstrated (#371). The
+[demo](https://github.com/stevennt/abn.platform.opengate/blob/DEV/docs/tenant-crew-demo.md)
+is two tenants, three crews and the two repairs an operator actually makes. **The runbook:**
 [tenant-crew-walkthrough.md](https://github.com/stevennt/abn.platform.opengate/blob/DEV/docs/tenant-crew-walkthrough.md)
 — the roster, the eight steps with their refusals, the gate, the handover. **Boundary:** ADR-002 D3 and D4 — every data access goes through
 the OpenGate API, and **agents are service accounts with a responsible person**.

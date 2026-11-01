@@ -157,6 +157,19 @@ is absent from the grid, and absent is not unlimited.
 requests and fails on a byte of drift; `--self-test` mutates the case to prove
 each code fires for its own reason.
 
+## The conformance matrix
+
+The implementation's matrix is `abn.platform.opengate/tests/test_approval_matrix.py`
+(#315): 26 cases, each asserting which code fires **and why**. It covers a clean
+payment and an amount exactly at the limit; escalation to the smallest role that
+fits; `E-GOV-07` when nobody can; the requester and an agent refusing themselves;
+a role absent from the unit, from the grid, and a unit that does not exist
+(`E-GOV-05`); no grid and a currency mismatch (`E-GOV-02`); eight malformed
+requests and an unknown approver (`E-GOV-01`); a second different click
+(`E-GOV-06`); a replay that writes nothing; and a tampered decision in the store.
+A final case asserts the matrix covers every code — `E-GOV-03` counted as the
+escalation, which is a decision rather than a message.
+
 ## Where it will live
 
 | Piece | Path (planned) |

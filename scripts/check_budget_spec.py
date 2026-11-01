@@ -249,8 +249,10 @@ def reconcile(case):
         else:
             state = "unbudgeted"
         row = {"account": account,
-               "budget": {kind: int(budget.get(kind, 0)) if budget else 0
-                          for kind in kinds} if budget else None,
+               # only the kinds the store names: a zero-filled map would say
+               # "budgeted at 0" for a kind that is unbudgeted
+               "budget": ({kind: int(value) for kind, value in budget.items()}
+                          if budget else None),
                "spent": dict(bucket), "state": state}
         unit = (entries.get(account) or {}).get("unit")
         if unit:

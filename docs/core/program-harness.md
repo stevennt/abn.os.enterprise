@@ -2,8 +2,9 @@
 
 **Status:** interface specified (#332), implemented in
 `abn.platform.opengate/gateway/harness.py` (#333) and run as
-`abn.platform.opengate/infra/harness.py` (#334); the record, surface, harden,
-measure and demo steps follow (#335–#341). **Shape:** `schemas/harness-run.json`. **Checker:**
+`abn.platform.opengate/infra/harness.py` (#334), recorded under `harness/runs/`
+and checked in CI (#336); the surface, harden, measure and demo steps follow
+(#337–#341). **Shape:** `schemas/harness-run.json`. **Checker:**
 `scripts/check_harness_spec.py` (CI, `--self-test`). **Boundary:** ADR-002 — the
 three planes meet nowhere else.
 
@@ -138,6 +139,20 @@ mutates it seven ways — a drifted fixture, a wrong outcome, a right outcome fo
 wrong code, a dirty tree, a mixed pin pair, a step with no assertion, a run that is
 not repeatable — and asserts each code fires.
 
+## The record store
+
+A record is written under `harness/runs/<runId>.json`, beside its name and moved
+in one step. The id is content, so recording the same run twice is silent, and a
+record edited after it was written makes the id untrustworthy — the writer refuses
+it rather than letting a "history" that can be rewritten stand. `check` validates
+the store: every record against this contract, every file named by its run id, no
+symlinks.
+
+**The rule this took three workstreams to learn:** a record is compared by
+**content**, never by its timestamp. Budget's digest, portability's carrier and
+this record each first compared whole documents and refused a second identical run
+because `at` had moved.
+
 ## The conformance matrix
 
 The implementation's matrix is `abn.platform.opengate/tests/test_harness_matrix.py`
@@ -158,7 +173,7 @@ every code.
 | the fake Paperclip | `scripts/fake_paperclip.py` — a script runner over the real surfaces (#334) |
 | the runner | `abn.platform.opengate/gateway/harness.py` — `build`, `run`, `record`, `verify` (#333) |
 | the command | `abn.platform.opengate/infra/harness.py` — `run` (exit 1 on a failed verdict), `verify` (#334) |
-| the record | `harness/runs/<runId>.json`, committed per release (#336) |
+| the record | `harness/runs/<runId>.json`, committed per release; `infra/harness.py check` validates the store (#336) |
 | the measure | `scripts/harness_metrics.py` — assertions per contract, coverage per plane (#338) |
 
 ## Not in this contract

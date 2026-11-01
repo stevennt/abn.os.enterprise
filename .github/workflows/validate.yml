@@ -40,6 +40,7 @@ jobs:
       - run: python scripts/playbook_sync.py && python scripts/playbook_sync.py --self-test
       - run: python scripts/docs_link_check.py
       - run: python scripts/loop_ledger_check.py
+      - run: python scripts/check_plane_boundary.py && python scripts/check_plane_boundary.py --self-test
       - run: python scripts/pack_rule_drift.py && python scripts/pack_rule_drift.py --self-test && python scripts/test_drift.py
       - run: python scripts/test_bundle.py
       - run: python scripts/dlq_drill.py

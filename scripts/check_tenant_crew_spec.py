@@ -191,6 +191,12 @@ def self_test():
         ("E-CRW-07", lambda c: c["members"].append(copy.deepcopy(c["members"][0]))),
         ("E-CRW-08", lambda c: c["goNoGo"].update({"signedBy": "agent-verifier"})),
     ]
+    covered = [code for code, _ in mutations]
+    if sorted(covered) != sorted(CODES):
+        # a code with no mutation is a rule nobody has proved can fire
+        print(f"self-test RED: mutations cover {', '.join(sorted(covered))} but the "
+              f"contract states {', '.join(sorted(CODES))}", file=sys.stderr)
+        return 1
     failures = 0
     for code, mutate in mutations:
         case = copy.deepcopy(base)
@@ -217,7 +223,15 @@ def main(argv=None):
     ap = argparse.ArgumentParser(prog="check_tenant_crew_spec.py")
     ap.add_argument("path", nargs="?", default=None)
     ap.add_argument("--self-test", action="store_true")
+    ap.add_argument("--matrix", action="store_true",
+                    help="print the case table the self-test runs")
     args = ap.parse_args(argv)
+    if args.matrix:
+        for code in sorted(CODES):
+            print(f"{code}  {CODES[code]}")
+        print(f"{len(CODES)} codes, one mutation each — the self-test refuses the "
+              f"fixture {len(CODES)} ways")
+        return 0
     if args.self_test:
         return self_test()
     problems = check(load(args.path))

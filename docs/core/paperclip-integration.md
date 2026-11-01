@@ -53,6 +53,20 @@ how far it may go alone.
 | D9 | **No prompt-level security** | a prompt is not a control | every boundary is a code check at a tool/API edge, with a denial reason recorded |
 | D10 | **Paperclip is a service, not a library** | licence is fine (MIT), the surface is large | pinned version, telemetry off, authenticated bind, vendored adapter only |
 
+### Alternatives considered (and why not)
+
+| Option | Rejected because |
+|---|---|
+| **Bidirectional sync** between the enterprise model and Paperclip's org chart | two writers to one org is a merge conflict with salaries in it; the first divergence would be discovered in an approval, not a diff |
+| **Paperclip as the system of record** for tenant data and audit | it holds work state, not tenancy: no tenant boundary, no folder ACL, no `dataMode`, no billing statement — an audit would have to be reconstructed |
+| **Paperclip's secret store for tenant credentials** | a second rotation path and a second place to leak from; the vault already exists and the run env is the only injection point |
+| **Two ledgers** (Paperclip spend + OpenGate metering), each billed from | two numbers, two invoices, and an annual reconciliation nobody signs |
+| **Mirroring tickets into OpenGate cases** (or the reverse) | every task would have two lifecycles and no tie-breaker; the boundary is a *link*, not a copy |
+| **Prompt-level guardrails** instead of code checks | a prompt is not a control; the same agent, prompted differently, would bypass it — the ACL has to live where the data does |
+| **Embedding Paperclip as a library** in OpenGate | its surface (server, UI, runners, Postgres) is a service; embedding would fork it and freeze security patches |
+| **One Paperclip instance per tenant** | operational multiplication (a Postgres and a runner per customer) for isolation that OpenGate's tenant check already enforces at the data edge |
+| **A ONEID session minter in Axum for OpenGate** (API-first only) instead of OIDC | ties every future customer IdP to our identity service; OpenGate's OIDC client already speaks to any provider, so the browser bridge was the smaller change |
+
 ## Ownership matrix (one owner per field)
 
 | Field | Owner | Mirrored to | Never written by |

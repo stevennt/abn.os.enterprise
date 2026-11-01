@@ -158,6 +158,13 @@ is absent from the grid, and absent is not unlimited.
 requests and fails on a byte of drift; `--self-test` mutates the case to prove
 each code fires for its own reason.
 
+## The operator surface
+
+`infra/approvals.py` in the tenant repo: `decide` (the actor is the approver; exit
+0 for approved/escalated, 1 for refused), `show` and `list` (admin-only — a
+decision names who approved what and for how much), `seal` (admin-only) and
+`check` (no actor: it reads what `--sync` reads).
+
 ## The conformance matrix
 
 The implementation's matrix is `abn.platform.opengate/tests/test_approval_matrix.py`
@@ -176,7 +183,7 @@ escalation, which is a decision rather than a message.
 | Piece | Path (planned) |
 |---|---|
 | the gate | `gateway/approvals.py` (#313) — `decide`, `record_of`, `decisions`, `validate_records` |
-| the surface | `infra/approvals.py` — `decide`, `show`, `pending` (#315) |
+| the surface | `infra/approvals.py` — `decide`, `show`, `list`, `seal`, `check` (#317) |
 | the gate check | `--sync` validates the grid and the recorded decisions (#314) |
 | the measure | `gateway/approval_metrics.py` — escalations, refusals, gates open too long (#317) |
 

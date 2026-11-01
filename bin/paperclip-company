@@ -561,6 +561,9 @@ def main(argv=None):
     ap.add_argument("--render", action="store_true")
     ap.add_argument("--record", action="store_true",
                     help="append companies/<company>/compiles.jsonl per run")
+    ap.add_argument("--bundle", action="store_true",
+                    help="also write the portable bundle manifest beside --out "
+                         "(company-portability@1, issue #324)")
     ap.add_argument("--self-test", action="store_true")
     args = ap.parse_args(argv)
     if args.self_test:
@@ -657,12 +660,45 @@ def main(argv=None):
             "inputs": {p: _digest(Path(args.root) / p)
                        for p in template["source"]["files"]},
         })
+    if args.bundle and not args.out:
+        print("paperclip-company: --bundle needs --out (a bundle is the template "
+              "plus its manifest)", file=sys.stderr)
+        return 2
     if args.out:
         target = Path(args.out)
+        if args.bundle and not str(target.resolve()).startswith(
+                str(Path(args.root).resolve()) + "/"):
+            print("paperclip-company: --bundle needs --out inside the repository: "
+                  "a manifest whose template sits outside it would carry an "
+                  "absolute path (E-PORT-07)", file=sys.stderr)
+            return 2
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(text)
         print(f"paperclip-company: wrote {target} — {len(template['agents'])} agents, "
               f"{len(template['routines'])} routines")
+        if args.bundle:
+            # the bundle goes through the portability contract, not a second
+            # path: a template written without a manifest is not portable
+            portability = importlib.util.spec_from_file_location(
+                "portable", GATE / "scripts" / "portable.py")
+            module = importlib.util.module_from_spec(portability)
+            portability.loader.exec_module(module)
+            sys.modules["portable"] = module
+            try:
+                manifest, findings = module.export(
+                    args.root, args.company, template_path=str(target))
+            except module.PortabilityError as exc:
+                print(f"paperclip-company: {exc}", file=sys.stderr)
+                return 1
+            if findings:
+                for code, reason in findings:
+                    print(f"paperclip-company: {code}: {reason} — fix: "
+                          f"{module.FIX[code]}", file=sys.stderr)
+                return 1
+            manifest_path = target.parent / "bundle.json"
+            manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
+            print(f"paperclip-company: bundled {manifest['bundleId']} — "
+                  f"{len(manifest['artefacts'])} artefact(s) → {manifest_path}")
     else:
         sys.stdout.write(text)
     return 0

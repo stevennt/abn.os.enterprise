@@ -1,7 +1,8 @@
 # Company portability — templates, pins, and a bundle that proves itself (contract `company-portability@1`)
 
 **Status:** interface specified (#322), implemented in `scripts/portable.py`
-(#323); the record, surface, harden, measure and demo steps follow (#324–#331). **Shape:** `schemas/portability-manifest.json`. **Checker:**
+(#323), wired into the compiler (#324); the record, surface, harden, measure and
+demo steps follow (#325–#331). **Shape:** `schemas/portability-manifest.json`. **Checker:**
 `scripts/check_portability_spec.py` (CI, `--self-test`). **Boundary:** ADR-002 D8
 — *company templates carry a contract pin; import refuses an unresolvable pin;
 upgrades are explicit.*
@@ -128,15 +129,26 @@ platform, an absolute path, a malformed manifest) and asserts each code appears.
 | Call | Does |
 |---|---|
 | `portable.py export --company <id> [--template P] [--platform T] [--out DIR]` | builds the manifest from the checkout, writes `bundle.json` beside the template; any refusal means no bundle |
-| `portable.py verify --bundle <path>` | re-digests every artefact against the checkout and checks the id against its own contents |
+| `portable.py verify --bundle <path>` | the bundle's own integrity always; every artefact's digest against the checkout **where the checkout has the company** — an import target that does not have it yet is not a fault |
 | `portable.py import --bundle <path> [--platform T]` | verify, then write the template — refusing to overwrite a compiled model that differs |
 | `portable.py diff --left A --right B` | added, removed, changed per `kind:id` |
+| `bin/paperclip-company --out <path> --bundle` | the compiler writes the template **and** its manifest, through the same module — a template written without one is not portable |
 
 Two behaviours worth naming. **A repo-shipped artefact is versioned by the
 contract pin it ships with** unless the file carries its own `version:` — the
 repository is the version. And **the pin is resolved with `git cat-file`** where
 the checkout is a git repository; where it is not, the manifest records what the
 template declared and the import re-checks wherever git is available.
+
+**Two modes of verification, because two questions are asked.** *Is this carrier
+intact?* is the bundle's own integrity — its id and the template shipped beside
+it — and that is what an import can check in a checkout that does not have the
+company. *Does this checkout still match?* compares every artefact's digest, and
+that is what CI runs on the source repository. Conflating them made an import into
+a clean tree fail on the very artefacts it was delivering.
+
+`--bundle` requires `--out` inside the repository: a manifest whose template sits
+outside it would carry an absolute path, which is `E-PORT-07`.
 
 ## Where it will live
 

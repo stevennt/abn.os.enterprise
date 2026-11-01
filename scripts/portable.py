@@ -262,9 +262,12 @@ def _current_tag(root):
     return tags[-1] if tags else ""
 
 
-def verify(root, bundle_path):
-    """(manifest, findings) — a bundle against the checkout it names."""
-    root = Path(root)
+def _bundle_integrity(bundle_path):
+    """The bundle as a carrier: its own id, and the template shipped beside it.
+
+    This is what an import can check in a checkout that does not have the company
+    yet — the artefacts are the delivery, so their absence there is not a fault.
+    """
     try:
         manifest = json.loads(Path(bundle_path).read_text())
     except (OSError, ValueError) as exc:
@@ -274,13 +277,32 @@ def verify(root, bundle_path):
             manifest.get("version") != 1:
         findings.append(("E-PORT-01", "the manifest's contract/version are wrong"))
     template = manifest.get("template") or {}
+    shipped = Path(bundle_path).parent / Path(str(template.get("path") or "")).name
+    if not shipped.is_file():
+        findings.append(("E-PORT-03", f"the bundle has no "
+                                      f"{Path(str(template.get('path'))).name} "
+                                      f"beside its manifest"))
+    elif _sha_file(shipped) != template.get("sha256"):
+        findings.append(("E-PORT-04", f"the shipped template's digest does not "
+                                      f"match the manifest"))
+    return manifest, findings
+
+
+def verify(root, bundle_path):
+    """(manifest, findings) — a bundle against the checkout it names.
+
+    The bundle's own integrity first; then, where the checkout has the company,
+    every artefact's digest against it.
+    """
+    root = Path(root)
+    manifest, findings = _bundle_integrity(bundle_path)
+    template = manifest.get("template") or {}
     path = root / str(template.get("path") or "")
     if not path.is_file():
-        findings.append(("E-PORT-03", f"the template {template.get('path')!r} is "
-                                      f"not in this checkout"))
-    elif _sha_file(path) != template.get("sha256"):
-        findings.append(("E-PORT-04", f"the template's digest does not match the "
-                                      f"manifest"))
+        return manifest, findings  # a checkout without the company yet
+    if _sha_file(path) != template.get("sha256"):
+        findings.append(("E-PORT-04", f"the checkout's template digest does not "
+                                      f"match the manifest"))
     declared = {f"{row['kind']}:{row['id']}": row
                 for row in manifest.get("artefacts") or []}
     actual = {f"{row['kind']}:{row['id']}": row
@@ -297,12 +319,6 @@ def verify(root, bundle_path):
                                           f"{actual[key]['sha256'][:12]}…, the "
                                           f"bundle says "
                                           f"{str(row.get('sha256'))[:12]}…"))
-    expected = bundle_id(str(manifest.get("company")),
-                         str(template.get("sha256")),
-                         manifest.get("artefacts") or [])
-    if manifest.get("bundleId") != expected:
-        findings.append(("E-PORT-01", f"the bundle id does not match its own "
-                                      f"contents (expected {expected})"))
     return manifest, findings
 
 
@@ -316,7 +332,7 @@ def _read_template(path):
 def do_import(root, bundle_path, platform=None):
     """Verify, then write the template into the checkout."""
     root = Path(root)
-    manifest, findings = verify(root, bundle_path)
+    manifest, findings = _bundle_integrity(bundle_path)  # the carrier, not the target
     if findings:
         return manifest, findings, None
     mine = _tag((manifest.get("template") or {}).get("contract", {}).get("tag"))

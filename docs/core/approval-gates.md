@@ -207,6 +207,21 @@ tenant tree and with it the audit lines. A tenant **without** a grid keeps the
 every legacy tenant. The gate is the same `approvals.decide`; there is no second
 implementation on the delete path.
 
+## Hardening
+
+The implementation's edges (#319), each with its code: the tenant is a path
+(`E-GOV-01`, checked before identity and before any profile read); a decision file
+is a symbolic link (`E-GOV-08`, the target named and never written); a second
+writer holds the tenant's lock (`E-GOV-01 … the store is busy`, 300 s TTL for a
+crashed holder); and a decision whose `at` or `gate.limit` is not what the shape
+says (`E-GOV-01` from `validate_records`).
+
+**The lock is a governance fix.** Without it, two approvers clicking one request
+in the same second both read "no standing decision" and both write, leaving two
+grants for one request that no validator would catch — each file is individually
+valid. The lock is `O_EXCL`, released in a `finally` (including on a failed
+decision), and taken over after its TTL.
+
 ## The seal (#316)
 
 `approvals.seal()` pins every standing decision by digest and puts one chain over

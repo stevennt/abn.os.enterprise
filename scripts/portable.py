@@ -33,6 +33,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 KINDS = ("org", "pack", "flow", "rule")
+BUNDLES = "bundles"
+LOGFILE = "index.jsonl"
+LOG_FIELDS = ("version", "at", "company", "bundleId", "templateSha256",
+              "artefacts", "action")
 TAG_RE = re.compile(r"^contract-([0-9]{4})\.([0-9]{2})\.([0-9]+)$")
 CODES = ("E-PORT-01", "E-PORT-02", "E-PORT-03", "E-PORT-04", "E-PORT-05",
          "E-PORT-06", "E-PORT-07")
@@ -244,6 +248,149 @@ def export(root, company, template_path=None, platform=None, now=None):
                 "artefacts": artefacts,
                 "platform": {"contractTag": str(platform_tag or "")}}
     return manifest, findings
+
+
+def _bundles_dir(root, company):
+    return Path(root) / "companies" / company / BUNDLES
+
+
+def _log_path(root, company):
+    return _bundles_dir(root, company) / LOGFILE
+
+
+def _carrier(root, company, bundle_id):
+    return _bundles_dir(root, company) / bundle_id
+
+
+def log_rows(root, company):
+    path = _log_path(root, company)
+    rows = []
+    try:
+        with open(path, encoding="utf-8") as fh:
+            for line in fh:
+                if not line.strip():
+                    continue
+                try:
+                    rows.append(json.loads(line))
+                except ValueError:
+                    rows.append({"__unreadable__": line.strip()})
+    except FileNotFoundError:
+        pass
+    return rows
+
+
+def record(root, company, template_path=None, platform=None, now=None):
+    """Store the bundle under its own id and append one log row (#326).
+
+    A bundle id is content, so recording the same state twice is a silent no-op
+    and a *different* carrier at an existing id is `E-PORT-04` — history that can
+    be rewritten is not history. Rollback is `import` of a stored carrier.
+    """
+    root = Path(root)
+    manifest, findings = export(root, company, template_path=template_path,
+                                platform=platform, now=now)
+    if findings:
+        return None, findings
+    carrier = _carrier(root, company, manifest["bundleId"])
+    if carrier.is_dir():
+        stored = carrier / "bundle.json"
+        if stored.is_file():
+            existing = json.loads(stored.read_text())
+            if existing == manifest:
+                return {"tenant": company, "bundleId": manifest["bundleId"],
+                        "recorded": False}, []
+        return None, [("E-PORT-04", f"{manifest['bundleId']} is already stored "
+                                    f"with different contents")]
+    carrier.mkdir(parents=True, exist_ok=True)
+    (carrier / "bundle.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    source = root / manifest["template"]["path"]
+    shutil.copyfile(source, carrier / Path(manifest["template"]["path"]).name)
+    row = {"version": 1, "at": now or _iso_now(), "company": company,
+           "bundleId": manifest["bundleId"],
+           "templateSha256": manifest["template"]["sha256"],
+           "artefacts": len(manifest["artefacts"]), "action": "export"}
+    with open(_log_path(root, company), "a", encoding="utf-8") as fh:
+        fh.write(json.dumps(row, sort_keys=True) + "\n")
+    return {"tenant": company, "bundleId": manifest["bundleId"],
+            "recorded": True, "path": str(carrier.relative_to(root))}, []
+
+
+def bundles(root, company, limit=20):
+    rows = [row for row in log_rows(root, company)
+            if isinstance(row, dict) and "__unreadable__" not in row]
+    rows.sort(key=lambda row: str(row.get("at") or ""), reverse=True)
+    return rows[:max(1, int(limit))]
+
+
+def rollback(root, company, to, force=False, platform=None, now=None):
+    """Import a stored carrier over the live template — deliberately."""
+    root = Path(root)
+    bundle_path = _carrier(root, company, to) / "bundle.json"
+    if not bundle_path.is_file():
+        return None, [("E-PORT-03", f"no stored bundle {to!r} for {company!r}")]
+    manifest, findings = _bundle_integrity(bundle_path)
+    if findings:
+        return None, findings
+    rel = str((manifest.get("template") or {}).get("path") or "")
+    target = root / rel
+    if target.is_file() and _sha_file(target) != manifest["template"]["sha256"] \
+            and not force:
+        return None, [("E-PORT-04", f"rolling back to {to} would overwrite "
+                                    f"{rel}; pass --force to do it on purpose")]
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(bundle_path.parent / Path(rel).name, target)
+    row = {"version": 1, "at": now or _iso_now(), "company": company,
+           "bundleId": to, "templateSha256": manifest["template"]["sha256"],
+           "artefacts": len(manifest.get("artefacts") or []),
+           "action": "rollback"}
+    with open(_log_path(root, company), "a", encoding="utf-8") as fh:
+        fh.write(json.dumps(row, sort_keys=True) + "\n")
+    return {"company": company, "rolledBackTo": to, "template": rel}, []
+
+
+def validate_bundles(root):
+    """Problems with the stored carriers and their log (empty = valid)."""
+    root = Path(root)
+    problems = []
+    companies = root / "companies"
+    if not companies.is_dir():
+        return problems
+    for company_dir in sorted(companies.iterdir()):
+        if not company_dir.is_dir():
+            continue
+        carriers = company_dir / BUNDLES
+        if not carriers.is_dir():
+            continue
+        company = company_dir.name
+        for carrier in sorted(carriers.iterdir()):
+            if not carrier.is_dir():
+                continue
+            bundle_path = carrier / "bundle.json"
+            if not bundle_path.is_file():
+                problems.append(f"E-PORT-03 {company}/{BUNDLES}/{carrier.name}: "
+                                f"no bundle.json")
+                continue
+            _manifest, findings = _bundle_integrity(bundle_path)
+            for code, reason in findings:
+                problems.append(f"{code} {company}/{BUNDLES}/{carrier.name}: "
+                                f"{reason}")
+            if carrier.name != json.loads(bundle_path.read_text()).get("bundleId"):
+                problems.append(f"E-PORT-01 {company}/{BUNDLES}/{carrier.name}: "
+                                f"the directory is not named by its bundle id")
+        for index, row in enumerate(log_rows(root, company), 1):
+            if not isinstance(row, dict) or "__unreadable__" in row:
+                problems.append(f"E-PORT-01 {company}/{BUNDLES}/{LOGFILE}:{index}: "
+                                f"not JSON")
+                continue
+            missing = [field for field in LOG_FIELDS if field not in row]
+            if missing:
+                problems.append(f"E-PORT-01 {company}/{BUNDLES}/{LOGFILE}:{index}: "
+                                f"missing {', '.join(missing)}")
+                continue
+            if not _carrier(root, company, str(row["bundleId"])).is_dir():
+                problems.append(f"E-PORT-03 {company}/{BUNDLES}/{LOGFILE}:{index}: "
+                                f"names {row['bundleId']}, which is not stored")
+    return problems
 
 
 def _iso_now():
@@ -492,6 +639,23 @@ def main(argv=None):
     p.add_argument("--bundle", required=True)
     p.add_argument("--platform")
     p.add_argument("--root", default=str(ROOT))
+    p = sub.add_parser("record")
+    p.add_argument("--company", required=True)
+    p.add_argument("--template")
+    p.add_argument("--platform")
+    p.add_argument("--root", default=str(ROOT))
+    p = sub.add_parser("bundles")
+    p.add_argument("--company", required=True)
+    p.add_argument("--limit", type=int, default=20)
+    p.add_argument("--root", default=str(ROOT))
+    p = sub.add_parser("rollback")
+    p.add_argument("--company", required=True)
+    p.add_argument("--to", required=True)
+    p.add_argument("--force", action="store_true")
+    p.add_argument("--platform")
+    p.add_argument("--root", default=str(ROOT))
+    p = sub.add_parser("verify-bundles")
+    p.add_argument("--root", default=str(ROOT))
     p = sub.add_parser("diff")
     p.add_argument("--left", required=True)
     p.add_argument("--right", required=True)
@@ -532,6 +696,41 @@ def main(argv=None):
             if findings:
                 return 1
             print(f"portable: imported {manifest['bundleId']} → {rel}")
+            return 0
+        if args.cmd == "record":
+            payload, findings = record(args.root, args.company,
+                                       template_path=args.template,
+                                       platform=args.platform)
+            for code, reason in findings:
+                print(f"{code}: {reason} — fix: {FIX[code]}", file=sys.stderr)
+            if findings:
+                return 1
+            print(json.dumps(payload, indent=2))
+            return 0
+        if args.cmd == "bundles":
+            print(json.dumps({"company": args.company,
+                              "bundles": bundles(args.root, args.company,
+                                                 limit=args.limit)}, indent=2))
+            return 0
+        if args.cmd == "rollback":
+            payload, findings = rollback(args.root, args.company, args.to,
+                                         force=args.force,
+                                         platform=args.platform)
+            for code, reason in findings:
+                print(f"{code}: {reason} — fix: {FIX[code]}", file=sys.stderr)
+            if findings:
+                return 1
+            print(json.dumps(payload, indent=2))
+            return 0
+        if args.cmd == "verify-bundles":
+            problems = validate_bundles(args.root)
+            for problem in problems:
+                print(f"  - {problem}", file=sys.stderr)
+            if problems:
+                print(f"portable: {len(problems)} problem(s) in the stored "
+                      f"bundles", file=sys.stderr)
+                return 1
+            print("portable: every stored bundle verifies")
             return 0
         if args.cmd == "diff":
             print(json.dumps(diff(args.left, args.right), indent=2))

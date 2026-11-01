@@ -1,8 +1,8 @@
 # Company portability — templates, pins, and a bundle that proves itself (contract `company-portability@1`)
 
 **Status:** interface specified (#322), implemented in `scripts/portable.py`
-(#323), wired into the compiler (#324), tested (#325); the record, surface,
-harden, measure and demo steps follow (#326–#331). **Shape:** `schemas/portability-manifest.json`. **Checker:**
+(#323), wired into the compiler (#324), tested (#325), recorded (#326); the
+surface, harden, measure and demo steps follow (#327–#331). **Shape:** `schemas/portability-manifest.json`. **Checker:**
 `scripts/check_portability_spec.py` (CI, `--self-test`). **Boundary:** ADR-002 D8
 — *company templates carry a contract pin; import refuses an unresolvable pin;
 upgrades are explicit.*
@@ -149,6 +149,32 @@ a clean tree fail on the very artefacts it was delivering.
 
 `--bundle` requires `--out` inside the repository: a manifest whose template sits
 outside it would carry an absolute path, which is `E-PORT-07`.
+
+## The record (#326)
+
+```
+companies/<id>/bundles/<bundleId>/bundle.json              the carrier
+companies/<id>/bundles/<bundleId>/paperclip-company.json   and its template
+companies/<id>/bundles/index.jsonl                         one row per action
+```
+
+`portable.py record` stores the carrier under its own id and appends one row
+(`bundleId`, template digest, artefact count, `action: export|rollback`). Three
+rules make it a record rather than a cache:
+
+- **the id is the name.** Recording the same state twice is a silent no-op, and a
+  *different* carrier at an existing id is `E-PORT-04` — history that can be
+  rewritten is not history.
+- **a rollback is deliberate.** `rollback --to <id>` imports a stored carrier; it
+  refuses to overwrite a live template that differs unless `--force`, and either
+  way it appends a `rollback` row naming what it restored.
+- **`verify-bundles` checks the store**, not just one file: every carrier against
+  its own manifest, the directory named by its bundle id, and every log row naming
+  a carrier that exists. CI runs it over the committed store.
+
+The contract's own word for this is *rollback is an import of a previous bundle
+id* — which is now literal: the id names the directory, the directory holds the
+carrier, and the carrier is what `import` consumes.
 
 ## The conformance matrix
 

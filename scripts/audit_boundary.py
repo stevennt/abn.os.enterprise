@@ -40,6 +40,8 @@ CHECKS = (
     ("compiler", ["scripts/test_paperclip_company.py"]),
     ("compiler self-test", ["bin/paperclip-company", "--self-test"]),
     ("compiler --all", ["bin/paperclip-company", "--all", "--check"]),
+    ("compiler metrics", ["bin/paperclip-company", "--metrics", "--fail-on-alert"]),
+    ("compiler drill", ["bin/paperclip-company", "--drill"]),
     ("compile records", ["scripts/validate_compiles.py", "--root",
                          "tests/fixtures/paperclip-model"]),
     ("compile records self-test", ["scripts/validate_compiles.py", "--self-test"]),

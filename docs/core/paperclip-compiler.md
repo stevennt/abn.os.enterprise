@@ -210,6 +210,40 @@ The **tenant-admin** view of its own crew (scoped by role and unit, inside the
 portal) is a platform task — PC2-14-01 (#372). It reads the same template, and
 its permission check is OpenGate's role/unit ACL, not this repository's.
 
+## Metrics and alerts (#260)
+
+```
+$ bin/paperclip-company --root tests/fixtures/paperclip-model --metrics
+companies 2 (opted in 2): compiled 2, skipped 0, failed 0
+agents 5 · routines 5 (autonomous 3, supervised 2, pending 2)
+```
+
+`--metrics --json` returns `{counters, alerts}` for a dashboard or a job. The
+repository itself prints one skip and no alerts:
+
+```
+companies 1 (opted in 0): compiled 0, skipped 1, failed 0
+agents 0 · routines 0 (autonomous 0, supervised 0, pending 0)
+refusals E-COMP-07×1
+```
+
+| Alert | Severity | Fires when |
+|---|---|---|
+| `A1` | high | an opted-in company refused to compile — the build is red |
+| `A2` | critical | a routine is autonomous while a rule it cites is `pending-*` — the autonomy ceiling was bypassed |
+| `A3` | high | a compiled crew has no agents or no routines — it would import as an empty team |
+
+`--fail-on-alert` makes any alert exit 1, so CI can gate on it. A2 should be
+impossible by construction; it exists to catch a future change that weakens the
+compiler, which is why it is drilled:
+
+```
+$ bin/paperclip-company --drill
+drill: A2 fired — drill.r1 is autonomous on an unreviewed rule — OK
+```
+
+CI runs `--metrics --fail-on-alert` and the drill on every push.
+
 ## Compile records (#256)
 
 Every real run can leave evidence:

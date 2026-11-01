@@ -13,6 +13,8 @@ satisfy, and they fail if a behaviour is removed:
   T7  the nested model (three units, two flows, a shared role, an external party)
       compiles to its own golden, with the hierarchy, the touchpoint and the
       exclusions right;
+  T17 metrics and alerts: the counters match the fixture, an opted-in failure
+      raises A1 and fails --fail-on-alert, and the drill proves A2 can fire;
   T16 hardening: a malformed file, a duplicate unit, a parent cycle and an empty
       crew each produce a refusal that names the fix (every E-COMP line ends with
       "— fix: …");
@@ -303,6 +305,35 @@ def tests():
               all_run.stdout + all_run.stderr)
         check("T6 skip is labelled", "broken: skip" in all_run.stdout, all_run.stdout)
 
+    # T17 — metrics and alerts
+    run = subprocess.run([PY, str(CLI), "--root", str(MODEL), "--metrics", "--json"],
+                         capture_output=True, text=True)
+    check("T17 metrics run", run.returncode == 0, run.stderr.strip())
+    if run.returncode == 0:
+        payload = json.loads(run.stdout)
+        counters = payload["counters"]
+        check("T17 counters", counters["companies"] == 2 and counters["optedIn"] == 2
+              and counters["compiled"] == 2 and counters["agents"] == 5
+              and counters["routines"] == 5 and counters["pendingRules"] == 2,
+              json.dumps(counters))
+        check("T17 no alerts on a clean model", payload["alerts"] == [],
+              json.dumps(payload["alerts"]))
+
+    drill = subprocess.run([PY, str(CLI), "--drill"], capture_output=True, text=True)
+    check("T17 drill fires A2", drill.returncode == 0 and "A2 fired" in drill.stdout,
+          drill.stdout + drill.stderr)
+
+    with tempfile.TemporaryDirectory() as tmp:
+        model = _copy(tmp)
+        _mutate(model / "industries" / "demo" / "flows" / "demo.flow.yaml",
+                "uses_rule: [DEMO-01]", "uses_rule: [GHOST-01]")
+        run = subprocess.run([PY, str(CLI), "--root", str(model), "--metrics"],
+                             capture_output=True, text=True)
+        check("T17 A1 on an opted-in failure", "ALERT A1" in run.stdout, run.stdout)
+        gated = subprocess.run([PY, str(CLI), "--root", str(model), "--metrics",
+                                "--fail-on-alert"], capture_output=True, text=True)
+        check("T17 fail-on-alert", gated.returncode == 1, gated.stdout + gated.stderr)
+
     # T16 — hardening: bad files and bad structure refuse, and name the fix
     with tempfile.TemporaryDirectory() as tmp:
         model = _copy(tmp)
@@ -370,7 +401,8 @@ def main():
         return 1
     print("paperclip-compiler tests: 2 goldens, determinism, hierarchy, shared "
           "role, touchpoint, human/system/external exclusion, 9 refusals, --all "
-          "opt-in policy, compile record, surface, spec walk-through, hardening — OK")
+          "opt-in policy, compile record, surface, spec walk-through, hardening, "
+          "metrics — OK")
     return 0
 
 

@@ -1,8 +1,8 @@
 {
  "version": 1,
  "kind": "plane-boundary-audit",
- "at": "2026-11-01T08:29:43Z",
- "commit": "33b16ea",
+ "at": "2026-11-01T08:31:19Z",
+ "commit": "620a9a5",
  "contract": "paperclip-boundary@1.0",
  "checks": [
   {
@@ -51,8 +51,8 @@
    "check": "compiler",
    "command": "python scripts/test_paperclip_company.py",
    "exit": 0,
-   "outputSha256": "ba679509309cd18512cf097b6362520618caa05c279841e9a116d24ec8680d94",
-   "summary": "paperclip-compiler tests: 2 goldens, determinism, hierarchy, shared role, touchpoint, human/system/external exclusion, 9 refusals, --all opt-in policy, compile record, surface, spec walk-through, hardening \u2014 OK"
+   "outputSha256": "b50669c59ac7921a3061bc432d9efc9431f71f48eec0264f5c87fb20004effa7",
+   "summary": "paperclip-compiler tests: 2 goldens, determinism, hierarchy, shared role, touchpoint, human/system/external exclusion, 9 refusals, --all opt-in policy, compile record, surface, spec walk-through, hardening, metrics \u2014 OK"
   },
   {
    "check": "compiler self-test",
@@ -67,6 +67,20 @@
    "exit": 0,
    "outputSha256": "acdf29bcdbad0c8ac74a66864bceb9277febf4d82e4fad645964e2e37ff44c5e",
    "summary": "paperclip-company --all: 0/1 compiled"
+  },
+  {
+   "check": "compiler metrics",
+   "command": "python bin/paperclip-company --metrics --fail-on-alert",
+   "exit": 0,
+   "outputSha256": "2bdc0a91ee6c9211a597ddbc815a6760ed246e979328209bc6562b4bd1cbae9a",
+   "summary": "refusals E-COMP-07\u00d71"
+  },
+  {
+   "check": "compiler drill",
+   "command": "python bin/paperclip-company --drill",
+   "exit": 0,
+   "outputSha256": "1b1eef03bafe0468fccc958a75e7ba16ac155838684efa998922ae62ebea1443",
+   "summary": "drill: A2 fired \u2014 drill.r1 is autonomous on an unreviewed rule \u2014 OK"
   },
   {
    "check": "compile records",
@@ -120,13 +134,13 @@
   "scripts/check_plane_boundary.py": "9f0f42e84db35eaf263822793529c8ac98133d60c77488a35818f52b7a321f24",
   "scripts/test_plane_contract.py": "1f20fa2f8b3a3582ea0bc1ff8f84834c2017c133e7d85a05b9b3990e9a397906",
   "scripts/check_paperclip_template.py": "5909e3da947dc11a613ca1d8e578292b2839b9309b66b8fe0a4a42d8bb0f3593",
-  "scripts/test_paperclip_company.py": "9368491ae947c9878f515306bc165543ac1a6c7d927ae0f84cf7ca635ead8841",
+  "scripts/test_paperclip_company.py": "f5d3b2cb25cafa74737dfcb01366fcc67305d2035ac3680b15f279b74c60a5bb",
   "scripts/validate_compiles.py": "6398706ea8257d1e4f41ac011a9eea90d0b4a6f949e327ad565b254c440f6e0f",
-  "bin/paperclip-company": "eb2057c0efa67381e303b7611206bc2ab6887aee350eab7c8dfde4ce13fbfb12",
+  "bin/paperclip-company": "0525bd6956fbec60dd0b8117a868889c47d823874bb83d7e78582772d511b32b",
   "schemas/paperclip-company.json": "ffa3738ce881bba0bbc919a9f5c6767c3b596980f67b2ff8eb56dd5b728ad9ec",
   "tests/fixtures/paperclip-company.example.json": "164b2fa6d3d9e4a6fbb6a4c2e251259214eadf92a0a26d439b5abba62acc6119",
-  "docs/core/paperclip-compiler.md": "9f3ac7047aeab87e448f50991a6fe630e9aeca6bbc24e87b62723a1188467da2",
-  "scripts/audit_boundary.py": "9712a8da18a9ae2e6668c64133c05d7fdf78da5e018745bf37c83fe73c1e8b10"
+  "docs/core/paperclip-compiler.md": "ea18455885c493ade502a5ea07018cfdb27b7a2283815c848fafa86c14cc1b1b",
+  "scripts/audit_boundary.py": "572491998b5e7edc67d562e9146eb54b7af24f76346264b23131a7d565999b99"
  },
  "openItems": [
   {

@@ -143,6 +143,7 @@ assurance, so a new industry inherits them rather than exercising them:
 | `scripts/test_paperclip_company.py` + `bin/paperclip-company` | compile a company model into a Paperclip template: golden, determinism, autonomy ceiling, human/system exclusion, five refusals | programme-level (ADR-002); `bin/paperclip-company --self-test` compiles a fixture |
 | `bin/paperclip-company --all --check` | compiles every company that opted in (`paperclip.compile: true`) and fails the build on a refusal | CI runs it; non-opted models are skipped with their refusal code |
 | `scripts/validate_compiles.py` | compile records: required fields, outcomes, pin/boundary shapes, monotonic time, and 'an opted-in company's latest run is compiled' | programme-level; `--self-test` 6 cases |
+| `bin/paperclip-company --metrics --fail-on-alert` + `--drill` | compile counters and three alerts (opted-in failure, autonomous-on-unreviewed-rule, empty crew); the drill proves the alert fires | CI gate; the drill is the evidence that the alert is not decorative |
 | `scripts/pack_rule_drift.py` | prose thresholds match the rule tables | **your pack must pass this if it states numbers** |
 | `scripts/test_drift.py` | proves the drift check still bites | shared assurance |
 

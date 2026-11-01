@@ -1,6 +1,6 @@
 version: 1
 id: demo
-label: "Demo Company"
+label: Demo Company
 tenant: demo
 industry:
   id: demo
@@ -8,10 +8,15 @@ contract:
   tag: contract-2026.11.1
   sha: a7baab409dce013bd296b57aafc500565b878dfa
 departments:
-  - {id: ops, name_vi: "Vận hành", name_en: "Operations", org_unit: ops}
+- id: ops
+  name_vi: "V\u1EADn h\xE0nh"
+  name_en: Operations
+  org_unit: ops
 org:
   chart: org/org-chart.yaml
 flows:
-  - demo.flow
+- demo.flow
 rules:
-  - demo-pack
+- demo-pack
+paperclip:
+  compile: true

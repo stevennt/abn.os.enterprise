@@ -10,6 +10,9 @@ satisfy, and they fail if a behaviour is removed:
   T3  a step backed by a `pending-*` rule is compiled **supervised** — if the
       autonomy ceiling is dropped, T1 and T3 both go red;
   T4  human steps and the `system` role produce no routine;
+  T6  `--all` compiles every opted-in company and fails only for those: a refused
+      company that opted in fails the run, a refused company that did not is
+      reported and skipped;
   T5  the refusals fire with their codes: no company.yaml (E-COMP-01), a pin that
       does not resolve (E-COMP-02), a department with no unit (E-COMP-03), an
       unknown rule (E-COMP-07), a template that fails the checker (E-COMP-10).
@@ -129,6 +132,41 @@ def tests():
         check("T5 E-COMP-10", result.returncode == 1 and "E-COMP-10" in result.stderr,
               result.stderr.strip())
 
+    # T6 — the --all policy (opt-in decides whether a refusal fails the build)
+    with tempfile.TemporaryDirectory() as tmp:
+        import yaml
+        model = _copy(tmp)
+        source = model / "companies" / "demo"
+        broken = model / "companies" / "broken"
+        shutil.copytree(source, broken)
+        company = yaml.safe_load((broken / "company.yaml").read_text())
+        company["id"] = "broken"
+        (broken / "company.yaml").write_text(yaml.safe_dump(company, sort_keys=False))
+        flow_path = model / "industries" / "demo" / "flows" / "demo.flow.yaml"
+        flow = yaml.safe_load(flow_path.read_text())
+        flow["id"] = "broken.flow"
+        for step in flow["steps"]:
+            step["uses_rule"] = ["GHOST-01"]
+        (model / "industries" / "demo" / "flows" / "broken.flow.yaml").write_text(
+            yaml.safe_dump(flow, sort_keys=False))
+        company["flows"] = ["broken.flow"]
+        (broken / "company.yaml").write_text(yaml.safe_dump(company, sort_keys=False))
+
+        all_run = subprocess.run([PY, str(CLI), "--root", str(model), "--all", "--check"],
+                                 capture_output=True, text=True)
+        check("T6 opted-in refusal fails", all_run.returncode == 1,
+              all_run.stdout + all_run.stderr)
+        check("T6 reports both", "demo: compiled" in all_run.stdout
+              and "broken: FAIL" in all_run.stdout, all_run.stdout)
+
+        company["paperclip"] = {"compile": False}
+        (broken / "company.yaml").write_text(yaml.safe_dump(company, sort_keys=False))
+        all_run = subprocess.run([PY, str(CLI), "--root", str(model), "--all", "--check"],
+                                 capture_output=True, text=True)
+        check("T6 non-opted refusal is skipped", all_run.returncode == 0,
+              all_run.stdout + all_run.stderr)
+        check("T6 skip is labelled", "broken: skip" in all_run.stdout, all_run.stdout)
+
     return failures
 
 
@@ -142,7 +180,7 @@ def main():
             print(f"  - {failure}")
         return 1
     print("paperclip-compiler tests: golden, determinism, autonomy ceiling, "
-          "human/system exclusion, 5 refusals — OK")
+          "human/system exclusion, 5 refusals, --all opt-in policy — OK")
     return 0
 
 

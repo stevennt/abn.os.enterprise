@@ -79,6 +79,29 @@ rules, boundary matches the contract page). `--self-test` mutates a valid
 fixture and proves each refusal. That checker is the acceptance test the compiler
 must satisfy before Paperclip import is attempted.
 
+## Operation (the real path, #254)
+
+A company opts in with one block in its model:
+
+```yaml
+paperclip:
+  compile: true
+```
+
+`companies/company.schema.yaml` validates the block (a typo cannot silently
+skip a company). Then:
+
+| Command | Does |
+|---|---|
+| `bin/paperclip-company --all --check` | compiles every company; an **opted-in** refusal fails the run (exit 1), a non-opted model is reported with its code and skipped |
+| `bin/paperclip-company --all --out-dir build/paperclip` | writes one `<company>.json` per compiled company |
+| `bin/paperclip-company --company <id> --check` | one company, nothing written |
+
+CI runs `--all --check`, so the compiler is the build's company gate, not a
+script someone remembers to run. The reference model `example-bank` is not opted
+in — see the input gap below — so the gate is green while the packs are
+incomplete, and becomes meaningful the moment a model declares the intent.
+
 ## Known input gap (found while implementing, #253)
 
 The compiler is stricter than `scripts/validate.py`: it refuses a step that cites

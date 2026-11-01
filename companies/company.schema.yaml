@@ -100,4 +100,14 @@ properties:
       status:
         type: string
     additionalProperties: false
+  paperclip:
+    type: object
+    description: >
+      Compiler opt-in (#254). When `compile: true`, `bin/paperclip-company --all`
+      must produce a valid template for this company; a refusal fails the build.
+    required: [compile]
+    properties:
+      compile:
+        type: boolean
+    additionalProperties: false
 additionalProperties: false

@@ -13,7 +13,9 @@ What this refuses:
 
   B1  Paperclip work state inside `companies/` or `industries/` — files named
       tickets / runs / checkouts / heartbeats / paperclip.*, or a YAML key
-      `paperclip`, `paperclip_*`, `tickets`, `runs`, `checkouts`, `heartbeats`.
+      `tickets`, `runs`, `checkouts`, `heartbeats`, `paperclip_*`. The single
+      exception is the compile opt-in block `paperclip: {compile: bool}`, which
+      is a declaration about the model, not work state.
   B2  a secret **value** in a model file. Secrets are named by env var
       (`*_env`) or a placeholder (`<...>`, `${...}`, `env:...`); a literal is a
       leak waiting for a commit.
@@ -73,7 +75,12 @@ def _walk(node, path, problems):
             name = str(key)
             low = name.lower()
             where = f"{path}: {name}"
-            if low in STATE_KEYS or low.startswith("paperclip_"):
+            if low == "paperclip":
+                if not isinstance(value, dict) or set(value) - {"compile"}:
+                    problems.append(f"{where}: only the compile opt-in "
+                                    f"`paperclip: {{compile: bool}}` is allowed here "
+                                    f"(ADR-002, B1)")
+            elif low in STATE_KEYS or low.startswith("paperclip_"):
                 problems.append(f"{where}: Paperclip work state does not belong in "
                                 f"the model (ADR-002, B1)")
             if low in TENANT_KEYS:
@@ -100,6 +107,8 @@ def check(root=ROOT):
             problems.append(f"{rel}: Paperclip work state file in the model repo "
                             f"(ADR-002, B1)")
             continue
+        if ".schema." in path.name:
+            continue  # a schema describes shapes; the boundary rules apply to models
         doc = _load(path)
         for _ in _walk(doc, rel, problems):
             pass
@@ -141,6 +150,14 @@ def self_test():
     case("work state file", {"companies/acme/tickets.yaml": "tasks: []\n"}, "B1")
     case("work state key",
          {"companies/acme/company.yaml": clean + "paperclip_sync: true\n"}, "B1")
+    case("opt-in block is allowed",
+         {"companies/acme/company.yaml": clean + "paperclip:\n  compile: true\n"}, None)
+    case("state inside the opt-in block",
+         {"companies/acme/company.yaml": clean + "paperclip:\n  tickets: []\n"}, "B1")
+    case("schema file describing the block is fine",
+         {"companies/acme/company.schema.yaml":
+          "paperclip:\n  type: object\n  properties:\n    compile: {type: boolean}\n"},
+         None)
     case("secret value",
          {"companies/acme/company.yaml": clean + "db_password: hunter2\n"}, "B2")
     case("secret by env is fine",
@@ -162,7 +179,7 @@ def main(argv=None):
             for failure in failures:
                 print(f"  - {failure}")
             return 1
-        print("plane-boundary --self-test: 8 cases, each rule bites — OK")
+        print("plane-boundary --self-test: 11 cases, each rule bites — OK")
         return 0
     root = ROOT
     if "--root" in argv:

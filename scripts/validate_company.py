@@ -189,6 +189,8 @@ def self_test():
         "unknown industry": lambda doc: doc["industry"].__setitem__("id", "nope"),
         "unknown flow": lambda doc: doc.__setitem__("flows", ["ghost.flow"]),
         "unknown rule pack": lambda doc: doc.__setitem__("rules", ["ghost-pack"]),
+        "bad paperclip opt-in": lambda doc: doc.__setitem__(
+            "paperclip", {"compile": "yes"}),
         "unknown org unit": lambda doc: doc["departments"][0].__setitem__(
             "org_unit", "ghost"),
         "tag mismatch": lambda doc: doc["contract"].__setitem__("sha", "0" * 40),

@@ -8,6 +8,7 @@ Checker: `scripts/check_paperclip_template.py` (the compiler runs it before writ
     bin/paperclip-company --company example-bank --out t.json
     bin/paperclip-company --company example-bank --check    # compile, validate, write nothing
     bin/paperclip-company --root tests/fixtures/paperclip-model --company demo --out …
+    bin/paperclip-company --all [--out-dir build/paperclip] [--check]
     bin/paperclip-company --self-test
 
 Refusals (exit 1, nothing written): E-COMP-01 no company.yaml; E-COMP-02 bad or
@@ -236,6 +237,37 @@ def compile_company(root, company):
     return template
 
 
+def compile_all(root, out_dir=None, check=False):
+    """Compile every company; a failure only counts when the company opts in.
+
+    Opt-in is `paperclip: {compile: true}` in company.yaml. Other models are
+    attempted and reported, but a refusal does not fail the run — that is how a
+    scaffold with an incomplete pack can coexist with a build that must be green.
+    """
+    root = Path(root)
+    rows, failed = [], False
+    for model_path in sorted((root / "companies").glob("*/company.yaml")):
+        company = model_path.parent.name
+        model = _yaml(model_path) or {}
+        opted_in = bool((model.get("paperclip") or {}).get("compile"))
+        try:
+            template = compile_company(root, company)
+            if out_dir and not check:
+                target = Path(out_dir) / f"{company}.json"
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text(json.dumps(template, indent=2, ensure_ascii=False,
+                                             sort_keys=True) + "\n")
+            rows.append({"company": company, "opted_in": opted_in, "status": "compiled",
+                         "agents": len(template["agents"]),
+                         "routines": len(template["routines"])})
+        except Refused as exc:
+            rows.append({"company": company, "opted_in": opted_in,
+                         "status": "refused", "code": exc.code,
+                         "message": exc.message})
+            failed = failed or opted_in
+    return rows, failed
+
+
 def _self_test():
     fixture_root = GATE / "tests" / "fixtures" / "paperclip-model"
     first = compile_company(fixture_root, "demo")
@@ -262,6 +294,8 @@ def main(argv=None):
     ap.add_argument("--root", default=str(GATE))
     ap.add_argument("--out")
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--all", action="store_true")
+    ap.add_argument("--out-dir")
     ap.add_argument("--self-test", action="store_true")
     args = ap.parse_args(argv)
     if args.self_test:
@@ -274,8 +308,21 @@ def main(argv=None):
         print("paperclip-company --self-test: fixture compiles deterministically, "
               "pending rules stay supervised, L2 never autonomous — OK")
         return 0
+    if args.all:
+        rows, failed = compile_all(args.root, out_dir=args.out_dir, check=args.check)
+        for row in rows:
+            if row["status"] == "compiled":
+                print(f"  {row['company']}: compiled — {row['agents']} agents, "
+                      f"{row['routines']} routines")
+            else:
+                flag = "FAIL" if row["opted_in"] else "skip"
+                print(f"  {row['company']}: {flag} {row['code']} {row['message']}")
+        compiled = sum(1 for row in rows if row["status"] == "compiled")
+        print(f"paperclip-company --all: {compiled}/{len(rows)} compiled"
+              f"{' (opted-in company failed)' if failed else ''}")
+        return 1 if failed else 0
     if not args.company:
-        ap.error("--company is required (or use --self-test)")
+        ap.error("--company is required (or use --all / --self-test)")
     try:
         template = compile_company(args.root, args.company)
     except Refused as exc:

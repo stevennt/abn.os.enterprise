@@ -39,6 +39,7 @@ CHECKS = (
     ("template self-test", ["scripts/check_paperclip_template.py", "--self-test"]),
     ("compiler", ["scripts/test_paperclip_company.py"]),
     ("compiler self-test", ["bin/paperclip-company", "--self-test"]),
+    ("compiler --all", ["bin/paperclip-company", "--all", "--check"]),
     ("docs links", ["scripts/docs_link_check.py"]),
     ("playbook", ["scripts/playbook_sync.py"]),
     ("industry model", ["scripts/validate.py"]),

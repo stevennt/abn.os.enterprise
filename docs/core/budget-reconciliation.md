@@ -258,6 +258,24 @@ or the recorded snapshot with `--recorded`), `record` (write the period), and
 rather than identity. `check` takes no actor: it validates the store and the
 recorded reports, which is the same read `--sync` makes.
 
+## Hardening
+
+The implementation's edges, each with a code and a fix (#309):
+
+| Failure mode | Refusal |
+|---|---|
+| the tenant is a path (`..`, a separator, absolute, empty, a newline) | `E-BUD-02 invalid tenant`, checked before the admin lookup |
+| the period is not `YYYY-MM` | `E-BUD-02 … not YYYY-MM` — a period is a file name |
+| the store, the log or a recorded report is a symbolic link | `E-BUD-02 … a symbolic link to '<target>'`, and the target is never written |
+| a second writer holds the tenant's lock | `E-BUD-02 … the store is busy … (budgets.lock)`, which expires after 300 s if the holder crashed |
+| a candidate document the validator would reject | `E-BUD-02 refusing to write — …`, and the store that was there survives |
+
+One write primitive validates every replacement, so no caller — including the
+CLI — can slip an invalid store past the validator; the log is opened
+`O_NOFOLLOW` and appended with a single `write(2)`. **Not defended:** a process
+already inside the tenant can rewrite the store wholesale; the recorded report's
+digest is what makes that visible afterwards.
+
 ## The runbook
 
 `abn.platform.opengate/docs/budget-walkthrough.md` is the generated, end-to-end

@@ -3,8 +3,8 @@
 **Status:** interface specified (#332), implemented in
 `abn.platform.opengate/gateway/harness.py` (#333) and run as
 `abn.platform.opengate/infra/harness.py` (#334), recorded under `harness/runs/`
-checked in CI (#336), surfaced (#337), documented (#338), hardened (#339); the
-measure and demo steps follow (#340–#341). **Shape:** `schemas/harness-run.json`. **Checker:**
+checked in CI (#336), surfaced (#337), documented (#338), hardened (#339),
+measured (#340); the demo step follows (#341). **Shape:** `schemas/harness-run.json`. **Checker:**
 `scripts/check_harness_spec.py` (CI, `--self-test`). **Boundary:** ADR-002 — the
 three planes meet nowhere else.
 
@@ -147,6 +147,15 @@ with its fix (#339): a tenant that is a path; **an artifact outside
 `customers/<tenant>/`**, which is the one place untrusted input reaches a
 filesystem write; a record file or directory that is a symbolic link; and a second
 writer holding the store's lock (300 s TTL for a crashed holder).
+
+## The measurement
+
+`gateway/harness_metrics.py` in the tenant repo (#340): `M1` stale-run, `M2`
+all-red, `M3` thin-coverage, `M4` store-integrity, `M5` dirty-run. **`M3` measures
+the program rather than the run** — it counts the contract prefixes the store has
+asserted, because a harness touching one seam passes while proving very little —
+and `M2` is its opposite: every seam failing is a broken program, not a thin
+harness. `--drill` fires all five with a quiet control.
 
 ## The runbook
 

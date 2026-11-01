@@ -3,8 +3,8 @@
 **Status:** interface specified (#332), implemented in
 `abn.platform.opengate/gateway/harness.py` (#333) and run as
 `abn.platform.opengate/infra/harness.py` (#334), recorded under `harness/runs/`
-and checked in CI (#336); the surface, harden, measure and demo steps follow
-(#337–#341). **Shape:** `schemas/harness-run.json`. **Checker:**
+and checked in CI (#336), surfaced (#337); the harden, measure and demo steps
+follow (#338–#341). **Shape:** `schemas/harness-run.json`. **Checker:**
 `scripts/check_harness_spec.py` (CI, `--self-test`). **Boundary:** ADR-002 — the
 three planes meet nowhere else.
 
@@ -172,7 +172,7 @@ every code.
 | the fake tenant | built at run time by the platform's own provisioner, never checked in (#333) |
 | the fake Paperclip | `scripts/fake_paperclip.py` — a script runner over the real surfaces (#334) |
 | the runner | `abn.platform.opengate/gateway/harness.py` — `build`, `run`, `record`, `verify` (#333) |
-| the command | `abn.platform.opengate/infra/harness.py` — `run` (exit 1 on a failed verdict), `verify` (#334) |
+| the command | `abn.platform.opengate/infra/harness.py` — `run` (exit 1 on a failed verdict), `verify`, `check`, `list`, `show` (#334, #337) |
 | the record | `harness/runs/<runId>.json`, committed per release; `infra/harness.py check` validates the store (#336) |
 | the measure | `scripts/harness_metrics.py` — assertions per contract, coverage per plane (#338) |
 

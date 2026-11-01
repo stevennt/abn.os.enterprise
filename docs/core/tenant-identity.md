@@ -141,6 +141,36 @@ code) and never mint a session or a pass.
 8. Offboarding order: **disable the agent first, then the person** — a store
    that reverses it is `E-IDN-07`, not a silent orphan.
 
+## Records
+
+Every identity change writes one record beside the store:
+`customers/<tenant>/identity-state.json`.
+
+```json
+{
+  "version": 1,
+  "contract": "tenant-identity@1",
+  "tenant": "demo",
+  "sha256": "<digest of the account rows, order-independent>",
+  "accounts": 3, "people": 2, "agents": 1,
+  "updatedAt": "2026-11-01T09:00:00Z",
+  "by": "an.nguyen"
+}
+```
+
+It is written by `create_agent`, `bind`, `unbind` and `set_status`, in the same
+step as the store (both atomic). `resolve.py --sync` recomputes the digest and
+the counts: a store edited by hand is `identity-state.json: accounts.json changed
+outside identity.py …` (an `E-IDN-08` condition), not a silent change. A tenant
+that never used the identity path has no record and stays valid; the first change
+creates one. An intended out-of-band change is accepted explicitly —
+`identity.py seal --tenant <t> --actor <admin>` re-records it and appends
+`identity.sealed` (with the new digest) to the audit chain.
+
+There is no second record of *who did what*: the events stay in the tenant's audit
+chain (`identity.*`); this record is the *state witness* that the store still is
+what the last change made it.
+
 ## Lifecycle
 
 | Event | Effect |
@@ -157,6 +187,7 @@ code) and never mint a session or a pass.
 | Piece | Path | Issue |
 |---|---|---|
 | account model + validation, wired into `--sync` | `gateway/identity.py` | **done** (#273) |
+| the identity record (digest manifest) written per change, validated by `--sync` | `gateway/identity.py` (`identity-state.json`) | **done** (#276) |
 | admin surface: list, resolve, create agent, bind/unbind, disable/enable, validate | `infra/identity.py` | **done** (#273) |
 | run-context consumes the principal (no second mapping) | `gateway/resolve.py` | **done** (#273) |
 | ONEID login: the SSO callback uses the same resolver (no second mapping) | `apps/api/src/sso.service.ts` + `identity.core.ts` → `infra/identity.py` | wired (#274); lands with the SSO layer (#208) |

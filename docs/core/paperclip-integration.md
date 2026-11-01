@@ -1,6 +1,7 @@
 # Paperclip × OpenGate × Enterprise OS — the three-plane integration
 
-**Status:** design ratified for the Paperclip program (loop 6). Program board:
+**Status:** design ratified for the Paperclip program (loop 6) by
+`docs/core/adr-002-paperclip-three-planes.md` (ADR-002). Program board:
 issues labelled `loop:6` + `paperclip`; catalog
 `docs/core/prompts/paperclip-catalog.json` (600 tasks in dependency order).
 
@@ -148,6 +149,9 @@ run queue sit beside it.
 - `docs/core/paperclip-reviews/PC1-01-02-plane-contract.md` — the boundary
   contract review: nine findings, four resolved in this document, five deferred
   to a named issue.
+- `docs/core/adr-002-paperclip-three-planes.md` — the ratification (ADR-002):
+  the accepted decision, its consequences, and the conditions that would reverse
+  it.
 
 ## Non-goals
 

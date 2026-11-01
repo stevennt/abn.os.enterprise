@@ -10,6 +10,9 @@ satisfy, and they fail if a behaviour is removed:
   T3  a step backed by a `pending-*` rule is compiled **supervised** — if the
       autonomy ceiling is dropped, T1 and T3 both go red;
   T4  human steps and the `system` role produce no routine;
+  T7  the nested model (three units, two flows, a shared role, an external party)
+      compiles to its own golden, with the hierarchy, the touchpoint and the
+      exclusions right;
   T6  `--all` compiles every opted-in company and fails only for those: a refused
       company that opted in fails the run, a refused company that did not is
       reported and skipped;
@@ -30,6 +33,7 @@ ROOT = Path(__file__).resolve().parent.parent
 CLI = ROOT / "bin" / "paperclip-company"
 MODEL = ROOT / "tests" / "fixtures" / "paperclip-model"
 GOLDEN = ROOT / "tests" / "fixtures" / "paperclip-company.demo.json"
+GOLDEN_NESTED = ROOT / "tests" / "fixtures" / "paperclip-company.nested.json"
 PY = sys.executable
 
 
@@ -132,6 +136,62 @@ def tests():
         check("T5 E-COMP-10", result.returncode == 1 and "E-COMP-10" in result.stderr,
               result.stderr.strip())
 
+    # T7–T11 — the nested model: hierarchy, shared role, touchpoint, exclusions
+    nested_out = Path(tempfile.mkdtemp()) / "nested.json"
+    result = subprocess.run([PY, str(CLI), "--root", str(MODEL), "--company", "nested",
+                             "--out", str(nested_out)], capture_output=True, text=True)
+    check("T7 nested compiles", result.returncode == 0, result.stderr.strip())
+    if result.returncode == 0:
+        check("T7 nested golden", nested_out.read_text() == GOLDEN_NESTED.read_text(),
+              "nested template differs from its golden")
+        doc = json.loads(nested_out.read_text())
+        agents = {a["id"]: a for a in doc["agents"]}
+        check("T8 one root", sum(1 for a in doc["agents"] if a["reportsTo"] is None) == 1)
+        check("T8 child reports to the parent lead",
+              agents["bank-ops-credit-analyst"]["reportsTo"] == "bank-ops-credit-officer")
+        check("T9 a shared role yields one agent per unit",
+              {"bank-ops-credit-officer", "bank-ops-credit-credit-officer"} <= set(agents),
+              str(sorted(agents)))
+        routines = {r["id"]: r for r in doc["routines"]}
+        check("T10 touchpoint is copied", routines["nested.b.b1"].get("touchpoint")
+              == "TP-C-app")
+        check("T11 external party has no agent",
+              all(a["role"] != "external_notary" for a in doc["agents"]))
+        check("T11 external/system steps have no routine",
+              not any(r["step"] in ("b3", "a2") for r in doc["routines"]))
+
+    # T12 — more refusals
+    with tempfile.TemporaryDirectory() as tmp:
+        model = _copy(tmp)
+        (model / "companies" / "demo" / "org" / "org-chart.yaml").unlink()
+        result = _run(model)
+        check("T12 E-COMP-01 chart", result.returncode == 1
+              and "E-COMP-01" in result.stderr, result.stderr.strip())
+
+    with tempfile.TemporaryDirectory() as tmp:
+        model = _copy(tmp)
+        _mutate(model / "companies" / "demo" / "company.yaml",
+                "flows:\n- demo.flow", "flows:\n- demo.flow\n- ghost.flow")
+        result = _run(model)
+        check("T12 E-COMP-07 flow", result.returncode == 1
+              and "E-COMP-07" in result.stderr, result.stderr.strip())
+
+    with tempfile.TemporaryDirectory() as tmp:
+        model = _copy(tmp)
+        _mutate(model / "industries" / "demo" / "flows" / "demo.flow.yaml",
+                "    owner_role: credit_officer\n", "")
+        result = _run(model)
+        check("T12 E-COMP-03 owner_role", result.returncode == 1
+              and "E-COMP-03" in result.stderr, result.stderr.strip())
+
+    with tempfile.TemporaryDirectory() as tmp:
+        model = _copy(tmp)
+        _mutate(model / "companies" / "demo" / "company.yaml",
+                "tag: contract-2026.11.1", "tag: v1")
+        result = _run(model)
+        check("T12 E-COMP-02 tag", result.returncode == 1
+              and "E-COMP-02" in result.stderr, result.stderr.strip())
+
     # T6 — the --all policy (opt-in decides whether a refusal fails the build)
     with tempfile.TemporaryDirectory() as tmp:
         import yaml
@@ -179,8 +239,9 @@ def main():
         for failure in failures:
             print(f"  - {failure}")
         return 1
-    print("paperclip-compiler tests: golden, determinism, autonomy ceiling, "
-          "human/system exclusion, 5 refusals, --all opt-in policy — OK")
+    print("paperclip-compiler tests: 2 goldens, determinism, hierarchy, shared "
+          "role, touchpoint, human/system/external exclusion, 9 refusals, --all "
+          "opt-in policy — OK")
     return 0
 
 

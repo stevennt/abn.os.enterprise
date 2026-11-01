@@ -1,8 +1,8 @@
 # Plane boundary audit
 
 - contract: `paperclip-boundary@1.0`
-- commit: `87ca5b6`
-- at: 2026-11-01T08:18:53Z
+- commit: `19355a5`
+- at: 2026-11-01T08:20:39Z
 - **verdict: PASS**
 
 | Check | Exit | What it said |
@@ -13,7 +13,7 @@
 | contract self-test | 0 | plane-contract --self-test: 13 mutations, each caught — OK |
 | template spec | 0 | paperclip-template: paperclip-company.example.json valid — example-bank (3 agents, 2 routines, paperclip-boundary@1.0) |
 | template self-test | 0 | paperclip-template --self-test: 11 cases (1 valid, 10 refused) — OK |
-| compiler | 0 | paperclip-compiler tests: golden, determinism, autonomy ceiling, human/system exclusion, 5 refusals, --all opt-in policy — OK |
+| compiler | 0 | paperclip-compiler tests: 2 goldens, determinism, hierarchy, shared role, touchpoint, human/system/external exclusion, 9 refusals, --all opt-in policy — OK |
 | compiler self-test | 0 | paperclip-company --self-test: fixture compiles deterministically, pending rules stay supervised, L2 never autonomous — OK |
 | compiler --all | 0 | paperclip-company --all: 0/1 compiled |
 | docs links | 0 | docs-link: 6 front-page docs, no dangling references — OK |
@@ -40,7 +40,7 @@
 - `scripts/check_plane_boundary.py` — `9f0f42e84db35eaf…`
 - `scripts/test_plane_contract.py` — `1f20fa2f8b3a3582…`
 - `scripts/check_paperclip_template.py` — `5909e3da947dc11a…`
-- `scripts/test_paperclip_company.py` — `c92c7b57c5b2990e…`
+- `scripts/test_paperclip_company.py` — `70b793f8766708f6…`
 - `bin/paperclip-company` — `f393ec310abeae25…`
 - `schemas/paperclip-company.json` — `ffa3738ce881bba0…`
 - `tests/fixtures/paperclip-company.example.json` — `164b2fa6d3d9e4a6…`

@@ -1,0 +1,3 @@
+- {id: bank, name: "Bank", parent_id: null, headcount_plan: 20}
+- {id: bank.ops, name: "Operations", parent_id: bank, headcount_plan: 8}
+- {id: bank.ops.credit, name: "Credit", parent_id: bank.ops, headcount_plan: 4}

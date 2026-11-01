@@ -1,0 +1,122 @@
+{
+  "agents": [
+    {
+      "id": "bank-ops-credit-officer",
+      "permissions": [
+        "flow:nested.a"
+      ],
+      "reportsTo": null,
+      "responsibility": "Owns 1 step(s) in 1 flow(s).",
+      "role": "credit_officer",
+      "skills": [
+        "skill-a"
+      ],
+      "title": "Credit officer",
+      "unit": "bank.ops"
+    },
+    {
+      "id": "bank-ops-credit-analyst",
+      "permissions": [
+        "flow:nested.b"
+      ],
+      "reportsTo": "bank-ops-credit-officer",
+      "responsibility": "Owns 1 step(s) in 1 flow(s).",
+      "role": "analyst",
+      "skills": [],
+      "title": "Analyst",
+      "unit": "bank.ops.credit"
+    },
+    {
+      "id": "bank-ops-credit-credit-officer",
+      "permissions": [
+        "flow:nested.b"
+      ],
+      "reportsTo": "bank-ops-credit-officer",
+      "responsibility": "Owns 1 step(s) in 1 flow(s).",
+      "role": "credit_officer",
+      "skills": [
+        "skill-a"
+      ],
+      "title": "Credit officer",
+      "unit": "bank.ops.credit"
+    }
+  ],
+  "boundary": "paperclip-boundary@1.0",
+  "company": "nested",
+  "contract": {
+    "sha": "a7baab409dce013bd296b57aafc500565b878dfa",
+    "tag": "contract-2026.11.1"
+  },
+  "evals": [
+    {
+      "id": "eval-a",
+      "path": "industries/demo/evals/eval-a"
+    }
+  ],
+  "label": "Nested Company",
+  "projects": [
+    {
+      "id": "nested.a",
+      "name": "nested.a",
+      "sourceFlow": "industries/demo/flows/nested-a.flow.yaml"
+    },
+    {
+      "id": "nested.b",
+      "name": "nested.b",
+      "sourceFlow": "industries/demo/flows/nested-b.flow.yaml"
+    }
+  ],
+  "routines": [
+    {
+      "autonomy": "autonomous",
+      "id": "nested.a.a1",
+      "level": "L4",
+      "project": "nested.a",
+      "ruleStatus": "signed",
+      "step": "a1",
+      "usesRules": [
+        "DEMO-01"
+      ]
+    },
+    {
+      "autonomy": "supervised",
+      "id": "nested.b.b1",
+      "level": "L3",
+      "project": "nested.b",
+      "ruleStatus": "pending",
+      "step": "b1",
+      "touchpoint": "TP-C-app",
+      "usesRules": [
+        "DEMO-PEND-01"
+      ]
+    },
+    {
+      "autonomy": "autonomous",
+      "id": "nested.b.b2",
+      "level": "L3",
+      "project": "nested.b",
+      "ruleStatus": "signed",
+      "step": "b2",
+      "usesRules": [
+        "DEMO-01"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "id": "skill-a",
+      "path": "industries/demo/pack/skills/skill-a"
+    }
+  ],
+  "source": {
+    "company": "companies/nested/company.yaml",
+    "files": [
+      "companies/nested/company.yaml",
+      "companies/nested/org/org-chart.yaml",
+      "industries/demo/flows/nested-a.flow.yaml",
+      "industries/demo/flows/nested-b.flow.yaml"
+    ],
+    "industry": "industries/demo"
+  },
+  "version": 1
+}

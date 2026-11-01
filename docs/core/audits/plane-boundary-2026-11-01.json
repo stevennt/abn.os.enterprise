@@ -1,8 +1,8 @@
 {
  "version": 1,
  "kind": "plane-boundary-audit",
- "at": "2026-11-01T08:18:53Z",
- "commit": "87ca5b6",
+ "at": "2026-11-01T08:20:39Z",
+ "commit": "19355a5",
  "contract": "paperclip-boundary@1.0",
  "checks": [
   {
@@ -51,8 +51,8 @@
    "check": "compiler",
    "command": "python scripts/test_paperclip_company.py",
    "exit": 0,
-   "outputSha256": "30a310bcf8a3848c5d39e1e653dd8724775ade6990ab7fb2f8efe9b103f933e2",
-   "summary": "paperclip-compiler tests: golden, determinism, autonomy ceiling, human/system exclusion, 5 refusals, --all opt-in policy \u2014 OK"
+   "outputSha256": "95920014b5a326d374aae9406e05ab37d05fd55b00e54428ad917745dfd3c06f",
+   "summary": "paperclip-compiler tests: 2 goldens, determinism, hierarchy, shared role, touchpoint, human/system/external exclusion, 9 refusals, --all opt-in policy \u2014 OK"
   },
   {
    "check": "compiler self-test",
@@ -106,7 +106,7 @@
   "scripts/check_plane_boundary.py": "9f0f42e84db35eaf263822793529c8ac98133d60c77488a35818f52b7a321f24",
   "scripts/test_plane_contract.py": "1f20fa2f8b3a3582ea0bc1ff8f84834c2017c133e7d85a05b9b3990e9a397906",
   "scripts/check_paperclip_template.py": "5909e3da947dc11a613ca1d8e578292b2839b9309b66b8fe0a4a42d8bb0f3593",
-  "scripts/test_paperclip_company.py": "c92c7b57c5b2990ed995765879327f093e11337663d24811067c785594c57cd4",
+  "scripts/test_paperclip_company.py": "70b793f8766708f6a03fc456629e46161aa018d456c71ef0ae9b7d1d7acdec37",
   "bin/paperclip-company": "f393ec310abeae251c778aa2567e9e1b4ae33c902da3b4f653655daa276bfbc8",
   "schemas/paperclip-company.json": "ffa3738ce881bba0bbc919a9f5c6767c3b596980f67b2ff8eb56dd5b728ad9ec",
   "tests/fixtures/paperclip-company.example.json": "164b2fa6d3d9e4a6fbb6a4c2e251259214eadf92a0a26d439b5abba62acc6119",

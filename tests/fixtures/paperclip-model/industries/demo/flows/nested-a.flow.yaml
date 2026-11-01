@@ -1,0 +1,26 @@
+id: nested.a
+version: 1.0.0
+event_type: demo.a
+department: bank.ops
+steps:
+  - id: a1
+    kind: workflow
+    owner_role: credit_officer
+    level: L4
+    uses_rule: [DEMO-01]
+    sla_minutes: 10
+    on_fail: "REVIEW"
+  - id: a2
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [DEMO-01]
+    sla_minutes: 5
+    on_fail: "retry"
+  - id: a3
+    kind: human
+    owner_role: manager
+    level: L3
+    uses_rule: [DEMO-01]
+    sla_minutes: 60
+    on_fail: "escalate"

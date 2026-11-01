@@ -1,0 +1,20 @@
+version: 1
+id: nested
+label: "Nested Company"
+tenant: demo
+industry:
+  id: demo
+contract:
+  tag: contract-2026.11.1
+  sha: a7baab409dce013bd296b57aafc500565b878dfa
+departments:
+  - {id: ops, name_vi: "Vận hành", name_en: "Operations", org_unit: ops}
+paperclip:
+  compile: true
+org:
+  chart: org/org-chart.yaml
+flows:
+  - nested.a
+  - nested.b
+rules:
+  - demo-pack

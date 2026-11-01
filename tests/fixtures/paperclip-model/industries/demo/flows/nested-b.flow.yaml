@@ -1,0 +1,27 @@
+id: nested.b
+version: 1.0.0
+event_type: demo.b
+department: bank.ops.credit
+steps:
+  - id: b1
+    kind: ai
+    owner_role: credit_officer
+    level: L3
+    uses_rule: [DEMO-PEND-01]
+    uses_touchpoint: TP-C-app
+    sla_minutes: 30
+    on_fail: "escalate:manager"
+  - id: b2
+    kind: ai
+    owner_role: analyst
+    level: L3
+    uses_rule: [DEMO-01]
+    sla_minutes: 30
+    on_fail: "escalate:manager"
+  - id: b3
+    kind: workflow
+    owner_role: external_notary
+    level: L4
+    uses_rule: [DEMO-01]
+    sla_minutes: 10
+    on_fail: "hold"

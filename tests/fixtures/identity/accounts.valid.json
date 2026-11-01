@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "accounts": [
+    {
+      "id": "an.nguyen",
+      "name": "An Nguyen",
+      "role": "admin",
+      "unit": "finance",
+      "kind": "person",
+      "status": "active",
+      "sso": {
+        "subject": "oneid:u_01HZX4M8Q3",
+        "email": "an.nguyen@demo-bank.vn"
+      }
+    },
+    {
+      "id": "binh.tran",
+      "name": "Binh Tran",
+      "role": "credit-officer",
+      "unit": "finance",
+      "kind": "person",
+      "status": "active",
+      "credential": {
+        "algo": "scrypt-16384-8-1",
+        "salt": "6d1f0c2a9b8e7d54",
+        "hash": "9f2c1e7a4b6d8c0e5f3a1b2c4d6e8f0a1b3c5d7e9f1a2b4c6d8e0f2a4b6c8d0e"
+      }
+    },
+    {
+      "id": "agent-kyc",
+      "name": "KYC screening agent",
+      "role": "credit-officer",
+      "unit": "finance",
+      "kind": "agent",
+      "status": "active",
+      "owner": "an.nguyen",
+      "purpose": "Screen one credit case against the KYC checklist and file the report."
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://abn.os.enterprise/schemas/tenant-identity.json",
+  "title": "Tenant identity \u2014 accounts.json with people and agents (tenant-identity@1)",
+  "description": "The account store one tenant's people and agent service accounts live in. Shape only; the binding rules the schema cannot express (one subject per tenant, resolvable owner, role posted at the unit) are specified in docs/core/tenant-identity.md and checked by scripts/check_identity_spec.py.",
+  "type": "object",
+  "required": [
+    "version",
+    "accounts"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "accounts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/account"
+      }
+    }
+  },
+  "definitions": {
+    "account": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "role",
+        "unit"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{2,31}$",
+          "description": "Path-safe and stable: the account is named in audit lines, passes and records."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{1,30}$",
+          "description": "A portal role. It must be posted on the unit's org node; the org model owns the list."
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Unit id, local to the company. For a group the account names its company."
+        },
+        "company": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{1,30}$",
+          "description": "Group tenants only: which company's chart posts the role. Omitted for a single entity (the tenant is the company)."
+        },
+        "kind": {
+          "enum": [
+            "person",
+            "agent"
+          ],
+          "description": "Absent means person (existing stores stay valid)."
+        },
+        "status": {
+          "enum": [
+            "active",
+            "disabled"
+          ],
+          "description": "Absent means active. A disabled account resolves to no principal and cannot obtain a pass."
+        },
+        "credential": {
+          "type": "object",
+          "required": [
+            "algo",
+            "salt",
+            "hash"
+          ],
+          "additionalProperties": true,
+          "description": "A local password verifier. People only; never stored for an agent."
+        },
+        "sso": {
+          "type": "object",
+          "required": [
+            "subject"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "subject": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The IdP's stable subject (ONEID sticky id). One account per subject per tenant."
+            },
+            "email": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          "description": "The ONEID (or tenant IdP) binding. People only."
+        },
+        "owner": {
+          "type": "string",
+          "description": "Agent only: the person account responsible for it. Every agent action names this person."
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240,
+          "description": "Agent only: what the agent is for, in one sentence a reviewer can check."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "agent"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "owner",
+              "purpose",
+              "status"
+            ],
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "credential"
+                  ]
+                },
+                {
+                  "required": [
+                    "sso"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "not": {
+              "properties": {
+                "kind": {
+                  "const": "agent"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            }
+          },
+          "then": {
+            "anyOf": [
+              {
+                "required": [
+                  "credential"
+                ]
+              },
+              {
+                "required": [
+                  "sso"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

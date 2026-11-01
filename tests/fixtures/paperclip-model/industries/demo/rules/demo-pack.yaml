@@ -1,0 +1,10 @@
+- id: DEMO-01
+  version: 1.0.0
+  authority: "Demo operating policy 2026-01"
+  table:
+    - {when: "*", then: PASS}
+- id: DEMO-PEND-01
+  version: 0.1.0
+  authority: "pending-review — structural rule, no policy asserted"
+  table:
+    - {when: "*", then: PASS-TO-HUMAN}

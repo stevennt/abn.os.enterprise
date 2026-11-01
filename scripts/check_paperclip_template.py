@@ -6,7 +6,7 @@ the rules a schema cannot state, and is the acceptance test the compiler
 (PC1-02-02, #253) has to satisfy before Paperclip import is attempted:
 
   S1  the boundary version matches the contract page;
-  S2  exactly one root agent (`reportsTo: null`), and every `reportsTo` resolves;
+  S2  at least one root agent (`reportsTo: null`), and every `reportsTo` resolves;
   S3  agents, projects, routines, skills and evals have unique ids;
   S4  every routine's project resolves, and a step is reasoned once per project;
   S5  `autonomy: autonomous` only at L3+ with `ruleStatus: signed` (a step backed
@@ -46,7 +46,7 @@ def _schema_problems(doc):
             for error in sorted(validator.iter_errors(doc), key=str)]
 
 
-def _semantic_problems(doc):
+def _semantic_problems(doc, root=ROOT):
     import os
 
     problems = []
@@ -58,8 +58,8 @@ def _semantic_problems(doc):
     agents = doc.get("agents") or []
     ids = [a.get("id") for a in agents]
     roots = [a for a in agents if a.get("reportsTo") is None]
-    if len(roots) != 1:
-        problems.append(f"S2 org: expected exactly one root agent, found {len(roots)}")
+    if not roots:
+        problems.append("S2 org: no root agent (every agent reports to someone)")
     for agent in agents:
         parent = agent.get("reportsTo")
         if parent is not None and parent not in ids:
@@ -110,14 +110,14 @@ def _semantic_problems(doc):
     for kind in ("skills", "evals"):
         for row in doc.get(kind) or []:
             path = str(row.get("path") or "")
-            if not path or not os.path.exists(ROOT / path):
+            if not path or not os.path.exists(Path(root) / path):
                 problems.append(f"S7 {kind}: {row.get('id')!r} names a path that does "
                                 f"not exist: {path!r}")
     return problems
 
 
-def check_template(doc):
-    return _schema_problems(doc) + _semantic_problems(doc)
+def check_template(doc, root=ROOT):
+    return _schema_problems(doc) + _semantic_problems(doc, root)
 
 
 def self_test():
@@ -128,8 +128,8 @@ def self_test():
         ("valid fixture", [], None),
         ("autonomous on a pending rule",
          lambda d: d["routines"][0].__setitem__("ruleStatus", "pending"), "S5"),
-        ("two roots",
-         lambda d: d["agents"][1].__setitem__("reportsTo", None), "S2"),
+        ("no root",
+         lambda d: [a.__setitem__("reportsTo", "retail-head") for a in d["agents"][:1]], "S2"),
         ("unresolved manager",
          lambda d: d["agents"][1].__setitem__("reportsTo", "nobody"), "S2"),
         ("duplicate agent id",

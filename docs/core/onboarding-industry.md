@@ -140,6 +140,7 @@ assurance, so a new industry inherits them rather than exercising them:
 | `scripts/test_plane_contract.py` | the boundary pages still say what they said: decisions, seams, owners, findings, ADR, index | programme-level (ADR-002); `--self-test` mutates the pages and proves red |
 | `scripts/audit_boundary.py` | the boundary audit: runs its checks and records exit + output digest + guarded file digests; `--verify` re-runs and compares | programme-level (ADR-002); not a CI gate — it produces the evidence file |
 | `scripts/check_paperclip_template.py` | the compiled company template: schema, one root, resolvable managers, unique ids, autonomy only on signed rules | programme-level (ADR-002); `--self-test` mutates a fixture and proves each refusal |
+| `scripts/test_paperclip_company.py` + `bin/paperclip-company` | compile a company model into a Paperclip template: golden, determinism, autonomy ceiling, human/system exclusion, five refusals | programme-level (ADR-002); `bin/paperclip-company --self-test` compiles a fixture |
 | `scripts/pack_rule_drift.py` | prose thresholds match the rule tables | **your pack must pass this if it states numbers** |
 | `scripts/test_drift.py` | proves the drift check still bites | shared assurance |
 

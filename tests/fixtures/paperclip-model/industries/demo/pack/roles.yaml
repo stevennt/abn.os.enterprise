@@ -1,0 +1,7 @@
+roles:
+  credit_officer:
+    position: maker
+    skills_required: [skill-a]
+  analyst:
+    position: maker
+    skills_required: []

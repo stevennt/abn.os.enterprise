@@ -1,0 +1,90 @@
+{
+  "agents": [
+    {
+      "id": "ops-credit-analyst",
+      "permissions": [
+        "flow:demo.flow"
+      ],
+      "reportsTo": null,
+      "responsibility": "Owns 1 step(s) in 1 flow(s).",
+      "role": "analyst",
+      "skills": [],
+      "title": "Analyst",
+      "unit": "ops.credit"
+    },
+    {
+      "id": "ops-credit-credit-officer",
+      "permissions": [
+        "flow:demo.flow"
+      ],
+      "reportsTo": null,
+      "responsibility": "Owns 1 step(s) in 1 flow(s).",
+      "role": "credit_officer",
+      "skills": [
+        "skill-a"
+      ],
+      "title": "Credit officer",
+      "unit": "ops.credit"
+    }
+  ],
+  "boundary": "paperclip-boundary@1.0",
+  "company": "demo",
+  "contract": {
+    "sha": "a7baab409dce013bd296b57aafc500565b878dfa",
+    "tag": "contract-2026.11.1"
+  },
+  "evals": [
+    {
+      "id": "eval-a",
+      "path": "industries/demo/evals/eval-a"
+    }
+  ],
+  "label": "Demo Company",
+  "projects": [
+    {
+      "id": "demo.flow",
+      "name": "demo.flow",
+      "sourceFlow": "industries/demo/flows/demo.flow.yaml"
+    }
+  ],
+  "routines": [
+    {
+      "autonomy": "autonomous",
+      "id": "demo.flow.s1-check",
+      "level": "L4",
+      "project": "demo.flow",
+      "ruleStatus": "signed",
+      "step": "s1-check",
+      "usesRules": [
+        "DEMO-01"
+      ]
+    },
+    {
+      "autonomy": "supervised",
+      "id": "demo.flow.s2-assess",
+      "level": "L3",
+      "project": "demo.flow",
+      "ruleStatus": "pending",
+      "step": "s2-assess",
+      "usesRules": [
+        "DEMO-PEND-01"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "id": "skill-a",
+      "path": "industries/demo/pack/skills/skill-a"
+    }
+  ],
+  "source": {
+    "company": "companies/demo/company.yaml",
+    "files": [
+      "companies/demo/company.yaml",
+      "companies/demo/org/org-chart.yaml",
+      "industries/demo/flows/demo.flow.yaml"
+    ],
+    "industry": "industries/demo"
+  },
+  "version": 1
+}

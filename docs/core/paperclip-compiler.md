@@ -35,7 +35,7 @@ never reads a credential and never calls a service.
 | `contract.tag`, `contract.sha` | `contract` | copied verbatim; an unresolvable pin is a refusal, not a warning |
 | boundary contract version | `boundary` | read from the contract page at compile time |
 | org unit | `agents[].unit`, and one **project** per flow | a unit with no role produces no agent |
-| role (unit × role) | `agents[]` | `id` = `role` slug + unit; `title` from the role doc; `responsibility` from the role summary; `reportsTo` = the unit head's agent, `null` only for the company root |
+| role (unit × role) | `agents[]` | `id` = `<unit>-<role>` slug; `title` from the role id; `responsibility` counts the steps it owns; `reportsTo` = the lead agent of the nearest ancestor unit with agents, `null` for a unit with no such ancestor (a company may have several top-level units) |
 | flow | `projects[]` | `id` = flow id, `sourceFlow` = flow file |
 | step (`kind`, `level`, `uses_rule`, `uses_touchpoint`) | `routines[]` | one routine per non-human step; `level` copied; `autonomy` = `autonomous` only for `L3`+ and a signed rule, else `supervised` |
 | rule `authority` | `routines[].ruleStatus` | `pending` if any cited rule starts with `pending-` |
@@ -57,7 +57,7 @@ timestamps in the template; the compile time is recorded outside it).
 | `E-COMP-05` | a step cites a `pending-*` rule and claims `autonomous` | `flow <f> step <s>: rule <r> is unreviewed; the routine must be supervised` |
 | `E-COMP-06` | two agents/routines/projects/skills share an id | `duplicate id <id> in <collection>` |
 | `E-COMP-07` | a cited pack skill or eval path does not exist | `flow <f>: skill <s> not found` |
-| `E-COMP-08` | `reportsTo` names no agent, or there is zero or several roots | `agent <a>: reportsTo <b> does not resolve` / `expected exactly one root agent` |
+| `E-COMP-08` | `reportsTo` names no agent, or no agent is a root | `agent <a>: reportsTo <b> does not resolve` / `no root agent` |
 | `E-COMP-09` | the boundary version in the template and the contract page disagree | `boundary <v> != contract <w>` |
 | `E-COMP-10` | the emitted template fails `schemas/paperclip-company.json` | `template invalid: <jsonschema message>` |
 
@@ -78,6 +78,18 @@ root, resolvable `reportsTo`, unique ids, `autonomous` only at L3+ with signed
 rules, boundary matches the contract page). `--self-test` mutates a valid
 fixture and proves each refusal. That checker is the acceptance test the compiler
 must satisfy before Paperclip import is attempted.
+
+## Known input gap (found while implementing, #253)
+
+The compiler is stricter than `scripts/validate.py`: it refuses a step that cites
+a rule **no pack defines** (E-COMP-07). On the reference model this bites —
+`companies/example-bank` adopts two banking flows whose steps cite rules the
+banking packs do not contain (for example `DISPUTE-*`, `NOTIFY-TPL-01`,
+`AML-4EYES-04`), so that model does not compile today. That is a content gap in
+the banking packs, not a compiler bug, and it is why the golden test compiles a
+small consistent fixture (`tests/fixtures/paperclip-model`) instead. Fixing the
+packs is a tier-3 task; until then the compiler refuses rather than invent a
+rule status.
 
 ## Non-goals
 

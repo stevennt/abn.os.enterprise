@@ -1,0 +1,34 @@
+id: demo.flow
+version: 1.0.0
+event_type: demo.request
+department: ops.credit
+steps:
+  - id: s1-check
+    kind: workflow
+    owner_role: credit_officer
+    level: L4
+    uses_rule: [DEMO-01]
+    sla_minutes: 10
+    on_fail: "REVIEW"
+  - id: s2-assess
+    kind: ai
+    owner_role: analyst
+    level: L3
+    uses_rule: [DEMO-PEND-01]
+    sla_minutes: 30
+    on_fail: "escalate:manager"
+  - id: s3-approve
+    kind: human
+    owner_role: manager
+    level: L3
+    uses_rule: [DEMO-01]
+    sla_minutes: 240
+    uses_touchpoint: TP-E-inbox
+    on_fail: "escalate:ops"
+  - id: s4-notify
+    kind: workflow
+    owner_role: system
+    level: L4
+    uses_rule: [DEMO-01]
+    sla_minutes: 5
+    on_fail: "retry+page"

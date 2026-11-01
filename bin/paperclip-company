@@ -1,0 +1,305 @@
+#!/usr/bin/env python3
+"""paperclip-company — compile a company model into a Paperclip template.
+
+Spec: `docs/core/paperclip-compiler.md`. Shape: `schemas/paperclip-company.json`.
+Checker: `scripts/check_paperclip_template.py` (the compiler runs it before write).
+
+    bin/paperclip-company --company example-bank            # template to stdout
+    bin/paperclip-company --company example-bank --out t.json
+    bin/paperclip-company --company example-bank --check    # compile, validate, write nothing
+    bin/paperclip-company --root tests/fixtures/paperclip-model --company demo --out …
+    bin/paperclip-company --self-test
+
+Refusals (exit 1, nothing written): E-COMP-01 no company.yaml; E-COMP-02 bad or
+unresolvable contract pin; E-COMP-03 flow department has no unit, or a step has
+no owner_role; E-COMP-07 a cited rule or a skill/eval path does not exist;
+E-COMP-09 boundary mismatch; E-COMP-10 the template fails the checker.
+(E-COMP-04/05 are honoured by construction: human steps become no routine, and an
+unreviewed rule forces `autonomy: supervised`.)
+"""
+import argparse
+import importlib.util
+import json
+import os
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+GATE = Path(__file__).resolve().parent.parent
+CONTRACT = GATE / "docs" / "core" / "paperclip-integration.md"
+VERSION = re.compile(r"paperclip-boundary@\d+\.\d+")
+PIN_TAG = re.compile(r"^contract-\d{4}\.\d{2}\.\d+$")
+PIN_SHA = re.compile(r"^[0-9a-f]{40}$")
+SLUG = re.compile(r"[^a-z0-9]+")
+
+
+class Refused(Exception):
+    def __init__(self, code, message):
+        super().__init__(f"{code}: {message}")
+        self.code = code
+        self.message = message
+
+
+def _yaml(path):
+    import yaml
+
+    with open(path, encoding="utf-8") as fh:
+        return yaml.safe_load(fh)
+
+
+def _slug(text):
+    return SLUG.sub("-", str(text).lower()).strip("-")[:30]
+
+
+def _boundary():
+    text = CONTRACT.read_text() if CONTRACT.is_file() else ""
+    found = VERSION.search(text)
+    if not found:
+        raise Refused("E-COMP-09", "the contract page carries no boundary version")
+    return found.group(0)
+
+
+def _checker():
+    spec = importlib.util.spec_from_file_location(
+        "template_check", GATE / "scripts" / "check_paperclip_template.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _rules(industry_dir):
+    rules = {}
+    for path in sorted((industry_dir / "rules").glob("*.y*ml")):
+        doc = _yaml(path) or []
+        rows = doc if isinstance(doc, list) else (doc.get("rules") or [])
+        for row in rows:
+            if isinstance(row, dict) and row.get("id"):
+                rules[str(row["id"])] = str(row.get("authority") or "")
+    return rules
+
+
+def _flows(industry_dir, wanted):
+    found = {}
+    for path in sorted((industry_dir / "flows").glob("*.y*ml")):
+        doc = _yaml(path) or {}
+        if doc.get("id") in wanted:
+            found[doc["id"]] = (path, doc)
+    return found
+
+
+def _unit_for(department, units):
+    department = str(department or "").strip()
+    if department in units:
+        return department
+    best = None
+    for uid in units:
+        if department.startswith(uid + ".") and (best is None or len(uid) > len(best)):
+            best = uid
+    return best
+
+
+def compile_company(root, company):
+    root = Path(root)
+    base = root / "companies" / company
+    model_path = base / "company.yaml"
+    if not model_path.is_file():
+        raise Refused("E-COMP-01", f"company {company}: no company.yaml")
+    model = _yaml(model_path) or {}
+    if model.get("id") != company:
+        raise Refused("E-COMP-01", f"company {company}: company.yaml id is "
+                                   f"{model.get('id')!r}")
+
+    pin = model.get("contract") or {}
+    tag, sha = str(pin.get("tag") or ""), str(pin.get("sha") or "")
+    if not PIN_TAG.match(tag) or not PIN_SHA.match(sha):
+        raise Refused("E-COMP-02", f"company {company}: contract pin "
+                                   f"{tag or 'missing'} / {sha[:12] or 'missing'} "
+                                   f"is malformed")
+    probe = subprocess.run(["git", "cat-file", "-e", f"{sha}^{{commit}}"],
+                           cwd=GATE, capture_output=True)
+    if probe.returncode != 0:
+        raise Refused("E-COMP-02", f"company {company}: contract pin {tag} does "
+                                   f"not resolve to {sha[:12]}…")
+
+    industry = (model.get("industry") or {}).get("id")
+    industry_dir = root / "industries" / str(industry)
+    if not industry or not industry_dir.is_dir():
+        raise Refused("E-COMP-07", f"company {company}: industry "
+                                   f"{industry!r} has no directory")
+
+    chart = base / str((model.get("org") or {}).get("chart") or "")
+    if not chart.is_file():
+        raise Refused("E-COMP-01", f"company {company}: org chart "
+                                   f"{chart} is missing")
+    units = {str(row["id"]): row for row in (_yaml(chart) or [])
+             if isinstance(row, dict) and row.get("id")}
+
+    wanted = [str(f) for f in (model.get("flows") or [])]
+    flows = _flows(industry_dir, set(wanted))
+    missing_flows = [f for f in wanted if f not in flows]
+    if missing_flows:
+        raise Refused("E-COMP-07", f"company {company}: flow(s) not found: "
+                                   f"{', '.join(missing_flows)}")
+    rules = _rules(industry_dir)
+
+    steps_by_unit_role, projects, routines, sources = {}, [], [], []
+    for flow_id in wanted:
+        path, flow = flows[flow_id]
+        sources.append(path.relative_to(root).as_posix())
+        unit = _unit_for(flow.get("department"), units)
+        if unit is None:
+            raise Refused("E-COMP-03", f"flow {flow_id}: department "
+                                       f"{flow.get('department')!r} has no unit in "
+                                       f"the company chart")
+        projects.append({"id": flow_id, "name": str(flow.get("name") or flow_id),
+                         "sourceFlow": path.relative_to(root).as_posix()})
+        for step in flow.get("steps") or []:
+            sid = str(step.get("id") or "")
+            role = str(step.get("owner_role") or "")
+            kind = str(step.get("kind") or "")
+            if not sid or not role:
+                raise Refused("E-COMP-03", f"flow {flow_id} step {sid or '?'}: "
+                                           f"needs id and owner_role")
+            cited = [str(r) for r in (step.get("uses_rule") or [])]
+            unknown = [r for r in cited if r not in rules]
+            if unknown:
+                raise Refused("E-COMP-07", f"flow {flow_id} step {sid}: rule(s) not "
+                                           f"defined by any pack: "
+                                           f"{', '.join(unknown)}")
+            if kind == "human" or role == "system" or role.startswith("external_"):
+                continue  # no routine: a human, an automation, or an outside party
+            pending = any(rules[r].lower().startswith("pending-") for r in cited)
+            level = str(step.get("level") or "")
+            autonomous = level in ("L3", "L4", "L5") and not pending
+            routines.append({
+                "id": f"{flow_id}.{sid}", "project": flow_id, "step": sid,
+                "level": level, "autonomy": "autonomous" if autonomous else "supervised",
+                "usesRules": cited,
+                "ruleStatus": "pending" if pending else "signed",
+                **({"touchpoint": str(step["uses_touchpoint"])}
+                   if step.get("uses_touchpoint") else {}),
+            })
+            steps_by_unit_role.setdefault((unit, role), []).append((flow_id, sid))
+
+    roles_doc = industry_dir / "pack" / "roles.yaml"
+    pack_roles = {}
+    if roles_doc.is_file():
+        pack_roles = ((_yaml(roles_doc) or {}).get("roles") or {})
+    skills = [{"id": p.name, "path": p.relative_to(root).as_posix()}
+              for p in sorted((industry_dir / "pack" / "skills").iterdir())
+              if p.is_dir()] if (industry_dir / "pack" / "skills").is_dir() else []
+    evals = [{"id": p.name, "path": p.relative_to(root).as_posix()}
+             for p in sorted((industry_dir / "evals").iterdir())
+             if p.is_dir()] if (industry_dir / "evals").is_dir() else []
+    declared = [s["id"] for s in skills]
+
+    counts = {key: len(value) for key, value in steps_by_unit_role.items()}
+    lead = {}
+    for unit in units:
+        owned = {role: n for (u, role), n in counts.items() if u == unit}
+        if owned:
+            lead[unit] = sorted(owned, key=lambda r: (-owned[r], r))[0]
+
+    agents = []
+    for (unit, role), steps in sorted(steps_by_unit_role.items()):
+        parent = units[unit].get("parent_id")
+        while parent is not None and parent not in lead:
+            parent = units.get(parent, {}).get("parent_id")
+        pack = pack_roles.get(role) or {}
+        agents.append({
+            "id": _slug(f"{unit}-{role}"),
+            "role": role,
+            "title": role.replace("_", " ").replace(".", " ").capitalize(),
+            "unit": unit,
+            "reportsTo": _slug(f"{parent}-{lead[parent]}") if parent in lead else None,
+            "responsibility": (f"Owns {len(steps)} step(s) in "
+                               f"{len({f for f, _s in steps})} flow(s)."),
+            "permissions": sorted({f"flow:{f}" for f, _s in steps}),
+            "skills": [s for s in (pack.get("skills_required") or [])
+                       if s in declared],
+        })
+
+    template = {
+        "version": 1, "company": company, "label": str(model.get("label") or company),
+        "boundary": _boundary(), "contract": {"tag": tag, "sha": sha},
+        "agents": agents, "projects": projects, "routines": routines,
+        "skills": skills, "evals": evals,
+        "source": {"company": model_path.relative_to(root).as_posix(),
+                   "industry": industry_dir.relative_to(root).as_posix(),
+                   "files": [model_path.relative_to(root).as_posix(),
+                             chart.relative_to(root).as_posix(), *sources]},
+    }
+    problems = _checker().check_template(template, root=root)
+    if problems:
+        raise Refused("E-COMP-10", "template invalid: " + "; ".join(problems[:5]))
+    return template
+
+
+def _self_test():
+    fixture_root = GATE / "tests" / "fixtures" / "paperclip-model"
+    first = compile_company(fixture_root, "demo")
+    second = compile_company(fixture_root, "demo")
+    problems = []
+    if json.dumps(first, sort_keys=True) != json.dumps(second, sort_keys=True):
+        problems.append("not deterministic")
+    pending = [r for r in first["routines"] if r["ruleStatus"] == "pending"]
+    if not pending:
+        problems.append("fixture should exercise a pending rule")
+    if any(r["autonomy"] == "autonomous" for r in pending):
+        problems.append("a pending rule compiled to an autonomous routine")
+    if any(r["autonomy"] == "autonomous" and r["level"] == "L2"
+           for r in first["routines"]):
+        problems.append("an L2 step compiled to an autonomous routine")
+    if not first["agents"] or not first["projects"]:
+        problems.append("no agents or projects")
+    return problems
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(prog="paperclip-company")
+    ap.add_argument("--company")
+    ap.add_argument("--root", default=str(GATE))
+    ap.add_argument("--out")
+    ap.add_argument("--check", action="store_true")
+    ap.add_argument("--self-test", action="store_true")
+    args = ap.parse_args(argv)
+    if args.self_test:
+        problems = _self_test()
+        if problems:
+            print("paperclip-company --self-test RED:")
+            for problem in problems:
+                print(f"  - {problem}")
+            return 1
+        print("paperclip-company --self-test: fixture compiles deterministically, "
+              "pending rules stay supervised, L2 never autonomous — OK")
+        return 0
+    if not args.company:
+        ap.error("--company is required (or use --self-test)")
+    try:
+        template = compile_company(args.root, args.company)
+    except Refused as exc:
+        print(f"paperclip-company: {exc.code}: {exc.message}", file=sys.stderr)
+        return 1
+    except (OSError, ValueError) as exc:
+        print(f"paperclip-company: {exc}", file=sys.stderr)
+        return 1
+    text = json.dumps(template, indent=2, ensure_ascii=False, sort_keys=True) + "\n"
+    if args.check:
+        print(f"paperclip-company: {args.company} compiles — "
+              f"{len(template['agents'])} agents, {len(template['projects'])} projects, "
+              f"{len(template['routines'])} routines, {template['boundary']}")
+        return 0
+    if args.out:
+        target = Path(args.out)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(text)
+        print(f"paperclip-company: wrote {target} — {len(template['agents'])} agents, "
+              f"{len(template['routines'])} routines")
+    else:
+        sys.stdout.write(text)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

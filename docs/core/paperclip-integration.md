@@ -13,6 +13,12 @@ tickets, heartbeats, approvals, budgets, skills, connectors, run history. It is
 not an org model and not an audit record — those already exist here and in
 OpenGate. This page fixes the boundary, the seam contracts and the decisions.
 
+**Platform side:** the OpenGate half of this contract (what the tenant plane
+implements, the seams as the platform must build them, and the gaps with owners)
+is [docs/paperclip-integration.md in `abn.platform.opengate`](https://github.com/stevennt/abn.platform.opengate/blob/DEV/docs/paperclip-integration.md).
+Both pages link each other; when one changes, change the other in the same
+sitting.
+
 ## The three planes
 
 ```

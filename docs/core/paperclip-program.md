@@ -58,7 +58,7 @@ title says what phase it is and what it touches.
 |---|---|---|
 | design (model) | this repo | `metamodel/`, `industries/`, `companies/`, `bin/` |
 | execution (agents) | Paperclip (pinned, self-hosted) | its API + UI; our adapter lands in OpenGate |
-| tenant + evidence | `abn.platform.opengate` | `gateway/` (contracts), `infra/` (CLIs), `apps/api` + `apps/web` (surface), `docs/` (operator docs) |
+| tenant + evidence | `abn.platform.opengate` | `gateway/` (contracts), `infra/` (CLIs), `apps/api` + `apps/web` (surface), `docs/` (operator docs). The platform half of this contract is [its docs/paperclip-integration.md](https://github.com/stevennt/abn.platform.opengate/blob/DEV/docs/paperclip-integration.md) |
 
 ## Status
 

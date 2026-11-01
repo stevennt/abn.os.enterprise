@@ -186,6 +186,9 @@ run queue sit beside it.
 - `docs/core/paperclip-reviews/PC1-01-02-plane-contract.md` — the boundary
   contract review: nine findings, four resolved in this document, five deferred
   to a named issue.
+- `docs/core/audits/plane-boundary-2026-11-01.md` — the audit: eight checks run
+  with their exit codes and output digests, the guarded files' sha256, the open
+  items and a verdict; re-verifiable with `scripts/audit_boundary.py --verify`.
 - `docs/core/adr-002-paperclip-three-planes.md` — the ratification (ADR-002):
   the accepted decision, its consequences, and the conditions that would reverse
   it.

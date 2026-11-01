@@ -1,0 +1,98 @@
+{
+ "version": 1,
+ "kind": "plane-boundary-audit",
+ "at": "2026-11-01T08:09:06Z",
+ "commit": "0cf7fd6",
+ "contract": "paperclip-boundary@1.0",
+ "checks": [
+  {
+   "check": "boundary",
+   "command": "python scripts/check_plane_boundary.py",
+   "exit": 0,
+   "outputSha256": "3d88df2b598ac0bfe3802364c6787ffafc9d46234f965eca00ec2cb7c18daace",
+   "summary": "plane-boundary: 91 model files stay in the design plane \u2014 OK"
+  },
+  {
+   "check": "boundary self-test",
+   "command": "python scripts/check_plane_boundary.py --self-test",
+   "exit": 0,
+   "outputSha256": "8afc877498dec089bce544ef8022bc60df2b8fa9f8e791e5abd1428dfd1a00d2",
+   "summary": "plane-boundary --self-test: 8 cases, each rule bites \u2014 OK"
+  },
+  {
+   "check": "contract tests",
+   "command": "python scripts/test_plane_contract.py",
+   "exit": 0,
+   "outputSha256": "5549065ff035c8fe9a79897679ee000bc3424dcf08b611b5f984865c8dc6f000",
+   "summary": "plane-contract: 10 decisions, 4 seams, one owner per field, 9 findings dispositioned, ADR accepted, version + upgrade path, explainer + reader check, index links \u2014 OK"
+  },
+  {
+   "check": "contract self-test",
+   "command": "python scripts/test_plane_contract.py --self-test",
+   "exit": 0,
+   "outputSha256": "099886338cf9838dc5fb509406327740a5f97cef4f351f462d459cd69d46f9d0",
+   "summary": "plane-contract --self-test: 13 mutations, each caught \u2014 OK"
+  },
+  {
+   "check": "docs links",
+   "command": "python scripts/docs_link_check.py",
+   "exit": 0,
+   "outputSha256": "c927d3c57803face84171595505464496584c2d8a5d570652c366e94c746507f",
+   "summary": "docs-link: 6 front-page docs, no dangling references \u2014 OK"
+  },
+  {
+   "check": "playbook",
+   "command": "python scripts/playbook_sync.py",
+   "exit": 0,
+   "outputSha256": "45539b0185094083ac7032307a8e12fda0a9a1149a133e6170586200419a10b3",
+   "summary": "playbook: all 39 CI scripts are referenced \u2014 OK"
+  },
+  {
+   "check": "industry model",
+   "command": "python scripts/validate.py",
+   "exit": 0,
+   "outputSha256": "c206d0723cc50e1633a1d0c2dfbf536dea5bac2cdb3bcc57ca359e7d7d42fd38",
+   "summary": "readme-map: 10 entries all exist \u2014 OK"
+  },
+  {
+   "check": "company model",
+   "command": "python scripts/validate_company.py",
+   "exit": 0,
+   "outputSha256": "27296c8558a8db4cacedf5ebb8d81ee9eefdfee949eea176352ab75416d54482",
+   "summary": "companies: 1 model(s), 0 failure(s), 0 warning(s)"
+  }
+ ],
+ "inputs": {
+  "docs/core/paperclip-integration.md": "41d2711b130254c79797fd84492de709fca62699b910cbb643d31444bc735a5a",
+  "docs/core/adr-002-paperclip-three-planes.md": "5cf1325f2a160b8a878e3983a46b4a4073b0d34296f895ada9230e16a1c7e474",
+  "docs/core/paperclip-reviews/PC1-01-02-plane-contract.md": "9b6a5e8b854184e6bbe3df144137d2fa87fddeeeab5862b20cfa21399fa04eb5",
+  "docs/core/paperclip-explainer.md": "8f051c377c9eeebe37cef28b45325d11870ed87b26d4c8979c790b84200b0dbe",
+  "docs/core/paperclip-reviews/PC1-01-09-explainer.md": "eb50541a968e6963fe7712d24a6193f1604b1adb43431e4b59d312847973719f",
+  "scripts/check_plane_boundary.py": "641b11e2e57dd4cba1a09ebf32c0b7306c21a178c8b05554c7cf55b5353cdaef",
+  "scripts/test_plane_contract.py": "1f20fa2f8b3a3582ea0bc1ff8f84834c2017c133e7d85a05b9b3990e9a397906",
+  "scripts/audit_boundary.py": "2da23f10007a4ee2ba383ccb57339e7d28955152419817c2311e359a2e86bf0d"
+ },
+ "openItems": [
+  {
+   "item": "run-context mode in resolve.py",
+   "issue": 283
+  },
+  {
+   "item": "agent service accounts (no password)",
+   "issue": 273
+  },
+  {
+   "item": "per-agent budget vs tenant ceiling, group split",
+   "issue": 302
+  },
+  {
+   "item": "company-template schema",
+   "issue": 252
+  },
+  {
+   "item": "OpenGate-down semantics (fail closed)",
+   "issue": 352
+  }
+ ],
+ "verdict": "pass"
+}

@@ -47,6 +47,7 @@ jobs:
       - run: python bin/paperclip-company --all --check
       - run: python scripts/validate_compiles.py && python scripts/validate_compiles.py --self-test && python scripts/validate_compiles.py --root tests/fixtures/paperclip-model
       - run: python bin/paperclip-company --metrics --fail-on-alert && python bin/paperclip-company --drill
+      - run: python scripts/demo_paperclip_company.py --check
       - run: python scripts/pack_rule_drift.py && python scripts/pack_rule_drift.py --self-test && python scripts/test_drift.py
       - run: python scripts/test_bundle.py
       - run: python scripts/dlq_drill.py

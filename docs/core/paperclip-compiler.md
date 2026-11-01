@@ -109,6 +109,11 @@ incomplete, and becomes meaningful the moment a model declares the intent.
 
 ## Walk through it (verbatim)
 
+A recorded version of the whole ladder — including the record and the alert
+drill, on a throwaway copy of the fixture — is `docs/core/paperclip-demo.md`. It
+is generated and checked by CI (`scripts/demo_paperclip_company.py --check`), so
+it cannot describe a compiler that no longer exists.
+
 Every command below was run from the repository root; the output is copied, not
 paraphrased. The fixture model (`tests/fixtures/paperclip-model`) is the safe
 playground — it has nothing to do with a customer.

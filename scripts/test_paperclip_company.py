@@ -13,6 +13,7 @@ satisfy, and they fail if a behaviour is removed:
   T7  the nested model (three units, two flows, a shared role, an external party)
       compiles to its own golden, with the hierarchy, the touchpoint and the
       exclusions right;
+  T18 the recorded demo reproduces (docs/core/paperclip-demo.md);
   T17 metrics and alerts: the counters match the fixture, an opted-in failure
       raises A1 and fails --fail-on-alert, and the drill proves A2 can fire;
   T16 hardening: a malformed file, a duplicate unit, a parent cycle and an empty
@@ -305,6 +306,12 @@ def tests():
               all_run.stdout + all_run.stderr)
         check("T6 skip is labelled", "broken: skip" in all_run.stdout, all_run.stdout)
 
+    # T18 — the recorded demo reproduces
+    demo = subprocess.run([PY, str(ROOT / "scripts" / "demo_paperclip_company.py"),
+                           "--check"], capture_output=True, text=True)
+    check("T18 demo reproduces", demo.returncode == 0
+          and "reproduces" in demo.stdout, demo.stdout + demo.stderr)
+
     # T17 — metrics and alerts
     run = subprocess.run([PY, str(CLI), "--root", str(MODEL), "--metrics", "--json"],
                          capture_output=True, text=True)
@@ -402,7 +409,7 @@ def main():
     print("paperclip-compiler tests: 2 goldens, determinism, hierarchy, shared "
           "role, touchpoint, human/system/external exclusion, 9 refusals, --all "
           "opt-in policy, compile record, surface, spec walk-through, hardening, "
-          "metrics — OK")
+          "metrics, demo — OK")
     return 0
 
 

@@ -1,8 +1,8 @@
 {
  "version": 1,
  "kind": "plane-boundary-audit",
- "at": "2026-11-01T08:31:19Z",
- "commit": "620a9a5",
+ "at": "2026-11-01T08:33:24Z",
+ "commit": "7c787ba",
  "contract": "paperclip-boundary@1.0",
  "checks": [
   {
@@ -51,8 +51,8 @@
    "check": "compiler",
    "command": "python scripts/test_paperclip_company.py",
    "exit": 0,
-   "outputSha256": "b50669c59ac7921a3061bc432d9efc9431f71f48eec0264f5c87fb20004effa7",
-   "summary": "paperclip-compiler tests: 2 goldens, determinism, hierarchy, shared role, touchpoint, human/system/external exclusion, 9 refusals, --all opt-in policy, compile record, surface, spec walk-through, hardening, metrics \u2014 OK"
+   "outputSha256": "fb72de0d73ea49940533025c4b6a382a70b77fbd80a7b80124032372a90532f7",
+   "summary": "paperclip-compiler tests: 2 goldens, determinism, hierarchy, shared role, touchpoint, human/system/external exclusion, 9 refusals, --all opt-in policy, compile record, surface, spec walk-through, hardening, metrics, demo \u2014 OK"
   },
   {
    "check": "compiler self-test",
@@ -83,6 +83,13 @@
    "summary": "drill: A2 fired \u2014 drill.r1 is autonomous on an unreviewed rule \u2014 OK"
   },
   {
+   "check": "compiler demo",
+   "command": "python scripts/demo_paperclip_company.py --check",
+   "exit": 0,
+   "outputSha256": "d1cd10d42eafc176c081d12fe22cf24ecb3ddf358314a35402043b51cfdee2fb",
+   "summary": "demo --check: the transcript reproduces \u2014 OK"
+  },
+  {
    "check": "compile records",
    "command": "python scripts/validate_compiles.py --root tests/fixtures/paperclip-model",
    "exit": 0,
@@ -107,8 +114,8 @@
    "check": "playbook",
    "command": "python scripts/playbook_sync.py",
    "exit": 0,
-   "outputSha256": "066e81a3f5d1e07f2f84a6f9b4c7ef63fc252e4f4b5756ff3a4cc44a0513b5a1",
-   "summary": "playbook: all 43 CI scripts are referenced \u2014 OK"
+   "outputSha256": "179dbc480d0bf4ba6e3f59eccb997c8cadb0ae1b93e1f041b5b472412779e589",
+   "summary": "playbook: all 44 CI scripts are referenced \u2014 OK"
   },
   {
    "check": "industry model",
@@ -134,13 +141,15 @@
   "scripts/check_plane_boundary.py": "9f0f42e84db35eaf263822793529c8ac98133d60c77488a35818f52b7a321f24",
   "scripts/test_plane_contract.py": "1f20fa2f8b3a3582ea0bc1ff8f84834c2017c133e7d85a05b9b3990e9a397906",
   "scripts/check_paperclip_template.py": "5909e3da947dc11a613ca1d8e578292b2839b9309b66b8fe0a4a42d8bb0f3593",
-  "scripts/test_paperclip_company.py": "f5d3b2cb25cafa74737dfcb01366fcc67305d2035ac3680b15f279b74c60a5bb",
+  "scripts/test_paperclip_company.py": "f3c3848a92a7a2f602cd1727187a354ae120395af1da0a046ea6e86e5cfcaf4e",
   "scripts/validate_compiles.py": "6398706ea8257d1e4f41ac011a9eea90d0b4a6f949e327ad565b254c440f6e0f",
+  "scripts/demo_paperclip_company.py": "8b9e7f7f8eb3a2d782b1dde9037d60ad8560130bf960b2f964317f539aa69ee0",
+  "docs/core/paperclip-demo.md": "3128d99b5eb6612674febd6214702c3c1f0f34b67e7f0935eed5d3816e4c8fa2",
   "bin/paperclip-company": "0525bd6956fbec60dd0b8117a868889c47d823874bb83d7e78582772d511b32b",
   "schemas/paperclip-company.json": "ffa3738ce881bba0bbc919a9f5c6767c3b596980f67b2ff8eb56dd5b728ad9ec",
   "tests/fixtures/paperclip-company.example.json": "164b2fa6d3d9e4a6fbb6a4c2e251259214eadf92a0a26d439b5abba62acc6119",
-  "docs/core/paperclip-compiler.md": "ea18455885c493ade502a5ea07018cfdb27b7a2283815c848fafa86c14cc1b1b",
-  "scripts/audit_boundary.py": "572491998b5e7edc67d562e9146eb54b7af24f76346264b23131a7d565999b99"
+  "docs/core/paperclip-compiler.md": "fb2574af7911eca7e2d5713e22d3e7814cd13c8462a03fab19d969ff74cb78ab",
+  "scripts/audit_boundary.py": "5744bb330217f33bc3b80656296201e73100658cc60a35ad2a1f363608c21adf"
  },
  "openItems": [
   {

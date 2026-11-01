@@ -159,7 +159,7 @@ code) and never mint a session or a pass.
 | account model + validation, wired into `--sync` | `gateway/identity.py` | **done** (#273) |
 | admin surface: list, resolve, create agent, bind/unbind, disable/enable, validate | `infra/identity.py` | **done** (#273) |
 | run-context consumes the principal (no second mapping) | `gateway/resolve.py` | **done** (#273) |
-| ONEID assertion verification + SSO callback | `apps/api/src/sso.service.ts` | #274 |
+| ONEID login: the SSO callback uses the same resolver (no second mapping) | `apps/api/src/sso.service.ts` + `identity.core.ts` → `infra/identity.py` | wired (#274); lands with the SSO layer (#208) |
 | tests, records, docs, hardening, metrics, demo | — | #275–#281 |
 
 **As built (#273).** `identity.principal_for_account` is the only mapping:
@@ -171,6 +171,16 @@ admin-only (`E-IDN-09`) and append `identity.agent_created`, `identity.bound`,
 chain with the acting admin. `--sync` runs `identity.validate_tenant`; an absent
 store is valid (a provisioned tenant with no accounts yet), but resolution refuses
 it with `E-IDN-08`.
+
+**One resolver (#274).** The adapter gate (`paperclip.verify`) and
+`resolve.py --run-context` call `identity.principal_for_account`; the OIDC callback
+(`apps/api/src/sso.service.ts` → `identity.core.ts` → `infra/identity.py subject`)
+is wired to the same resolver in the SSO layer, which is still uncommitted in the
+OpenGate worktree (#208) and lands with it. When it does, the old `findBySso`
+email fallback disappears: an email match without a linked subject is `E-IDN-05`,
+a disabled account is `E-IDN-06`, an unknown subject is `E-IDN-04`, each refusal
+audited as `auth.sso_login_denied`. Until then the run path is the wired one; the
+API's fallback is a known gap, not a second rule for runs.
 
 Until #273 lands, the rule stands: **no agent credential in this repo**, and no
 run without an account whose role is posted at its unit.

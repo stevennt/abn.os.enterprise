@@ -121,6 +121,7 @@ HTTP 4xx and to the CLI's exit codes.
 | `E-IDN-06` | the account is disabled | re-enable it, or complete the offboarding |
 | `E-IDN-07` | an agent invariant is broken (owner missing / owner disabled / owner is an agent / credential present) | fix the store; reassign the agent first |
 | `E-IDN-08` | `accounts.json` is malformed or the tenant has no store | repair the store; `resolve.py --sync` lists every problem |
+| `E-IDN-09` | the acting account is not an active admin | use a tenant admin or platform admin for identity changes |
 
 Refusals are recorded in the tenant's audit chain (`identity.refused`, with the
 code) and never mint a session or a pass.
@@ -153,13 +154,23 @@ code) and never mint a session or a pass.
 
 ## Where this is implemented (PC1-04-02…10)
 
-| Piece | Path (planned) | Issue |
+| Piece | Path | Issue |
 |---|---|---|
-| account model + validation, wired into `--sync` | `gateway/identity.py` | #273 |
-| ONEID assertion verification + `resolve` | `apps/api/src/sso.service.ts`, `gateway/identity.py` | #274 |
-| admin surface: list people/agents, create/disable agent, bind/unbind | `infra/identity.py` + API | #273/#277 |
-| run-context consumes the principal (no second mapping) | `gateway/resolve.py` | #274 |
+| account model + validation, wired into `--sync` | `gateway/identity.py` | **done** (#273) |
+| admin surface: list, resolve, create agent, bind/unbind, disable/enable, validate | `infra/identity.py` | **done** (#273) |
+| run-context consumes the principal (no second mapping) | `gateway/resolve.py` | **done** (#273) |
+| ONEID assertion verification + SSO callback | `apps/api/src/sso.service.ts` | #274 |
 | tests, records, docs, hardening, metrics, demo | — | #275–#281 |
+
+**As built (#273).** `identity.principal_for_account` is the only mapping:
+`resolve.py --run-context` calls it and refuses a disabled account, a role not
+posted at the unit, or an agent whose owner is missing/disabled/inactive — before
+a pass exists (identity codes map to `E-ADP-04`/`E-ADP-05`). Identity changes are
+admin-only (`E-IDN-09`) and append `identity.agent_created`, `identity.bound`,
+`identity.unbound`, `identity.disabled`, `identity.enabled` to the tenant's audit
+chain with the acting admin. `--sync` runs `identity.validate_tenant`; an absent
+store is valid (a provisioned tenant with no accounts yet), but resolution refuses
+it with `E-IDN-08`.
 
 Until #273 lands, the rule stands: **no agent credential in this repo**, and no
 run without an account whose role is posted at its unit.

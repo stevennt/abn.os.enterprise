@@ -128,6 +128,7 @@ on (`#299`'s rule).
 | `E-GOV-05` | the approver's role is not held at the request's unit | post the role at that unit, or route to one that holds it |
 | `E-GOV-06` | a different decision was already recorded for this request | read the record; a gate is decided once |
 | `E-GOV-07` | no role at the unit can approve the amount (escalation exhausted) | raise a limit, or route to the group with an explicit grid |
+| `E-GOV-08` | a standing decision was edited, added or deleted after the store was sealed, or the seal itself was altered | re-seal after an intended change; an approval that can be rewritten is not an approval |
 
 ## The arithmetic
 
@@ -189,6 +190,15 @@ tenant tree and with it the audit lines. A tenant **without** a grid keeps the
 `--yes`/`--confirm` guard and nothing else: failing closed there would strand
 every legacy tenant. The gate is the same `approvals.decide`; there is no second
 implementation on the delete path.
+
+## The seal (#316)
+
+`approvals.seal()` pins every standing decision by digest and puts one chain over
+the set, in `customers/<t>/approvals/sealed.json`. `--sync` compares the store to
+it, so an edited decision, one recorded after the seal, one deleted, or a tampered
+seal are each `E-GOV-08`. Sealing an unchanged store is silent, and an unsealed
+store is valid — sealing is a deliberate act, and re-sealing after an intended
+change is the workflow.
 
 ## Recorded, not guessed
 

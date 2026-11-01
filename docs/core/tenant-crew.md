@@ -1,8 +1,10 @@
 # Tenant onboarding with a crew — `tenant-crew@1` (issue #362)
 
 **Status:** specified (#362), implemented (#363), wired (#364), tested (#365),
-recorded (#366), surfaced (#367); document (#368), harden (#369), measure
-(#370) and demo (#371) follow. **Boundary:** ADR-002 D3 and D4 — every data access goes through
+recorded (#366), surfaced (#367), documented (#368); harden (#369), measure
+(#370) and demo (#371) follow. **The runbook:**
+[tenant-crew-walkthrough.md](https://github.com/stevennt/abn.platform.opengate/blob/DEV/docs/tenant-crew-walkthrough.md)
+— the roster, the eight steps with their refusals, the gate, the handover. **Boundary:** ADR-002 D3 and D4 — every data access goes through
 the OpenGate API, and **agents are service accounts with a responsible person**.
 **Shape:** `schemas/tenant-crew.json`. **The executable oracle:**
 `scripts/check_tenant_crew_spec.py` (`--self-test` mutates the record eight ways).

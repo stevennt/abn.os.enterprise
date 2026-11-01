@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "company": "acme",
+  "label": "ACME",
+  "boundary": "paperclip-boundary@1.0",
+  "contract": {
+    "tag": "contract-2026.11.1",
+    "sha": "a7baab409dce013bd296b57aafc500565b878dfa"
+  },
+  "source": {
+    "company": "companies/acme/company.yaml",
+    "files": [
+      "companies/acme/company.yaml",
+      "companies/acme/org/org-chart.yaml",
+      "industries/demo/flows/intake.flow.yaml"
+    ]
+  },
+  "skills": [],
+  "agents": [],
+  "projects": [],
+  "routines": [],
+  "evals": []
+}

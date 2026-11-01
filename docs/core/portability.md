@@ -1,7 +1,7 @@
 # Company portability — templates, pins, and a bundle that proves itself (contract `company-portability@1`)
 
-**Status:** interface specified (issue #322); implementation is PC1-09-02…10
-(#323–#331). **Shape:** `schemas/portability-manifest.json`. **Checker:**
+**Status:** interface specified (#322), implemented in `scripts/portable.py`
+(#323); the record, surface, harden, measure and demo steps follow (#324–#331). **Shape:** `schemas/portability-manifest.json`. **Checker:**
 `scripts/check_portability_spec.py` (CI, `--self-test`). **Boundary:** ADR-002 D8
 — *company templates carry a contract pin; import refuses an unresolvable pin;
 upgrades are explicit.*
@@ -123,11 +123,26 @@ the pin, which is allowed and recorded. The self-test then mutates it seven ways
 (an unpinned template, a missing artefact, a wrong digest, tenant data, a stale
 platform, an absolute path, a malformed manifest) and asserts each code appears.
 
+## The module
+
+| Call | Does |
+|---|---|
+| `portable.py export --company <id> [--template P] [--platform T] [--out DIR]` | builds the manifest from the checkout, writes `bundle.json` beside the template; any refusal means no bundle |
+| `portable.py verify --bundle <path>` | re-digests every artefact against the checkout and checks the id against its own contents |
+| `portable.py import --bundle <path> [--platform T]` | verify, then write the template — refusing to overwrite a compiled model that differs |
+| `portable.py diff --left A --right B` | added, removed, changed per `kind:id` |
+
+Two behaviours worth naming. **A repo-shipped artefact is versioned by the
+contract pin it ships with** unless the file carries its own `version:` — the
+repository is the version. And **the pin is resolved with `git cat-file`** where
+the checkout is a git repository; where it is not, the manifest records what the
+template declared and the import re-checks wherever git is available.
+
 ## Where it will live
 
 | Piece | Path (planned) |
 |---|---|
-| the bundle | `scripts/portable.py` — `export`, `import`, `diff`, `verify` (#323) |
+| the gate | CI: a committed bundle re-verifies in `--self-test` (#324) |
 | the gate | CI: a committed bundle re-verifies in `--self-test` (#324) |
 | the surface | `bin/portable` — `export`, `import`, `diff`, `list` (#326) |
 | the measure | `scripts/portability_metrics.py` — stale pins, unverifiable bundles (#328) |

@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "contract": "tenant-crew@1",
+  "tenant": "demo",
+  "company": "demo",
+  "pack": { "id": "banking", "status": "ready" },
+  "boundary": "paperclip-boundary@1.0",
+  "people": [
+    { "id": "admin-1", "role": "admin", "unit": "finance" },
+    { "id": "clerk-1", "role": "investigator", "unit": "finance" }
+  ],
+  "units": ["finance", "credit"],
+  "members": [
+    {
+      "id": "agent-intake",
+      "role": "intake-officer",
+      "unit": "credit",
+      "kind": "agent",
+      "owner": "admin-1",
+      "purpose": "Read the commercial pack and open the company.",
+      "steps": ["commercial", "company"]
+    },
+    {
+      "id": "agent-provisioner",
+      "role": "provisioner",
+      "unit": "credit",
+      "kind": "agent",
+      "owner": "admin-1",
+      "purpose": "Provision the chart, the accounts and the crew.",
+      "steps": ["org", "accounts", "crew"]
+    },
+    {
+      "id": "agent-verifier",
+      "role": "verifier",
+      "unit": "finance",
+      "kind": "agent",
+      "owner": "clerk-1",
+      "purpose": "Set the folder grants, the plan, and prove --sync is green.",
+      "steps": ["folders", "plans", "verify"]
+    }
+  ],
+  "steps": [
+    { "id": "commercial", "by": "agent-intake", "at": "2026-11-02T09:00:00Z", "result": "ok" },
+    { "id": "company", "by": "agent-intake", "at": "2026-11-02T09:01:00Z", "result": "ok" },
+    { "id": "org", "by": "agent-provisioner", "at": "2026-11-02T09:02:00Z", "result": "ok" },
+    { "id": "accounts", "by": "agent-provisioner", "at": "2026-11-02T09:03:00Z", "result": "ok" },
+    { "id": "crew", "by": "agent-provisioner", "at": "2026-11-02T09:04:00Z", "result": "ok" },
+    { "id": "folders", "by": "agent-verifier", "at": "2026-11-02T09:05:00Z", "result": "ok" },
+    { "id": "plans", "by": "agent-verifier", "at": "2026-11-02T09:06:00Z", "result": "ok" },
+    { "id": "verify", "by": "agent-verifier", "at": "2026-11-02T09:07:00Z", "result": "ok" }
+  ],
+  "goNoGo": {
+    "signedBy": "admin-1",
+    "at": "2026-11-02T09:08:00Z",
+    "decision": "go"
+  }
+}

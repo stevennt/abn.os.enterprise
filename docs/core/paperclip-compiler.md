@@ -102,6 +102,31 @@ script someone remembers to run. The reference model `example-bank` is not opted
 in — see the input gap below — so the gate is green while the packs are
 incomplete, and becomes meaningful the moment a model declares the intent.
 
+## Compile records (#256)
+
+Every real run can leave evidence:
+
+```
+bin/paperclip-company --all --out-dir build/paperclip --record
+```
+
+appends one line per company to `companies/<company>/compiles.jsonl`:
+
+```json
+{"version": 1, "at": "2026-11-01T08:21:54Z", "company": "demo",
+ "compiler": "paperclip-company@1", "boundary": "paperclip-boundary@1.0",
+ "contract": {"tag": "contract-2026.11.1", "sha": "a7baab…"},
+ "result": "compiled", "templateSha256": "d0bc3a…", "agents": 2, "routines": 2,
+ "inputs": {"companies/demo/company.yaml": "6c4525…", "…": "…"}}
+```
+
+A refusal writes `result: "refused"` with the `E-COMP-NN` code and the message,
+so a failed build is in the record too. `--check` never records (a dry run leaves
+no trace). `scripts/validate_compiles.py` is the repo's check on those records:
+required fields, outcome shapes, boundary and pin shapes, monotonic timestamps,
+and the rule that **an opted-in company's latest record is `compiled`** — a stale
+success cannot outlive a broken model.
+
 ## Known input gap (found while implementing, #253)
 
 The compiler is stricter than `scripts/validate.py`: it refuses a step that cites

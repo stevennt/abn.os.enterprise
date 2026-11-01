@@ -13,6 +13,7 @@ satisfy, and they fail if a behaviour is removed:
   T7  the nested model (three units, two flows, a shared role, an external party)
       compiles to its own golden, with the hierarchy, the touchpoint and the
       exclusions right;
+  T13 `--record` appends a compile record per run, and `--check` never records;
   T6  `--all` compiles every opted-in company and fails only for those: a refused
       company that opted in fails the run, a refused company that did not is
       reported and skipped;
@@ -192,6 +193,28 @@ def tests():
         check("T12 E-COMP-02 tag", result.returncode == 1
               and "E-COMP-02" in result.stderr, result.stderr.strip())
 
+    # T13 — the compile record
+    with tempfile.TemporaryDirectory() as tmp:
+        model = _copy(tmp)
+        record_path = model / "companies" / "demo" / "compiles.jsonl"
+        record_path.unlink(missing_ok=True)  # the fixture ships with one
+        check("T13 no record by default", not record_path.exists())
+        run = subprocess.run([PY, str(CLI), "--root", str(model), "--company", "demo",
+                              "--check", "--record"], capture_output=True, text=True)
+        check("T13 check does not record", run.returncode == 0
+              and not record_path.exists(), run.stderr.strip())
+        run = subprocess.run([PY, str(CLI), "--root", str(model), "--company", "demo",
+                              "--record"], capture_output=True, text=True)
+        check("T13 record written", run.returncode == 0 and record_path.exists(),
+              run.stderr.strip())
+        if record_path.exists():
+            row = json.loads(record_path.read_text().splitlines()[0])
+            check("T13 record shape", row.get("result") == "compiled"
+                  and row.get("company") == "demo"
+                  and len(str(row.get("templateSha256") or "")) == 64
+                  and row.get("contract", {}).get("tag") == "contract-2026.11.1",
+                  json.dumps(row)[:200])
+
     # T6 — the --all policy (opt-in decides whether a refusal fails the build)
     with tempfile.TemporaryDirectory() as tmp:
         import yaml
@@ -241,7 +264,7 @@ def main():
         return 1
     print("paperclip-compiler tests: 2 goldens, determinism, hierarchy, shared "
           "role, touchpoint, human/system/external exclusion, 9 refusals, --all "
-          "opt-in policy — OK")
+          "opt-in policy, compile record — OK")
     return 0
 
 

@@ -19,6 +19,8 @@ E-COMP-09 boundary mismatch; E-COMP-10 the template fails the checker.
 unreviewed rule forces `autonomy: supervised`.)
 """
 import argparse
+import datetime
+import hashlib
 import importlib.util
 import json
 import os
@@ -237,7 +239,7 @@ def compile_company(root, company):
     return template
 
 
-def compile_all(root, out_dir=None, check=False):
+def compile_all(root, out_dir=None, check=False, record_rows=False):
     """Compile every company; a failure only counts when the company opts in.
 
     Opt-in is `paperclip: {compile: true}` in company.yaml. Other models are
@@ -260,12 +262,61 @@ def compile_all(root, out_dir=None, check=False):
             rows.append({"company": company, "opted_in": opted_in, "status": "compiled",
                          "agents": len(template["agents"]),
                          "routines": len(template["routines"])})
+            if record_rows:
+                record(root, company, "compiled", {
+                    "boundary": template["boundary"],
+                    "contract": template["contract"],
+                    "templateSha256": hashlib.sha256(
+                        json.dumps(template, indent=2, ensure_ascii=False,
+                                   sort_keys=True).encode()).hexdigest(),
+                    "agents": len(template["agents"]),
+                    "routines": len(template["routines"]),
+                    "inputs": {p: _digest(Path(root) / p)
+                               for p in template["source"]["files"]},
+                })
         except Refused as exc:
             rows.append({"company": company, "opted_in": opted_in,
                          "status": "refused", "code": exc.code,
                          "message": exc.message})
+            if record_rows:
+                record(root, company, "refused",
+                       {"code": exc.code, "message": exc.message})
             failed = failed or opted_in
     return rows, failed
+
+
+def _now():
+    return datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _digest(path):
+    path = Path(path)
+    return (hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None)
+
+
+def record(root, company, outcome, detail=None):
+    """Append one line to companies/<company>/compiles.jsonl (the compile record)."""
+    path = Path(root) / "companies" / company / "compiles.jsonl"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    detail = detail or {}
+    row = {
+        "version": 1, "at": _now(), "company": company,
+        "compiler": "paperclip-company@1",
+        "boundary": detail.get("boundary") or _boundary(),
+        "contract": detail.get("contract"),
+        "result": outcome,
+    }
+    if outcome == "compiled":
+        row["templateSha256"] = detail["templateSha256"]
+        row["agents"] = detail["agents"]
+        row["routines"] = detail["routines"]
+        row["inputs"] = detail.get("inputs", {})
+    else:
+        row["code"] = detail["code"]
+        row["message"] = detail["message"][:200]
+    with open(path, "a", encoding="utf-8") as fh:
+        fh.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
+    return row
 
 
 def _self_test():
@@ -296,6 +347,8 @@ def main(argv=None):
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--all", action="store_true")
     ap.add_argument("--out-dir")
+    ap.add_argument("--record", action="store_true",
+                    help="append companies/<company>/compiles.jsonl per run")
     ap.add_argument("--self-test", action="store_true")
     args = ap.parse_args(argv)
     if args.self_test:
@@ -309,7 +362,8 @@ def main(argv=None):
               "pending rules stay supervised, L2 never autonomous — OK")
         return 0
     if args.all:
-        rows, failed = compile_all(args.root, out_dir=args.out_dir, check=args.check)
+        rows, failed = compile_all(args.root, out_dir=args.out_dir, check=args.check,
+                                   record_rows=args.record and not args.check)
         for row in rows:
             if row["status"] == "compiled":
                 print(f"  {row['company']}: compiled — {row['agents']} agents, "
@@ -337,6 +391,16 @@ def main(argv=None):
               f"{len(template['agents'])} agents, {len(template['projects'])} projects, "
               f"{len(template['routines'])} routines, {template['boundary']}")
         return 0
+    if args.record and not args.check:
+        record(args.root, args.company, "compiled", {
+            "boundary": template["boundary"],
+            "contract": template["contract"],
+            "templateSha256": hashlib.sha256(text.encode()).hexdigest(),
+            "agents": len(template["agents"]),
+            "routines": len(template["routines"]),
+            "inputs": {p: _digest(Path(args.root) / p)
+                       for p in template["source"]["files"]},
+        })
     if args.out:
         target = Path(args.out)
         target.parent.mkdir(parents=True, exist_ok=True)

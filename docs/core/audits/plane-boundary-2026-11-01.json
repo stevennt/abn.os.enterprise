@@ -1,8 +1,8 @@
 {
  "version": 1,
  "kind": "plane-boundary-audit",
- "at": "2026-11-01T08:20:39Z",
- "commit": "19355a5",
+ "at": "2026-11-01T08:23:22Z",
+ "commit": "c277ca7",
  "contract": "paperclip-boundary@1.0",
  "checks": [
   {
@@ -51,8 +51,8 @@
    "check": "compiler",
    "command": "python scripts/test_paperclip_company.py",
    "exit": 0,
-   "outputSha256": "95920014b5a326d374aae9406e05ab37d05fd55b00e54428ad917745dfd3c06f",
-   "summary": "paperclip-compiler tests: 2 goldens, determinism, hierarchy, shared role, touchpoint, human/system/external exclusion, 9 refusals, --all opt-in policy \u2014 OK"
+   "outputSha256": "ade8fd972d31464e31dfbdbcf130a259cb47c4e8da84b5c130cc212ac7579442",
+   "summary": "paperclip-compiler tests: 2 goldens, determinism, hierarchy, shared role, touchpoint, human/system/external exclusion, 9 refusals, --all opt-in policy, compile record \u2014 OK"
   },
   {
    "check": "compiler self-test",
@@ -69,6 +69,20 @@
    "summary": "paperclip-company --all: 0/1 compiled"
   },
   {
+   "check": "compile records",
+   "command": "python scripts/validate_compiles.py --root tests/fixtures/paperclip-model",
+   "exit": 0,
+   "outputSha256": "22484ba76a7353bcfe00483cb2bcaedbb35645e91d0ba2508e2d0a135c6d2cd8",
+   "summary": "compiles: 2 record(s) across the companies \u2014 OK"
+  },
+  {
+   "check": "compile records self-test",
+   "command": "python scripts/validate_compiles.py --self-test",
+   "exit": 0,
+   "outputSha256": "cb1e817ca2ec14a14ba28c7b27dabfb930d1d6c7e4d4a8cc49c1ec3ef0d8420e",
+   "summary": "compiles --self-test: 6 cases (1 clean, 5 refused) \u2014 OK"
+  },
+  {
    "check": "docs links",
    "command": "python scripts/docs_link_check.py",
    "exit": 0,
@@ -79,8 +93,8 @@
    "check": "playbook",
    "command": "python scripts/playbook_sync.py",
    "exit": 0,
-   "outputSha256": "39fca361355165c2e766c57f4c5297fdf14ab5e5aa7d7a9d95ee2a751bdb5afa",
-   "summary": "playbook: all 42 CI scripts are referenced \u2014 OK"
+   "outputSha256": "066e81a3f5d1e07f2f84a6f9b4c7ef63fc252e4f4b5756ff3a4cc44a0513b5a1",
+   "summary": "playbook: all 43 CI scripts are referenced \u2014 OK"
   },
   {
    "check": "industry model",
@@ -106,12 +120,13 @@
   "scripts/check_plane_boundary.py": "9f0f42e84db35eaf263822793529c8ac98133d60c77488a35818f52b7a321f24",
   "scripts/test_plane_contract.py": "1f20fa2f8b3a3582ea0bc1ff8f84834c2017c133e7d85a05b9b3990e9a397906",
   "scripts/check_paperclip_template.py": "5909e3da947dc11a613ca1d8e578292b2839b9309b66b8fe0a4a42d8bb0f3593",
-  "scripts/test_paperclip_company.py": "70b793f8766708f6a03fc456629e46161aa018d456c71ef0ae9b7d1d7acdec37",
-  "bin/paperclip-company": "f393ec310abeae251c778aa2567e9e1b4ae33c902da3b4f653655daa276bfbc8",
+  "scripts/test_paperclip_company.py": "884e74fdd75be748c36422d9c580cb8c8c770dc49f3f51fcd9836b6b6e24c898",
+  "scripts/validate_compiles.py": "6398706ea8257d1e4f41ac011a9eea90d0b4a6f949e327ad565b254c440f6e0f",
+  "bin/paperclip-company": "38bc1a0c7a47e2a4340f0325b0ac6524ad868afc93db074ddeb5934d2998f699",
   "schemas/paperclip-company.json": "ffa3738ce881bba0bbc919a9f5c6767c3b596980f67b2ff8eb56dd5b728ad9ec",
   "tests/fixtures/paperclip-company.example.json": "164b2fa6d3d9e4a6fbb6a4c2e251259214eadf92a0a26d439b5abba62acc6119",
-  "docs/core/paperclip-compiler.md": "7795e34ef884f54f59112af727ebab71b3b9523dcc3c283996729eb372074feb",
-  "scripts/audit_boundary.py": "16fc2e477439b34ebf0ad7feee6504c24f594a31c6355abfd0f4db3cec4f1595"
+  "docs/core/paperclip-compiler.md": "d7d9df5d6f2e4796095422636313dbd74ad5e289fb0616be7f1cbc87eaacebc2",
+  "scripts/audit_boundary.py": "9712a8da18a9ae2e6668c64133c05d7fdf78da5e018745bf37c83fe73c1e8b10"
  },
  "openItems": [
   {

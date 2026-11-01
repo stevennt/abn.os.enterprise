@@ -179,6 +179,23 @@ There is no second record of *who did what*: the events stay in the tenant's aud
 chain (`identity.*`); this record is the *state witness* that the store still is
 what the last change made it.
 
+## Measurement
+
+`identity.py metrics --tenant <t> --actor <admin>` is the tenant's identity
+health: counts (people, agents, active admins, subjects bound), the record's
+state, and the full problem list. Three rules raise alerts:
+
+| Rule | Fires when | Why it matters |
+|---|---|---|
+| `I1` record-drift | the store no longer matches `identity-state.json` | a change outside `identity.py` — the record exists to catch exactly this |
+| `I2` single-admin | fewer than two active admins | the last-admin rule refuses a lockout, but one lost password is still one |
+| `I3` unrecorded | accounts exist, no record | the store predates the identity path; a hand-edit would be invisible |
+
+`identity.py alerts` records them once per rule per day in
+`customers/<tenant>/identity-alerts.jsonl`; `--sync` validates that store, and
+`identity.py drill` proves I1 and I2 fire. The drill is the evidence that the
+alert is not decorative.
+
 ## Lifecycle
 
 | Event | Effect |

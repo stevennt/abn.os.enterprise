@@ -1,0 +1,121 @@
+# Paperclip × OpenGate × Enterprise OS — the three-plane integration
+
+**Status:** design ratified for the Paperclip program (loop 6). Program board:
+issues labelled `loop:6` + `paperclip`; catalog
+`docs/core/prompts/paperclip-catalog.json` (600 tasks in dependency order).
+
+![Three planes: Enterprise OS, Paperclip, OpenGate](assets/paperclip-architecture.png)
+
+Paperclip is a control plane for a company of AI agents: org chart, task
+tickets, heartbeats, approvals, budgets, skills, connectors, run history. It is
+not an org model and not an audit record — those already exist here and in
+OpenGate. This page fixes the boundary, the seam contracts and the decisions.
+
+## The three planes
+
+```
+┌─────────────────────────────┐        ┌─────────────────────────────┐
+│ ENTERPRISE OS — design      │        │ PAPERCLIP — execution       │
+│ what the company *is*       │ compile│ the company of agents *at   │
+│ org · roles · processes ·   │───────▶│ work*: tickets, heartbeats, │
+│ rules · touchpoints · packs │ one-way│ runs, approvals, budgets,   │
+│ · companies · contract pin  │        │ skills, connectors          │
+└──────────────┬──────────────┘        └──────────────┬──────────────┘
+               │ contract + model                     │ activity, cost,
+               │ (read at run time)                   │ artifacts
+               ▼                                      ▼
+┌──────────────────────────────────────────────────────────────────────┐
+│ OPENGATE — tenant runtime and evidence                               │
+│ identity (ONEID) · tenant/company · org charts · folders/ACL ·       │
+│ resolve.py context · records (cases, documents) · metering · audit · │
+│ plans/quotas · scorecard / go-no-go                                  │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+**One sentence each.** Enterprise OS owns the *model*; Paperclip owns the *work
+state*; OpenGate owns the *tenant, the policy and the evidence*. A piece of work
+is born as a Paperclip ticket, runs through an OpenGate context, and lands as an
+OpenGate record with an audit line; the enterprise model says who may do it and
+how far it may go alone.
+
+## Decisions
+
+| # | Decision | Why | Consequence |
+|---|---|---|---|
+| D1 | **One-way compile**, Enterprise OS → Paperclip company template | two-way sync of an org model is a merge conflict with a payroll attached | changes flow by re-compile + diff; Paperclip edits that matter are promoted back by hand |
+| D2 | **Paperclip tickets are work units; OpenGate cases/documents are the durable record** | tasks are ephemeral, evidence is not | no dual-write of task state; a closed ticket must point at its OpenGate record |
+| D3 | **Every data access goes through OpenGate tools/API**, never a raw path from an agent | the ACL and `dataMode` must be enforced where data lives | Paperclip connectors for tenant data are disabled; the MCP gateway exposes OpenGate tools only |
+| D4 | **ONEID is the only human identity**; agents are OpenGate service accounts with a responsible human | one identity tree, one offboarding | Paperclip local accounts are for break-glass only; every agent action names `responsibleUser` |
+| D5 | **OpenGate is billing truth; Paperclip budgets are a throttle** | two ledgers is two invoices | spend reconciles nightly; a budget stop never changes a statement |
+| D6 | **Approvals are clicked in Paperclip, decided by the authority grid** | humans want one inbox; the rule is already modelled | `authority_limits` + RACI are imported as approval rules; OpenGate records the decision and the signer |
+| D7 | **Secrets live in the vault; Paperclip holds references** | one rotation path | run env is injected at heartbeat; Paperclip secret values are never populated for tenant data |
+| D8 | **Company templates carry a contract pin** (`tag` + `sha`) | an agent org must be reproducible months later | import refuses an unresolvable pin; upgrades are explicit |
+| D9 | **No prompt-level security** | a prompt is not a control | every boundary is a code check at a tool/API edge, with a denial reason recorded |
+| D10 | **Paperclip is a service, not a library** | licence is fine (MIT), the surface is large | pinned version, telemetry off, authenticated bind, vendored adapter only |
+
+## Ownership matrix (one owner per field)
+
+| Field | Owner | Mirrored to | Never written by |
+|---|---|---|---|
+| org units, roles, reporting lines | Enterprise OS | Paperclip org chart | Paperclip UI edits are proposals |
+| processes, steps, automation level | Enterprise OS | routines + guard | Paperclip |
+| tenant, companies, folders, ACL, dataMode | OpenGate | run context | Paperclip |
+| accounts, roles, seats | OpenGate | Paperclip members | Paperclip |
+| tickets, comments, run logs, approvals UI | Paperclip | activity events | OpenGate |
+| cases, documents, artifacts-of-record | OpenGate | links in tickets | Paperclip |
+| plans, quotas, statements, metering | OpenGate | budget seeds | Paperclip |
+| audit chain | OpenGate | — | Paperclip (it emits events) |
+| secrets | vault | run env | both stores |
+| contract pin, template version | Enterprise OS | template metadata | Paperclip |
+
+## Seam contracts
+
+1. **Company template** (Enterprise → Paperclip), emitted by `bin/paperclip-company`:
+   `{version, company, contract: {tag, sha}, agents[], projects[], routines[],
+   skills[], evals[]}`. Every agent cites a role; every routine cites a process
+   step and its automation level; an `L0–L2` or `authority: pending-review` step
+   cannot compile to an autonomous routine.
+2. **Run context** (OpenGate, resolved per heartbeat):
+   `{tenant, company, account, role, unit, dataMode, skills[], acl[], case?}` from
+   `gateway/resolve.py`, passed to the adapter as env + a signed context file.
+3. **Activity event** (Paperclip → OpenGate):
+   `{at, tenant, company, agent, responsibleUser, task, run, kind, artifact?,
+   cost?, approval?, actor}`; OpenGate appends it to `audit.jsonl` and, for
+   billable kinds, to metering.
+4. **Budget policy** (OpenGate → Paperclip):
+   `{tenant, company, agent?, limit, window, stop}` seeded from the plan and the
+   tenant's overage policy.
+
+## Security model (what is enforced where)
+
+- **Tenant isolation** — at the OpenGate API/tool edge (`tenant` from the signed
+  context, never from the prompt).
+- **Folder access** — `acl.can(unit, folder, action)`; a denial carries the rule
+  and the allowed units, and is recorded.
+- **Classification** — `dataMode` per unit and per document; a `mật` document is
+  not readable by an agent whose unit lacks it, regardless of what the task says.
+- **Approvals** — a human-only step cannot be completed by an agent; the
+  approval record names the human, the rule and the authority limit.
+- **Secrets** — injected per run from the vault; never in the template, the
+  ticket, the prompt or the Paperclip database.
+
+## The program (600 tasks)
+
+| Tier | Count | What it builds | Workstreams |
+|---|---|---|---|
+| 1 | 100 | the integration spine: boundary, compiler, adapter, identity, policy, evidence, money, governance, portability, harness | 10 |
+| 2 | 200 | the platform surface: connector API, records, onboarding with a crew, admin, readiness, metering, quotas, secrets, residency, PII, observability, reliability, security, groups, sync, migration, docs, testing, release, support | 20 |
+| 3 | 300 | industries, pilots and operations: five industry crews, evals, quality, training, three pilot waves, onboarding playbook, capacity, cost, performance, DR, multi-region, GDPR, SOC 2, sector rules, audit, partners, marketplace, analytics, data platform, SRE, on-call, roadmap, close-out | 30 |
+
+Each workstream is decomposed by a ten-step ladder that fits its kind (design,
+build, ops, compliance), so the catalog order is the dependency order. The
+catalog is generated by `scripts/paperclip-program.py`; the issue map and the
+run queue sit beside it.
+
+## Non-goals
+
+- no bidirectional task/issue sync (D2);
+- no agent with raw filesystem or database access to tenant data (D3);
+- no second audit chain, no second cost ledger (D5);
+- no secrets in Paperclip for tenant data (D7);
+- no autonomous execution of a human-only or pending-review step (D1, D9).

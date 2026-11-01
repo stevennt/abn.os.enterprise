@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Paperclip × OpenGate × Enterprise OS</title>
+<style>
+  :root { --ink:#111; --muted:#5b6470; --line:#c9ced6; --soft:#f6f7f9; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:#fff; color:var(--ink);
+         font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .wrap { width:1500px; padding:44px 56px 36px; }
+  h1 { font-size:30px; margin:0 0 6px; letter-spacing:-.01em; }
+  .sub { color:var(--muted); font-size:15px; margin:0 0 26px; }
+  svg { display:block; }
+  .legend { display:flex; gap:26px; margin-top:18px; color:var(--muted); font-size:12.5px; }
+  .legend b { color:var(--ink); font-weight:600; }
+</style></head>
+<body><div class="wrap">
+  <h1>Paperclip × OpenGate × Enterprise OS — three planes, one work item</h1>
+  <p class="sub">Design-time model compiles into an agent org; every run takes its policy from OpenGate; every outcome lands as tenant evidence.</p>
+
+  <svg width="1388" height="760" viewBox="0 0 1388 760" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#5b6470"/>
+      </marker>
+    </defs>
+
+    <!-- Enterprise OS -->
+    <rect x="40" y="40" width="600" height="250" rx="10" fill="#fff" stroke="#c9ced6"/>
+    <text x="64" y="76" font-size="18" font-weight="600">ENTERPRISE OS — design plane</text>
+    <text x="64" y="100" font-size="13" fill="#5b6470">what the company is</text>
+    <text x="64" y="134" font-size="13.5">org units · roles · reporting lines</text>
+    <text x="64" y="158" font-size="13.5">processes · steps · automation level (L0–L5)</text>
+    <text x="64" y="182" font-size="13.5">rules · touchpoints · packs · evals</text>
+    <text x="64" y="206" font-size="13.5">companies · contract pin (tag + sha)</text>
+    <text x="64" y="230" font-size="13.5" fill="#5b6470">outputs: company template (agents, projects, routines, skills)</text>
+    <rect x="64" y="244" width="176" height="28" rx="6" fill="none" stroke="#c9ced6"/>
+    <text x="76" y="263" font-size="12.5" fill="#111">bin/paperclip-company</text>
+
+    <!-- Paperclip -->
+    <rect x="748" y="40" width="600" height="250" rx="10" fill="#fff" stroke="#c9ced6"/>
+    <text x="772" y="76" font-size="18" font-weight="600">PAPERCLIP — execution plane</text>
+    <text x="772" y="100" font-size="13" fill="#5b6470">the company of agents at work</text>
+    <text x="772" y="134" font-size="13.5">tasks · checkouts · heartbeats · runs</text>
+    <text x="772" y="158" font-size="13.5">org chart of agents · skills · routines</text>
+    <text x="772" y="182" font-size="13.5">approvals inbox · budgets · cost stops</text>
+    <text x="772" y="206" font-size="13.5">connectors · MCP tool gateway · activity log</text>
+    <text x="772" y="230" font-size="13.5" fill="#5b6470">state: work in flight (ephemeral by decision)</text>
+
+    <!-- compile arrow -->
+    <path d="M 648 128 L 740 128" stroke="#5b6470" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+    <text x="648" y="118" font-size="12.5" fill="#5b6470">compile — one-way, pinned</text>
+
+    <!-- OpenGate band -->
+    <rect x="40" y="390" width="1308" height="250" rx="10" fill="#fff" stroke="#c9ced6"/>
+    <text x="64" y="426" font-size="18" font-weight="600">OPENGATE — tenant runtime and evidence</text>
+    <text x="64" y="450" font-size="13" fill="#5b6470">what the customer runs, and what can be proven afterwards</text>
+
+    <rect x="64" y="472" width="300" height="72" rx="8" fill="#fff" stroke="#c9ced6"/>
+    <text x="80" y="497" font-size="13.5" font-weight="600">tenant &amp; companies</text>
+    <text x="80" y="518" font-size="12.5" fill="#5b6470">profile · layout · org charts · departments</text>
+
+    <rect x="384" y="472" width="300" height="72" rx="8" fill="#fff" stroke="#c9ced6"/>
+    <text x="400" y="497" font-size="13.5" font-weight="600">policy &amp; context</text>
+    <text x="400" y="518" font-size="12.5" fill="#5b6470">resolve.py · folders + ACL · dataMode</text>
+
+    <rect x="704" y="472" width="300" height="72" rx="8" fill="#fff" stroke="#c9ced6"/>
+    <text x="720" y="497" font-size="13.5" font-weight="600">records</text>
+    <text x="720" y="518" font-size="12.5" fill="#5b6470">cases · documents · artifacts of record</text>
+
+    <rect x="1024" y="472" width="300" height="72" rx="8" fill="#fff" stroke="#c9ced6"/>
+    <text x="1040" y="497" font-size="13.5" font-weight="600">evidence &amp; money</text>
+    <text x="1040" y="518" font-size="12.5" fill="#5b6470">metering · audit.jsonl · statements · scorecard</text>
+
+    <rect x="64" y="560" width="300" height="56" rx="8" fill="none" stroke="#c9ced6" stroke-dasharray="4 3"/>
+    <text x="80" y="584" font-size="13" font-weight="600">ONEID (axum.abnasia.org)</text>
+    <text x="80" y="604" font-size="12" fill="#5b6470">humans: OIDC · agents: service accounts</text>
+
+    <text x="384" y="586" font-size="12.5" fill="#5b6470">identities are provisioned here, never in Paperclip;</text>
+    <text x="384" y="606" font-size="12.5" fill="#5b6470">every agent action names a responsible human.</text>
+
+    <!-- run arrows -->
+    <path d="M 900 292 L 900 386" stroke="#5b6470" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+    <text x="912" y="330" font-size="12.5" fill="#5b6470">heartbeat → run</text>
+    <path d="M 980 386 L 980 296" stroke="#5b6470" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+    <text x="992" y="352" font-size="12.5" fill="#5b6470">run context + policy</text>
+    <path d="M 1120 292 L 1120 386" stroke="#5b6470" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+    <text x="1132" y="330" font-size="12.5" fill="#5b6470">activity · cost · artifacts</text>
+    <path d="M 1200 386 L 1200 296" stroke="#5b6470" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+    <text x="1212" y="352" font-size="12.5" fill="#5b6470">budget policy</text>
+
+    <!-- work item life -->
+    <text x="40" y="686" font-size="15" font-weight="600">One work item</text>
+    <g font-size="12.5">
+      <rect x="40" y="702" width="160" height="40" rx="7" fill="none" stroke="#c9ced6"/><text x="54" y="727">1 ticket (Paperclip)</text>
+      <rect x="216" y="702" width="160" height="40" rx="7" fill="none" stroke="#c9ced6"/><text x="230" y="727">2 heartbeat wakes</text>
+      <rect x="392" y="702" width="190" height="40" rx="7" fill="none" stroke="#c9ced6"/><text x="406" y="727">3 resolve tenant/role</text>
+      <rect x="598" y="702" width="160" height="40" rx="7" fill="none" stroke="#c9ced6"/><text x="612" y="727">4 run + tools</text>
+      <rect x="774" y="702" width="190" height="40" rx="7" fill="none" stroke="#c9ced6"/><text x="788" y="727">5 artifact of record</text>
+      <rect x="980" y="702" width="160" height="40" rx="7" fill="none" stroke="#c9ced6"/><text x="994" y="727">6 audit line</text>
+      <rect x="1156" y="702" width="180" height="40" rx="7" fill="none" stroke="#c9ced6"/><text x="1170" y="727">7 statement line</text>
+    </g>
+  </svg>
+
+  <div class="legend">
+    <span><b>Enforced in code:</b> tenant · unit · folder ACL · dataMode · human-only steps</span>
+    <span><b>One chain:</b> audit.jsonl</span>
+    <span><b>One ledger:</b> OpenGate metering</span>
+    <span><b>Secrets:</b> vault references only</span>
+  </div>
+</div></body></html>

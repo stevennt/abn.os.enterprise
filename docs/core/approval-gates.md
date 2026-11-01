@@ -1,7 +1,8 @@
 # Approval gates — the authority grid at the decision (contract `approval-gates@1`)
 
-**Status:** interface specified (issue #312); implementation is PC1-08-02…10
-(#313–#321). **Shape:** `schemas/approval-gate.json`. **Checker:**
+**Status:** interface specified (#312), implemented in `gateway/approvals.py`
+(#313); the wire, record, surface, harden, measure and demo steps follow
+(#314–#321). **Shape:** `schemas/approval-gate.json`. **Checker:**
 `scripts/check_approval_spec.py` (CI, `--self-test`). **Boundary:** ADR-002 D6 —
 *approvals are clicked in Paperclip, decided by the authority grid.*
 
@@ -160,10 +161,20 @@ each code fires for its own reason.
 
 | Piece | Path (planned) |
 |---|---|
-| the gate | `gateway/approvals.py` (#313) |
+| the gate | `gateway/approvals.py` (#313) — `decide`, `record_of`, `decisions`, `validate_records` |
 | the surface | `infra/approvals.py` — `decide`, `show`, `pending` (#315) |
 | the gate check | `--sync` validates the grid and the recorded decisions (#314) |
 | the measure | `gateway/approval_metrics.py` — escalations, refusals, gates open too long (#317) |
+
+## Recorded, not guessed
+
+The implementation stores a decision under
+`customers/<t>/approvals/ap-<sha256(tenant|company|request.id)[:16]>.json`, so a
+retry cannot open a second gate and `--sync` can prove the file name matches its
+own content. A **refused** click is different: it writes one `approval.refused`
+line and no file, because a refusal is evidence of an attempt and the right
+approver must still be able to decide. Only `approved` and `escalated` become the
+request's decision.
 
 ## Not in this contract
 

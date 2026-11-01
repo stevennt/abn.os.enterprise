@@ -252,8 +252,9 @@ run without an account whose role is posted at its unit.
 
 `docs/identity-walkthrough.md` in the OpenGate repository is the operator runbook:
 status, create an agent, bind a ONEID subject, resolve the principal, an email
-refused, the history, a hand-edit caught and sealed, the offboarding order, and
-the repo's own `--sync` — each command with its committed output. It is generated
+refused, the history, the metrics and the alert (recorded once, silent on
+rescan), the drill, a hand-edit caught and sealed, the offboarding order, and the
+repo's own `--sync` — each command with its committed output. It is generated
 by `infra/identity_walkthrough.py` and re-run in CI, so it cannot drift.
 
 ## The contract, checked

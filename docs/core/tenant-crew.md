@@ -1,8 +1,8 @@
 # Tenant onboarding with a crew — `tenant-crew@1` (issue #362)
 
 **Status:** specified (#362), implemented (#363), wired (#364), tested (#365),
-recorded (#366), surfaced (#367), documented (#368), hardened (#369); measure
-(#370) and demo (#371) follow. **The runbook:**
+recorded (#366), surfaced (#367), documented (#368), hardened (#369), measured
+(#370); the demo (#371) follows. **The runbook:**
 [tenant-crew-walkthrough.md](https://github.com/stevennt/abn.platform.opengate/blob/DEV/docs/tenant-crew-walkthrough.md)
 — the roster, the eight steps with their refusals, the gate, the handover. **Boundary:** ADR-002 D3 and D4 — every data access goes through
 the OpenGate API, and **agents are service accounts with a responsible person**.
@@ -111,6 +111,12 @@ alone.
 Every code names its fix (`FIX` in the oracle), because the audience is an
 operator who has to finish the onboarding, not a developer who has to read a
 traceback.
+
+**Measured (#370).** Four rules on the tenant side: `K1` stalled (fewer than eight
+steps, last one over a week old), `K2` unsigned (all eight ran, no handover),
+`K3` unrecorded (critical — the gate's own check), `K4` refused (a step the tenant
+did not show). A tenant onboarded by a person is not measured at all: a rule that
+fired on every such tenant would be a rule about hiring.
 
 **Hardened (#369).** A linked record or a linked chain is refused rather than
 followed; the writers take a per-tenant lock, so two runners cannot record one

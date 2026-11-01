@@ -73,9 +73,10 @@ with owners and evidence), then the operator's commands in the platform repo
 this is reviewed in `docs/core/program-review-loop5.md` — what shipped, what did
 not, and the next loop's proposal. The gate before
 go-live is `docs/core/readiness-scorecard.md` — ten gates, each with evidence,
-and a recorded decision. The agent-org integration is
-`docs/core/paperclip-integration.md` (Paperclip × OpenGate × Enterprise OS,
-three planes, one work item). To model a legal entity inside that tenant:
+and a recorded decision. The agent-org integration starts at
+`docs/core/paperclip-program.md` (program index: board, catalog, rules), with the
+contract in `docs/core/paperclip-integration.md` (three planes, one work item) and
+the ratification in `docs/core/adr-002-paperclip-three-planes.md`. To model a legal entity inside that tenant:
 `docs/core/onboarding-company.md`; to add an industry:
 `docs/core/onboarding-industry.md`.
 

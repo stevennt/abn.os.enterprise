@@ -1,7 +1,8 @@
 # Paperclip × OpenGate × Enterprise OS — the three-plane integration
 
 **Status:** design ratified for the Paperclip program (loop 6) by
-`docs/core/adr-002-paperclip-three-planes.md` (ADR-002). Program board:
+`docs/core/adr-002-paperclip-three-planes.md` (ADR-002). Start at
+`docs/core/paperclip-program.md` (program index). Program board:
 issues labelled `loop:6` + `paperclip`; catalog
 `docs/core/prompts/paperclip-catalog.json` (600 tasks in dependency order).
 

@@ -36,6 +36,23 @@ flowchart LR
   OUT --> AUD[Audit log + replay]
 ```
 
+## Agent org (Paperclip) — three planes
+
+Agent work runs on Paperclip (org chart, tickets, heartbeats, approvals,
+budgets), but the model and the tenant stay here and in OpenGate:
+
+| Plane | Owns | Where |
+|---|---|---|
+| design | org, roles, processes, rules, touchpoints, packs, contract pin | this repo |
+| execution | tickets, runs, approvals inbox, budgets, skills, connectors | Paperclip (pinned service) |
+| tenant + evidence | identity (ONEID), ACL, records, metering, audit, go/no-go | `abn.platform.opengate` |
+
+The model **compiles** into a company template; it is never synced both ways.
+Start at `docs/core/paperclip-program.md` (program index), then
+`docs/core/paperclip-integration.md` (the contract) and
+`docs/core/adr-002-paperclip-three-planes.md` (the ratification). The 600-task
+board is the issues labelled `paperclip`.
+
 ## Option comparison (read before building)
 
 | Option | Core | Strength | Weakness | Best for |

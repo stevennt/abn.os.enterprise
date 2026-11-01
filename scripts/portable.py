@@ -21,6 +21,7 @@ another business's documents is not portability.
 """
 
 import argparse
+import contextlib
 import hashlib
 import json
 import os
@@ -29,10 +30,17 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 KINDS = ("org", "pack", "flow", "rule")
+TEMPLATE_RE = re.compile(
+    r"^companies/([a-z][a-z0-9-]{1,63})/([A-Za-z0-9._-]+\.json)$")
+COMPANY_RE = re.compile(r"^[a-z][a-z0-9-]{1,63}$")
+BUNDLE_RE = re.compile(r"^bundle-[0-9a-f]{16}$")
+LOCK = "portable.lock"
+LOCK_TTL = 300
 BUNDLES = "bundles"
 LOGFILE = "index.jsonl"
 LOG_FIELDS = ("version", "at", "company", "bundleId", "templateSha256",
@@ -45,8 +53,9 @@ FIX = {
     "E-PORT-02": "fix the compile (E-COMP-02); a bundle without a pin is not "
                  "portable",
     "E-PORT-03": "re-export with the whole set; a partial bundle is a trap",
-    "E-PORT-04": "stop: the bundle was altered in transit, or two versions were "
-                 "mixed",
+    "E-PORT-04": "stop: the bundle was altered in transit, two versions were "
+                 "mixed, or the filesystem does not match the manifest (a link "
+                 "where a file should be)",
     "E-PORT-05": "strip it; company portability never moves a tenant's documents",
     "E-PORT-06": "upgrade the platform first; the importer must not silently "
                  "drop what it cannot read",
@@ -61,6 +70,76 @@ class PortabilityError(Exception):
     def __init__(self, code, message):
         super().__init__(f"{code}: {message} — fix: {FIX[code]}")
         self.code = code
+
+
+def _check_company(company):
+    """The company is a path component, and a bundle is untrusted input (#329)."""
+    if not isinstance(company, str) or not COMPANY_RE.match(company):
+        raise PortabilityError("E-PORT-01", f"invalid company id {company!r}")
+    return company
+
+
+def _check_bundle(company, bundle_id):
+    if not isinstance(bundle_id, str) or not BUNDLE_RE.match(bundle_id):
+        raise PortabilityError("E-PORT-01", f"invalid bundle id {bundle_id!r}")
+    return bundle_id
+
+
+def _check_template_rel(rel, company):
+    """A manifest's template path must be this company's own file, not a path."""
+    match = TEMPLATE_RE.match(str(rel or ""))
+    if match is None or match.group(1) != company:
+        raise PortabilityError(
+            "E-PORT-07", f"the template path {rel!r} is not "
+                         f"companies/{company}/<name>.json")
+    return str(rel)
+
+
+def _refuse_links(path, what):
+    path = Path(path)
+    if path.is_symlink():
+        raise PortabilityError("E-PORT-04", f"{what} is a symbolic link to "
+                                            f"{os.readlink(path)!r}")
+    parent = path.parent
+    if parent.is_symlink():
+        raise PortabilityError("E-PORT-04", f"the directory of {what} is a "
+                                            f"symbolic link")
+    return path
+
+
+@contextlib.contextmanager
+def _locked(root, company):
+    """Serialise the writers of one company's bundle store (#329)."""
+    directory = Path(root) / "companies" / _check_company(company)
+    directory.mkdir(parents=True, exist_ok=True)
+    path = directory / LOCK
+    while True:
+        try:
+            descriptor = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY,
+                                 0o644)
+            break
+        except FileExistsError:
+            try:
+                age = time.time() - os.path.getmtime(path)
+            except FileNotFoundError:
+                continue
+            if age < LOCK_TTL:
+                raise PortabilityError(
+                    "E-PORT-01", f"the bundle store is busy: another writer has "
+                                 f"held its lock for {int(age)}s")
+            try:
+                os.unlink(path)
+            except FileNotFoundError:
+                pass
+    try:
+        os.write(descriptor, f"{os.getpid()}\n".encode("utf-8"))
+        os.close(descriptor)
+        yield path
+    finally:
+        try:
+            os.unlink(path)
+        except FileNotFoundError:
+            pass
 
 
 def _tag(value):
@@ -144,6 +223,7 @@ def _pin_problems(root, contract):
 
 
 def _template(root, company, template_path=None):
+    _check_company(company)
     path = Path(template_path) if template_path else \
         root / "companies" / company / "paperclip-company.json"
     if not path.is_absolute():
@@ -253,7 +333,7 @@ def export(root, company, template_path=None, platform=None, now=None):
 
 
 def _bundles_dir(root, company):
-    return Path(root) / "companies" / company / BUNDLES
+    return Path(root) / "companies" / _check_company(company) / BUNDLES
 
 
 def _log_path(root, company):
@@ -261,6 +341,7 @@ def _log_path(root, company):
 
 
 def _carrier(root, company, bundle_id):
+    _check_bundle(company, bundle_id)
     return _bundles_dir(root, company) / bundle_id
 
 
@@ -289,10 +370,16 @@ def record(root, company, template_path=None, platform=None, now=None):
     be rewritten is not history. Rollback is `import` of a stored carrier.
     """
     root = Path(root)
+    _check_company(company)
     manifest, findings = export(root, company, template_path=template_path,
                                 platform=platform, now=now)
     if findings:
         return None, findings
+    with _locked(root, company):
+        return _record_locked(root, company, manifest, now)
+
+
+def _record_locked(root, company, manifest, now=None):
     carrier = _carrier(root, company, manifest["bundleId"])
     if carrier.is_dir():
         stored = carrier / "bundle.json"
@@ -307,10 +394,16 @@ def record(root, company, template_path=None, platform=None, now=None):
             return None, findings
         return {"company": company, "bundleId": manifest["bundleId"],
                 "recorded": False}, []
-    carrier.mkdir(parents=True, exist_ok=True)
-    (carrier / "bundle.json").write_text(json.dumps(manifest, indent=2) + "\n")
-    source = root / manifest["template"]["path"]
-    shutil.copyfile(source, carrier / Path(manifest["template"]["path"]).name)
+    # build the carrier beside its final name and move it in one step: a refused
+    # or crashed record must not leave a half-written carrier behind (#329)
+    source = _refuse_links(root / manifest["template"]["path"],
+                           "the template being recorded")
+    staging = carrier.with_name(f"{carrier.name}.{os.getpid()}.tmp")
+    shutil.rmtree(staging, ignore_errors=True)
+    staging.mkdir(parents=True)
+    (staging / "bundle.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    shutil.copyfile(source, staging / Path(manifest["template"]["path"]).name)
+    os.replace(staging, carrier)
     row = {"version": 1, "at": now or _iso_now(), "company": company,
            "bundleId": manifest["bundleId"],
            "templateSha256": manifest["template"]["sha256"],
@@ -331,14 +424,21 @@ def bundles(root, company, limit=20):
 def rollback(root, company, to, force=False, platform=None, now=None):
     """Import a stored carrier over the live template — deliberately."""
     root = Path(root)
+    _check_company(company)
+    with _locked(root, company):
+        return _rollback_locked(root, company, to, force, now)
+
+
+def _rollback_locked(root, company, to, force, now):
     bundle_path = _carrier(root, company, to) / "bundle.json"
     if not bundle_path.is_file():
         return None, [("E-PORT-03", f"no stored bundle {to!r} for {company!r}")]
     manifest, findings = _bundle_integrity(bundle_path)
     if findings:
         return None, findings
-    rel = str((manifest.get("template") or {}).get("path") or "")
-    target = root / rel
+    rel = _check_template_rel((manifest.get("template") or {}).get("path"),
+                              company)
+    target = _refuse_links(root / rel, "the live template")
     if target.is_file() and _sha_file(target) != manifest["template"]["sha256"] \
             and not force:
         return None, [("E-PORT-08", f"rolling back to {to} would overwrite "
@@ -393,7 +493,16 @@ def validate_bundles(root):
                 problems.append(f"E-PORT-01 {company}/{BUNDLES}/{LOGFILE}:{index}: "
                                 f"missing {', '.join(missing)}")
                 continue
-            if not _carrier(root, company, str(row["bundleId"])).is_dir():
+            if str(row.get("action")) not in ("export", "rollback"):
+                problems.append(f"E-PORT-01 {company}/{BUNDLES}/{LOGFILE}:{index}: "
+                                f"action is {row.get('action')!r}")
+            try:
+                stored = _carrier(root, company, str(row["bundleId"])).is_dir()
+            except PortabilityError as exc:
+                problems.append(f"E-PORT-01 {company}/{BUNDLES}/{LOGFILE}:{index}: "
+                                f"{exc}")
+                continue
+            if not stored:
                 problems.append(f"E-PORT-03 {company}/{BUNDLES}/{LOGFILE}:{index}: "
                                 f"names {row['bundleId']}, which is not stored")
     return problems
@@ -430,6 +539,17 @@ def _bundle_integrity(bundle_path):
             manifest.get("version") != 1:
         findings.append(("E-PORT-01", "the manifest's contract/version are wrong"))
     template = manifest.get("template") or {}
+    try:
+        _check_company(str(manifest.get("company")))
+    except PortabilityError as exc:
+        findings.append((exc.code, str(exc)))
+    try:
+        _check_template_rel(template.get("path"), str(manifest.get("company")))
+    except PortabilityError as exc:
+        findings.append((exc.code, str(exc)))
+    if Path(bundle_path).is_symlink():
+        findings.append(("E-PORT-04", "the manifest is a symbolic link"))
+        return manifest, findings
     shipped = Path(bundle_path).parent / Path(str(template.get("path") or "")).name
     if not shipped.is_file():
         findings.append(("E-PORT-03", f"the bundle has no "
@@ -461,6 +581,11 @@ def verify(root, bundle_path):
     path = root / str(template.get("path") or "")
     if not path.is_file():
         return manifest, findings  # a checkout without the company yet
+    try:
+        _refuse_links(path, f"the checkout's {template.get('path')}")
+    except PortabilityError as exc:
+        findings.append((exc.code, str(exc)))
+        return manifest, findings
     if _sha_file(path) != template.get("sha256"):
         findings.append(("E-PORT-04", f"the checkout's template digest does not "
                                       f"match the manifest"))
@@ -502,8 +627,9 @@ def do_import(root, bundle_path, platform=None):
         return manifest, [("E-PORT-06", f"the bundle is pinned at "
                                         f"{manifest['template']['contract']['tag']}"
                                         f" and this platform is at {platform}")], None
-    rel = str((manifest.get("template") or {}).get("path") or "")
-    target = root / rel
+    rel = _check_template_rel((manifest.get("template") or {}).get("path"),
+                              str(manifest.get("company")))
+    target = _refuse_links(root / rel, "the template's destination")
     shipped = Path(bundle_path).parent / Path(rel).name
     if not shipped.is_file():
         return manifest, [("E-PORT-03", f"the bundle has no {Path(rel).name} "

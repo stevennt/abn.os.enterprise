@@ -2,8 +2,8 @@
 
 **Status:** interface specified (#322), implemented in `scripts/portable.py`
 (#323), wired into the compiler (#324), tested (#325), recorded (#326),
-surfaced (#327), documented (#328); the harden, measure and demo steps follow
-(#329–#331). **Shape:** `schemas/portability-manifest.json`. **Checker:**
+surfaced (#327), documented (#328), hardened (#329); the measure and demo steps
+follow (#330–#331). **Shape:** `schemas/portability-manifest.json`. **Checker:**
 `scripts/check_portability_spec.py` (CI, `--self-test`). **Boundary:** ADR-002 D8
 — *company templates carry a contract pin; import refuses an unresolvable pin;
 upgrades are explicit.*
@@ -193,6 +193,29 @@ acme  bundle-7428f5cbc337d64d  unchanged (already stored)
 and fix on stderr. **There is no actor model here** — the tenant-facing gate lives
 in the platform; in this repository the operator has the checkout, and what the
 surface owes them is an explicit action and a refusal they can act on.
+
+## Hardening (#329)
+
+A bundle is **untrusted input**: it arrives from another checkout, and `import`
+writes the template where the manifest says. The edges are attacker-shaped, and
+each refusal names its code and fix:
+
+| Failure mode | Refusal | What it protects |
+|---|---|---|
+| the company id is a path (`..`, a separator, absolute, empty) | `E-PORT-01 invalid company id` | `companies/<id>/…` cannot escape its root |
+| the bundle id is not `bundle-<16 hex>` | `E-PORT-01 invalid bundle id` | a carrier is named by content, never by a path |
+| a manifest's template path is not `companies/<company>/<name>.json` | `E-PORT-07` | **the manifest is untrusted**: import and rollback write where it says, so a path that climbs out is refused before anything is written |
+| the template, a carrier or a manifest is a symbolic link | `E-PORT-04` (the link target is named) | a link would make the checkout read — or write — somewhere else |
+| a second writer holds the store's lock | `E-PORT-01 … the store is busy` | two records cannot interleave a carrier and its log row |
+| a log row names an unknown action or a missing carrier | `E-PORT-01` / `E-PORT-03` from `check` | the log is a record, not a scratch file |
+
+**Two of these are worth more than the others.** The manifest path is the one that
+matters most: `import` and `rollback` copy a file *to a path the bundle chooses*,
+so an unvalidated path is a write primitive from a bundle into the checkout — now
+refused against a strict `companies/<company>/<name>.json` pattern. And the carrier
+is written **atomically** (built beside its name, moved in one step), because a
+refused or crashed record previously left a half-written carrier that failed
+integrity forever — a bug the hardening test found by trying one.
 
 ## The record (#326)
 

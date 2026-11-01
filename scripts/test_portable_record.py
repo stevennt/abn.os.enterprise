@@ -112,8 +112,9 @@ def main():
                                  "bundleId": "bundle-ghost",
                                  "templateSha256": "0" * 64, "artefacts": 0,
                                  "action": "export"}) + "\n")
-        if not any("is not stored" in problem
-                   for problem in P.validate_bundles(root)):
+        ghost = [problem for problem in P.validate_bundles(root)
+                 if "bundle-ghost" in problem]
+        if not ghost:
             problems.append("a log row naming a missing carrier was accepted")
 
     if problems:

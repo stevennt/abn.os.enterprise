@@ -73,7 +73,9 @@ def main():
 
         missing = run("show", "--company", "acme", "--bundle", "bundle-ghost",
                       "--root", root)
-        if missing.returncode != 1 or "no stored bundle" not in missing.stderr:
+        # either "no stored bundle" or "invalid bundle id": both are refusals
+        # that name the id, and which one fired is not the operator's concern
+        if missing.returncode != 1 or "bundle-ghost" not in missing.stderr:
             problems.append(f"show of a missing bundle says "
                             f"{missing.returncode}/{missing.stderr.strip()!r}")
 

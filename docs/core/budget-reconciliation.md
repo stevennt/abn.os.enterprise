@@ -276,6 +276,17 @@ CLI — can slip an invalid store past the validator; the log is opened
 already inside the tenant can rewrite the store wholesale; the recorded report's
 digest is what makes that visible afterwards.
 
+## The measurement
+
+`gateway/budget_metrics.py` in the tenant repo evaluates six rules per period
+(#310): B1 overcommit, B2 unbudgeted, B3 overrun, B4 tenant-over, B5 stop-spike
+and B6 record-integrity. B1–B4 restate the report's findings for a channel;
+**B5 measures what no report can carry** — a budget stop is an event (`E-BUD-08`
+on a `run.refused` line), not spend, so "this agent keeps being stopped" is only
+visible by counting audit lines in a window. Alerts are one line per rule per day
+in `customers/<t>/budget-alerts.jsonl`; `--sync` validates the store, and
+`drill` proves every rule fires while a clean tenant stays quiet.
+
 ## The runbook
 
 `abn.platform.opengate/docs/budget-walkthrough.md` is the generated, end-to-end

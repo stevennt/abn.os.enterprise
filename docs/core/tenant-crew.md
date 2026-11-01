@@ -1,7 +1,7 @@
 # Tenant onboarding with a crew — `tenant-crew@1` (issue #362)
 
-**Status:** specified (#362), implemented (#363), wired (#364); test (#365),
-record (#366), surface (#367), document (#368), harden (#369), measure (#370)
+**Status:** specified (#362), implemented (#363), wired (#364), tested (#365),
+recorded (#366); surface (#367), document (#368), harden (#369), measure (#370)
 and demo (#371) follow. **Boundary:** ADR-002 D3 and D4 — every data access goes through
 the OpenGate API, and **agents are service accounts with a responsible person**.
 **Shape:** `schemas/tenant-crew.json`. **The executable oracle:**
@@ -130,6 +130,13 @@ chart, and a handover that is a person's and comes last. So a tenant that was
 onboarded by a crew cannot be `--sync`-green with a record that contradicts what
 it did, and a tenant onboarded by one operator (no crew, no record) stays valid:
 **the gate requires no crew, only that a crew's record, if present, is true.**
+
+**And the record is backed by the chain (#366).** Every step also appends one
+`crew.step` line to the tenant's signed audit chain (attributed to the member),
+and a handover appends `crew.signed` with `actorRole: person`. The tenant's check
+requires, for every step, a line with that actor and that target — so a record
+cannot claim work the chain does not have, and a rewritten `by` is a contradiction
+in two places at once.
 
 The two checkers are deliberately two: the tenant's writer *prevents* an invalid
 record from being written, and this plane's oracle *detects* one that was edited

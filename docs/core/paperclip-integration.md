@@ -73,10 +73,10 @@ how far it may go alone.
 
 | Field | Owner | Mirrored to | Never written by |
 |---|---|---|---|
-| org units, roles, reporting lines | Enterprise OS | Paperclip org chart | Paperclip UI edits are proposals |
+| org units, roles (definitions), reporting lines | Enterprise OS | Paperclip org chart | Paperclip UI edits are proposals |
 | processes, steps, automation level | Enterprise OS | routines + guard | Paperclip |
 | tenant, companies, folders, ACL, dataMode | OpenGate | run context | Paperclip |
-| accounts, roles, seats | OpenGate | Paperclip members | Paperclip |
+| accounts, role assignments, seats | OpenGate | Paperclip members | Paperclip |
 | tickets, comments, run logs, approvals UI | Paperclip | activity events | OpenGate |
 | cases, documents, artifacts-of-record | OpenGate | links in tickets | Paperclip |
 | plans, quotas, statements, metering | OpenGate | budget seeds | Paperclip |
@@ -91,7 +91,7 @@ how far it may go alone.
    skills[], evals[]}`. Every agent cites a role; every routine cites a process
    step and its automation level; an `L0–L2` or `authority: pending-review` step
    cannot compile to an autonomous routine.
-2. **Run context** (OpenGate, resolved per heartbeat):
+2. **Run context** (OpenGate → Paperclip, resolved per heartbeat):
    `{tenant, company, account, role, unit, dataMode, skills[], acl[], case?}` from
    `gateway/resolve.py`, passed to the adapter as env + a signed context file.
    **Not built yet:** `resolve.py` has no run-context mode today (review finding

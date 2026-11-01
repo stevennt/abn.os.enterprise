@@ -137,6 +137,7 @@ assurance, so a new industry inherits them rather than exercising them:
 | `scripts/docs_link_check.py` | front-page docs point at real paths | applies to shared docs, not to your industry folder |
 | `scripts/loop_ledger_check.py` | the loop review matches its ledger, and recorded commits exist | programme-level; `--repos <path>` also checks the platform repo |
 | `scripts/check_plane_boundary.py` | the model plane carries no work state, secrets or tenant policy | programme-level (ADR-002); `--self-test` proves each rule bites |
+| `scripts/test_plane_contract.py` | the boundary pages still say what they said: decisions, seams, owners, findings, ADR, index | programme-level (ADR-002); `--self-test` mutates the pages and proves red |
 | `scripts/pack_rule_drift.py` | prose thresholds match the rule tables | **your pack must pass this if it states numbers** |
 | `scripts/test_drift.py` | proves the drift check still bites | shared assurance |
 

@@ -102,6 +102,87 @@ script someone remembers to run. The reference model `example-bank` is not opted
 in — see the input gap below — so the gate is green while the packs are
 incomplete, and becomes meaningful the moment a model declares the intent.
 
+## Walk through it (verbatim)
+
+Every command below was run from the repository root; the output is copied, not
+paraphrased. The fixture model (`tests/fixtures/paperclip-model`) is the safe
+playground — it has nothing to do with a customer.
+
+Prerequisites: `python3` with `pyyaml` and `jsonschema` (CI installs them), and
+`git` (the compiler resolves the contract pin with `git cat-file`).
+
+### 1. Compile one company — writes nothing
+
+```
+$ bin/paperclip-company --root tests/fixtures/paperclip-model --company demo --check
+paperclip-company: demo compiles — 2 agents, 1 projects, 2 routines, paperclip-boundary@1.0
+```
+
+### 2. Look at the crew
+
+```
+$ bin/paperclip-company --root tests/fixtures/paperclip-model --company nested --show
+nested — Nested Company
+  boundary paperclip-boundary@1.0 · contract contract-2026.11.1 (a7baab409dce…)
+
+agents (3)
+  bank-ops-credit-officer          Credit officer           bank.ops         → —
+  bank-ops-credit-analyst          Analyst                  bank.ops.credit  → bank-ops-credit-officer
+  …
+```
+
+### 3. Render the sheet a reviewer reads
+
+```
+$ bin/paperclip-company --root tests/fixtures/paperclip-model --company demo --render
+paperclip-company: rendered tests/fixtures/paperclip-model/companies/demo/crew.md — 2 agents, 2 routines
+```
+
+The file opens with the "generated … do not edit" comment, then the agent,
+project and routine tables.
+
+### 4. Compile everything that opted in — the CI gate
+
+```
+$ bin/paperclip-company --root tests/fixtures/paperclip-model --all --check
+  demo: compiled — 2 agents, 2 routines
+  nested: compiled — 3 agents, 3 routines
+paperclip-company --all: 2/2 compiled
+```
+
+On the repository itself the same command reports the reference model as skipped
+rather than failing — it has not opted in:
+
+```
+  example-bank: skip E-COMP-07 flow aml.str.filing step s3-investigate: rule(s) not defined by any pack: AML-INV-03
+paperclip-company --all: 0/1 compiled
+```
+
+### 5. Prove the compiler itself
+
+```
+$ bin/paperclip-company --self-test
+paperclip-company --self-test: fixture compiles deterministically, pending rules stay supervised, L2 never autonomous — OK
+```
+
+### When it refuses
+
+```
+$ bin/paperclip-company --root /tmp/broken --company demo --check
+paperclip-company: E-COMP-07: flow demo.flow step s1-check: rule(s) not defined by any pack: GHOST-01
+```
+
+Exit code 1, and nothing is written.
+
+| Code | Fix |
+|---|---|
+| `E-COMP-01` | the company's `company.yaml` or its `org.chart` file is missing, or the id does not match the directory |
+| `E-COMP-02` | the contract pin is malformed or its sha is not a commit — use a released `contract-YYYY.MM.N` and its sha |
+| `E-COMP-03` | a flow's department has no unit in the company chart, or a step has no `owner_role` — fix the model, not the compiler |
+| `E-COMP-07` | a cited rule is defined by no pack, or a flow/skill/eval path is missing — add the rule to the pack, or fix the citation |
+| `E-COMP-09` | the contract page carries no `paperclip-boundary@X.Y` — fix the contract, then re-run |
+| `E-COMP-10` | the template fails the checker: read the S1–S8 message it prints (root, manager, ids, autonomy, paths, skills) |
+
 ## Surface (#257)
 
 An operator should not have to read the JSON to see the crew.

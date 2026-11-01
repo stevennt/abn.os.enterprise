@@ -13,6 +13,8 @@ satisfy, and they fail if a behaviour is removed:
   T7  the nested model (three units, two flows, a shared role, an external party)
       compiles to its own golden, with the hierarchy, the touchpoint and the
       exclusions right;
+  T15 the spec keeps the verbatim walk-through: every command it teaches, the
+      refusal table and the expected output line;
   T14 `--show` and `--render` give a human the crew (deterministic, no secrets,
       and nothing written when the compile is refused);
   T13 `--record` appends a compile record per run, and `--check` never records;
@@ -290,6 +292,22 @@ def tests():
               all_run.stdout + all_run.stderr)
         check("T6 skip is labelled", "broken: skip" in all_run.stdout, all_run.stdout)
 
+    # T15 — the walk-through stays in the spec
+    spec = (ROOT / "docs" / "core" / "paperclip-compiler.md").read_text()
+    for anchor in ("bin/paperclip-company --root tests/fixtures/paperclip-model "
+                   "--company demo --check",
+                   "--company nested --show",
+                   "--company demo --render",
+                   "--all --check",
+                   "--self-test",
+                   "### When it refuses",
+                   "paperclip-company: demo compiles",
+                   "E-COMP-07"):
+        check(f"T15 spec anchor {anchor!r}", anchor in spec)
+    for code in ("E-COMP-01", "E-COMP-02", "E-COMP-03", "E-COMP-07", "E-COMP-09",
+                 "E-COMP-10"):
+        check(f"T15 refusal fix {code}", code in spec)
+
     return failures
 
 
@@ -304,7 +322,7 @@ def main():
         return 1
     print("paperclip-compiler tests: 2 goldens, determinism, hierarchy, shared "
           "role, touchpoint, human/system/external exclusion, 9 refusals, --all "
-          "opt-in policy, compile record, surface — OK")
+          "opt-in policy, compile record, surface, spec walk-through — OK")
     return 0
 
 

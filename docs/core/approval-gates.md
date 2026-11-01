@@ -161,10 +161,12 @@ each code fires for its own reason.
 ## The runbook
 
 `abn.platform.opengate/docs/approvals-walkthrough.md` is the generated, end-to-end
-transcript (#318): an approval, both maker/checker refusals, an escalation, a
-request nobody can approve, a replay, a second different decision, the inspection
-commands, the seal and its silent repeat, the non-admin refusal, and a decision
-tampered after sealing. `--check` regenerates and diffs it, so a stale transcript
+transcript of the whole workstream (#318, extended by #321): an approval, both
+maker/checker refusals, an escalation **and the named role walking it**, a request
+nobody can approve, a replay, a second different decision, the inspection commands,
+the seal and its silent repeat, three self-approvals, the measure firing `G2`, the
+alert recorded with the second scan silent, the four-rule drill, the non-admin
+refusal, and a decision tampered after sealing. `--check` regenerates and diffs it, so a stale transcript
 fails the suite.
 
 ## The operator surface

@@ -188,7 +188,7 @@ what the last change made it.
 |---|---|---|
 | account model + validation, wired into `--sync` | `gateway/identity.py` | **done** (#273) |
 | the identity record (digest manifest) written per change, validated by `--sync` | `gateway/identity.py` (`identity-state.json`) | **done** (#276) |
-| admin surface: list, resolve, create agent, bind/unbind, disable/enable, validate | `infra/identity.py` | **done** (#273) |
+| admin surface: status, list, show, resolve, history, create agent, bind/unbind, disable/enable, validate, seal | `infra/identity.py` | **done** (#273, #277) |
 | run-context consumes the principal (no second mapping) | `gateway/resolve.py` | **done** (#273) |
 | ONEID login: the SSO callback uses the same resolver (no second mapping) | `apps/api/src/sso.service.ts` + `identity.core.ts` → `infra/identity.py` | wired (#274); lands with the SSO layer (#208) |
 | tests, records, docs, hardening, metrics, demo | — | #275–#281 |
@@ -202,6 +202,13 @@ admin-only (`E-IDN-09`) and append `identity.agent_created`, `identity.bound`,
 chain with the acting admin. `--sync` runs `identity.validate_tenant`; an absent
 store is valid (a provisioned tenant with no accounts yet), but resolution refuses
 it with `E-IDN-08`.
+
+**The surface (#277).** Every operator verb is admin-only (`E-IDN-09`):
+`status` (counts, the identity record's digest/time/author and whether it still
+matches, the tenant's problems), `list`, `show`, `resolve`, `history` (the
+`identity.*` events from the audit chain, per account if asked), the mutations,
+`validate` and `seal`. `identity.py subject` stays open: it is the login mapping
+the API calls, not an operator view.
 
 **One resolver (#274).** The adapter gate (`paperclip.verify`) and
 `resolve.py --run-context` call `identity.principal_for_account`; the OIDC callback

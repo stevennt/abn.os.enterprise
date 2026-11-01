@@ -3,8 +3,8 @@
 **Status:** interface specified (#332), implemented in
 `abn.platform.opengate/gateway/harness.py` (#333) and run as
 `abn.platform.opengate/infra/harness.py` (#334), recorded under `harness/runs/`
-checked in CI (#336), surfaced (#337), documented (#338); the harden, measure and
-demo steps follow (#339–#341). **Shape:** `schemas/harness-run.json`. **Checker:**
+checked in CI (#336), surfaced (#337), documented (#338), hardened (#339); the
+measure and demo steps follow (#340–#341). **Shape:** `schemas/harness-run.json`. **Checker:**
 `scripts/check_harness_spec.py` (CI, `--self-test`). **Boundary:** ADR-002 — the
 three planes meet nowhere else.
 
@@ -138,6 +138,15 @@ signature): every assertion `ok`, `dirty` empty, verdict `pass`. The self-test t
 mutates it seven ways — a drifted fixture, a wrong outcome, a right outcome for the
 wrong code, a dirty tree, a mixed pin pair, a step with no assertion, a run that is
 not repeatable — and asserts each code fires.
+
+## Hardening
+
+A script is untrusted input — it comes from an operator or a pipeline, and a
+`finish` step writes a file at a path the script chooses. Four edges, each `E-HRN-01`
+with its fix (#339): a tenant that is a path; **an artifact outside
+`customers/<tenant>/`**, which is the one place untrusted input reaches a
+filesystem write; a record file or directory that is a symbolic link; and a second
+writer holding the store's lock (300 s TTL for a crashed holder).
 
 ## The runbook
 

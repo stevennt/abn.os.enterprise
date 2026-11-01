@@ -4,7 +4,7 @@
 `abn.platform.opengate/gateway/harness.py` (#333) and run as
 `abn.platform.opengate/infra/harness.py` (#334), recorded under `harness/runs/`
 checked in CI (#336), surfaced (#337), documented (#338), hardened (#339),
-measured (#340); the demo step follows (#341). **Shape:** `schemas/harness-run.json`. **Checker:**
+measured (#340), demonstrated (#341). **Shape:** `schemas/harness-run.json`. **Checker:**
 `scripts/check_harness_spec.py` (CI, `--self-test`). **Boundary:** ADR-002 — the
 three planes meet nowhere else.
 
@@ -147,6 +147,15 @@ with its fix (#339): a tenant that is a path; **an artifact outside
 `customers/<tenant>/`**, which is the one place untrusted input reaches a
 filesystem write; a record file or directory that is a symbolic link; and a second
 writer holding the store's lock (300 s TTL for a crashed holder).
+
+## The program demo
+
+`abn.platform.opengate/docs/program-walkthrough.md` is the program's runbook
+(#341): one harness run of eight steps through four contracts, the run store
+checked, **the tenant's own `--sync` over the same tree**, the measures, the drill,
+and finally **this repository's oracle** evaluating a case built from the record —
+recomputing the same `hrn-…` id. Two repositories, one record, one id; `--check`
+diffed in the suite.
 
 ## The measurement
 

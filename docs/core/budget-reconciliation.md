@@ -232,6 +232,24 @@ executed. `--self-test` then mutates the inputs seven ways (an unknown plan, a
 malformed store, a budget on a person, an overcommitted plan, unbudgeted spend,
 an overrun, a tenant past its cap) and asserts each expected code appears.
 
+## The conformance matrix
+
+The implementation's matrix is `abn.platform.opengate/tests/test_budget_matrix.py`
+(#305): 44 cases, each asserting which code fires **and why** — a negative test
+that accepts the wrong reason hides the regression it was meant to catch. It
+covers a clean and a legacy tenant; an assigned plan that does not exist and a
+subscription without a plan id; ten malformed stores, each refused as `E-BUD-02`
+for its own reason; budgets on a person, a disabled agent and an unknown account
+(`E-BUD-03`); unbudgeted spend, spend whose run record is gone and spend from
+another tool (`E-BUD-04`, naming `unattributed` when that is the truth);
+overcommit on jobs and on storage (through the MB conversion) and two agents
+whose budgets are each within but sum above (`E-BUD-05`); overruns past a budget
+and *not* at it (`E-BUD-06`); the tenant past its plan and *not* at it
+(`E-BUD-07`); an unlimited budget that is excluded from the sum yet does not
+suppress the tenant cap; spend from another month; nine allowance cases; and the
+exhausted run that is refused, leaves no record and writes one `run.refused`.
+A final case asserts the matrix covers every code in `SEVERITY`.
+
 ## Where it will live
 
 | Piece | Path (planned) |

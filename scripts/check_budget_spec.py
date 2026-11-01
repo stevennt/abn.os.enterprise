@@ -142,8 +142,8 @@ def reconcile(case):
         pass
     if problems:
         findings.append(_finding(
-            "E-BUD-02", f"{len(problems)} problem(s) in the budget store — the "
-                        f"throttle cannot be read", kind="plan"))
+            "E-BUD-02", f"{len(problems)} problem(s) in the budget store — "
+                        f"{problems[0]}", kind="plan"))
     for account in sorted(entries):
         if account not in agents:
             findings.append(_finding(

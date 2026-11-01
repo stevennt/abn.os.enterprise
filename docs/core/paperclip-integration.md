@@ -1,5 +1,8 @@
 # Paperclip × OpenGate × Enterprise OS — the three-plane integration
 
+**Contract:** `paperclip-boundary@1.0` · **dated** 2026-11-01 · **ratified** by
+ADR-002 · **versioning** below.
+
 **Status:** design ratified for the Paperclip program (loop 6) by
 `docs/core/adr-002-paperclip-three-planes.md` (ADR-002). Start at
 `docs/core/paperclip-program.md` (program index). Program board:
@@ -74,6 +77,33 @@ how far it may go alone.
 | **Embedding Paperclip as a library** in OpenGate | its surface (server, UI, runners, Postgres) is a service; embedding would fork it and freeze security patches |
 | **One Paperclip instance per tenant** | operational multiplication (a Postgres and a runner per customer) for isolation that OpenGate's tenant check already enforces at the data edge |
 | **A ONEID session minter in Axum for OpenGate** (API-first only) instead of OIDC | ties every future customer IdP to our identity service; OpenGate's OIDC client already speaks to any provider, so the browser bridge was the smaller change |
+
+## Versioning and the upgrade path
+
+The contract has an id and a version (`paperclip-boundary@MAJOR.MINOR`) because
+three systems build against it. What a bump means:
+
+| Change | Version | What the consumers do |
+|---|---|---|
+| wording, links, a new example | **none** | nothing; fix in place |
+| a new seam field, a new owner row, a new gate that does not change direction or ownership | **minor** (1.x) | the compiler emits the same template shape, the adapter keeps running; both sides update their pages in the same sitting |
+| a decision reverses (D1–D10), a seam changes direction or ownership, or a field changes hands in the ownership matrix | **major** (2.0) | a **new ADR** ratifies it; every company template is re-compiled; the adapter supports the current and previous major for one release, then drops the old one |
+
+Rules:
+
+- **The pin travels with the artefact.** A company template records
+  `boundary: "paperclip-boundary@1.0"`; an adapter run logs the version it ran
+  under; the go/no-go scorecard cites it. Version drift becomes visible in the
+  record, not in a support call.
+- **One version for the whole contract.** The decisions, the ownership matrix and
+  the four seams bump together — a seam at 1.1 with decisions at 1.0 is how two
+  "current" contracts appear.
+- **Ratification is a person.** A major bump needs the ADR (and, once the program
+  has one, a second reviewer). A minor bump needs the operator and both pages
+  changed together.
+- **Upgrade is a re-compile, not a merge.** Because the compile is one-way
+  (D1), upgrading Paperclip or the contract means emit → diff → apply; the diff
+  is the review surface.
 
 ## Ownership matrix (one owner per field)
 

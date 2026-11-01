@@ -32,6 +32,10 @@ workstream and chain across workstreams. Each workstream is decomposed by a
 ten-step ladder that fits its kind (design, build, ops, compliance), so a task
 title says what phase it is and what it touches.
 
+The contract has a version — `paperclip-boundary@1.0` — and its upgrade path is
+in the contract itself; a company template records the version it was compiled
+against, so drift shows up in the record.
+
 ## The plan
 
 | Tier | Tasks | Builds |

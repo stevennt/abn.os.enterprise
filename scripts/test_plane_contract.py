@@ -36,6 +36,7 @@ SEAM_ITEM = re.compile(r"^(\d)\. \*\*(.+?)\*\* \((.+?)\)", re.M)
 OWNER_ROW = re.compile(r"^\| ([^|]+?) \| ([^|]+?) \| ([^|]+?) \| ([^|]+?) \|$", re.M)
 FINDING_ROW = re.compile(r"^\| (F\d+) \| (\w+) \| (.+?) \| (.+?) \| (.+?) \|$", re.M)
 ISSUE_REF = re.compile(r"#(\d+)")
+VERSION = re.compile(r"paperclip-boundary@\d+\.\d+")
 
 
 def _read(path):
@@ -136,6 +137,29 @@ def adr(text):
     return problems
 
 
+def version(text, adr_text):
+    """The contract carries a version, its upgrade path, and the ADR matches it."""
+    problems = []
+    contract_version = VERSION.search(_section(text, "# Paperclip"))
+    if contract_version is None:
+        problems.append("version: the contract header carries no "
+                        "paperclip-boundary@MAJOR.MINOR id")
+    section = _section(text, "## Versioning and the upgrade path")
+    if not section:
+        problems.append("version: no 'Versioning and the upgrade path' section")
+    else:
+        for token in ("none", "minor", "major", "new ADR", "boundary:"):
+            if token not in section:
+                problems.append(f"version: the upgrade path does not mention {token!r}")
+    adr_version = VERSION.search(adr_text)
+    if adr_version is None:
+        problems.append("version: the ADR does not ratify a contract version")
+    elif contract_version and adr_version.group(0) != contract_version.group(0):
+        problems.append(f"version: ADR ratifies {adr_version.group(0)}, contract "
+                        f"says {contract_version.group(0)}")
+    return problems
+
+
 def index(text):
     problems = []
     for rel in ("docs/core/paperclip-integration.md",
@@ -163,6 +187,7 @@ def check():
     problems += ownership(_read(CONTRACT))
     problems += findings(_read(REVIEW), issues)
     problems += adr(_read(ADR))
+    problems += version(_read(CONTRACT), _read(ADR))
     problems += index(_read(INDEX))
     return problems
 
@@ -211,6 +236,17 @@ def self_test():
            index(index_text.replace("docs/core/adr-002-paperclip-three-planes.md",
                                     "docs/core/adr-999.md")),
            "does not link")
+    expect("contract without version",
+           version(contract.replace("`paperclip-boundary@1.0`", "the contract"),
+                   adr_text), "carries no")
+    expect("adr ratifies another version",
+           version(contract, adr_text.replace("paperclip-boundary@1.0",
+                                              "paperclip-boundary@9.9")),
+           "ADR ratifies")
+    expect("upgrade path missing",
+           version(contract.replace("## Versioning and the upgrade path",
+                                    "## Versioning"), adr_text),
+           "no 'Versioning")
     return failures
 
 
@@ -223,7 +259,7 @@ def main(argv=None):
             for failure in failures:
                 print(f"  - {failure}")
             return 1
-        print("plane-contract --self-test: 8 mutations, each caught — OK")
+        print("plane-contract --self-test: 11 mutations, each caught — OK")
         return 0
     problems = check()
     if "--json" in argv:
@@ -234,7 +270,8 @@ def main(argv=None):
             print(f"  - {problem}")
         return 1
     print("plane-contract: 10 decisions, 4 seams, one owner per field, "
-          "9 findings dispositioned, ADR accepted, index links — OK")
+          "9 findings dispositioned, ADR accepted, version + upgrade path, "
+          "index links — OK")
     return 0
 
 

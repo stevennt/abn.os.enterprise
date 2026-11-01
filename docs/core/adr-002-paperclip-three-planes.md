@@ -1,6 +1,7 @@
 # ADR-002: Paperclip × OpenGate × Enterprise OS — three planes (issue #244) — ACCEPTED
 
 **Status:** accepted (program) — ratified 2026-11-01 after the #243 review.
+**Ratifies:** `paperclip-boundary@1.0`.
 **Decided by:** the program operator. There is no second review seat yet; that
 is recorded here as a risk, not hidden.
 **Supersedes:** nothing. **Amends:** the loop-5 boundary assumption that OpenGate

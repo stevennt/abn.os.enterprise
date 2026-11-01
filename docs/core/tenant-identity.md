@@ -223,6 +223,14 @@ API's fallback is a known gap, not a second rule for runs.
 Until #273 lands, the rule stands: **no agent credential in this repo**, and no
 run without an account whose role is posted at its unit.
 
+## The commands, in order
+
+`docs/identity-walkthrough.md` in the OpenGate repository is the operator runbook:
+status, create an agent, bind a ONEID subject, resolve the principal, an email
+refused, the history, a hand-edit caught and sealed, the offboarding order, and
+the repo's own `--sync` — each command with its committed output. It is generated
+by `infra/identity_walkthrough.py` and re-run in CI, so it cannot drift.
+
 ## The contract, checked
 
 ```

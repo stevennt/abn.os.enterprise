@@ -1,7 +1,8 @@
 # Program harness — a fake Paperclip, a fake tenant, and the contracts between them (contract `program-harness@1`)
 
-**Status:** interface specified (issue #332); implementation is PC1-10-02…10
-(#333–#341). **Shape:** `schemas/harness-run.json`. **Checker:**
+**Status:** interface specified (#332), implemented in
+`abn.platform.opengate/gateway/harness.py` (#333); the record, surface, harden,
+measure and demo steps follow (#334–#341). **Shape:** `schemas/harness-run.json`. **Checker:**
 `scripts/check_harness_spec.py` (CI, `--self-test`). **Boundary:** ADR-002 — the
 three planes meet nowhere else.
 
@@ -91,7 +92,7 @@ One run record — `schemas/harness-run.json`:
 | `repeatRunId` | what an immediate second run produced; it must equal `runId`, which is the only way a *record* can show its own repeatability |
 | `fixtures[].sha256` | the digest of the fixture tree at the moment of the run: a silent edit to a fixture changes the run id |
 | `assertions[]` | one per scripted step: what was expected, what happened, and whether the **reason** matched |
-| `dirty` | paths the run changed that the script did not declare — a harness run leaves the tenant exactly as it found it |
+| `dirty` | paths that differ from the fixture's **baseline** (captured when it was built) and that the script did not declare — an edit *between* runs is dirt too |
 | `verdict` | `pass` only when every assertion is `ok` and `dirty` is empty |
 
 ## Errors (ordered, fail closed)
@@ -140,9 +141,9 @@ not repeatable — and asserts each code fires.
 
 | Piece | Path (planned) |
 |---|---|
-| the fake tenant | `tests/fixtures/harness/tenant/` — built by the platform's provisioner (#333) |
+| the fake tenant | built at run time by the platform's own provisioner, never checked in (#333) |
 | the fake Paperclip | `scripts/fake_paperclip.py` — a script runner over the real surfaces (#334) |
-| the runner | `scripts/harness.py` — `run`, `record`, `verify` (#335) |
+| the runner | `abn.platform.opengate/gateway/harness.py` — `build`, `run`, `record`, `verify` (#333) |
 | the record | `harness/runs/<runId>.json`, committed per release (#336) |
 | the measure | `scripts/harness_metrics.py` — assertions per contract, coverage per plane (#338) |
 

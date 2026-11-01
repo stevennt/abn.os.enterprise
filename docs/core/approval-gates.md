@@ -158,6 +158,15 @@ is absent from the grid, and absent is not unlimited.
 requests and fails on a byte of drift; `--self-test` mutates the case to prove
 each code fires for its own reason.
 
+## The runbook
+
+`abn.platform.opengate/docs/approvals-walkthrough.md` is the generated, end-to-end
+transcript (#318): an approval, both maker/checker refusals, an escalation, a
+request nobody can approve, a replay, a second different decision, the inspection
+commands, the seal and its silent repeat, the non-admin refusal, and a decision
+tampered after sealing. `--check` regenerates and diffs it, so a stale transcript
+fails the suite.
+
 ## The operator surface
 
 `infra/approvals.py` in the tenant repo: `decide` (the actor is the approver; exit

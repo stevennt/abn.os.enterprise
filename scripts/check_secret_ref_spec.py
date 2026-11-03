@@ -33,6 +33,7 @@ FIXTURE = ROOT / "tests" / "fixtures" / "secrets" / "env.valid.json"
 
 NAME = re.compile(r"^[A-Z_][A-Z0-9_]*$")
 REFERENCE = re.compile(r"^vault://([A-Za-z0-9][A-Za-z0-9._/-]*)#([A-Za-z0-9][A-Za-z0-9._-]*)$")
+SCHEME = re.compile(r"^[A-Za-z][A-Za-z0-9+.-]*://")
 
 CODES = {
     "E-SEC-01": "a value where a reference belongs — move the value to the vault and "
@@ -78,9 +79,14 @@ def reference_problems(document):
             out.append(problem("E-SEC-05", f"{name!r} is not a POSIX environment name"))
         text = str(value or "")
         if not text.startswith("vault://"):
-            # the headline rule: a value where a reference belongs
-            out.append(problem("E-SEC-01",
-                               f"{name} carries a value, not a reference"))
+            if SCHEME.match(text):
+                out.append(problem("E-SEC-02",
+                                   f"{name} reference {text!r} does not use the "
+                                   f"vault:// scheme"))
+            else:
+                # the headline rule: a value where a reference belongs
+                out.append(problem("E-SEC-01",
+                                   f"{name} carries a value, not a reference"))
             continue
         match = REFERENCE.match(text)
         if not match:

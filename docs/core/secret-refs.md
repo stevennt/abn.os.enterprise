@@ -1,8 +1,8 @@
 # Secrets: references, not values — `secret-ref@1` (issue #412)
 
-**Status:** specified (#412); the implementation (#413), its wiring (#414), the
-matrix (#415), the record (#416), the console (#417), the runbook (#418),
-hardening (#419), measures (#420) and the demo (#421) follow.
+**Status:** specified (#412), implemented (#413), wired (#414), tested (#415); the
+record (#416), the console (#417), the runbook (#418), hardening (#419), measures
+(#420) and the demo (#421) follow.
 
 **Contract:** `schemas/secret-ref.json`. **Oracle:**
 `scripts/check_secret_ref_spec.py` — it validates the shape and proves every refusal
@@ -104,6 +104,48 @@ update.
 Every refusal carries its fix in the message (`E-SEC-NN: … — fix: …`), and the
 coverage rule is the same as the rest of this repository: **a broken input is
 refused, never ignored.**
+
+## The conformance matrix (#415)
+
+`abn.platform.opengate` `tests/test_secret_refs_matrix.py` runs **18 cases** — ten
+positives and eight refusals — through the implementation, and the last test runs the
+manifest cases through **this repository's oracle** as well.
+
+| Case | Code | Stimulus |
+|---|---|---|
+| P1 | — | a manifest loads: the contract, the version, the declared names |
+| P2 | — | the resolution is exactly the declared set, from the process environment |
+| P3 | — | the child gets the resolved set, nothing inherited |
+| P4 | — | the lines carry a name, a reference and an outcome — no value |
+| P5 | — | one line per name, in name order |
+| P6 | — | `check` is clean over a real resolution |
+| P7 | — | **rotation** changes a value and no record: same references, same manifest |
+| P8 | — | `begin` records references only, never a value |
+| P9 | — | a run with no manifest has no `env` block — unchanged behaviour |
+| P10 | — | a full `begin`+`finish` writes the value to **no file** under the tenant |
+| M01 | `E-SEC-01` | a value where a reference belongs |
+| M02 | `E-SEC-02` | a reference with the wrong scheme |
+| M03 | `E-SEC-03` | a variable the deploy never injected |
+| M04 | `E-SEC-04` | a secret that is set but empty |
+| M05 | `E-SEC-05` | a name the shell cannot pass |
+| M06 | `E-SEC-06` | a required name nobody declared |
+| M07 | `E-SEC-07` | no manifest at all |
+| M08 | `E-SEC-08` | a resolution line that tried to carry a value |
+
+**Two invariants hold across every negative case:** a refusal carries its code, its
+message and its fix — and **the value never appears in the refusal**. A message that
+quoted what it refused would be the leak this contract exists to prevent, so the
+matrix asserts the absence, not just the code.
+
+**The cross-check is the one that matters.** This repository's
+`scripts/check_secret_ref_spec.py` and the implementation both speak `E-SEC`, and two
+implementations that agree are not thereby right — but two that **disagree** are
+thereby wrong. `env://X` was `E-SEC-01` in both until #413; the check that now runs
+both would have caught it the day it was written.
+
+**P10 is the property, not a spot check**: after a complete run, every file under
+`customers/<tenant>/` is searched for the value, so a store added tomorrow is covered
+without anyone remembering to add it to a list.
 
 ## What the oracle proves
 

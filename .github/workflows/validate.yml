@@ -49,6 +49,7 @@ jobs:
       - run: python scripts/check_portability_spec.py && python scripts/check_portability_spec.py --self-test
       - run: python scripts/check_harness_spec.py && python scripts/check_harness_spec.py --self-test
       - run: python scripts/check_tenant_crew_spec.py && python scripts/check_tenant_crew_spec.py --self-test
+      - run: python scripts/check_secret_ref_spec.py && python scripts/check_secret_ref_spec.py --self-test
       - run: python scripts/portable.py --self-test
       - run: python scripts/test_portable_wire.py
       - run: python scripts/test_portability_matrix.py

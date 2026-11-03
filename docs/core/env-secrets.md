@@ -22,6 +22,9 @@ vault/os/stage.enc.yaml  — stage provider keys, replay credentials
 vault/os/prod.enc.yaml   — prod JWT secret, service tokens, provider keys (MLRO-gated read)
 ```
 
+A **run** gets its secrets by reference, not by copy: the manifest names the vault path and the process environment carries the value
+([secret-refs.md](secret-refs.md), `secret-ref@1`). This document says where the values live; that one says what a record may say about them.
+
 Rules: plaintext secrets never enter chat, logs, commits, or shell history; rotation =
 edit env file + recreate container (house Supabase lesson); after any incident, rotate
 stage + prod provider keys and re-run the A07 money drill before re-promoting.

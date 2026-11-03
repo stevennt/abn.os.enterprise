@@ -162,7 +162,10 @@ Rules:
 - **Approvals** — a human-only step cannot be completed by an agent; the
   approval record names the human, the rule and the authority limit.
 - **Secrets** — injected per run from the vault; never in the template, the
-  ticket, the prompt or the Paperclip database.
+  ticket, the prompt or the Paperclip database. The interface is
+  [secret-refs.md](secret-refs.md) (`secret-ref@1`): a `vault://file#key`
+  reference in the run env manifest, the value only in the process, and a
+  resolution record that a value cannot enter.
 - **No tenant credentials outside the vault** — Paperclip connectors may not hold
   a credential that reaches tenant data; the only path is the OpenGate tool
   surface with the run context. This is a checkable rule (scan the Paperclip

@@ -1,5 +1,10 @@
 # Red-team + PII-leak guards v1.0 (issue #70) — customer docs flow through these models
 
+The three suites that matter most for **agents** — prompt injection, agent credentials,
+cross-tenant — are the same three surfaces the threat model now registers row by row
+(`docs/core/threat-model.md` v2.0, `scripts/check_threat_model_spec.py`). This page is the
+empirical half: what the suites must hold, and the deterministic filter that backs them.
+
 ## Red-team suite plan (runs per model release + monthly; blocks promotion on fail)
 
 | Suite | Size | Must hold |

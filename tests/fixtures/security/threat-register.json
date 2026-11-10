@@ -1,0 +1,141 @@
+{
+  "version": 2,
+  "contract": "threat-model@2",
+  "reviewed": "2026-11-10",
+  "surfaces": ["prompt-injection", "agent-credentials", "cross-tenant"],
+  "rows": [
+    {
+      "id": "A1",
+      "surface": "prompt-injection",
+      "stride": "T",
+      "scenario": "A customer document tells the agent to ignore its task and release a memo it was asked to review",
+      "control": "The instruction never reaches the model as authority: the task arrives in the pass, the document is data, and the output is schema-validated before anything acts on it",
+      "status": "planned",
+      "issue": 464,
+      "owner": "AI platform",
+      "evidence": null
+    },
+    {
+      "id": "A2",
+      "surface": "prompt-injection",
+      "stride": "T",
+      "scenario": "A tool result (a page, a file, an API error) carries instructions that the model follows",
+      "control": "Tool output is untrusted data with a declared shape; an instruction-shaped result is flagged and the step returns REVIEW rather than acting",
+      "status": "planned",
+      "issue": 465,
+      "owner": "AI platform",
+      "evidence": null
+    },
+    {
+      "id": "A3",
+      "surface": "prompt-injection",
+      "stride": "E",
+      "scenario": "Multi-turn pressure walks an agent from its task to an action its pass does not allow",
+      "control": "Every action is checked against the pass at the tool boundary, not in the prompt — the conversation is not an authorisation surface",
+      "status": "mitigated",
+      "issue": null,
+      "owner": "Agent platform",
+      "evidence": { "path": "docs/core/ai-contract.md" }
+    },
+    {
+      "id": "A4",
+      "surface": "prompt-injection",
+      "stride": "R",
+      "scenario": "An injected instruction is followed and the run looks like an ordinary one",
+      "control": "The attempt is recorded: the prompt, the tool calls and the refusal are evidence in the run record, and a flagged injection is an alert",
+      "status": "planned",
+      "issue": 466,
+      "owner": "Agent platform",
+      "evidence": null
+    },
+    {
+      "id": "A5",
+      "surface": "agent-credentials",
+      "stride": "S",
+      "scenario": "A stolen agent credential is used to begin runs as that agent",
+      "control": "No long-lived agent credential exists: the pass is short-lived, bound to task and run, and signed; a stolen one is expired or bound elsewhere",
+      "status": "mitigated",
+      "issue": null,
+      "owner": "Platform security",
+      "evidence": { "path": "docs/core/ai-contract.md" }
+    },
+    {
+      "id": "A6",
+      "surface": "agent-credentials",
+      "stride": "I",
+      "scenario": "A secret reaches a model prompt, a log or an artifact",
+      "control": "Secrets resolve at run time from references; the record keeps names and references, never values, and the redactor reports counts only",
+      "status": "mitigated",
+      "issue": null,
+      "owner": "Platform security",
+      "evidence": { "path": "schemas/secret-ref.json" }
+    },
+    {
+      "id": "A7",
+      "surface": "agent-credentials",
+      "stride": "E",
+      "scenario": "An agent keeps acting after its run closed, using a pass that still verifies",
+      "control": "A closed run cannot be resumed and the pass carries an expiry; a stale pass is a refusal, not a second run",
+      "status": "mitigated",
+      "issue": null,
+      "owner": "Agent platform",
+      "evidence": { "path": "docs/core/ai-contract.md" }
+    },
+    {
+      "id": "A8",
+      "surface": "agent-credentials",
+      "stride": "R",
+      "scenario": "An action is taken with an agent's identity and the agent's owner denies it",
+      "control": "Every agent action names the agent and its owner in the chain, so a denial is checkable rather than arguable",
+      "status": "mitigated",
+      "issue": null,
+      "owner": "Platform security",
+      "evidence": { "path": "schemas/tenant-identity.json" }
+    },
+    {
+      "id": "A9",
+      "surface": "cross-tenant",
+      "stride": "I",
+      "scenario": "A retrieval or a tool call returns another tenant's document to this tenant's agent",
+      "control": "Every read is scoped by tenant at the store, and a tool call carries the tenant in the pass — a foreign path is refused at the boundary",
+      "status": "planned",
+      "issue": 468,
+      "owner": "Platform security",
+      "evidence": { "path": "docs/core/confidentiality.md" }
+    },
+    {
+      "id": "A10",
+      "surface": "cross-tenant",
+      "stride": "I",
+      "scenario": "An agent's output quotes an id or a fact belonging to another tenant",
+      "control": "The egress filter blocks foreign instance ids and routes them to REVIEW before a human or a system sees them",
+      "status": "planned",
+      "issue": 469,
+      "owner": "AI platform",
+      "evidence": { "path": "docs/core/redteam.md" }
+    },
+    {
+      "id": "A11",
+      "surface": "cross-tenant",
+      "stride": "E",
+      "scenario": "A connector credential provisioned for one tenant is used to reach another",
+      "control": "Connector tokens are per tenant and per connector, and the connector contract refuses a token that names another tenant",
+      "status": "planned",
+      "issue": 470,
+      "owner": "Platform security",
+      "evidence": null
+    },
+    {
+      "id": "A12",
+      "surface": "cross-tenant",
+      "stride": "D",
+      "scenario": "One tenant's load (or a retry storm) starves another's runs",
+      "control": "Budgets and the retry budget are per tenant and per agent; a queue row belongs to one tenant and cannot be replayed into another",
+      "status": "mitigated",
+      "issue": null,
+      "owner": "Platform",
+      "evidence": { "path": "docs/core/threat-model.md" }
+    }
+  ],
+  "accepted": []
+}

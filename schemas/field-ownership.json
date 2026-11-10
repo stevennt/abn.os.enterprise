@@ -77,7 +77,8 @@
       "properties": {
         "id": {
           "type": "string",
-          "pattern": "^(model|tenant|identity|work|evidence|money|audit|secret)\\.[A-Za-z][A-Za-z0-9_.]*$"
+          "pattern": "^[a-z][a-z0-9-]*\\.[A-Za-z][A-Za-z0-9_.]*$",
+          "description": "`<stream>.<name>` — the id begins with the stream it belongs to, so a watermark (`model.seq`) is a field like any other and needs an owner."
         },
         "stream": { "type": "string" },
         "owner": { "$ref": "#/definitions/plane" },
@@ -92,7 +93,10 @@
           "items": { "$ref": "#/definitions/plane" },
           "description": "Every plane, other than the owner, that may not originate a write — mirrors included, because storing a copy is not writing one. A plane missing from this list has a write nobody granted (E-SYN-06)."
         },
-        "sensitivity": { "enum": ["public", "internal", "confidential", "restricted"] },
+        "sensitivity": {
+          "enum": ["PII-strict", "confidential", "internal", "public"],
+          "description": "The **data** tier from docs/core/confidentiality.md, not the industry tier: `restricted` and `classified` describe an industry's content, and a field labelled with the wrong axis reads as stricter while enforcing nothing. The checker compares this list with `metamodel/event.schema.yaml` (`pii_class`) so a fifth level cannot creep in."
+        },
         "note": { "type": "string" }
       }
     }

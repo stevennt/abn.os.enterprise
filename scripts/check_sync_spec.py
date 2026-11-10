@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Field-ownership checker for `sync-semantics@1` (issue #482).
+"""Field-ownership checker for `sync-semantics@1` (issues #482, #483).
 
 The register is the machine form of `docs/core/sync-semantics.md`: one row per field that
 crosses a plane boundary — its owning plane, the planes that receive a copy, and the planes
@@ -13,15 +13,20 @@ question somebody can answer wrongly.
     E-SYN-04  two fields share an id
     E-SYN-05  the plane list is not exactly the four planes
     E-SYN-06  a field does not have exactly one writer (a plane left unaccounted for)
-    E-SYN-07  a field names an undeclared stream, a stream is duplicated, or a stream is empty
+    E-SYN-07  a field names an undeclared stream, a field id does not begin with its stream,
+              a stream is duplicated, or a stream carries no field
     E-SYN-08  a stream is not one-way, or a field's owner is not the stream's producer
     E-SYN-09  a field the document does not print (the register and the prose disagree)
-    E-SYN-10  a stream with no watermark, or one that is not monotonic / not a no-op on replay
+    E-SYN-10  a stream with no watermark, one that is not monotonic / not a no-op on replay,
+              or a watermark that is not a declared field owned by the stream's producer
     E-SYN-11  a company-model field with no ownership row
     E-SYN-12  an ownership row for a `model.*` field the company schema does not have
+    E-SYN-13  the document prints a field the register does not declare (a stale row)
+    E-SYN-14  a sensitivity outside the four data tiers, or a register whose tiers disagree
+              with `metamodel/event.schema.yaml`
 
-`--company <dir>` also walks a real company model, so the day somebody adds a field to the
-model without saying whose it is, this exits 1.
+Every company model under `companies/*/` is walked by default, so a field added to a company
+without an ownership row fails CI — the flag is for checking one on its own.
 
 Usage:
     python3 scripts/check_sync_spec.py [registry.json] [--company companies/<id>]
@@ -33,6 +38,7 @@ Exit 0 = green, 1 = findings, 2 = the arguments were wrong.
 
 import argparse
 import copy
+import glob
 import json
 import re
 import sys
@@ -45,10 +51,11 @@ ROOT = Path(__file__).resolve().parent.parent
 SCHEMA = ROOT / "schemas" / "field-ownership.json"
 REGISTER = ROOT / "tests" / "fixtures" / "sync" / "field-ownership.json"
 DOC = ROOT / "docs" / "core" / "sync-semantics.md"
-COMPANY_SCHEMA = ROOT / "companies" / "company.schema.yaml"
+EVENT_SCHEMA = ROOT / "metamodel" / "event.schema.yaml"
 
 PLANES = ("enterprise", "paperclip", "opengate", "vault")
 REQUIRED = ("id", "stream", "owner", "mirroredTo", "neverWrittenBy", "sensitivity")
+DATA_TIERS = ("PII-strict", "confidential", "internal", "public")
 
 FIX = {
     "E-SYN-01": "point the check at a registry, or write one: "
@@ -61,18 +68,23 @@ FIX = {
     "E-SYN-05": "the planes are enterprise, paperclip, opengate, vault — all four, no others",
     "E-SYN-06": "every plane except the owner may never originate a write; say so, or the "
                 "writer nobody granted is the one to blame",
-    "E-SYN-07": "a field belongs to a declared stream, and a stream that carries nothing "
-                "is a name with no meaning",
+    "E-SYN-07": "a field belongs to a declared stream and its id begins with that stream's "
+                "name; a stream that carries nothing is a name with no meaning",
     "E-SYN-08": "one producer per stream — a second owner in one stream is the dual write "
                 "this contract forbids",
     "E-SYN-09": "print the row: the register is the document's machine form, and a field "
                 "nobody can read about is a field nobody follows",
-    "E-SYN-10": "every stream carries a strictly increasing sequence and treats a "
-                "re-delivery as already applied",
+    "E-SYN-10": "a watermark is a field: give it a row owned by the stream's producer, "
+                "strictly increasing, with a replay treated as already applied",
     "E-SYN-11": "add the row: a model field nobody owns is a field two planes will "
                 "eventually write",
     "E-SYN-12": "delete the row, or add the field to companies/company.schema.yaml — the "
                 "registry tracks the schema, not the other way round",
+    "E-SYN-13": "delete the document row: a field the register does not declare is a field "
+                "with no owner, printed as though it had one",
+    "E-SYN-14": "use the data tier from docs/core/confidentiality.md — PII-strict, "
+                "confidential, internal, public; `restricted` and `classified` are the "
+                "industry axis, not this one",
 }
 
 
@@ -82,7 +94,16 @@ def _problem(code, detail):
 
 def _documented(text):
     """The field ids the document prints (`| `model.id` | …`)."""
-    return set(re.findall(r"^\|\s*`([a-z-]+\.[A-Za-z][A-Za-z0-9_.]*)`\s*\|", text, re.M))
+    return set(re.findall(r"^\|\s*`([a-z][a-z0-9-]*\.[A-Za-z][A-Za-z0-9_.]*)`\s*\|", text, re.M))
+
+
+def _data_tiers(root=ROOT):
+    """The data tiers as the metamodel declares them — one vocabulary, not two."""
+    try:
+        schema = yaml.safe_load((Path(root) / "metamodel" / "event.schema.yaml").read_text())
+    except (OSError, yaml.YAMLError):
+        return None
+    return ((schema or {}).get("properties") or {}).get("pii_class", {}).get("enum")
 
 
 def _model_properties(root=ROOT):
@@ -109,6 +130,25 @@ def _company_keys(where, root=ROOT):
     return set(document) if isinstance(document, dict) else None
 
 
+def companies(root=ROOT):
+    """Every company model in the repository, discovered rather than named."""
+    pattern = str(Path(root) / "companies" / "*" / "company.yaml")
+    return sorted(Path(path).parent for path in glob.glob(pattern))
+
+
+def _watermarks(streams):
+    return {stream.get("watermark", {}).get("field")
+            for stream in streams if isinstance(stream, dict)}
+
+
+def _relative(where, root=ROOT):
+    """A company path as the reader typed it: relative when it is inside the repository."""
+    try:
+        return str(Path(where).resolve().relative_to(Path(root).resolve()))
+    except ValueError:
+        return str(where)
+
+
 def check(registry, root=ROOT, document=None, company=None):
     """Every finding, in code order."""
     if not isinstance(registry, dict):
@@ -129,11 +169,11 @@ def check(registry, root=ROOT, document=None, company=None):
                                  f"planes is {planes!r}, not the four known planes"))
         return findings
 
+    declared = {}
     streams = registry.get("streams")
     if not isinstance(streams, list):
         findings.append(_problem("E-SYN-07", "streams is not a list"))
         return findings
-    declared = {}
     for index, stream in enumerate(streams):
         if not isinstance(stream, dict):
             findings.append(_problem("E-SYN-07", f"stream {index} is not an object"))
@@ -169,7 +209,8 @@ def check(registry, root=ROOT, document=None, company=None):
     if not isinstance(fields, list):
         findings.append(_problem("E-SYN-03", "fields is not a list"))
         return findings
-    seen = set()
+    watermarks = _watermarks(streams)
+    by_id = {}
     carried = {}
     for index, field in enumerate(fields):
         if not isinstance(field, dict):
@@ -181,13 +222,27 @@ def check(registry, root=ROOT, document=None, company=None):
                                      f"field {index} is missing {', '.join(missing)}"))
             continue
         name = field["id"]
-        if name in seen:
+        if name in by_id:
             findings.append(_problem("E-SYN-04", f"{name} appears twice"))
-        seen.add(name)
+        by_id[name] = field
 
         owner = field.get("owner")
         mirrors = field.get("mirroredTo") or []
         forbidden = field.get("neverWrittenBy") or []
+        stream = declared.get(field.get("stream"))
+        if stream is not None:
+            carried[stream["id"]] = carried.get(stream["id"], 0) + 1
+            if not str(name).startswith(f"{stream['id']}."):
+                findings.append(_problem("E-SYN-07",
+                                         f"{name}: the id does not begin with its stream "
+                                         f"{stream['id']!r}"))
+        else:
+            findings.append(_problem("E-SYN-07",
+                                     f"{name}: stream {field.get('stream')!r} is not "
+                                     f"declared"))
+        if field.get("sensitivity") not in DATA_TIERS:
+            findings.append(_problem("E-SYN-14",
+                                     f"{name}: sensitivity {field.get('sensitivity')!r}"))
         if owner not in PLANES:
             findings.append(_problem("E-SYN-05", f"{name}: owner {owner!r} is not a plane"))
             continue
@@ -205,40 +260,64 @@ def check(registry, root=ROOT, document=None, company=None):
         if owner in mirrors:
             findings.append(_problem("E-SYN-06",
                                      f"{name}: the owner {owner!r} is also its own mirror"))
-
-        stream = declared.get(field.get("stream"))
-        if stream is None:
-            findings.append(_problem("E-SYN-07",
-                                     f"{name}: stream {field.get('stream')!r} is not "
-                                     f"declared"))
-        else:
-            carried[stream["id"]] = carried.get(stream["id"], 0) + 1
-            if stream.get("producer") != owner:
-                findings.append(_problem("E-SYN-08",
-                                         f"{name}: owned by {owner!r} but its stream is "
-                                         f"produced by {stream.get('producer')!r}"))
+        if stream is not None and stream.get("producer") != owner:
+            findings.append(_problem("E-SYN-08",
+                                     f"{name}: owned by {owner!r} but its stream is "
+                                     f"produced by {stream.get('producer')!r}"))
     for name, stream in declared.items():
         if isinstance(stream, dict) and not carried.get(name):
             findings.append(_problem("E-SYN-07", f"stream {name!r} carries no field"))
 
+    # the watermark is a field, and a field has an owner (review F1): without a row the
+    # contract's own resume point is the one value nobody said who may write
+    for name, stream in declared.items():
+        if not isinstance(stream, dict):
+            continue
+        key = (stream.get("watermark") or {}).get("field")
+        if not key:
+            continue
+        row = by_id.get(key)
+        if row is None:
+            findings.append(_problem("E-SYN-10",
+                                     f"stream {name!r}: the watermark {key!r} has no "
+                                     f"ownership row, so nobody owns it"))
+        elif row.get("owner") != stream.get("producer"):
+            findings.append(_problem("E-SYN-10",
+                                     f"stream {name!r}: the watermark {key!r} is owned by "
+                                     f"{row.get('owner')!r}, not its producer "
+                                     f"{stream.get('producer')!r}"))
+
+    # one data tier, from the metamodel rather than from this file (review F2)
+    tiers = _data_tiers(root)
+    if tiers is None:
+        findings.append(_problem("E-SYN-14",
+                                 "metamodel/event.schema.yaml declares no pii_class to agree "
+                                 "with"))
+    elif set(tiers) != set(DATA_TIERS):
+        findings.append(_problem("E-SYN-14",
+                                 f"the register's tiers are {list(DATA_TIERS)}, the metamodel "
+                                 f"declares {tiers}"))
+
     if document is not None:
         printed = _documented(document)
-        for field in fields:
-            if isinstance(field, dict) and field.get("id") not in printed:
+        for name in by_id:
+            if name not in printed:
                 findings.append(_problem("E-SYN-09",
-                                         f"{field.get('id')} is in the register and not in "
-                                         f"the document"))
+                                         f"{name} is in the register and not in the document"))
+        for name in sorted(printed - set(by_id)):
+            findings.append(_problem("E-SYN-13",
+                                     f"the document prints {name}, which the register does "
+                                     f"not declare"))
 
     properties = _model_properties(root)
     if properties:
-        owned = {field.get("id") for field in fields if isinstance(field, dict)}
         for name in sorted(properties):
-            if f"model.{name}" not in owned:
+            if f"model.{name}" not in by_id:
                 findings.append(_problem("E-SYN-11",
                                          f"companies/company.schema.yaml declares {name!r} "
                                          f"and no row owns model.{name}"))
-        for name in sorted(one for one in owned
-                           if isinstance(one, str) and one.startswith("model.")):
+        for name in sorted(one for one in by_id
+                           if one.startswith("model.") and one not in watermarks):
             property_ = name[len("model."):]
             if property_ not in properties:
                 findings.append(_problem("E-SYN-12",
@@ -250,11 +329,11 @@ def check(registry, root=ROOT, document=None, company=None):
         if keys is None:
             findings.append(_problem("E-SYN-01", f"{company}: no company.yaml to read"))
         else:
-            owned = {field.get("id") for field in fields if isinstance(field, dict)}
+            shown = _relative(company, root)
             for name in sorted(keys):
-                if f"model.{name}" not in owned:
+                if f"model.{name}" not in by_id:
                     findings.append(_problem("E-SYN-11",
-                                             f"{company}: the model has {name!r} and no row "
+                                             f"{shown}: the model has {name!r} and no row "
                                              f"owns model.{name}"))
     return findings
 
@@ -273,6 +352,8 @@ def _map(exc, path):
     if "watermark" in path:
         return _problem("E-SYN-10", f"{where}: the watermark is not a strictly increasing "
                                     f"counter that no-ops on replay")
+    if path.endswith("sensitivity"):
+        return _problem("E-SYN-14", f"{where}: sensitivity {exc.instance!r}")
     if path.endswith("neverWrittenBy") or path.endswith("mirroredTo"):
         return _problem("E-SYN-06", f"{where}: {exc.instance!r}")
     if path.endswith("owner"):
@@ -313,11 +394,12 @@ def self_test():
         return mutate(streams=streams)
 
     fields = copy.deepcopy(good["fields"])
-    streams = copy.deepcopy(good["streams"])
     extra = {"id": "model.nonexistent", "stream": "model", "owner": "enterprise",
              "mirroredTo": ["paperclip"],
              "neverWrittenBy": [p for p in PLANES if p != "enterprise"],
              "sensitivity": "internal"}
+    watermark = next(stream["id"] for stream in good["streams"]
+                     if stream["watermark"]["field"] == "model.seq")
     mutations = {
         "E-SYN-01": "not an object",
         "E-SYN-02": mutate(version=0),
@@ -328,15 +410,23 @@ def self_test():
         "E-SYN-07": field_(0, stream="nobody"),
         "E-SYN-08": stream_(0, direction="two-way"),
         "E-SYN-09": mutate(fields=[dict(one) for one in fields]),
-        "E-SYN-10": stream_(0, watermark={"field": "model.seq", "monotonic": False,
-                                          "onReplay": "no-op"}),
+        "E-SYN-10": mutate(fields=[one for one in fields if one["id"] != "model.seq"]),
         "E-SYN-11": mutate(fields=[one for one in fields if one["id"] != "model.label"]),
         "E-SYN-12": mutate(fields=fields + [extra]),
+        "E-SYN-13": mutate(fields=[dict(one) for one in fields]),
+        "E-SYN-14": field_(0, sensitivity="restricted"),
     }
+    del watermark
     seen = set()
     for expected, registry in mutations.items():
-        # E-SYN-09 is "a field the document does not print": the document is emptied
-        findings = check(registry, document="" if expected == "E-SYN-09" else document)
+        text = document
+        if expected == "E-SYN-09":
+            text = ""            # nothing printed: every field is undocumented
+        elif expected == "E-SYN-13":
+            text = document + "\n| `model.ghost` | enterprise | — | internal |\n"
+        elif expected == "E-SYN-10":
+            text = document      # the register lost the watermark's row, not the doc
+        findings = check(registry, document=text)
         found = {one["code"] for one in findings}
         if expected not in found:
             print(f"self-test RED: {expected} did not fire — got {sorted(found) or 'nothing'}",
@@ -346,8 +436,9 @@ def self_test():
             if not one["fix"]:
                 print(f"self-test RED: {one['code']} has no fix", file=sys.stderr)
                 return 1
-        seen |= {one["code"] for one in findings}
-        print(f"self-test: {expected} fired — {next(one['detail'] for one in findings if one['code'] == expected)}")
+        seen |= found
+        print(f"self-test: {expected} fired — "
+              f"{next(one['detail'] for one in findings if one['code'] == expected)}")
     if seen - set(mutations):
         print(f"self-test: also fired {sorted(seen - set(mutations))} (expected, from the "
               f"same mutations)", file=sys.stderr)
@@ -358,8 +449,8 @@ def self_test():
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="check_sync_spec")
     ap.add_argument("register", nargs="?", default=str(REGISTER))
-    ap.add_argument("--company", default=None,
-                    help="also check one company model's keys for an ownership row")
+    ap.add_argument("--company", action="append", default=None,
+                    help="check one company model; by default every companies/*/ is walked")
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--self-test", action="store_true")
     args = ap.parse_args(argv)
@@ -367,13 +458,16 @@ def main(argv=None):
     if args.self_test:
         return self_test()
 
+    walked = [Path(one) for one in args.company] if args.company else companies()
     try:
         registry = json.loads(Path(args.register).read_text())
     except (OSError, json.JSONDecodeError) as exc:
         findings = [_problem("E-SYN-01", f"{args.register}: {exc}")]
         registry = None
     else:
-        findings = check(registry, document=DOC.read_text(), company=args.company)
+        findings = []
+        for where in walked or [None]:
+            findings.extend(check(registry, document=DOC.read_text(), company=where))
 
     ok, blocking = verdict(findings)
     if args.json:
@@ -383,9 +477,8 @@ def main(argv=None):
         if ok:
             line = (f"sync-semantics@1: {len(registry['fields'])} fields in "
                     f"{len(registry['streams'])} streams, one writer each")
-            if args.company:
-                keys = _company_keys(args.company) or ()
-                line += (f" — {args.company}: {len(keys)} model key(s), every one owned")
+            if walked:
+                line += (f" — {len(walked)} company model(s) walked, every key owned")
             print(line + " — OK")
         for one in findings:
             print(f"{one['code']}: {one['detail']} — fix: {one['fix']}")

@@ -1,8 +1,10 @@
 # Sync semantics: one-way, no dual writes (`sync-semantics@1`)
 
-**Status: draft (#482).** Review is #483, ratification #484 — this page names the decision and
-the alternatives it rejects; the ADR is what will make it binding. Until then it is the
-document the next nine steps are written against, not the rule the runtime enforces.
+**Status: reviewed (#483), not yet ratified.** Review is closed — eight findings, six resolved
+here and two deferred with an owner
+([the record](paperclip-reviews/PC2-25-02-field-ownership.md)). Ratification is #484, which is
+what makes it binding; until then this is the document the next steps are written against, not
+the rule the runtime enforces.
 
 **What it settles:** who owns which field, and where a re-run resumes.
 
@@ -80,6 +82,13 @@ Every field that crosses a boundary. `mirrored to` = the planes that receive a c
 other plane, mirrors included, may never originate a write** (`neverWrittenBy` in the
 register — storing a copy is not writing one).
 
+`sensitivity` is the **data** tier from
+[confidentiality.md](confidentiality.md) — `PII-strict`, `confidential`, `internal`,
+`public` — **not** the industry tier: `restricted` and `classified` describe an industry's
+content, and a field labelled with the wrong axis reads as stricter while enforcing nothing
+(review F2, #483). The checker compares the register's list with `metamodel/event.schema.yaml`
+(`pii_class`), so a fifth level cannot appear on one side only.
+
 ### `model` — the company model (enterprise)
 
 | Field | Owner | Mirrored to | Sensitivity |
@@ -139,19 +148,45 @@ is not.
 |---|---|---|---|
 | `evidence.cases` | opengate | paperclip | confidential |
 | `evidence.documents` | opengate | paperclip | confidential |
+| `evidence.approvals` | opengate | paperclip | confidential |
 | `evidence.artifacts` | opengate | paperclip | confidential |
 | `money.plans` | opengate | paperclip | internal |
 | `money.quotas` | opengate | paperclip | internal |
-| `money.statements` | opengate | — | restricted |
+| `money.statements` | opengate | — | confidential |
 | `money.metering` | opengate | paperclip | internal |
-| `audit.chain` | opengate | — | restricted |
+| `audit.chain` | opengate | — | confidential |
 
 ### `secret-ref` and `secret-value` — the two streams of D7
 
 | Field | Owner | Mirrored to | Sensitivity |
 |---|---|---|---|
-| `secret.ref` | opengate | paperclip | restricted |
-| `secret.value` | vault | — | restricted |
+| `secret-ref.ref` | opengate | paperclip | confidential |
+| `secret-value.value` | vault | — | PII-strict |
+
+`secret-value.value` takes the **top data tier** even though a credential is not personal
+data: the taxonomy has four levels, and a value that must never be at rest sits above a name.
+The label is about handling, not about the kind of data.
+
+### The watermark fields
+
+Each stream's watermark is a field, and a field needs an owner (review F1, #483). Without
+these rows the contract's own resume point would be the one value nobody said who may write.
+
+| Field | Owner | Mirrored to | Sensitivity |
+|---|---|---|---|
+| `model.seq` | enterprise | paperclip, opengate | internal |
+| `tenant.seq` | opengate | paperclip | internal |
+| `identity.seq` | opengate | paperclip | internal |
+| `work.seq` | paperclip | opengate | internal |
+| `evidence.seq` | opengate | paperclip | internal |
+| `money.seq` | opengate | paperclip | internal |
+| `audit.seq` | opengate | — | internal |
+| `secret-ref.seq` | opengate | paperclip | internal |
+| `secret-value.seq` | vault | — | internal |
+
+A watermark is **mirrored wherever its stream's fields are** — a consumer that stores the
+stream stores the position it has applied. `audit.seq` and `secret-value.seq` are mirrored to
+nobody because their streams are: an applied watermark is bookkeeping, not evidence.
 
 ## Refusals
 
@@ -169,9 +204,11 @@ uses.
 | `E-SYN-07` | a field names a stream that is not declared, a stream has no fields, or two streams share an id | a field belongs to a declared stream, and a stream that carries nothing is a name with no meaning |
 | `E-SYN-08` | a stream is not `one-way`, or a field's owner is not its stream's producer | one producer per stream — a second owner in one stream is the dual write this contract forbids |
 | `E-SYN-09` | a field the document does not print | print the row: the register is the document's machine form, and a field nobody can read about is a field nobody follows |
-| `E-SYN-10` | a stream with no watermark, a watermark that is not monotonic, or a replay that is not a no-op | every stream carries a strictly increasing sequence and treats a re-delivery as already applied |
+| `E-SYN-10` | a stream with no watermark, a watermark that is not monotonic, a replay that is not a no-op, or a watermark that is not a **declared field owned by the stream's producer** | a watermark is a field: give it a row owned by the producer, strictly increasing, with a replay treated as already applied |
 | `E-SYN-11` | a field of the company model with no ownership row — in the schema, or in a real company | add the row: a model field nobody owns is a field two planes will eventually write |
 | `E-SYN-12` | an ownership row for a `model.*` field the company schema does not have | delete the row, or add the field to `companies/company.schema.yaml` — the registry tracks the schema, not the other way round |
+| `E-SYN-13` | the document prints a field the register does not declare | delete the document row: a field the register does not declare is a field with no owner, printed as though it had one |
+| `E-SYN-14` | a sensitivity outside the four data tiers, or a register whose tiers disagree with the metamodel | use the data tier from `confidentiality.md`; `restricted` and `classified` are the industry axis, not this one |
 
 ## The watermark
 
@@ -247,11 +284,18 @@ python3 scripts/check_sync_spec.py --json
 
 - the **registry** — `tests/fixtures/sync/field-ownership.json`, validated against
   `schemas/field-ownership.json`;
-- the **oracle** — `scripts/check_sync_spec.py`, twelve refusals, `--self-test` mutating the
+- the **oracle** — `scripts/check_sync_spec.py`, fourteen refusals, `--self-test` mutating the
   committed registry once per code;
 - the **company check** — every property of `companies/company.schema.yaml`, and every key of
-  a real company model, must have an ownership row. That is `E-SYN-11`, and it is the check
-  that fires the day somebody adds a field to the model without saying whose it is.
+  **every** company model under `companies/*/`, must have an ownership row. The walk is the
+  default, not a flag (review F5, #483): CI runs the bare command, so a flag it never passes
+  would have been a check that never ran. `--company` narrows it to one.
 
 The enforcement in the runtime is #486; until it lands, this page and its register are the
 contract the compiler, the adapter and the tenant are written against.
+
+## Review (#483)
+
+The draft was reviewed against the code it names, not against its prose:
+[paperclip-reviews/PC2-25-02-field-ownership.md](paperclip-reviews/PC2-25-02-field-ownership.md).
+Eight findings; six resolved in this page and its register, two deferred with an owner.

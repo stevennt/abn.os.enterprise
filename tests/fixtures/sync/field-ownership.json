@@ -62,7 +62,7 @@
         "monotonic": true,
         "onReplay": "no-op"
       },
-      "note": "cases, documents and artifacts of record — the durable half of a run"
+      "note": "cases, documents, approvals and artifacts of record — the durable half of a run"
     },
     {
       "id": "money",
@@ -507,6 +507,21 @@
       "sensitivity": "confidential"
     },
     {
+      "id": "evidence.approvals",
+      "stream": "evidence",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "confidential",
+      "note": "the decision and its signer (D6) — the inbox is paperclip's, the decision is not"
+    },
+    {
       "id": "evidence.artifacts",
       "stream": "evidence",
       "owner": "opengate",
@@ -558,7 +573,7 @@
         "paperclip",
         "vault"
       ],
-      "sensitivity": "restricted",
+      "sensitivity": "confidential",
       "note": "a statement is issued, not mirrored (D5)"
     },
     {
@@ -585,11 +600,11 @@
         "paperclip",
         "vault"
       ],
-      "sensitivity": "restricted",
+      "sensitivity": "confidential",
       "note": "Paperclip emits events; it does not write the chain"
     },
     {
-      "id": "secret.ref",
+      "id": "secret-ref.ref",
       "stream": "secret-ref",
       "owner": "opengate",
       "mirroredTo": [
@@ -600,11 +615,11 @@
         "paperclip",
         "vault"
       ],
-      "sensitivity": "restricted",
+      "sensitivity": "confidential",
       "note": "the name and the vault path, never the value (D7)"
     },
     {
-      "id": "secret.value",
+      "id": "secret-value.value",
       "stream": "secret-value",
       "owner": "vault",
       "mirroredTo": [],
@@ -613,8 +628,140 @@
         "paperclip",
         "opengate"
       ],
-      "sensitivity": "restricted",
-      "note": "injected into the run environment at heartbeat; never persisted by a consumer"
+      "sensitivity": "PII-strict",
+      "note": "handled as the top data tier: a value that must never be at rest is above a name. Injected into the run environment at heartbeat; never persisted by a consumer"
+    },
+    {
+      "id": "model.seq",
+      "stream": "model",
+      "owner": "enterprise",
+      "mirroredTo": [
+        "opengate",
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "paperclip",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal",
+      "note": "the watermark: strictly increasing, applied above the stored value, a replay at or below it is a no-op (D-S3)"
+    },
+    {
+      "id": "tenant.seq",
+      "stream": "tenant",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "internal",
+      "note": "the watermark: strictly increasing, applied above the stored value, a replay at or below it is a no-op (D-S3)"
+    },
+    {
+      "id": "identity.seq",
+      "stream": "identity",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "internal",
+      "note": "the watermark: strictly increasing, applied above the stored value, a replay at or below it is a no-op (D-S3)"
+    },
+    {
+      "id": "work.seq",
+      "stream": "work",
+      "owner": "paperclip",
+      "mirroredTo": [
+        "opengate"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal",
+      "note": "the watermark: strictly increasing, applied above the stored value, a replay at or below it is a no-op (D-S3)"
+    },
+    {
+      "id": "evidence.seq",
+      "stream": "evidence",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "internal",
+      "note": "the watermark: strictly increasing, applied above the stored value, a replay at or below it is a no-op (D-S3)"
+    },
+    {
+      "id": "money.seq",
+      "stream": "money",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "internal",
+      "note": "the watermark: strictly increasing, applied above the stored value, a replay at or below it is a no-op (D-S3)"
+    },
+    {
+      "id": "audit.seq",
+      "stream": "audit",
+      "owner": "opengate",
+      "mirroredTo": [],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "internal",
+      "note": "the watermark: strictly increasing, applied above the stored value, a replay at or below it is a no-op (D-S3)"
+    },
+    {
+      "id": "secret-ref.seq",
+      "stream": "secret-ref",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "internal",
+      "note": "the watermark: strictly increasing, applied above the stored value, a replay at or below it is a no-op (D-S3)"
+    },
+    {
+      "id": "secret-value.seq",
+      "stream": "secret-value",
+      "owner": "vault",
+      "mirroredTo": [],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "opengate"
+      ],
+      "sensitivity": "internal",
+      "note": "the watermark: strictly increasing, applied above the stored value, a replay at or below it is a no-op (D-S3)"
     }
   ]
 }

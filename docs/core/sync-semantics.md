@@ -1,10 +1,10 @@
 # Sync semantics: one-way, no dual writes (`sync-semantics@1`)
 
-**Status: reviewed (#483), not yet ratified.** Review is closed — eight findings, six resolved
-here and two deferred with an owner
-([the record](paperclip-reviews/PC2-25-02-field-ownership.md)). Ratification is #484, which is
-what makes it binding; until then this is the document the next steps are written against, not
-the rule the runtime enforces.
+**Status: ratified (#484) — `sync-semantics@1`.**
+[ADR-003](adr-003-sync-semantics.md) is the decision; this page is the contract it ratifies.
+Review is closed — eight findings, six resolved here and two deferred with an owner
+([the record](paperclip-reviews/PC2-25-02-field-ownership.md)). What ratification does **not**
+do is enforce anything: the seam is #486, and until it lands this is binding on design.
 
 **What it settles:** who owns which field, and where a re-run resumes.
 
@@ -209,6 +209,7 @@ uses.
 | `E-SYN-12` | an ownership row for a `model.*` field the company schema does not have | delete the row, or add the field to `companies/company.schema.yaml` — the registry tracks the schema, not the other way round |
 | `E-SYN-13` | the document prints a field the register does not declare | delete the document row: a field the register does not declare is a field with no owner, printed as though it had one |
 | `E-SYN-14` | a sensitivity outside the four data tiers, or a register whose tiers disagree with the metamodel | use the data tier from `confidentiality.md`; `restricted` and `classified` are the industry axis, not this one |
+| `E-SYN-15` | the ADR that ratifies this contract is missing, is not marked `ACCEPTED`, ratifies another version, or the program doc does not link it | record the decision: an ADR that ratifies `sync-semantics@1`, marked ACCEPTED, linked from `docs/core/paperclip-program.md` |
 
 ## The watermark
 
@@ -284,12 +285,15 @@ python3 scripts/check_sync_spec.py --json
 
 - the **registry** — `tests/fixtures/sync/field-ownership.json`, validated against
   `schemas/field-ownership.json`;
-- the **oracle** — `scripts/check_sync_spec.py`, fourteen refusals, `--self-test` mutating the
+- the **oracle** — `scripts/check_sync_spec.py`, fifteen refusals, `--self-test` mutating the
   committed registry once per code;
 - the **company check** — every property of `companies/company.schema.yaml`, and every key of
   **every** company model under `companies/*/`, must have an ownership row. The walk is the
   default, not a flag (review F5, #483): CI runs the bare command, so a flag it never passes
-  would have been a check that never ran. `--company` narrows it to one.
+  would have been a check that never ran. `--company` narrows it to one;
+- the **ratification** — `E-SYN-15`: [ADR-003](adr-003-sync-semantics.md) exists, is marked
+  ACCEPTED, ratifies this contract, and is linked from the program doc. A decision nobody can
+  find from the front door is a draft with a better name.
 
 The enforcement in the runtime is #486; until it lands, this page and its register are the
 contract the compiler, the adapter and the tenant are written against.

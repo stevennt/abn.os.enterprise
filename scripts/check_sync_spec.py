@@ -51,6 +51,8 @@ ROOT = Path(__file__).resolve().parent.parent
 SCHEMA = ROOT / "schemas" / "field-ownership.json"
 REGISTER = ROOT / "tests" / "fixtures" / "sync" / "field-ownership.json"
 DOC = ROOT / "docs" / "core" / "sync-semantics.md"
+ADR = ROOT / "docs" / "core" / "adr-003-sync-semantics.md"
+PROGRAM = ROOT / "docs" / "core" / "paperclip-program.md"
 EVENT_SCHEMA = ROOT / "metamodel" / "event.schema.yaml"
 
 PLANES = ("enterprise", "paperclip", "opengate", "vault")
@@ -85,7 +87,33 @@ FIX = {
     "E-SYN-14": "use the data tier from docs/core/confidentiality.md — PII-strict, "
                 "confidential, internal, public; `restricted` and `classified` are the "
                 "industry axis, not this one",
+    "E-SYN-15": "the decision is recorded: an ADR that ratifies this contract, marked "
+                "ACCEPTED, linked from the program doc",
 }
+
+
+def ratified(adr_text=None, program_text=None):
+    """The decision is recorded, and the program doc points at it (issue #484).
+
+    A contract that was never ratified is a draft that stopped moving; a ratified one whose ADR
+    nobody links from the front door is the same thing with a better file name.
+    """
+    if adr_text is None:
+        adr_text = ADR.read_text() if ADR.is_file() else ""
+    if program_text is None:
+        program_text = PROGRAM.read_text() if PROGRAM.is_file() else ""
+    findings = []
+    if not adr_text.strip():
+        findings.append(_problem("E-SYN-15", f"{_relative(ADR)} does not exist"))
+        return findings
+    if "ACCEPTED" not in adr_text:
+        findings.append(_problem("E-SYN-15", "the ADR is not marked ACCEPTED"))
+    if "`sync-semantics@1`" not in adr_text:
+        findings.append(_problem("E-SYN-15", "the ADR does not ratify `sync-semantics@1`"))
+    if ADR.name not in program_text:
+        findings.append(_problem("E-SYN-15",
+                                 f"{_relative(PROGRAM)} does not link {ADR.name}"))
+    return findings
 
 
 def _problem(code, detail):
@@ -442,7 +470,13 @@ def self_test():
     if seen - set(mutations):
         print(f"self-test: also fired {sorted(seen - set(mutations))} (expected, from the "
               f"same mutations)", file=sys.stderr)
-    print(f"self-test: all {len(mutations)} codes fire, and a valid registry stays quiet — OK")
+    recorded = ratified("", "")
+    if not recorded:
+        print("self-test RED: E-SYN-15 did not fire on a missing ADR", file=sys.stderr)
+        return 1
+    print(f"self-test: E-SYN-15 fired — {recorded[0]['detail']}")
+    print(f"self-test: all {len(mutations) + 1} codes fire, and a valid registry stays quiet "
+          f"— OK")
     return 0
 
 
@@ -468,6 +502,7 @@ def main(argv=None):
         findings = []
         for where in walked or [None]:
             findings.extend(check(registry, document=DOC.read_text(), company=where))
+        findings.extend(ratified())
 
     ok, blocking = verdict(findings)
     if args.json:

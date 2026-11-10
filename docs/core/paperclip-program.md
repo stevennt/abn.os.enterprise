@@ -69,9 +69,10 @@ against, so drift shows up in the record.
 
 As of 2026-11-10 the tier-2 platform workstreams through **security** and
 **group tenants** are closed, ten steps each. The current workstream is **sync
-semantics** — who owns which field, and the watermark — and its draft is
-[sync-semantics.md](sync-semantics.md) (#482), with review (#483), ratification
-(#484) and the runtime enforcement (#486) behind it.
+semantics** — who owns which field, and the watermark — drafted in
+[sync-semantics.md](sync-semantics.md) (#482), reviewed (#483) and **ratified as
+[ADR-003](adr-003-sync-semantics.md)** (#484); publishing, enforcement and the rest
+of its ladder are behind it.
 
 The compiler workstream is closed; the boundary contract is `paperclip-boundary@1.0`
 ([paperclip-integration.md](paperclip-integration.md)) and its ratification is

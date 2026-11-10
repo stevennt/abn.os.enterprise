@@ -122,8 +122,8 @@ Rules:
 **One owner per *field*, not per row.** The matrix above is the decision at row
 granularity; the field-level registry — every field with its owning plane, its mirrors, the
 planes that may never write it, and the stream watermark that makes a replay a no-op — is
-[sync-semantics.md](sync-semantics.md) (`sync-semantics@1`), checked by
-`scripts/check_sync_spec.py`.
+[sync-semantics.md](sync-semantics.md) (`sync-semantics@1`, ratified as
+[ADR-003](adr-003-sync-semantics.md)), checked by `scripts/check_sync_spec.py`.
 | contract pin, template version | Enterprise OS | template metadata | Paperclip |
 
 ## Seam contracts

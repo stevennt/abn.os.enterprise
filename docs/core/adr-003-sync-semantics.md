@@ -122,6 +122,11 @@ mode ADR-002 D9 already names in another shape.
 the run environment is expressible and `secret-value.value` no longer reads as mirrored to
 nobody (`E-SYN-16`). The decision text above is unchanged; only the two open items moved.
 
+**Clarified in #487** by the conformance matrix's two-consumer case: D-S3's `(stream, tenant)`
+is the key *within one consumer's store*, not across consumers — a stream mirrored to two
+planes gives each its own position. The rule was implied by "a consumer stores"; it is now
+stated.
+
 **Reviewer's note (from #483, carried here):** the finding that mattered was the watermark
 without an owner — found by asking the register a question the register could not answer about
 itself. That is the cheapest kind of finding and the easiest to miss when the document and the

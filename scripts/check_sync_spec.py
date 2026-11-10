@@ -87,6 +87,8 @@ FIX = {
     "E-SYN-14": "use the data tier from docs/core/confidentiality.md — PII-strict, "
                 "confidential, internal, public; `restricted` and `classified` are the "
                 "industry axis, not this one",
+    "E-SYN-16": "a projection is not a store: name a destination that is not a plane and "
+                "mirror the field to nobody, or make it a mirror and give it a consumer",
     "E-SYN-15": "the decision is recorded: an ADR that ratifies this contract, marked "
                 "ACCEPTED, linked from the program doc and listed in its ratified-contracts "
                 "table",
@@ -273,6 +275,17 @@ def check(registry, root=ROOT, document=None, company=None):
             findings.append(_problem("E-SYN-07",
                                      f"{name}: stream {field.get('stream')!r} is not "
                                      f"declared"))
+        projection = str(field.get("projection") or "").strip()
+        if projection:
+            if projection in PLANES:
+                findings.append(_problem("E-SYN-16",
+                                         f"{name}: {projection!r} is a plane, so this is a "
+                                         f"mirror, not a projection"))
+            if mirrors:
+                findings.append(_problem("E-SYN-16",
+                                         f"{name}: projected into {projection!r} and also "
+                                         f"mirrored to {', '.join(mirrors)} — a projection is "
+                                         f"not a store"))
         if field.get("sensitivity") not in DATA_TIERS:
             findings.append(_problem("E-SYN-14",
                                      f"{name}: sensitivity {field.get('sensitivity')!r}"))
@@ -448,6 +461,9 @@ def self_test():
         "E-SYN-12": mutate(fields=fields + [extra]),
         "E-SYN-13": mutate(fields=[dict(one) for one in fields]),
         "E-SYN-14": field_(0, sensitivity="restricted"),
+        "E-SYN-16": field_(next(index for index, one in enumerate(fields)
+                               if one["id"] == "secret-value.value"),
+                          mirroredTo=["paperclip"]),
     }
     del watermark
     seen = set()

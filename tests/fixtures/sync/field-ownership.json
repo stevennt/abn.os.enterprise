@@ -51,7 +51,7 @@
         "monotonic": true,
         "onReplay": "no-op"
       },
-      "note": "tickets, comments, run logs and the approvals inbox — ephemeral by D2"
+      "note": "tickets, comments, run logs and the approvals inbox \u2014 ephemeral by D2"
     },
     {
       "id": "evidence",
@@ -62,7 +62,7 @@
         "monotonic": true,
         "onReplay": "no-op"
       },
-      "note": "cases, documents, approvals and artifacts of record — the durable half of a run"
+      "note": "cases, documents, approvals and artifacts of record \u2014 the durable half of a run"
     },
     {
       "id": "money",
@@ -73,7 +73,7 @@
         "monotonic": true,
         "onReplay": "no-op"
       },
-      "note": "plans, quotas, statements and metered spend — billing truth by D5"
+      "note": "plans, quotas, statements and metered spend \u2014 billing truth by D5"
     },
     {
       "id": "audit",
@@ -519,7 +519,7 @@
         "vault"
       ],
       "sensitivity": "confidential",
-      "note": "the decision and its signer (D6) — the inbox is paperclip's, the decision is not"
+      "note": "the decision and its signer (D6) \u2014 the inbox is paperclip's, the decision is not"
     },
     {
       "id": "evidence.artifacts",
@@ -629,7 +629,8 @@
         "opengate"
       ],
       "sensitivity": "PII-strict",
-      "note": "handled as the top data tier: a value that must never be at rest is above a name. Injected into the run environment at heartbeat; never persisted by a consumer"
+      "note": "handled as the top data tier: a value that must never be at rest is above a name. Projected into the run environment at heartbeat \u2014 the one copy that exists is never written to a store",
+      "projection": "run env"
     },
     {
       "id": "model.seq",

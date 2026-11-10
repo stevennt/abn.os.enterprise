@@ -1,10 +1,12 @@
 # Sync semantics: one-way, no dual writes (`sync-semantics@1`)
 
-**Status: ratified (#484) — `sync-semantics@1`.**
+**Status: enforced (#486) — `sync-semantics@1`.**
 [ADR-003](adr-003-sync-semantics.md) is the decision; this page is the contract it ratifies.
 Review is closed — eight findings, six resolved here and two deferred with an owner
-([the record](paperclip-reviews/PC2-25-02-field-ownership.md)). What ratification does **not**
-do is enforce anything: the seam is #486, and until it lands this is binding on design.
+([the record](paperclip-reviews/PC2-25-02-field-ownership.md)); **both deferred findings are
+closed by the enforcement step** (see *Enforcement*). The seam that refuses a second writer
+lives in `abn.platform.opengate` (`gateway/sync_semantics.py`), and its operator page is that
+repository's `docs/sync-semantics.md`.
 
 **What it settles:** who owns which field, and where a re-run resumes.
 
@@ -167,6 +169,12 @@ is not.
 data: the taxonomy has four levels, and a value that must never be at rest sits above a name.
 The label is about handling, not about the kind of data.
 
+It is also the register's one **projection**: `"projection": "run env"`. The run environment is a
+destination, not a store — the value is injected at heartbeat, nothing is at rest there, and
+there is no copy to reconcile. That is why `mirrored to` is empty and the row still says where
+the value goes: the boundary matrix's `run env` column had no way to be expressed until review
+F7 (#483) asked for it.
+
 ### The watermark fields
 
 Each stream's watermark is a field, and a field needs an owner (review F1, #483). Without
@@ -211,6 +219,8 @@ uses.
 | `E-SYN-14` | a sensitivity outside the four data tiers, or a register whose tiers disagree with the metamodel | use the data tier from `confidentiality.md`; `restricted` and `classified` are the industry axis, not this one |
 | `E-SYN-15` | the ADR that ratifies this contract is missing, is not marked `ACCEPTED`, ratifies another version, or the program doc neither links it nor lists the contract among the ratified | record the decision: an ADR that ratifies `sync-semantics@1`, marked ACCEPTED, linked from and listed in `docs/core/paperclip-program.md` |
 
+| `E-SYN-16` | a field declares a `projection` that is a plane, or is projected *and* mirrored | a projection is not a store: name a destination that is not a plane and mirror the field to nobody, or make it a mirror and give it a consumer |
+
 ## The watermark
 
 A watermark is a **position in a stream**, not a time. The rule, in the order an
@@ -234,6 +244,46 @@ Two consequences worth naming, because both are tempting shortcuts:
 - **A global watermark is not a watermark.** Tenants advance at different rates; one cursor
   across all of them means a busy tenant pins every quiet one, or a quiet one makes a busy one
   skip.
+
+## Enforcement (#486)
+
+The rule is enforced at the seam, in `abn.platform.opengate` —
+`gateway/sync_semantics.py`, `infra/sync.py`, and the tenant gate in `resolve.py --sync`.
+Its operator page is the platform repo's `docs/sync-semantics.md`.
+
+**The register ships as a copy with a digest.** `onboarding/field-ownership.json` is a byte copy
+of `tests/fixtures/sync/field-ownership.json`, and `onboarding/field-ownership.meta.json` carries
+its `sha256` and the commit it came from. The runtime verifies the digest before it uses a single
+row: a register that was copied half-way, edited in place or belongs to another contract is
+**refused** (`E-SYN-23`), never enforced slightly differently. A rule read from a document nobody
+vouched for is worse than no rule, because it looks like one.
+
+| Code | Means |
+|---|---|
+| `E-SYN-20` | a write from a plane that does not own the field — the write is a **proposal**, refused |
+| `E-SYN-21` | a gap (`seq > watermark + 1`), or a watermark moved backwards |
+| `E-SYN-22` | the watermark could not be read or recorded, so nothing was applied |
+| `E-SYN-23` | the register is not the contract's own copy, or the field has no owner |
+
+**A replay is an answer, not an error.** `apply()` returns `{"applied": false, "reason":
+"already"}` for a record at or below the watermark, and the CLI exits `0`. A retry, a restored
+consumer and a re-delivery are normal events; making one an error teaches an operator to ignore
+the error that matters.
+
+**The order is the contract's:** ownership → position → the write → the watermark. `write()` runs
+before the position moves, so a write that raises leaves the watermark where it was and the
+record is re-delivered. The alternative — a position that claims a record nobody wrote — is the
+lost record this contract exists to prevent.
+
+**The two findings #483 deferred to this step are answered here:**
+
+- **F7** (the run environment is a destination the register cannot express) — the register now
+  has a `projection`: a destination that receives the value and is not a store. `secret-value.value`
+  declares `"projection": "run env"`, so it no longer reads as mirrored to nobody while one
+  transient copy exists. A projected field mirrors to nobody, and `E-SYN-16` refuses both
+  mistakes (a projection that names a plane, and a field that is projected *and* mirrored).
+- **F8** (nothing blocks on its own) — `E-SYN-20` now refuses the write, and the CLI exits `1`.
+  A violation at the seam is no longer reported and then ignored.
 
 ## Alternatives considered (and why not)
 
@@ -285,7 +335,7 @@ python3 scripts/check_sync_spec.py --json
 
 - the **registry** — `tests/fixtures/sync/field-ownership.json`, validated against
   `schemas/field-ownership.json`;
-- the **oracle** — `scripts/check_sync_spec.py`, fifteen refusals, `--self-test` mutating the
+- the **oracle** — `scripts/check_sync_spec.py`, sixteen refusals, `--self-test` mutating the
   committed registry once per code;
 - the **company check** — every property of `companies/company.schema.yaml`, and every key of
   **every** company model under `companies/*/`, must have an ownership row. The walk is the

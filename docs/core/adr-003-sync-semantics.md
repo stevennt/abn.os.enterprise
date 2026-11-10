@@ -117,6 +117,11 @@ Both are **enforcement** questions, and both were deliberately left out of the d
 written where it cannot be enforced is believed because it is written down, which is the failure
 mode ADR-002 D9 already names in another shape.
 
+**Update — closed in #486.** `E-SYN-20` refuses a non-owner write at the seam
+(`abn.platform.opengate/gateway/sync_semantics.py`), and the register gained a `projection`, so
+the run environment is expressible and `secret-value.value` no longer reads as mirrored to
+nobody (`E-SYN-16`). The decision text above is unchanged; only the two open items moved.
+
 **Reviewer's note (from #483, carried here):** the finding that mattered was the watermark
 without an owner — found by asking the register a question the register could not answer about
 itself. That is the cheapest kind of finding and the easiest to miss when the document and the

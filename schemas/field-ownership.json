@@ -3,11 +3,21 @@
   "title": "Field ownership registry (sync-semantics@1)",
   "description": "The machine form of docs/core/sync-semantics.md: every field that crosses a plane boundary names exactly one writing plane, the planes that receive a copy, and the planes that may never originate a write. Streams carry the watermark that makes a replay a no-op. scripts/check_sync_spec.py implements the rules this schema cannot express (one writer per field, one producer per stream, a property of the company model with no owner) and must agree with this file.",
   "type": "object",
-  "required": ["version", "contract", "planes", "streams", "fields"],
+  "required": [
+    "version",
+    "contract",
+    "planes",
+    "streams",
+    "fields"
+  ],
   "additionalProperties": false,
   "properties": {
-    "version": { "const": 1 },
-    "contract": { "const": "sync-semantics@1" },
+    "version": {
+      "const": 1
+    },
+    "contract": {
+      "const": "sync-semantics@1"
+    },
     "decided": {
       "type": "string",
       "description": "ISO date of the decision. A field changing hands is a new major, not a new date."
@@ -16,41 +26,66 @@
       "type": "array",
       "minItems": 2,
       "uniqueItems": true,
-      "items": { "$ref": "#/definitions/plane" },
+      "items": {
+        "$ref": "#/definitions/plane"
+      },
       "description": "The planes that may own a field. A field naming anything else is E-SYN-05."
     },
     "streams": {
       "type": "array",
       "minItems": 1,
-      "items": { "$ref": "#/definitions/stream" },
+      "items": {
+        "$ref": "#/definitions/stream"
+      },
       "description": "One producer each. A stream with two producers is the dual write this contract exists to forbid (E-SYN-07)."
     },
     "fields": {
       "type": "array",
       "minItems": 1,
-      "items": { "$ref": "#/definitions/field" },
+      "items": {
+        "$ref": "#/definitions/field"
+      },
       "description": "One owner each. Two fields with one id make every reference ambiguous (E-SYN-04)."
     }
   },
   "definitions": {
     "plane": {
-      "enum": ["enterprise", "paperclip", "opengate", "vault"],
+      "enum": [
+        "enterprise",
+        "paperclip",
+        "opengate",
+        "vault"
+      ],
       "description": "enterprise = the design plane (this repo), paperclip = execution, opengate = the tenant and its evidence, vault = the secret store."
     },
     "stream": {
       "type": "object",
-      "required": ["id", "producer", "direction", "watermark"],
+      "required": [
+        "id",
+        "producer",
+        "direction",
+        "watermark"
+      ],
       "additionalProperties": false,
       "properties": {
-        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
-        "producer": { "$ref": "#/definitions/plane" },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "producer": {
+          "$ref": "#/definitions/plane"
+        },
         "direction": {
           "const": "one-way",
           "description": "The only legal direction. A bidirectional stream is the rejected alternative, not a setting."
         },
         "watermark": {
           "type": "object",
-          "required": ["field", "monotonic", "onReplay"],
+          "required": [
+            "field",
+            "monotonic",
+            "onReplay"
+          ],
           "additionalProperties": false,
           "properties": {
             "field": {
@@ -67,37 +102,66 @@
             }
           }
         },
-        "note": { "type": "string" }
+        "note": {
+          "type": "string"
+        }
       }
     },
     "field": {
       "type": "object",
-      "required": ["id", "stream", "owner", "mirroredTo", "neverWrittenBy", "sensitivity"],
+      "required": [
+        "id",
+        "stream",
+        "owner",
+        "mirroredTo",
+        "neverWrittenBy",
+        "sensitivity"
+      ],
       "additionalProperties": false,
       "properties": {
         "id": {
           "type": "string",
           "pattern": "^[a-z][a-z0-9-]*\\.[A-Za-z][A-Za-z0-9_.]*$",
-          "description": "`<stream>.<name>` — the id begins with the stream it belongs to, so a watermark (`model.seq`) is a field like any other and needs an owner."
+          "description": "`<stream>.<name>` \u2014 the id begins with the stream it belongs to, so a watermark (`model.seq`) is a field like any other and needs an owner."
         },
-        "stream": { "type": "string" },
-        "owner": { "$ref": "#/definitions/plane" },
+        "stream": {
+          "type": "string"
+        },
+        "owner": {
+          "$ref": "#/definitions/plane"
+        },
         "mirroredTo": {
           "type": "array",
-          "items": { "$ref": "#/definitions/plane" },
+          "items": {
+            "$ref": "#/definitions/plane"
+          },
           "description": "The planes that receive a copy. A mirror may store the field and may never author it."
         },
         "neverWrittenBy": {
           "type": "array",
           "minItems": 1,
-          "items": { "$ref": "#/definitions/plane" },
-          "description": "Every plane, other than the owner, that may not originate a write — mirrors included, because storing a copy is not writing one. A plane missing from this list has a write nobody granted (E-SYN-06)."
+          "items": {
+            "$ref": "#/definitions/plane"
+          },
+          "description": "Every plane, other than the owner, that may not originate a write \u2014 mirrors included, because storing a copy is not writing one. A plane missing from this list has a write nobody granted (E-SYN-06)."
         },
         "sensitivity": {
-          "enum": ["PII-strict", "confidential", "internal", "public"],
+          "enum": [
+            "PII-strict",
+            "confidential",
+            "internal",
+            "public"
+          ],
           "description": "The **data** tier from docs/core/confidentiality.md, not the industry tier: `restricted` and `classified` describe an industry's content, and a field labelled with the wrong axis reads as stricter while enforcing nothing. The checker compares this list with `metamodel/event.schema.yaml` (`pii_class`) so a fifth level cannot creep in."
         },
-        "note": { "type": "string" }
+        "note": {
+          "type": "string"
+        },
+        "projection": {
+          "type": "string",
+          "minLength": 1,
+          "description": "A destination that receives the value and is **not a store**: the run environment is the one. A projection is not a mirror \u2014 nothing is at rest there, so there is no copy to reconcile and no watermark for it. A field with a projection is mirrored to nobody (E-SYN-16)."
+        }
       }
     }
   }

@@ -76,7 +76,10 @@ go-live is `docs/core/readiness-scorecard.md` — ten gates, each with evidence,
 and a recorded decision. The agent-org integration starts at
 `docs/core/paperclip-program.md` (program index: board, catalog, rules), with the
 contract in `docs/core/paperclip-integration.md` (three planes, one work item) and
-the ratification in `docs/core/adr-002-paperclip-three-planes.md`. To model a legal entity inside that tenant:
+the ratification in `docs/core/adr-002-paperclip-three-planes.md`. **Who owns which field, and
+where a re-run resumes, is `docs/core/sync-semantics.md`** — ratified by
+`docs/core/adr-003-sync-semantics.md`: one writer per field, one direction per stream, one
+watermark, and a model field with no ownership row fails CI. To model a legal entity inside that tenant:
 `docs/core/onboarding-company.md`; to add an industry:
 `docs/core/onboarding-industry.md`.
 

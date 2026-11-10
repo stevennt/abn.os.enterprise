@@ -50,7 +50,10 @@ budgets), but the model and the tenant stay here and in OpenGate:
 The model **compiles** into a company template; it is never synced both ways.
 Start at `docs/core/paperclip-program.md` (program index), then
 `docs/core/paperclip-integration.md` (the contract) and
-`docs/core/adr-002-paperclip-three-planes.md` (the ratification). The 600-task
+`docs/core/adr-002-paperclip-three-planes.md` (the ratification). **At field
+granularity** — who may write one, which way it flows, and where a re-run resumes —
+it is `docs/core/sync-semantics.md`, ratified by `docs/core/adr-003-sync-semantics.md`:
+one writer per field, one direction per stream, one watermark. The 600-task
 board is the issues labelled `paperclip`.
 
 ## Option comparison (read before building)

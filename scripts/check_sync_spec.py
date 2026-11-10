@@ -88,7 +88,8 @@ FIX = {
                 "confidential, internal, public; `restricted` and `classified` are the "
                 "industry axis, not this one",
     "E-SYN-15": "the decision is recorded: an ADR that ratifies this contract, marked "
-                "ACCEPTED, linked from the program doc",
+                "ACCEPTED, linked from the program doc and listed in its ratified-contracts "
+                "table",
 }
 
 
@@ -113,6 +114,10 @@ def ratified(adr_text=None, program_text=None):
     if ADR.name not in program_text:
         findings.append(_problem("E-SYN-15",
                                  f"{_relative(PROGRAM)} does not link {ADR.name}"))
+    if "`sync-semantics@1`" not in program_text:
+        findings.append(_problem("E-SYN-15",
+                                 f"{_relative(PROGRAM)} does not list `sync-semantics@1` "
+                                 f"among the ratified contracts"))
     return findings
 
 

@@ -209,7 +209,7 @@ uses.
 | `E-SYN-12` | an ownership row for a `model.*` field the company schema does not have | delete the row, or add the field to `companies/company.schema.yaml` — the registry tracks the schema, not the other way round |
 | `E-SYN-13` | the document prints a field the register does not declare | delete the document row: a field the register does not declare is a field with no owner, printed as though it had one |
 | `E-SYN-14` | a sensitivity outside the four data tiers, or a register whose tiers disagree with the metamodel | use the data tier from `confidentiality.md`; `restricted` and `classified` are the industry axis, not this one |
-| `E-SYN-15` | the ADR that ratifies this contract is missing, is not marked `ACCEPTED`, ratifies another version, or the program doc does not link it | record the decision: an ADR that ratifies `sync-semantics@1`, marked ACCEPTED, linked from `docs/core/paperclip-program.md` |
+| `E-SYN-15` | the ADR that ratifies this contract is missing, is not marked `ACCEPTED`, ratifies another version, or the program doc neither links it nor lists the contract among the ratified | record the decision: an ADR that ratifies `sync-semantics@1`, marked ACCEPTED, linked from and listed in `docs/core/paperclip-program.md` |
 
 ## The watermark
 

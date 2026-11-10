@@ -45,6 +45,20 @@ against, so drift shows up in the record.
 | 2 | 200 | the platform surface: connector API, records, onboarding with a crew, admin, readiness, metering, quotas, secrets, residency, PII, observability, reliability, security, groups, sync, migration, docs, testing, release, support |
 | 3 | 300 | industries, pilots and operations: five industry crews, evals, quality, training, three pilot waves, onboarding playbook, capacity, cost, performance, DR, multi-region, GDPR, SOC 2, sector rules, audit, partners, marketplace, analytics, data platform, SRE, on-call, roadmap, close-out |
 
+## Ratified contracts
+
+The decisions this program builds against, with the page that carries them and the command
+that fails when the page and the machine form disagree.
+
+| Contract | Ratified by | The page | The gate |
+|---|---|---|---|
+| `paperclip-boundary@1.0` — which plane owns what, and the four seams | [ADR-002](adr-002-paperclip-three-planes.md) | [paperclip-integration.md](paperclip-integration.md) | `scripts/check_plane_boundary.py` |
+| `sync-semantics@1` — one writer per field, one direction per stream, one watermark | [ADR-003](adr-003-sync-semantics.md) | [sync-semantics.md](sync-semantics.md) | `scripts/check_sync_spec.py` (+ the register, `tests/fixtures/sync/field-ownership.json`) |
+
+A contract that is not in this table is not ratified, whatever its page says. Adding a row
+means naming the ADR, the page and the gate in the same sitting — the three that make a
+decision followable rather than merely written.
+
 ## The rules of the board
 
 1. **One issue, one dispatch.** Read the issue, meet every acceptance criterion,

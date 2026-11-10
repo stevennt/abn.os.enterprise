@@ -30,9 +30,16 @@ companies/<id>/
 | 4 | `python scripts/no_hardcoded_paths.py` | the tooling does not hardcode a company or an industry path |
 | 5 | `python scripts/playbook_sync.py` | this playbook still names every script CI runs |
 | 6 | `python scripts/validate.py` | the industry the company adopts is still valid (company models do not replace industry validation) |
+| 7 | `python scripts/check_sync_spec.py` | every field of the model has an **owner**: a new key in `company.yaml` (or in `companies/company.schema.yaml`) without a row in the field-ownership registry is `E-SYN-11` |
 
-CI runs 1-3 on every push; `companies/example-bank/` is the reference model that
+CI runs 1-3 and 7 on every push; `companies/example-bank/` is the reference model that
 keeps the check meaningful.
+
+**Adding a field to the model is a decision, not an edit.** The model's fields are owned by
+the design plane, and the registry says so per field
+(`docs/core/sync-semantics.md`, ratified as ADR-003). Check 7 walks every
+`companies/*/company.yaml`, so a key nobody owns fails the build rather than becoming a second
+writer later.
 
 ## The contract pin
 

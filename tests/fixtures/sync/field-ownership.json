@@ -1,0 +1,620 @@
+{
+  "version": 1,
+  "contract": "sync-semantics@1",
+  "decided": "2026-11-10",
+  "planes": [
+    "enterprise",
+    "paperclip",
+    "opengate",
+    "vault"
+  ],
+  "streams": [
+    {
+      "id": "model",
+      "producer": "enterprise",
+      "direction": "one-way",
+      "watermark": {
+        "field": "model.seq",
+        "monotonic": true,
+        "onReplay": "no-op"
+      },
+      "note": "the company model this repository compiles; nothing else authors it"
+    },
+    {
+      "id": "tenant",
+      "producer": "opengate",
+      "direction": "one-way",
+      "watermark": {
+        "field": "tenant.seq",
+        "monotonic": true,
+        "onReplay": "no-op"
+      },
+      "note": "the tenant boundary: its profile, its companies, its folders, its ACL"
+    },
+    {
+      "id": "identity",
+      "producer": "opengate",
+      "direction": "one-way",
+      "watermark": {
+        "field": "identity.seq",
+        "monotonic": true,
+        "onReplay": "no-op"
+      },
+      "note": "ONEID accounts and the seats they hold in Paperclip"
+    },
+    {
+      "id": "work",
+      "producer": "paperclip",
+      "direction": "one-way",
+      "watermark": {
+        "field": "work.seq",
+        "monotonic": true,
+        "onReplay": "no-op"
+      },
+      "note": "tickets, comments, run logs and the approvals inbox — ephemeral by D2"
+    },
+    {
+      "id": "evidence",
+      "producer": "opengate",
+      "direction": "one-way",
+      "watermark": {
+        "field": "evidence.seq",
+        "monotonic": true,
+        "onReplay": "no-op"
+      },
+      "note": "cases, documents and artifacts of record — the durable half of a run"
+    },
+    {
+      "id": "money",
+      "producer": "opengate",
+      "direction": "one-way",
+      "watermark": {
+        "field": "money.seq",
+        "monotonic": true,
+        "onReplay": "no-op"
+      },
+      "note": "plans, quotas, statements and metered spend — billing truth by D5"
+    },
+    {
+      "id": "audit",
+      "producer": "opengate",
+      "direction": "one-way",
+      "watermark": {
+        "field": "audit.seq",
+        "monotonic": true,
+        "onReplay": "no-op"
+      },
+      "note": "the signed audit chain"
+    },
+    {
+      "id": "secret-ref",
+      "producer": "opengate",
+      "direction": "one-way",
+      "watermark": {
+        "field": "secret-ref.seq",
+        "monotonic": true,
+        "onReplay": "no-op"
+      },
+      "note": "the name of a secret and where it lives"
+    },
+    {
+      "id": "secret-value",
+      "producer": "vault",
+      "direction": "one-way",
+      "watermark": {
+        "field": "secret-value.seq",
+        "monotonic": true,
+        "onReplay": "no-op"
+      },
+      "note": "the secret itself, injected into a run environment and never stored"
+    }
+  ],
+  "fields": [
+    {
+      "id": "model.version",
+      "stream": "model",
+      "owner": "enterprise",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "paperclip",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal"
+    },
+    {
+      "id": "model.id",
+      "stream": "model",
+      "owner": "enterprise",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "paperclip",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal"
+    },
+    {
+      "id": "model.label",
+      "stream": "model",
+      "owner": "enterprise",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "paperclip",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal"
+    },
+    {
+      "id": "model.tenant",
+      "stream": "model",
+      "owner": "enterprise",
+      "mirroredTo": [
+        "opengate"
+      ],
+      "neverWrittenBy": [
+        "paperclip",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal",
+      "note": "a pointer, not the tenant: the tenant's own fields are opengate's"
+    },
+    {
+      "id": "model.entity",
+      "stream": "model",
+      "owner": "enterprise",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "paperclip",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "confidential"
+    },
+    {
+      "id": "model.industry",
+      "stream": "model",
+      "owner": "enterprise",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "paperclip",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal"
+    },
+    {
+      "id": "model.contract",
+      "stream": "model",
+      "owner": "enterprise",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "paperclip",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal",
+      "note": "the pin D8 requires; it travels with the template"
+    },
+    {
+      "id": "model.departments",
+      "stream": "model",
+      "owner": "enterprise",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "paperclip",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal"
+    },
+    {
+      "id": "model.org",
+      "stream": "model",
+      "owner": "enterprise",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "paperclip",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal"
+    },
+    {
+      "id": "model.flows",
+      "stream": "model",
+      "owner": "enterprise",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "paperclip",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal"
+    },
+    {
+      "id": "model.rules",
+      "stream": "model",
+      "owner": "enterprise",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "paperclip",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal"
+    },
+    {
+      "id": "model.packs",
+      "stream": "model",
+      "owner": "enterprise",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "paperclip",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal"
+    },
+    {
+      "id": "model.docs",
+      "stream": "model",
+      "owner": "enterprise",
+      "mirroredTo": [],
+      "neverWrittenBy": [
+        "paperclip",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal",
+      "note": "documentation for people; never compiled into the template"
+    },
+    {
+      "id": "model.paperclip",
+      "stream": "model",
+      "owner": "enterprise",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "paperclip",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal",
+      "note": "the settings block the compiler reads"
+    },
+    {
+      "id": "tenant.profile",
+      "stream": "tenant",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "internal"
+    },
+    {
+      "id": "tenant.companies",
+      "stream": "tenant",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "internal",
+      "note": "a group tenant's companies, and the crew each one has"
+    },
+    {
+      "id": "tenant.folders",
+      "stream": "tenant",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "internal"
+    },
+    {
+      "id": "tenant.acl",
+      "stream": "tenant",
+      "owner": "opengate",
+      "mirroredTo": [],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "confidential",
+      "note": "nobody receives a copy: the ACL is enforced where the data lives (D3)"
+    },
+    {
+      "id": "tenant.dataMode",
+      "stream": "tenant",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "confidential"
+    },
+    {
+      "id": "identity.accounts",
+      "stream": "identity",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "confidential"
+    },
+    {
+      "id": "identity.roleAssignments",
+      "stream": "identity",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "internal"
+    },
+    {
+      "id": "identity.seats",
+      "stream": "identity",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "internal",
+      "note": "a seat is Paperclip's to consume and not to invent (D4)"
+    },
+    {
+      "id": "work.tickets",
+      "stream": "work",
+      "owner": "paperclip",
+      "mirroredTo": [
+        "opengate"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal"
+    },
+    {
+      "id": "work.comments",
+      "stream": "work",
+      "owner": "paperclip",
+      "mirroredTo": [
+        "opengate"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal"
+    },
+    {
+      "id": "work.runLogs",
+      "stream": "work",
+      "owner": "paperclip",
+      "mirroredTo": [
+        "opengate"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal"
+    },
+    {
+      "id": "work.approvalsUi",
+      "stream": "work",
+      "owner": "paperclip",
+      "mirroredTo": [
+        "opengate"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "opengate",
+        "vault"
+      ],
+      "sensitivity": "internal",
+      "note": "the inbox is Paperclip's; the decision it records is opengate's"
+    },
+    {
+      "id": "evidence.cases",
+      "stream": "evidence",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "confidential"
+    },
+    {
+      "id": "evidence.documents",
+      "stream": "evidence",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "confidential"
+    },
+    {
+      "id": "evidence.artifacts",
+      "stream": "evidence",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "confidential"
+    },
+    {
+      "id": "money.plans",
+      "stream": "money",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "internal"
+    },
+    {
+      "id": "money.quotas",
+      "stream": "money",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "internal"
+    },
+    {
+      "id": "money.statements",
+      "stream": "money",
+      "owner": "opengate",
+      "mirroredTo": [],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "restricted",
+      "note": "a statement is issued, not mirrored (D5)"
+    },
+    {
+      "id": "money.metering",
+      "stream": "money",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "internal"
+    },
+    {
+      "id": "audit.chain",
+      "stream": "audit",
+      "owner": "opengate",
+      "mirroredTo": [],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "restricted",
+      "note": "Paperclip emits events; it does not write the chain"
+    },
+    {
+      "id": "secret.ref",
+      "stream": "secret-ref",
+      "owner": "opengate",
+      "mirroredTo": [
+        "paperclip"
+      ],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "vault"
+      ],
+      "sensitivity": "restricted",
+      "note": "the name and the vault path, never the value (D7)"
+    },
+    {
+      "id": "secret.value",
+      "stream": "secret-value",
+      "owner": "vault",
+      "mirroredTo": [],
+      "neverWrittenBy": [
+        "enterprise",
+        "paperclip",
+        "opengate"
+      ],
+      "sensitivity": "restricted",
+      "note": "injected into the run environment at heartbeat; never persisted by a consumer"
+    }
+  ]
+}

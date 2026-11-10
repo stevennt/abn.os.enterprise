@@ -67,7 +67,12 @@ against, so drift shows up in the record.
 
 ## Status
 
-As of 2026-11-01 the boundary workstream is in progress: contract (#242), review
-(#243) and ratification (#244) are closed; publishing (#245) is this page. The
-compiler workstream follows, and it needs the template schema (#252) before the
-adapter (#262) can run against a live Paperclip.
+As of 2026-11-10 the tier-2 platform workstreams through **security** and
+**group tenants** are closed, ten steps each. The current workstream is **sync
+semantics** — who owns which field, and the watermark — and its draft is
+[sync-semantics.md](sync-semantics.md) (#482), with review (#483), ratification
+(#484) and the runtime enforcement (#486) behind it.
+
+The compiler workstream is closed; the boundary contract is `paperclip-boundary@1.0`
+([paperclip-integration.md](paperclip-integration.md)) and its ratification is
+[ADR-002](adr-002-paperclip-three-planes.md).
